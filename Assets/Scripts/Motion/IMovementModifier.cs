@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace LittleDeath.Movement {
+namespace SpaceBoat.Movement {
     public interface IMovementModifier
     {
         Vector2 Value { get; }
@@ -13,6 +13,5 @@ namespace LittleDeath.Movement {
 
         void UpdateModifier(float deltaTime);
 
-        void OnDeathTransition(IMovementModifier other);
     }
 }

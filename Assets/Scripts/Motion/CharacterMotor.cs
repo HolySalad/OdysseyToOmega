@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace LittleDeath.Movement {
+namespace SpaceBoat.Movement {
 
 public class CharacterMotor : MonoBehaviour
     {
