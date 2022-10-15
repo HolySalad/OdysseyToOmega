@@ -24,13 +24,22 @@ namespace SpaceBoat.Hazards {
         }
 
         void OnCollisionEnter2D(Collision2D collision) {
-            if (collision.otherCollider.gameObject.layer == LayerMask.NameToLayer("PlayerCharacter")) {
-                Player.PlayerLogic player = collision.otherCollider.gameObject.GetComponent<Player.PlayerLogic>();
+            Debug.Log("Rock hit " + collision.gameObject.name + " Layer mask " + LayerMask.LayerToName(collision.gameObject.layer));
+            if (collision.gameObject.layer == LayerMask.NameToLayer("EndOfMapLeft")) {
+                Debug.Log("Rock Reached the End of the Map");
+                Destroy(this.gameObject);
+            } else if (collision.gameObject.layer == LayerMask.NameToLayer("PlayerChar")) {
+                Player.PlayerLogic player = collision.gameObject.GetComponent<Player.PlayerLogic>();
                 Debug.Log("Rock hit player");
                 player.PlayerTakesDamage(1);
-
-            } else if (collision.otherCollider.gameObject.layer == LayerMask.NameToLayer("Ground")){
-                Destroy(this);
+                //TODO add small knockback?
+                //TODO rock breaking animation.
+                //TODO sound
+                Destroy(this.gameObject);
+            } else if (collision.gameObject.layer == LayerMask.NameToLayer("Ground") && !collision.gameObject.tag.Equals("Platforms")) {
+                Destroy(this.gameObject);
+                //TODO rock breaking animation.
+                //TODO sound
             }
         }
 
