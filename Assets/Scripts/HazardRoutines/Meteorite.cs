@@ -5,10 +5,13 @@ namespace SpaceBoat.Hazards{
     public class Meteorite : MonoBehaviour
     {
 
+        [SerializeField] private Sprite[] meteorSprites;
+
         public void SetupMeteor(float speed, Vector3 startingPosition, GameObject targetSail) {
             //define a vector from the starting position to the target sail
             Vector2 targetVector = targetSail.transform.position - startingPosition;
-        
+            SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+            spriteRenderer.sprite = meteorSprites[Random.Range(0, meteorSprites.Length)];
             Rigidbody2D rb = GetComponent<Rigidbody2D>();
             rb.velocity = new Vector2(targetVector.normalized.x*speed, targetVector.normalized.y*speed);
         }
