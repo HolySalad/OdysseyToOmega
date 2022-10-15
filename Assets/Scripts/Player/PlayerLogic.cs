@@ -59,6 +59,12 @@ namespace SpaceBoat.Player {
             Debug.Log("Player is below deck: " + isBelowDeck);
         }
 
+        public void PlayerTakesDamage(int damage) {
+            maxHealth -= damage;
+            if (maxHealth <= 0) {
+                //player dies
+            }
+        }
 
         //events
 

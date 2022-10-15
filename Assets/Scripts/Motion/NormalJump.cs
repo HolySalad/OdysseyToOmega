@@ -6,7 +6,7 @@ namespace SpaceBoat.Movement {
     public class NormalJump : MonoBehaviour, IMovementModifier, IJump
     {
 
-        [Header("Settings")]
+        [Header("Jump Settings")]
         [SerializeField] private int jumpGraceWindow = 2;
 
         [SerializeField] private int halfJumpFrameWindow = 6;
