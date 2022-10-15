@@ -26,8 +26,11 @@ namespace SpaceBoat.Player {
 
         //contextual
         private bool isBelowDeck = false;
-        
 
+        private int numSails = 0;
+        private int numBrokenSails = 0;
+        
+        
 
         //On Awake, initialize movement behaviours and enable them
         //initialize the player controller with the movement behaviours
@@ -96,6 +99,32 @@ namespace SpaceBoat.Player {
             }
         }
 
+
+        //sails
+
+        void ShipDies() {
+            Debug.Log("Ship Died");
+            shipDiedFailure = true;
+            Time.timeScale = 0;
+            //TODO sound
+        }
+
+        public void RegisterSail() {
+            numSails++;
+        }
+
+        public void SailBreaks() {
+            numBrokenSails++;
+            if (numBrokenSails >= numSails) {
+                ShipDies();
+            }
+        }
+
+
+        //TODO repair.
+
+
+
         //events
         void OnCollisionEnter2D(Collision2D other) {
             if (other.gameObject.layer == LayerMask.NameToLayer("BottomOfMap") 
@@ -112,6 +141,7 @@ namespace SpaceBoat.Player {
         //If the player has failed, draw a failure screen
         void OnGUI() {
             GUI.Label(new Rect(10, 10, 100, 20), "Health: " + maxHealth);
+            GUI.Label(new Rect(10, 30, 100, 20), "Sails: " + (numSails-numBrokenSails) + "/" + numSails);
             if (playerDiedFailure) {
                 GUI.Label(new Rect(Screen.width/2, Screen.height/2, Screen.width/2, Screen.height/2), "You Died");
             }
