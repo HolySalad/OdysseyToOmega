@@ -34,10 +34,12 @@ namespace SpaceBoat.Hazards {
                 player.PlayerTakesDamage(1);
                 //TODO add small knockback?
                 //TODO rock breaking animation.
+                //TODO sound
                 Destroy(this.gameObject);
             } else if (collision.gameObject.layer == LayerMask.NameToLayer("Ground") && !collision.gameObject.tag.Equals("Platforms")) {
                 Destroy(this.gameObject);
                 //TODO rock breaking animation.
+                //TODO sound
             }
         }
 
