@@ -294,6 +294,8 @@ GameObject:
   m_Component:
   - component: {fileID: 111023596}
   - component: {fileID: 111023595}
+  - component: {fileID: 111023598}
+  - component: {fileID: 111023597}
   m_Layer: 9
   m_Name: Square (27)
   m_TagString: Sails
@@ -368,6 +370,45 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &111023597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 111023594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dc72ed7e1cd118439ce35a3dda4fc38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerChar: {fileID: 1003127091}
+--- !u!61 &111023598
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 111023594}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.06331301, y: -0.10828853}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 5.99, y: 3.25}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 5.1036024, y: 2.538391}
+  m_EdgeRadius: 0
 --- !u!1 &131666861
 GameObject:
   m_ObjectHideFlags: 0
@@ -888,6 +929,8 @@ GameObject:
   m_Component:
   - component: {fileID: 314325893}
   - component: {fileID: 314325892}
+  - component: {fileID: 314325895}
+  - component: {fileID: 314325894}
   m_Layer: 9
   m_Name: Square (26)
   m_TagString: Sails
@@ -962,6 +1005,45 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &314325894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 314325891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dc72ed7e1cd118439ce35a3dda4fc38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerChar: {fileID: 1003127091}
+--- !u!61 &314325895
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 314325891}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.0764339, y: 0.041788757}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 7.58, y: 4.18}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 6.6627927, y: 3.5392404}
+  m_EdgeRadius: 0
 --- !u!1 &317280124
 GameObject:
   m_ObjectHideFlags: 0
@@ -2500,6 +2582,11 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!1 &1003127091 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3287627985294731712, guid: f3f45cab2d9c4cb47b0580061cd01517, type: 3}
+  m_PrefabInstance: {fileID: 3046632252989852542}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1023418161
 GameObject:
   m_ObjectHideFlags: 0
@@ -2643,6 +2730,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1125829383}
   - component: {fileID: 1125829382}
+  - component: {fileID: 1125829385}
+  - component: {fileID: 1125829384}
   m_Layer: 9
   m_Name: Square (25)
   m_TagString: Sails
@@ -2717,6 +2806,45 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1125829384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1125829381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dc72ed7e1cd118439ce35a3dda4fc38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerChar: {fileID: 1003127091}
+--- !u!61 &1125829385
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1125829381}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.050937057, y: -0.15650296}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 5.99, y: 3.25}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 5.124071, y: 2.936994}
+  m_EdgeRadius: 0
 --- !u!1 &1140337499
 GameObject:
   m_ObjectHideFlags: 0
@@ -3126,6 +3254,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1260644087}
   - component: {fileID: 1260644086}
+  - component: {fileID: 1260644089}
+  - component: {fileID: 1260644088}
   m_Layer: 9
   m_Name: Square (28)
   m_TagString: Sails
@@ -3200,6 +3330,45 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1260644088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1260644085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dc72ed7e1cd118439ce35a3dda4fc38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerChar: {fileID: 1003127091}
+--- !u!61 &1260644089
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1260644085}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.016185999, y: -0.09469342}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 7.58, y: 4.18}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 6.7059636, y: 3.4855819}
+  m_EdgeRadius: 0
 --- !u!1 &1527346798
 GameObject:
   m_ObjectHideFlags: 0
