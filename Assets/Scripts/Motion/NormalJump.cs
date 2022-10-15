@@ -11,12 +11,12 @@ namespace SpaceBoat.Movement {
 
         [SerializeField] private int halfJumpFrameWindow = 6;
         [SerializeField] private int jumpSquatFrames = 3;
-        [SerializeField] private float halfJumpDecayMultiplier = 2f;
-        [SerializeField] private float jumpPower = 24f;
-        [SerializeField] private float jumpDecay = 12f;
-        [SerializeField] private int jumpDecayDoublingFrames = 15;
-        [SerializeField] private float gravityAcceleration = 8f;
-        [SerializeField] private float gravityTerminalVelocity = 24f;
+        [SerializeField] private float halfJumpDecayMultiplier = 1.7f;
+        [SerializeField] private float jumpPower = 22f;
+        [SerializeField] private float jumpDecay = 28f;
+        [SerializeField] private int jumpDecayDoublingFrames = 4;
+        [SerializeField] private float gravityAcceleration = 30f;
+        [SerializeField] private float gravityTerminalVelocity = 45f;
 
         private CharacterMotor motor;
         private Collider2D coll;
