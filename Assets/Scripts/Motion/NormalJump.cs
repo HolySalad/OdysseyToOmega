@@ -17,7 +17,7 @@ namespace SpaceBoat.Movement {
         [SerializeField] private int jumpDecayDoublingFrames = 4;
         [SerializeField] private float gravityAcceleration = 30f;
         [SerializeField] private float gravityTerminalVelocity = 45f;
-
+        [SerializeField] private int hitStunFrames = 24;
         private CharacterMotor motor;
         private Collider2D coll;
         private Animator animator;
@@ -31,6 +31,7 @@ namespace SpaceBoat.Movement {
         public bool isGrounded {get; private set;} = false;
 
         private bool hitApex = false;
+        public int hitOnFrame {get; set;} = -999;
         
         public void ReplaceJump(IMovementModifier other) {
             if (other is IJump) {
@@ -50,7 +51,9 @@ namespace SpaceBoat.Movement {
         }
 
         public Vector2 Value {get
-            { return new Vector2(0, currentVerticalForce); }
+            { 
+                return new Vector2(0, currentVerticalForce); 
+            }
         }
 
         public bool Enabled {get; private set;} = false;
@@ -121,6 +124,10 @@ namespace SpaceBoat.Movement {
         }
 
         private bool CanJump() {
+                if (hitOnFrame + hitStunFrames > Time.frameCount) {
+                    Debug.Log("Player cant jump, is hitstunned");
+                    return false;
+                }
                 return Time.frameCount < jumpGrace || isGrounded;
             }
 

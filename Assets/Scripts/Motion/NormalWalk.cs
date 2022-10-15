@@ -12,6 +12,7 @@ namespace SpaceBoat.Movement {
         [SerializeField] private float accelerationStartMult = 2f;
         [SerializeField] private float accelerationStartRange = 2f;
         [SerializeField] private float turningSpeedMult = 0.7f;
+        [SerializeField] private int hitStunFrames = 24;
 
         private CharacterMotor motor;
         private Animator animator;
@@ -26,9 +27,16 @@ namespace SpaceBoat.Movement {
         public bool FacingRight {get; private set;} = true;
         public bool IsWalking {get; private set;}
 
+        public int hitOnFrame {get; set;} = -999;
+        private bool hitstun = false;
+
         public Vector2 Value { 
             get
             {
+                if (hitOnFrame + hitStunFrames > Time.frameCount) {
+                    Debug.Log("Player is hitstunned");
+                    return Vector2.zero;
+                }
                 return new Vector2(speed*lastHorizontal, 0);
             }
         }
@@ -79,6 +87,7 @@ namespace SpaceBoat.Movement {
             if (horizontalInput > 0 && !FacingRight || horizontalInput < 0 && FacingRight) {
                 FacingRight = !FacingRight;
                 speed = -speed * turningSpeedMult;
+                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
             }
         }
 
