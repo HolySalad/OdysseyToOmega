@@ -267,9 +267,10 @@ GameObject:
   - component: {fileID: 111023596}
   - component: {fileID: 111023595}
   - component: {fileID: 111023597}
+  - component: {fileID: 111023598}
   m_Layer: 9
   m_Name: Square (27)
-  m_TagString: Untagged
+  m_TagString: Sails
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -367,6 +368,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &111023598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 111023594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dc72ed7e1cd118439ce35a3dda4fc38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerChar: {fileID: 292440073}
 --- !u!1 &131666861
 GameObject:
   m_ObjectHideFlags: 0
@@ -514,7 +528,7 @@ GameObject:
   - component: {fileID: 150182070}
   m_Layer: 8
   m_Name: Square (30)
-  m_TagString: Ship
+  m_TagString: Platforms
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -899,6 +913,11 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!1 &292440073 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3287627985294731712, guid: f3f45cab2d9c4cb47b0580061cd01517, type: 3}
+  m_PrefabInstance: {fileID: 3046632252989852542}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &311341082
 GameObject:
   m_ObjectHideFlags: 0
@@ -1021,9 +1040,10 @@ GameObject:
   - component: {fileID: 314325893}
   - component: {fileID: 314325892}
   - component: {fileID: 314325894}
+  - component: {fileID: 314325895}
   m_Layer: 9
   m_Name: Square (26)
-  m_TagString: Untagged
+  m_TagString: Sails
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1121,6 +1141,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &314325895
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 314325891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dc72ed7e1cd118439ce35a3dda4fc38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerChar: {fileID: 292440073}
 --- !u!1 &317280124
 GameObject:
   m_ObjectHideFlags: 0
@@ -1531,9 +1564,10 @@ GameObject:
   - component: {fileID: 400198111}
   - component: {fileID: 400198110}
   - component: {fileID: 400198112}
+  - component: {fileID: 400198113}
   m_Layer: 9
   m_Name: Square (15)
-  m_TagString: Untagged
+  m_TagString: Sails
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1631,6 +1665,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &400198113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 400198109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dc72ed7e1cd118439ce35a3dda4fc38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerChar: {fileID: 292440073}
 --- !u!1 &408499652
 GameObject:
   m_ObjectHideFlags: 0
@@ -1645,7 +1692,7 @@ GameObject:
   - component: {fileID: 408499656}
   m_Layer: 8
   m_Name: Square (29)
-  m_TagString: Ship
+  m_TagString: Platforms
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2045,6 +2092,14 @@ PrefabInstance:
     - target: {fileID: 443797838304632648, guid: ea4f2e7783d3ee846851b445e399d301, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3367701564478931810, guid: ea4f2e7783d3ee846851b445e399d301, type: 3}
+      propertyPath: meteorPrefab
+      value: 
+      objectReference: {fileID: 189507748417666162, guid: 8ad86b7f340c2764ea7cf973e28b644b, type: 3}
+    - target: {fileID: 3367701564478931810, guid: ea4f2e7783d3ee846851b445e399d301, type: 3}
+      propertyPath: firstMeteorSpawnTimer
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 9124360315967182124, guid: ea4f2e7783d3ee846851b445e399d301, type: 3}
       propertyPath: m_Name
@@ -2864,9 +2919,10 @@ GameObject:
   - component: {fileID: 1125829383}
   - component: {fileID: 1125829382}
   - component: {fileID: 1125829384}
+  - component: {fileID: 1125829385}
   m_Layer: 9
   m_Name: Square (25)
-  m_TagString: Untagged
+  m_TagString: Sails
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2964,6 +3020,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1125829385
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1125829381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dc72ed7e1cd118439ce35a3dda4fc38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerChar: {fileID: 292440073}
 --- !u!1 &1140337499
 GameObject:
   m_ObjectHideFlags: 0
@@ -3640,9 +3709,10 @@ GameObject:
   - component: {fileID: 1260644087}
   - component: {fileID: 1260644086}
   - component: {fileID: 1260644088}
+  - component: {fileID: 1260644089}
   m_Layer: 9
   m_Name: Square (28)
-  m_TagString: Untagged
+  m_TagString: Sails
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3740,6 +3810,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1260644089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1260644085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dc72ed7e1cd118439ce35a3dda4fc38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerChar: {fileID: 292440073}
 --- !u!1 &1367959048
 GameObject:
   m_ObjectHideFlags: 0
@@ -3887,7 +3970,7 @@ GameObject:
   - component: {fileID: 1432556133}
   m_Layer: 8
   m_Name: Square (31)
-  m_TagString: Ship
+  m_TagString: Platforms
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4020,7 +4103,7 @@ GameObject:
   - component: {fileID: 1527346802}
   m_Layer: 8
   m_Name: Square (33)
-  m_TagString: Ship
+  m_TagString: Platforms
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4405,7 +4488,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7169763930740829833, guid: a4f67d1775a9a984e950a805568f14db, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.8
+      value: 29.2
       objectReference: {fileID: 0}
     - target: {fileID: 7169763930740829833, guid: a4f67d1775a9a984e950a805568f14db, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4589,7 +4672,7 @@ GameObject:
   - component: {fileID: 1755804119}
   m_Layer: 8
   m_Name: Square (32)
-  m_TagString: Ship
+  m_TagString: Platforms
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

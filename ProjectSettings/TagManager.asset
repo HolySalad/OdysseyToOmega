@@ -14,6 +14,7 @@ TagManager:
   - Meteorites
   - EndOfMapLeft
   - BottomOfMap
+  - Platforms
   layers:
   - Default
   - TransparentFX
@@ -48,6 +49,15 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 3453712825
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: ShipBody
+    uniqueID: 3178845289
+    locked: 0
+  - name: New Layer 3
+    uniqueID: 345971511
     locked: 0
