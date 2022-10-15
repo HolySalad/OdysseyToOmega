@@ -33,6 +33,18 @@ namespace SpaceBoat.Player {
             Debug.Log("Player Logic Awoke");
         }
 
+        void PlayerEntersShip() {
 
+        }
+
+        void PlayerExitsShip() {
+
+        }
+
+        void OnColliderEnter2D(Collider2D other) {
+            if (other.gameObject.tag == "Ship") {
+                PlayerEntersShip();
+            }
+        }
     }
 }
