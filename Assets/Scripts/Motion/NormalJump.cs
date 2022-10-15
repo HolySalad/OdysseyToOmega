@@ -29,8 +29,10 @@ namespace SpaceBoat.Movement {
         public float jumpStartTime {get; private set;} = 0f;
         public float currentVerticalForce {get; private set;} = 0f;
         public bool isGrounded {get; private set;} = false;
+
+        private bool hitApex = false;
         
-        public void OnDeathTransition(IMovementModifier other) {
+        public void ReplaceJump(IMovementModifier other) {
             if (other is IJump) {
                 IJump otherJump = (IJump)other;
                 jumpGrace = otherJump.jumpGrace;
@@ -38,10 +40,12 @@ namespace SpaceBoat.Movement {
                 isJumping = otherJump.isJumping;
                 halfJump = otherJump.halfJump;
                 jumpStartTime = otherJump.jumpStartTime;
-                currentVerticalForce = 0f;
+                currentVerticalForce = otherJump.currentVerticalForce;
                 isGrounded = otherJump.isGrounded;
                 other.OnDisable();
+                UpdateModifier(Time.deltaTime);
                 OnEnable();
+
             }
         }
 
@@ -63,12 +67,13 @@ namespace SpaceBoat.Movement {
         // allows for turning movement behaviours on and off
         public void OnEnable()
         {
-            motor.AddMovementModifier(this);
+            Enabled = true;
         }
         public void OnDisable()
         {
-            motor.RemoveMovementModifier(this);
+            Enabled = false;
         }
+
         public void Input(bool keyDown) {
             if (keyDown && !isJumping) {
                 StartJump();
@@ -91,8 +96,13 @@ namespace SpaceBoat.Movement {
             } else if (jumpSquat && Time.frameCount > jumpStartTime + jumpSquatFrames) {
                 jumpSquat = false;
                 isJumping = true;
+                hitApex = false;
                 currentVerticalForce = jumpPower;
             } else if (!isGrounded) {
+                if (!hitApex) {
+                    Debug.Log("Hit Apex after " + (Time.frameCount - jumpStartTime) + " frames");
+                    hitApex = true;
+                }
                 currentVerticalForce = Mathf.Max(-gravityTerminalVelocity, currentVerticalForce - gravityAcceleration * deltaTime);
             }
             //TODO send info to animator

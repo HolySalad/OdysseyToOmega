@@ -45,11 +45,11 @@ namespace SpaceBoat.Movement {
         // add and remove movement modifiers when enabled or disabled
         public void OnEnable()
         {
-            motor.AddMovementModifier(this);
+            Enabled = true;
         }
         public void OnDisable()
         {
-            motor.RemoveMovementModifier(this);
+            Enabled = false;
         }
 
         public void Input(float horizontal) {

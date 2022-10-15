@@ -21,6 +21,17 @@ public class CharacterMotor : MonoBehaviour
             movementModifiers = new List<IMovementModifier>();
         }
 
+        public void ClearModifiers(string type) {
+            List<IMovementModifier> newMoveMods = new List<IMovementModifier>();
+            foreach (IMovementModifier modifier in movementModifiers) {
+                if (modifier.GetType().ToString() != type) {
+                    newMoveMods.Add(modifier);
+                    Debug.Log("Clear modifiers removed " + type);
+                }
+            }
+            movementModifiers = newMoveMods;
+        }
+
         // on FixedUpdate, move the character
         void FixedUpdate()
         {
@@ -29,6 +40,7 @@ public class CharacterMotor : MonoBehaviour
 
         public void AddMovementModifier(IMovementModifier modifier)
         {
+            Debug.Log("AddMovementModifier " + modifier.GetType().ToString());
             movementModifiers.Add(modifier);
         }
 
@@ -42,10 +54,11 @@ public class CharacterMotor : MonoBehaviour
         {
             Vector2 movement = Vector2.zero;
             foreach (IMovementModifier modifier in movementModifiers)
-            {
-                movement += modifier.Value;
-                //print("Character Motor " + modifier.GetType().Name + " Value: " + modifier.Value);
-                modifier.UpdateModifier(Time.fixedDeltaTime);
+            {   
+                //if (modifier.Enabled) {
+                    movement += modifier.Value;
+                    //print("Character Motor " + modifier.GetType().Name + " Value: " + modifier.Value);
+                    modifier.UpdateModifier(Time.fixedDeltaTime);
                     if (modifier is IJump) {
                         IJump jump = (IJump)modifier;
                         jump.UpdateAnimator();
@@ -54,6 +67,7 @@ public class CharacterMotor : MonoBehaviour
                         IWalk walk = (IWalk)modifier;
                         walk.UpdateAnimator();
                     }
+                //}
             }
             rb.velocity = movement;
 
