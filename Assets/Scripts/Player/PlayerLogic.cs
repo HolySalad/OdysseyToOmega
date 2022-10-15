@@ -14,6 +14,7 @@ namespace SpaceBoat.Player {
         private NormalWalk defaultWalk;
         private NormalJump defaultjump;
         private InsideShipJump insideShipJump;
+        private Animator animator;
 
         //controller
         private PlayerInput input;
@@ -42,6 +43,9 @@ namespace SpaceBoat.Player {
             //non-default movement behaviours
             //insideShipJump = GetComponent<InsideShipJump>();
             //motor.AddMovementModifier(insideShipJump);
+
+            //animator
+            animator = GetComponent<Animator>();
             
             Debug.Log("Initializing Player Controller");
             input = GetComponent<PlayerInput>();
@@ -70,6 +74,9 @@ namespace SpaceBoat.Player {
             maxHealth -= damage;
             if (maxHealth <= 0) {
                 PlayerDies();
+            } else {
+                animator.SetTrigger("Hit");
+                //TODO sound
             }
         }
 
@@ -77,6 +84,16 @@ namespace SpaceBoat.Player {
             Debug.Log("Player Died");
             playerDiedFailure = true;
             Time.timeScale = 0;    
+            animator.SetTrigger("Dead");
+            //TODO sound
+        }
+
+        void PlayerDies(bool scream) {
+            if (scream) {
+                //TODO sound queue for scream
+            } else {
+                PlayerDies();
+            }
         }
 
         //events

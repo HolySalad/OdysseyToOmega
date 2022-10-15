@@ -102,6 +102,7 @@ namespace SpaceBoat.Movement {
                 if (!hitApex) {
                     Debug.Log("Hit Apex after " + (Time.frameCount - jumpStartTime) + " frames");
                     hitApex = true;
+                    //TODO jump animation > fall animation
                 }
                 currentVerticalForce = Mathf.Max(-gravityTerminalVelocity, currentVerticalForce - gravityAcceleration * deltaTime);
             }
@@ -114,6 +115,8 @@ namespace SpaceBoat.Movement {
                 isJumping = true;
                 jumpStartTime = Time.frameCount;
                 jumpSquat = true;
+                animator.SetTrigger("Jump");
+                //TODO sound
             }
         }
 
@@ -160,6 +163,7 @@ namespace SpaceBoat.Movement {
                 //Debug.Log("Collision with ground");
                 if (IsContactWithGroundFromAbove(other)) {
                     //Debug.Log("Collision with ground from above");
+                    //TODO sound 
                     isGrounded = true;
                     isJumping = false;
                     halfJump = false;
@@ -172,7 +176,7 @@ namespace SpaceBoat.Movement {
         }
 
         public void UpdateAnimator() {
-            //TODO set animator state
+            animator.SetBool("Grounded", isGrounded);
         }
     }
 }
