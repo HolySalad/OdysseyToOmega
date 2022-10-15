@@ -14,7 +14,7 @@ namespace SpaceBoat.Player {
         private CharacterMotor motor;
         private NormalWalk defaultWalk;
         private NormalJump defaultjump;
-        private InsideShipJump insideShipJump;
+        //private InsideShipJump insideShipJump;
         private Animator animator;
 
         //controller
@@ -80,6 +80,7 @@ namespace SpaceBoat.Player {
             Debug.Log("Player takes "+ damage + " damage");
             maxHealth -= damage;
             defaultWalk.hitOnFrame = Time.frameCount;
+            defaultjump.hitOnFrame = Time.frameCount;
             if (maxHealth <= 0) {
                 PlayerDies();
             } else {
