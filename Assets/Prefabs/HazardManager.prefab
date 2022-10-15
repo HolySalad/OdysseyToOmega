@@ -1,0 +1,125 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &9124360315967182124
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 443797838304632648}
+  - component: {fileID: 3367701564478931810}
+  - component: {fileID: 2889215355153557502}
+  m_Layer: 0
+  m_Name: HazardManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 419385456094870383, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &443797838304632648
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9124360315967182124}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3367701564478931810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9124360315967182124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60ee6ee2a0495c14a8b6723a8dcda2a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rockPrefab: {fileID: 189507748417666162, guid: a4f67d1775a9a984e950a805568f14db, type: 3}
+  meteorPrefab: {fileID: 0}
+  asteroidPrefab: {fileID: 0}
+  firstRockSpawnTimer: 4
+  firstMeteorSpawnTimer: 50
+  lastRockSpawnTimer: 290
+  lastMeteorSpawnTimer: 280
+  meteorInterval: 32
+  meteorIntervalVariance: 0.9
+  meteorIntervalRampTime: 40
+  meteorIntervalRampRate: 3
+  meteorIntervalNumRamps: 5
+  meteorIntervalStart: 2
+  meteorIntervalRamp: 10
+  fullyRepairedTimerReduction: 0.7
+  rockVolleyLength: 8
+  peakRockPaceSwell: 2
+  firstSwellTimer: 70
+  swellCycleTime: 60
+  swellCycleRampTime: 40
+  swellCycleMinTime: 30
+  numRocksPerVolley: 3
+  firstExtraRockAddedTime: 150
+  secondExtraRockAddedTime: 210
+  bossFightStartTimer: 300
+  rockSpeed: 10
+  rockSpeedVariance: 0.4
+  baseRockSpawnHeight: 6
+  rockSpawnHeightVariance: 6
+  rockAngleOffset: 2
+  rockAngleVariance: 4
+  rockBaseSize: 1
+  rockSizeIncreaseVariance: 1.5
+--- !u!114 &2889215355153557502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9124360315967182124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60ee6ee2a0495c14a8b6723a8dcda2a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rockPrefab: {fileID: 189507748417666162, guid: a4f67d1775a9a984e950a805568f14db, type: 3}
+  meteorPrefab: {fileID: 0}
+  asteroidPrefab: {fileID: 0}
+  firstRockSpawnTimer: 4
+  firstMeteorSpawnTimer: 50
+  lastRockSpawnTimer: 290
+  lastMeteorSpawnTimer: 280
+  meteorInterval: 32
+  meteorIntervalVariance: 0.9
+  meteorIntervalRampTime: 40
+  meteorIntervalRampRate: 3
+  meteorIntervalNumRamps: 5
+  meteorIntervalStart: 2
+  meteorIntervalRamp: 10
+  fullyRepairedTimerReduction: 0.7
+  rockVolleyLength: 8
+  peakRockPaceSwell: 2
+  firstSwellTimer: 70
+  swellCycleTime: 60
+  swellCycleRampTime: 40
+  swellCycleMinTime: 30
+  numRocksPerVolley: 3
+  firstExtraRockAddedTime: 150
+  secondExtraRockAddedTime: 210
+  bossFightStartTimer: 300
+  rockSpeed: 10
+  rockSpeedVariance: 0.3
+  baseRockSpawnHeight: 6
+  rockSpawnHeightVariance: 3
+  rockAngleOffset: -1
+  rockAngleVariance: 3
+  rockBaseSize: 1
+  rockSizeIncreaseVariance: 1.5

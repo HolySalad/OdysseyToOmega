@@ -49,6 +49,7 @@ namespace SpaceBoat.Hazards {
         [SerializeField] private float rockSpeedVariance = 0.25f; //how much variance is there in the speed of rocks
         [SerializeField] private float baseRockSpawnHeight = 5f; //what Y pos do rocks spawn at
         [SerializeField] private float rockSpawnHeightVariance = 2f; //units of variance up or down for rock spawn positions
+        [SerializeField] private float rockAngleOffset = 5f; // upwards tilt for spawned rocks.
         [SerializeField] private float rockAngleVariance = 5f; //degrees of variance in the angle of rocks from the default 270 degrees
         [SerializeField] private float rockBaseSize = 1f; //base size of rocks
         [SerializeField] private float rockSizeIncreaseVariance = 1.5f; //how much bigger can rocks be?
@@ -68,9 +69,7 @@ namespace SpaceBoat.Hazards {
             gameBeganTime = Time.time;
         }
 
-        void handleRockSpawning(float timeSinceGameBegan, float deltaTime)
-        {
-            Debug.Log("Starting a volley at " + timeSinceGameBegan);
+        void handleRockSpawning(float timeSinceGameBegan, float deltaTime) {
             float numRocks = numRocksPerVolley;
             if (rockSwellActive) {
                 numRocks = Mathf.Floor(currentSwellStrength*numRocks);
@@ -90,7 +89,7 @@ namespace SpaceBoat.Hazards {
                 GameObject rockObject = Instantiate(rockPrefab, new Vector2(horizontalSpawnCoordinate, baseRockSpawnHeight), Quaternion.identity);
                 SpaceRock rock = rockObject.GetComponent<SpaceRock>();
                 float speed = rockSpeed* (1- Random.Range(-rockSpeedVariance, rockSpeedVariance));
-                float angle = 5 + Random.Range(-rockAngleVariance, rockAngleVariance);
+                float angle = rockAngleOffset + Random.Range(-rockAngleVariance, rockAngleVariance);
                 float scale = rockBaseSize * (1 + Random.Range(0, rockSizeIncreaseVariance));
                 float height = baseRockSpawnHeight + Random.Range(-rockSpawnHeightVariance, rockSpawnHeightVariance);
                 float launchTime = Mathf.Min(rockVolleyStartTime + (Random.Range(0.75f, 1.25f) * baseRockInterval * i), rockVolleyStartTime + rockVolleyLength);
@@ -117,8 +116,8 @@ namespace SpaceBoat.Hazards {
             } else {
                 nextSwellTime = timeSinceGameBegan + firstSwellTimer;
             }
-            Debug.Log("Time since game began: " + timeSinceGameBegan + " Rock volley start time: " + rockVolleyStartTime + " Rock volley length: " + rockVolleyLength);
             if (timeSinceGameBegan > firstRockSpawnTimer && timeSinceGameBegan < lastRockSpawnTimer && (rockVolleyStartTime + rockVolleyLength < timeSinceGameBegan)) {
+                Debug.Log("Starting Rock Volley. Time since game began: " + timeSinceGameBegan + " Rock volley start time: " + rockVolleyStartTime + " Rock volley length: " + rockVolleyLength);
                 handleRockSpawning (timeSinceGameBegan, deltaTime);
             } 
             if (timeSinceGameBegan > firstMeteorSpawnTimer && timeSinceGameBegan < lastMeteorSpawnTimer) {
