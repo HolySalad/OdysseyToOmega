@@ -17,12 +17,12 @@ namespace SpaceBoat.Hazards {
         [SerializeField] private float lastMeteorSpawnTimer = 280f; //how many seconds into the game does the last meteor spawn.
 
         [SerializeField] private float meteorInterval = 32f; // how often does a meteor spawn to break a sail by default.
-        [SerializeField] private float meteorIntervalVariance = 0.9f;
+        [SerializeField] private float meteorIntervalVariance = 0.2f; //% variance in meteor base interval.
         [SerializeField] private float meteorIntervalRampTime = 40f; //begins decreasing the time between spawns this many seconds after the first meteor spawns.
         [SerializeField] private float meteorIntervalRampRate = 3f; //how much to decrease the time between spawns by.
         [SerializeField] private float meteorIntervalNumRamps = 5f; //how many times to decrease the time between spawns.
-        [SerializeField] private int meteorIntervalStart = 2; // begin increasing the interval between meteors after this many sails are already broken.
-        [SerializeField] private float meteorIntervalRamp = 10f; // increases the interval by this many seconds per sail.
+        [SerializeField] private int meteorEaseOffIntervalSails = 3; // begin increasing the interval between meteors after this many sails are already broken.
+        [SerializeField] private float meteorEaseOfIntervalRamp = 10f; // increases the interval by this many seconds per sail.
         [SerializeField] private float fullyRepairedTimerReduction = 0.7f; // reduces the interval by this proportion if all sails are repaired.
 
         // the pace of rocks flying at the player swells and subsides over time
@@ -44,7 +44,7 @@ namespace SpaceBoat.Hazards {
 
         [Header("Boss Fight/End Game")]
         [SerializeField] private float bossFightStartTimer = 300f; // how many seconds into the game does the boss fight start
-        [Header("Hazard Projectile Settings")]
+        [Header("Rock Projectile Settings")]
         [SerializeField] private float rockSpeed = 1f; //how many units per second do rocks travel
         [SerializeField] private float rockSpeedVariance = 0.25f; //how much variance is there in the speed of rocks
         [SerializeField] private float baseRockSpawnHeight = 5f; //what Y pos do rocks spawn at
@@ -53,6 +53,12 @@ namespace SpaceBoat.Hazards {
         [SerializeField] private float rockAngleVariance = 5f; //degrees of variance in the angle of rocks from the default 270 degrees
         [SerializeField] private float rockBaseSize = 1f; //base size of rocks
         [SerializeField] private float rockSizeIncreaseVariance = 1.5f; //how much bigger can rocks be?
+        [Header("Meteor Projectile Settings")]
+        [SerializeField] private float meteorSpawnXPos = 10f; //where do meteors spawn on the X axis
+        [SerializeField] private float meteorSpawnYPos = 5f; //where do meteors spawn on the Y axis
+        [SerializeField] private float meteorSpawnXVariance = 5f; //how much variance is there in the X spawn position of meteors
+        [SerializeField] private float meteorSpawnYVariance = 5f; //how much variance is there in the Y spawn position of meteors
+        [SerializeField] private float meteorSpeed = 25f; //how many units per second do meteors travel
 
 
         private float gameBeganTime;
@@ -65,8 +71,28 @@ namespace SpaceBoat.Hazards {
         private float currentSwellStrength = 1f; // between 1 and 1+peakRockPaceSwell
         private float horizontalSpawnCoordinate = 65f; //where do rocks spawn horizontally?
 
+        private float nextMeteorSpawnTime; //when is the next meteor?
+        private bool isNextMeteorSpawnTimeSet = false; //has the next meteor spawn time been set yet?
+
         void Awake() {
             gameBeganTime = Time.time;
+        }
+
+        GameObject[] FindGameObjectsInLayer(int layer){
+            var goArray = FindObjectsOfType(typeof(GameObject)) as GameObject[];
+            var goList = new System.Collections.Generic.List<GameObject>();
+            for (int i = 0; i < goArray.Length; i++)
+            {
+                if (goArray[i].layer == layer)
+                {
+                    goList.Add(goArray[i]);
+                }
+            }
+            if (goList.Count == 0)
+            {
+                return null;
+            }
+            return goList.ToArray();
         }
 
         void handleRockSpawning(float timeSinceGameBegan, float deltaTime) {
@@ -95,12 +121,53 @@ namespace SpaceBoat.Hazards {
                 float launchTime = Mathf.Min(rockVolleyStartTime + (Random.Range(0.75f, 1.25f) * baseRockInterval * i), rockVolleyStartTime + rockVolleyLength);
                 rock.SetupRock(speed, angle, scale, height, launchTime);
             }
-
+            
         }
-
+    
         void handleMeteorSpawning(float timeSinceGameBegan, float deltaTime)
         {
-            
+            List<GameObject> sails = new List<GameObject>(FindGameObjectsInLayer(LayerMask.NameToLayer("Sails")));
+            List<GameObject> nonbrokenSails = new List<GameObject>();
+            foreach (GameObject sail in sails)
+            {
+                if (!sail.GetComponent<Sails>().IsBroken)
+                {
+                    nonbrokenSails.Add(sail);
+                }
+            }
+            GameObject randomSail = nonbrokenSails[Random.Range(0, nonbrokenSails.Count)];
+            float xPos = meteorSpawnXPos + Random.Range(-meteorSpawnXVariance, meteorSpawnXVariance);
+            float yPos = meteorSpawnYPos + Random.Range(-meteorSpawnYVariance, meteorSpawnYVariance);
+            GameObject meteorObject = Instantiate(meteorPrefab, new Vector2(xPos, yPos), Quaternion.identity);
+            Meteorite meteor = meteorObject.GetComponent<Meteorite>();
+            meteor.SetupMeteor(meteorSpeed, meteorObject.transform.position, randomSail);   
+            isNextMeteorSpawnTimeSet = false;
+        }
+
+        void calcNextMeteorSpawnTime(float timeSinceGameBegan, float deltaTime) {
+            Debug.Log("Determining next meteor spawn at " + timeSinceGameBegan);
+            List<GameObject> sails = new List<GameObject>(FindGameObjectsInLayer(LayerMask.NameToLayer("Sails")));
+            List<GameObject> nonbrokenSails = new List<GameObject>();
+            foreach (GameObject sail in sails)
+            {
+                if (!sail.GetComponent<Sails>().IsBroken)
+                {
+                    nonbrokenSails.Add(sail);
+                }
+            }
+            float nextInterval = meteorInterval;
+            nextInterval *= (1 - Random.Range(-meteorIntervalVariance, meteorIntervalVariance));
+            float intervalRamp = Mathf.Min(((timeSinceGameBegan - firstMeteorSpawnTimer) / meteorIntervalRampTime), meteorIntervalNumRamps) * meteorIntervalRampRate;
+            nextInterval -= intervalRamp;
+            int brokenSailCount = sails.Count - nonbrokenSails.Count;
+            if (brokenSailCount >= meteorEaseOffIntervalSails) {
+                nextInterval += meteorEaseOfIntervalRamp*(brokenSailCount - meteorEaseOffIntervalSails + 1);
+            } else if (brokenSailCount == 0) {
+                nextInterval *= fullyRepairedTimerReduction;
+            }
+            nextMeteorSpawnTime = timeSinceGameBegan + nextInterval;
+            Debug.Log("Next meteoer will spawn at " + nextMeteorSpawnTime);
+            isNextMeteorSpawnTimeSet = true;
         }
 
 
@@ -121,7 +188,11 @@ namespace SpaceBoat.Hazards {
                 handleRockSpawning (timeSinceGameBegan, deltaTime);
             } 
             if (timeSinceGameBegan > firstMeteorSpawnTimer && timeSinceGameBegan < lastMeteorSpawnTimer) {
-                // spawn a meteor
+                if (isNextMeteorSpawnTimeSet && nextMeteorSpawnTime < timeSinceGameBegan) {
+                    handleMeteorSpawning(timeSinceGameBegan, deltaTime);
+                } else if (!isNextMeteorSpawnTimeSet) {
+                    calcNextMeteorSpawnTime(timeSinceGameBegan, deltaTime);
+                }
             }
         }
 

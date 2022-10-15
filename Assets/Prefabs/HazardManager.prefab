@@ -57,8 +57,8 @@ MonoBehaviour:
   meteorIntervalRampTime: 40
   meteorIntervalRampRate: 3
   meteorIntervalNumRamps: 5
-  meteorIntervalStart: 2
-  meteorIntervalRamp: 10
+  meteorEaseOffIntervalSails: 3
+  meteorEaseOfIntervalRamp: 10
   fullyRepairedTimerReduction: 0.7
   rockVolleyLength: 8
   peakRockPaceSwell: 2
@@ -78,6 +78,11 @@ MonoBehaviour:
   rockAngleVariance: 4
   rockBaseSize: 1
   rockSizeIncreaseVariance: 1.5
+  meteorSpawnXPos: 65
+  meteorSpawnYPos: 30
+  meteorSpawnXVariance: 15
+  meteorSpawnYVariance: 5
+  meteorSpeed: 25
 --- !u!114 &2889215355153557502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -91,7 +96,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rockPrefab: {fileID: 189507748417666162, guid: a4f67d1775a9a984e950a805568f14db, type: 3}
-  meteorPrefab: {fileID: 0}
+  meteorPrefab: {fileID: 189507748417666162, guid: 8ad86b7f340c2764ea7cf973e28b644b, type: 3}
   asteroidPrefab: {fileID: 0}
   firstRockSpawnTimer: 4
   firstMeteorSpawnTimer: 50
@@ -102,8 +107,8 @@ MonoBehaviour:
   meteorIntervalRampTime: 40
   meteorIntervalRampRate: 3
   meteorIntervalNumRamps: 5
-  meteorIntervalStart: 2
-  meteorIntervalRamp: 10
+  meteorEaseOffIntervalSails: 3
+  meteorEaseOfIntervalRamp: 10
   fullyRepairedTimerReduction: 0.7
   rockVolleyLength: 8
   peakRockPaceSwell: 2
@@ -123,3 +128,8 @@ MonoBehaviour:
   rockAngleVariance: 3
   rockBaseSize: 1
   rockSizeIncreaseVariance: 1.5
+  meteorSpawnXPos: 65
+  meteorSpawnYPos: 30
+  meteorSpawnXVariance: 15
+  meteorSpawnYVariance: 5
+  meteorSpeed: 25

@@ -1,18 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SpaceBoat.Player;
 
-public class Sails : MonoBehaviour
+namespace SpaceBoat
 {
-    // Start is called before the first frame update
-    void Start()
+    public class Sails : MonoBehaviour
     {
-        
-    }
+        [SerializeField]
+        private GameObject playerChar;
+        public bool IsBroken {get; private set;} = false;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        void Awake() {
+            playerChar.GetComponent<PlayerLogic>().RegisterSail();
+        }
+
+        public void Repair() {
+            Debug.Log("Sails repaired!");
+            IsBroken = false;
+        }
+
+        public void Break() {
+            Debug.Log("Sails broken!");
+            IsBroken = true;
+            playerChar.GetComponent<PlayerLogic>().SailBreaks();
+        }
+
     }
 }

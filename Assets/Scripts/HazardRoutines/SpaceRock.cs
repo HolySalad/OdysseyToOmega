@@ -24,9 +24,9 @@ namespace SpaceBoat.Hazards {
         }
 
         void OnCollisionEnter2D(Collision2D collision) {
-            Debug.Log("Rock hit " + collision.gameObject.name + " Layer mask " + LayerMask.LayerToName(collision.gameObject.layer));
+            //Debug.Log("Rock hit " + collision.gameObject.name + " Layer mask " + LayerMask.LayerToName(collision.gameObject.layer));
             if (collision.gameObject.layer == LayerMask.NameToLayer("EndOfMapLeft")) {
-                Debug.Log("Rock Reached the End of the Map");
+                //Debug.Log("Rock Reached the End of the Map");
                 Destroy(this.gameObject);
             } else if (collision.gameObject.layer == LayerMask.NameToLayer("PlayerChar")) {
                 Player.PlayerLogic player = collision.gameObject.GetComponent<Player.PlayerLogic>();
@@ -34,10 +34,12 @@ namespace SpaceBoat.Hazards {
                 player.PlayerTakesDamage(1);
                 //TODO add small knockback?
                 //TODO rock breaking animation.
+                //TODO sound
                 Destroy(this.gameObject);
             } else if (collision.gameObject.layer == LayerMask.NameToLayer("Ground") && !collision.gameObject.tag.Equals("Platforms")) {
                 Destroy(this.gameObject);
                 //TODO rock breaking animation.
+                //TODO sound
             }
         }
 

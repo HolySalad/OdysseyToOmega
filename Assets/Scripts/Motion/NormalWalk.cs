@@ -14,6 +14,7 @@ namespace SpaceBoat.Movement {
         [SerializeField] private float turningSpeedMult = 0.7f;
 
         private CharacterMotor motor;
+        private Animator animator;
 
         // holds the horizontal input
         private float horizontalInput;
@@ -37,6 +38,7 @@ namespace SpaceBoat.Movement {
         void Awake()
         {
             motor = this.gameObject.GetComponent<CharacterMotor>();
+            animator = this.gameObject.GetComponent<Animator>();
 
         }
         // add and remove movement modifiers when enabled or disabled
@@ -81,7 +83,7 @@ namespace SpaceBoat.Movement {
         }
 
         public void UpdateAnimator() {
-            //TODO set animator values
+            animator.SetFloat("Speed", Mathf.Abs(speed));
         }
     }
 }
