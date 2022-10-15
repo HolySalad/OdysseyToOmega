@@ -8,6 +8,7 @@ namespace SpaceBoat.Player {
     {
         //serialized
         [SerializeField] private float maxHealth = 3;
+        [SerializeField] private int hitInvulnerabilityFrames = 50;
 
         //movement behaviours
         private CharacterMotor motor;
@@ -73,8 +74,12 @@ namespace SpaceBoat.Player {
         }
 
         public void PlayerTakesDamage(int damage) {
+            if (defaultWalk.hitOnFrame + hitInvulnerabilityFrames > Time.frameCount) {
+                return;
+            }
             Debug.Log("Player takes "+ damage + " damage");
             maxHealth -= damage;
+            defaultWalk.hitOnFrame = Time.frameCount;
             if (maxHealth <= 0) {
                 PlayerDies();
             } else {
