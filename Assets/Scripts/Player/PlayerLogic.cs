@@ -18,8 +18,14 @@ namespace SpaceBoat.Player {
         //controller
         private PlayerInput input;
 
+        //game state
+        private float health;
+        private bool playerDiedFailure = false;
+        private bool shipDiedFailure = false;
+
         //contextual
         private bool isBelowDeck = false;
+        
 
 
         //On Awake, initialize movement behaviours and enable them
@@ -60,13 +66,42 @@ namespace SpaceBoat.Player {
         }
 
         public void PlayerTakesDamage(int damage) {
+            Debug.Log("Player takes "+ damage + " damage");
             maxHealth -= damage;
             if (maxHealth <= 0) {
-                //player dies
+                PlayerDies();
             }
         }
 
+        void PlayerDies() {
+            Debug.Log("Player Died");
+            playerDiedFailure = true;
+            Time.timeScale = 0;    
+        }
+
         //events
+        void OnCollisionEnter2D(Collision2D other) {
+            if (other.gameObject.layer == LayerMask.NameToLayer("BottomOfMap") 
+            || other.gameObject.layer == LayerMask.NameToLayer("EndOfMapLeft")) {
+                Debug.Log("Player died from falling off the ship");
+                PlayerDies();
+                //Destroy(gameObject); //cant do this if you want to do the death screen from here because it destroys this script.
+            }
+        }
+
+
+        //GUI
+        //OnGUI, draw the player's health
+        //If the player has failed, draw a failure screen
+        void OnGUI() {
+            GUI.Label(new Rect(10, 10, 100, 20), "Health: " + maxHealth);
+            if (playerDiedFailure) {
+                GUI.Label(new Rect(Screen.width/2, Screen.height/2, Screen.width/2, Screen.height/2), "You Died");
+            }
+            if (shipDiedFailure) {
+                GUI.Label(new Rect(Screen.width/2, Screen.height/2, 100, 20), "The Ship Sank");
+            }
+        }
 
     }
 }

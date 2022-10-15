@@ -14,7 +14,6 @@ namespace SpaceBoat.Movement {
         [SerializeField] private float turningSpeedMult = 0.7f;
 
         private CharacterMotor motor;
-        private SpriteRenderer spriteRenderer;
 
         // holds the horizontal input
         private float horizontalInput;
@@ -38,9 +37,7 @@ namespace SpaceBoat.Movement {
         void Awake()
         {
             motor = this.gameObject.GetComponent<CharacterMotor>();
-            // add this movement modifier to the character motor
-            spriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
-            // Get animator
+
         }
         // add and remove movement modifiers when enabled or disabled
         public void OnEnable()
@@ -79,7 +76,6 @@ namespace SpaceBoat.Movement {
         void FlipSprite() {
             if (horizontalInput > 0 && !FacingRight || horizontalInput < 0 && FacingRight) {
                 FacingRight = !FacingRight;
-                spriteRenderer.flipX = !spriteRenderer.flipX;
                 speed = -speed * turningSpeedMult;
             }
         }
