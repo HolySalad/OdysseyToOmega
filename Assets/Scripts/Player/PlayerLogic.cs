@@ -75,6 +75,7 @@ namespace SpaceBoat.Player {
         public void PlayerTakesDamage(int damage) {
             Debug.Log("Player takes "+ damage + " damage");
             maxHealth -= damage;
+            defaultWalk.hitOnFrame = Time.frameCount;
             if (maxHealth <= 0) {
                 PlayerDies();
             } else {
