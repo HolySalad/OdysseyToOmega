@@ -5,10 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class GoToMainMenu : MonoBehaviour
 {
-    public float secondsToWait = 6;
+    public float secondsToWait = 6f;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
+
+        Debug.Log("Im trying");
         StartCoroutine("LoadNextScene");
     }
 
