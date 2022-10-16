@@ -1984,6 +1984,22 @@ PrefabInstance:
       propertyPath: rockPrefab
       value: 
       objectReference: {fileID: 189507748417666162, guid: a4f67d1775a9a984e950a805568f14db, type: 3}
+    - target: {fileID: 3367701564478931810, guid: ea4f2e7783d3ee846851b445e399d301, type: 3}
+      propertyPath: rockVolleyLength
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3367701564478931810, guid: ea4f2e7783d3ee846851b445e399d301, type: 3}
+      propertyPath: numRocksPerVolley
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3367701564478931810, guid: ea4f2e7783d3ee846851b445e399d301, type: 3}
+      propertyPath: meteorIntervalVariance
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3367701564478931810, guid: ea4f2e7783d3ee846851b445e399d301, type: 3}
+      propertyPath: rockSpawnHeightVariance
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8544168771500311338, guid: ea4f2e7783d3ee846851b445e399d301, type: 3}
       propertyPath: pityTarget
       value: 
