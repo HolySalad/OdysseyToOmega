@@ -50,9 +50,9 @@ namespace SpaceBoat.Hazards {
             Vector3 scaleVec = new Vector3(scale, scale, 1);
             transform.localScale = scaleVec;
             transform.position = new Vector3(transform.position.x, height, transform.position.z);
-            //SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-            //spriteRenderer.sprite = rockSprites[Random.Range(0, rockSprites.Length)];
-            //transform.localScale = new Vector2(scale * 0.5f, scale * 0.5f);
+            SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+            spriteRenderer.sprite = rockSprites[Random.Range(0, rockSprites.Length)];
+            spriteRenderer.transform.localScale = new Vector2(scale * 0.5f, scale * 0.5f);
             CircleCollider2D collider = GetComponent<CircleCollider2D>();
             collider.transform.localScale = scaleVec;
             Rigidbody2D rb = GetComponent<Rigidbody2D>();
