@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7542938587826524005}
   - component: {fileID: 6173984673537418251}
   - component: {fileID: 3752299268309486060}
+  - component: {fileID: 5081496255922822562}
   m_Layer: 7
   m_Name: LittleMoonsPrefab
   m_TagString: SpaceRocks
@@ -70,3 +71,19 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!58 &5081496255922822562
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4678439127055428804}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -1.93, y: -1.02}
+  serializedVersion: 2
+  m_Radius: 3.82
