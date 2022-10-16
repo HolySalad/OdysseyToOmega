@@ -165,7 +165,17 @@ namespace SpaceBoat.Movement {
         }
 
         bool PlayerIsInContactWithRoof() {
-            return coll.IsTouchingLayers(LayerMask.GetMask("Roof"));
+            ContactPoint2D[] contacts = new ContactPoint2D[3];
+            coll.GetContacts(contacts);
+            foreach (ContactPoint2D contact in contacts) {
+                if (contact.collider != null && contact.collider.gameObject.CompareTag("Roof")) {
+                    if (contact.collider.gameObject.transform.position.y > transform.position.y) {
+                        Debug.Log("Player is in contact with roof returning true with comparisons " + contact.collider.gameObject.transform.position.y + " and " + transform.position.y);
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
         
 
