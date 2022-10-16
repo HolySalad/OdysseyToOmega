@@ -78,7 +78,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 6.2500005, y: 5.9920278}
+  m_Size: {x: 3.1250002, y: 2.9960139}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -92,6 +92,14 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 873883056543888064, guid: 608905f3cc10a0e42bdda70b846e99a6, type: 3}
+      propertyPath: m_Size.x
+      value: 3.825
+      objectReference: {fileID: 0}
+    - target: {fileID: 873883056543888064, guid: 608905f3cc10a0e42bdda70b846e99a6, type: 3}
+      propertyPath: m_Size.y
+      value: 6.522207
+      objectReference: {fileID: 0}
     - target: {fileID: 3077301288962952707, guid: 608905f3cc10a0e42bdda70b846e99a6, type: 3}
       propertyPath: m_Enabled
       value: 1
