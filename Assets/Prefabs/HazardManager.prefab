@@ -31,7 +31,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3367701564478931810
 MonoBehaviour:
@@ -49,10 +49,10 @@ MonoBehaviour:
   meteorPrefab: {fileID: 189507748417666162, guid: 8ad86b7f340c2764ea7cf973e28b644b, type: 3}
   asteroidPrefab: {fileID: 0}
   firstRockSpawnTimer: 4
-  firstMeteorSpawnTimer: 999
+  firstMeteorSpawnTimer: 4
   lastRockSpawnTimer: 290
   lastMeteorSpawnTimer: 280
-  meteorInterval: 32
+  meteorInterval: 27
   meteorIntervalVariance: 0.9
   meteorIntervalRampTime: 40
   meteorIntervalRampRate: 3
@@ -60,21 +60,21 @@ MonoBehaviour:
   meteorEaseOffIntervalSails: 3
   meteorEaseOfIntervalRamp: 10
   fullyRepairedTimerReduction: 0.7
-  rockVolleyLength: 8
+  rockVolleyLength: 13
   peakRockPaceSwell: 2
   firstSwellTimer: 70
   swellCycleTime: 60
   swellCycleRampTime: 40
   swellCycleMinTime: 30
-  numRocksPerVolley: 3
+  numRocksPerVolley: 2
   firstExtraRockAddedTime: 150
   secondExtraRockAddedTime: 210
   bossFightStartTimer: 300
   rockSpeed: 10
   rockSpeedVariance: 0.4
   baseRockSpawnHeight: 6
-  rockSpawnHeightVariance: 6
-  rockAngleOffset: 2
+  rockSpawnHeightVariance: 20
+  rockAngleOffset: 3
   rockAngleVariance: 4
   rockBaseSize: 1
   rockSizeIncreaseVariance: 1.5
