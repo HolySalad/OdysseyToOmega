@@ -18,6 +18,7 @@ TagManager:
   - Collectable
   - Kitchen
   - HarpoonGun
+  - Interactable
   layers:
   - Default
   - TransparentFX
@@ -63,4 +64,10 @@ TagManager:
     locked: 0
   - name: New Layer 3
     uniqueID: 345971511
+    locked: 0
+  - name: Foreground1
+    uniqueID: 3735844731
+    locked: 0
+  - name: Foreground2
+    uniqueID: 2555070193
     locked: 0
