@@ -45,6 +45,7 @@ using UnityEngine;
             Debug.Log("Player is cooking");
             this.gameObject.GetComponent<Animator>().SetBool("Repairing", true);
             this.gameObject.GetComponent<Movement.CharacterMotor>().isBusy = true;
+            FindObjectOfType<SoundManager>().Play("Cooking");
             StartCoroutine(FinishCook());
         }
 

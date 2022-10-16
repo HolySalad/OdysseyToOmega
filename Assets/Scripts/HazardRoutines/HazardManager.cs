@@ -210,7 +210,7 @@ namespace SpaceBoat.Hazards {
             // soundtrack
             if (musicStage < 1) {
                 musicStage = 1;
-                //play sound
+                sm.Play("GameplaySoundTrack");
             } else if (musicStage < 2 && timeSinceGameBegan > musicStage1Length) {
                 musicStage = 2;
                 //play sound
