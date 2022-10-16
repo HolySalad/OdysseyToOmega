@@ -6,7 +6,8 @@ using UnityEngine;
     {
         
         private int cookingFrames = 72;
-        public Sprite itemSprite {get;}
+        [SerializeField] public Sprite itemSprite {get;}
+        [SerializeField] public Sprite encasedSprite {get;}
 
         public bool canBeUsed {get; private set;} = false;
         private string interactionTag = "Kitchen";
