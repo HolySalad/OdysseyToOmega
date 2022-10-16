@@ -457,7 +457,7 @@ Transform:
   - {fileID: 5294947118180477217}
   - {fileID: 358711096952768530}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &3046632251698612340
 Rigidbody2D:
@@ -509,11 +509,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 9
-  acceleration: 7
-  deceleration: 12
+  acceleration: 15
+  deceleration: 20
   accelerationStartMult: 3
-  accelerationStartRange: 2
-  turningSpeedMult: 0.7
+  accelerationStartRange: 5
+  turningSpeedMult: 0.2
 --- !u!114 &3046632251698612344
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -530,10 +530,10 @@ MonoBehaviour:
   halfJumpFrameWindow: 6
   jumpSquatFrames: 3
   halfJumpDecayMultiplier: 1.7
-  jumpPower: 22
-  jumpDecay: 28
+  jumpPower: 23
+  jumpDecay: 25
   jumpDecayDoublingFrames: 4
-  gravityAcceleration: 30
+  gravityAcceleration: 40
   gravityTerminalVelocity: 45
 --- !u!114 &3046632251698612345
 MonoBehaviour:
@@ -547,7 +547,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 906b45575bbbc2a48baab2b199e6b397, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 3
+  maxHealth: 99
 --- !u!114 &3046632251698612342
 MonoBehaviour:
   m_ObjectHideFlags: 0

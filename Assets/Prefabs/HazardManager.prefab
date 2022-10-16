@@ -46,10 +46,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rockPrefab: {fileID: 189507748417666162, guid: a4f67d1775a9a984e950a805568f14db, type: 3}
-  meteorPrefab: {fileID: 0}
+  meteorPrefab: {fileID: 189507748417666162, guid: 8ad86b7f340c2764ea7cf973e28b644b, type: 3}
   asteroidPrefab: {fileID: 0}
   firstRockSpawnTimer: 4
-  firstMeteorSpawnTimer: 50
+  firstMeteorSpawnTimer: 999
   lastRockSpawnTimer: 290
   lastMeteorSpawnTimer: 280
   meteorInterval: 32
@@ -99,7 +99,7 @@ MonoBehaviour:
   meteorPrefab: {fileID: 189507748417666162, guid: 8ad86b7f340c2764ea7cf973e28b644b, type: 3}
   asteroidPrefab: {fileID: 0}
   firstRockSpawnTimer: 4
-  firstMeteorSpawnTimer: 50
+  firstMeteorSpawnTimer: 999
   lastRockSpawnTimer: 290
   lastMeteorSpawnTimer: 280
   meteorInterval: 32
