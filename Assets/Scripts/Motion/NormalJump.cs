@@ -169,7 +169,7 @@ namespace SpaceBoat.Movement {
             coll.GetContacts(contacts);
             foreach (ContactPoint2D contact in contacts) {
                 if (contact.collider != null && contact.collider.gameObject.CompareTag("Roof")) {
-                    if (contact.collider.gameObject.transform.position.y > transform.position.y) {
+                    if (contact.collider.gameObject.transform.position.y < transform.position.y) {
                         Debug.Log("Player is in contact with roof returning true with comparisons " + contact.collider.gameObject.transform.position.y + " and " + transform.position.y);
                         return true;
                     }
