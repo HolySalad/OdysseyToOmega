@@ -76,8 +76,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 600d953ef81fa4e4ba6939583ed1bc4f, type: 3}
-  m_Color: {r: 0.9172041, g: 0.9528302, b: 0.06741722, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 32a318c6063cee244abe5cd224708fcc, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -137,4 +137,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meteorSprites:
-  - {fileID: 21300000, guid: 600d953ef81fa4e4ba6939583ed1bc4f, type: 3}
+  - {fileID: 21300000, guid: 32a318c6063cee244abe5cd224708fcc, type: 3}
+  - {fileID: 21300000, guid: 696ca904286235543b28db40736d51d5, type: 3}
+  - {fileID: 21300000, guid: 344f7dd3bf9069845ba9bcc08569cc2c, type: 3}
