@@ -57,9 +57,16 @@ public class BackgroundMovement : MonoBehaviour
         }
     }
     
-    private void GoToNextBG(){
+    private IEnumerator GoToNextBG1(){
+        yield return new WaitForSeconds(120f);
+        Debug.Log ("first phase");
         nextBG++;
-        //TODO Call this function if you want to go from blue to red or from red to blue
+        yield return new WaitForSeconds(120f);
+        Debug.Log ("Second phase");
+        nextBG++;
+        yield return new WaitForSeconds(30f);
+        Debug.Log ("Hydra appears");
+        FindObjectOfType<HydraScript>().HydraAppear();
     }
 
 }
