@@ -12,6 +12,7 @@ namespace SpaceBoat.Movement {
         [SerializeField] private float accelerationStartMult = 2f;
         [SerializeField] private float accelerationStartRange = 2f;
         [SerializeField] private float turningSpeedMult = 0.7f;
+        [SerializeField] private int hitStunFrames = 24;
 
         private CharacterMotor motor;
         private Animator animator;
@@ -26,9 +27,27 @@ namespace SpaceBoat.Movement {
         public bool FacingRight {get; private set;} = true;
         public bool IsWalking {get; private set;}
 
+        public int hitOnFrame {get; set;} = -999;
+        private bool hitstun = false;
+
+        private float walkSoundTime = 2f;
+        private float lastWalkSound = 0f;
+
         public Vector2 Value { 
             get
             {
+                if (hitOnFrame + hitStunFrames > Time.frameCount) {
+                    Debug.Log("Player is hitstunned");
+                    return Vector2.zero;
+                }
+                SoundManager sm = FindObjectOfType<SoundManager>();
+                if (speed != 0 && !sm.IsPlaying("Walk")) {
+                    sm.Play("Walk"); 
+                    lastWalkSound = Time.fixedTime;
+                } else if (speed == 0 && sm.IsPlaying("Walk")) {
+                    sm.Stop("Walk");
+                    lastWalkSound = 0;
+                }
                 return new Vector2(speed*lastHorizontal, 0);
             }
         }
@@ -79,6 +98,7 @@ namespace SpaceBoat.Movement {
             if (horizontalInput > 0 && !FacingRight || horizontalInput < 0 && FacingRight) {
                 FacingRight = !FacingRight;
                 speed = -speed * turningSpeedMult;
+                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
             }
         }
 

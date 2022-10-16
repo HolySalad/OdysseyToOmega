@@ -8,6 +8,8 @@ namespace SpaceBoat.Hazards {
     {
         // Create a rock from the prefab with the necessary.
     
+        [SerializeField] private Sprite[] rockSprites;
+
         private Vector2 velocity;
         private float height;
         private float scale;
@@ -33,22 +35,30 @@ namespace SpaceBoat.Hazards {
                 Debug.Log("Rock hit player");
                 player.PlayerTakesDamage(1);
                 //TODO add small knockback?
-                //TODO rock breaking animation.
+                FindObjectOfType<SoundManager>().Play("RockImpact"); 
                 //TODO sound
                 Destroy(this.gameObject);
             } else if (collision.gameObject.layer == LayerMask.NameToLayer("Ground") && !collision.gameObject.tag.Equals("Platforms")) {
                 Destroy(this.gameObject);
                 //TODO rock breaking animation.
-                //TODO sound
+                FindObjectOfType<SoundManager>().Play("RockImpact"); 
             }
         }
 
         IEnumerator LaunchAfterTime(float time) {
             yield return new WaitForSeconds(time);// Wait for one second
-            transform.localScale = new Vector3(scale, scale, 1);
+            Vector3 scaleVec = new Vector3(scale, scale, 1);
+            transform.localScale = scaleVec;
             transform.position = new Vector3(transform.position.x, height, transform.position.z);
+            SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+            spriteRenderer.sprite = rockSprites[Random.Range(0, rockSprites.Length)];
+            spriteRenderer.transform.localScale = new Vector2(scale * 0.5f, scale * 0.5f);
+            CircleCollider2D collider = GetComponent<CircleCollider2D>();
+            collider.transform.localScale = scaleVec;
             Rigidbody2D rb = GetComponent<Rigidbody2D>();
+            rb.AddTorque(1);
             rb.velocity = velocity;
+            FindObjectOfType<SoundManager>().Play("RockWhoosh_0"); 
         }
     }
 }

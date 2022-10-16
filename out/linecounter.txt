@@ -1,0 +1,127 @@
+===============================================================================
+EXTENSION NAME : linecounter
+EXTENSION VERSION : 0.2.7
+-------------------------------------------------------------------------------
+count time : 2022-10-16 11:35:43
+count workspace : c:\Users\matte\GameJamPlus
+total files : 101
+total code lines : 45497
+total comment lines : 183
+total blank lines : 962
+
+    statistics
+   |      extension|     total code|  total comment|    total blank|percent|
+   -------------------------------------------------------------------------
+   |           .sln|             17|              0|              0|  0.037|
+   |               |             82|              7|             17|   0.18|
+   |        .csproj|            848|              0|              0|    1.9|
+   |          .json|            521|              0|              0|    1.1|
+   |      .settings|              1|              0|              0| 0.0022|
+   |           .log|          19616|              1|            640|     43|
+   |    .controller|           1704|              0|              0|    3.7|
+   |          .anim|          18296|              0|              0|     40|
+   |          .dwlt|           2894|              0|              0|    6.4|
+   |            .cs|           1518|            175|            305|    3.3|
+   -------------------------------------------------------------------------
+.gitattributes, code is 2, comment is 0, blank is 0.
+.gitignore, code is 58, comment is 7, blank is 12.
+.vsconfig, code is 5, comment is 0, blank is 1.
+Assembly-CSharp.csproj, code is 848, comment is 0, blank is 0.
+Assets\Animations\PC\PC.controller, code is 1632, comment is 0, blank is 0.
+Assets\Animations\PC\PC_ClimbIdle.anim, code is 675, comment is 0, blank is 0.
+Assets\Animations\PC\PC_ClimbUp.anim, code is 1251, comment is 0, blank is 0.
+Assets\Animations\PC\PC_Death.anim, code is 2030, comment is 0, blank is 0.
+Assets\Animations\PC\PC_Hit.anim, code is 6490, comment is 0, blank is 0.
+Assets\Animations\PC\PC_HoldingItem.anim, code is 467, comment is 0, blank is 0.
+Assets\Animations\PC\PC_Idle.anim, code is 1190, comment is 0, blank is 0.
+Assets\Animations\PC\PC_Jump.anim, code is 770, comment is 0, blank is 0.
+Assets\Animations\PC\PC_JumpSquat.anim, code is 1319, comment is 0, blank is 0.
+Assets\Animations\PC\PC_Repairing.anim, code is 1418, comment is 0, blank is 0.
+Assets\Animations\PC\PC_RepairStart.anim, code is 1136, comment is 0, blank is 0.
+Assets\Animations\PC\PC_Walk.anim, code is 1475, comment is 0, blank is 0.
+Assets\Animations\Projectiles\Fire.anim, code is 75, comment is 0, blank is 0.
+Assets\Animations\Projectiles\ProjectilesFlames_1.controller, code is 72, comment is 0, blank is 0.
+Assets\BackgroundMovement.cs, code is 52, comment is 3, blank is 10.
+Assets\Scripts\Buttons\ButtonBase.cs, code is 12, comment is 2, blank is 4.
+Assets\Scripts\Buttons\ButtonManager.cs, code is 14, comment is 0, blank is 8.
+Assets\Scripts\GameCamera.cs, code is 16, comment is 4, blank is 4.
+Assets\Scripts\GameModel.cs, code is 12, comment is 2, blank is 5.
+Assets\Scripts\HarpoonGun.cs, code is 0, comment is 0, blank is 0.
+Assets\Scripts\HazardRoutines\HazardManager.cs, code is 176, comment is 46, blank is 29.
+Assets\Scripts\HazardRoutines\Hunger.cs, code is 12, comment is 2, blank is 4.
+Assets\Scripts\HazardRoutines\Hydra.cs, code is 12, comment is 2, blank is 4.
+Assets\Scripts\HazardRoutines\Meteorite.cs, code is 40, comment is 6, blank is 4.
+Assets\Scripts\HazardRoutines\MeteorShower.cs, code is 12, comment is 2, blank is 4.
+Assets\Scripts\HazardRoutines\Siren.cs, code is 12, comment is 2, blank is 4.
+Assets\Scripts\HazardRoutines\SpaceRock.cs, code is 47, comment is 10, blank is 7.
+Assets\Scripts\Items\ClothItem.cs, code is 64, comment is 2, blank is 10.
+Assets\Scripts\Items\FoodItem.cs, code is 61, comment is 2, blank is 14.
+Assets\Scripts\Items\HarpoonItem.cs, code is 43, comment is 3, blank is 9.
+Assets\Scripts\Items\IHeldItems.cs, code is 17, comment is 0, blank is 6.
+Assets\Scripts\Motion\CharacterMotor.cs, code is 58, comment is 6, blank is 12.
+Assets\Scripts\Motion\ClimbingMovement.cs, code is 12, comment is 2, blank is 4.
+Assets\Scripts\Motion\IJump.cs, code is 17, comment is 0, blank is 4.
+Assets\Scripts\Motion\IMovementModifier.cs, code is 13, comment is 0, blank is 4.
+Assets\Scripts\Motion\IWalk.cs, code is 14, comment is 1, blank is 3.
+Assets\Scripts\Motion\NormalJump.cs, code is 170, comment is 14, blank is 23.
+Assets\Scripts\Motion\NormalWalk.cs, code is 79, comment is 6, blank is 14.
+Assets\Scripts\Player\PickupItems.cs, code is 107, comment is 8, blank is 21.
+Assets\Scripts\Player\PlayerInput.cs, code is 39, comment is 4, blank is 11.
+Assets\Scripts\Player\PlayerLogic.cs, code is 112, comment is 27, blank is 31.
+Assets\Scripts\RewardSystem\Comet.cs, code is 79, comment is 1, blank is 13.
+Assets\Scripts\RewardSystem\RewardManager.cs, code is 116, comment is 16, blank is 19.
+Assets\Scripts\Sound\Sound.cs, code is 17, comment is 0, blank is 5.
+Assets\Scripts\Sound\SoundManager.cs, code is 34, comment is 2, blank is 8.
+Assets\Scripts\SpaceBoat\BelowDeckTransition.cs, code is 16, comment is 0, blank is 1.
+Assets\Scripts\SpaceBoat\Sails.cs, code is 33, comment is 0, blank is 6.
+Assets\Sound effects\menu soundtrack\GameJam+ 0.mp3, it is a binary file.
+Assets\Sound effects\other stuff\Dragon.mp3, it is a binary file.
+Assets\Sound effects\other stuff\Drop item.mp3, it is a binary file.
+Assets\Sound effects\other stuff\Harpoon hit.mp3, it is a binary file.
+Assets\Sound effects\other stuff\Harpoon.mp3, it is a binary file.
+Assets\Sound effects\other stuff\Meteor IMPACT.mp3, it is a binary file.
+Assets\Sound effects\other stuff\Meteor Swoosh 2.mp3, it is a binary file.
+Assets\Sound effects\other stuff\Meteor Swoosh.mp3, it is a binary file.
+Assets\Sound effects\other stuff\Pick up item.mp3, it is a binary file.
+Assets\Sound effects\other stuff\Pull rope.mp3, it is a binary file.
+Assets\Sound effects\other stuff\Repair.mp3, it is a binary file.
+Assets\Sound effects\other stuff\Rock impact.mp3, it is a binary file.
+Assets\Sound effects\other stuff\Rock swoosh 2.mp3, it is a binary file.
+Assets\Sound effects\other stuff\Rock swoosh.mp3, it is a binary file.
+Assets\Sound effects\other stuff\Ship LOWHP.mp3, it is a binary file.
+Assets\Sound effects\player effects\Climb.mp3, it is a binary file.
+Assets\Sound effects\player effects\comet breaking.mp3, it is a binary file.
+Assets\Sound effects\player effects\Death Falling 2.mp3, it is a binary file.
+Assets\Sound effects\player effects\Death.mp3, it is a binary file.
+Assets\Sound effects\player effects\Injury.mp3, it is a binary file.
+Assets\Sound effects\player effects\Jump.mp3, it is a binary file.
+Assets\Sound effects\player effects\LOW HP.mp3, it is a binary file.
+Assets\Sound effects\player effects\Spawn.mp3, it is a binary file.
+Assets\Sound effects\player effects\Walk.mp3, it is a binary file.
+Assets\Sprites\Chydra.psb, it is a binary file.
+Assets\Sprites\Cthulk.psb, it is a binary file.
+Assets\thiccSprites\meteor1.PNG, it is a binary file.
+Assets\thiccSprites\spacerock1.PNG, it is a binary file.
+Assets\~UnityDirMonSyncFile~22b287b80c086344db574503d28f72f1~, code is 0, comment is 0, blank is 0.
+GameJamPlus.sln, code is 17, comment is 0, blank is 0.
+LICENSE, code is 17, comment is 0, blank is 4.
+Logs\AssetImportWorker0-prev.log, code is 1370, comment is 0, blank is 50.
+Logs\AssetImportWorker0.log, code is 3662, comment is 0, blank is 108.
+Logs\AssetImportWorker1-prev.log, code is 1304, comment is 0, blank is 50.
+Logs\AssetImportWorker1.log, code is 3486, comment is 0, blank is 86.
+Logs\AssetImportWorker2.log, code is 4047, comment is 1, blank is 98.
+Logs\AssetImportWorker3.log, code is 882, comment is 0, blank is 43.
+Logs\AssetImportWorker4.log, code is 4302, comment is 0, blank is 103.
+Logs\AssetImportWorker5.log, code is 128, comment is 0, blank is 30.
+Logs\AssetImportWorker6.log, code is 278, comment is 0, blank is 33.
+Logs\AssetImportWorker7.log, code is 102, comment is 0, blank is 30.
+Logs\Packages-Update.log, code is 49, comment is 0, blank is 6.
+Logs\shadercompiler-AssetImportWorker0.log, code is 4, comment is 0, blank is 2.
+Logs\shadercompiler-UnityShaderCompiler.exe0.log, code is 2, comment is 0, blank is 1.
+Packages\manifest.json, code is 45, comment is 0, blank is 0.
+Packages\packages-lock.json, code is 476, comment is 0, blank is 0.
+UserSettings\Layouts\CurrentMaximizeLayout.dwlt, code is 918, comment is 0, blank is 0.
+UserSettings\Layouts\default-2021.dwlt, code is 963, comment is 0, blank is 0.
+UserSettings\Layouts\default-2022.dwlt, code is 1013, comment is 0, blank is 0.
+UserSettings\Search.settings, code is 1, comment is 0, blank is 0.
+===============================================================================

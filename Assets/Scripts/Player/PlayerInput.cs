@@ -9,7 +9,9 @@ namespace SpaceBoat.Player {
     {
         public Movement.IJump jump {get; set;}
         public Movement.IWalk walk {get; set;}
-        //public Player.PickupItems pickupItems  {get; set;}
+        public Player.PickupItems pickupItems  {get; set;}
+
+        public Items.IHeldItems heldItems {get; set;}
 
         private bool init = false;
 
@@ -20,7 +22,7 @@ namespace SpaceBoat.Player {
         }
  
         void Awake(){
-            //pickupItems = GetComponent<PickupItems>();
+            pickupItems = GetComponent<PickupItems>();
         }
 
         void Update() {
@@ -35,11 +37,17 @@ namespace SpaceBoat.Player {
             //Item pick up
             bool pickItemDown = Input.GetKeyDown(KeyCode.E);
 
+            //Item Usage
+            bool useItemDown = Input.GetKeyDown(KeyCode.Q); 
 
             // apply input to movement
             walk.Input(horizontal);
             jump.Input(jumpKeyDown);
-            //pickupItems.PickItem(pickItemDown);
+            pickupItems.PickItem(pickItemDown);
+
+            if (heldItems != null && useItemDown) {
+                heldItems.Input();
+            }
         }
 
     }

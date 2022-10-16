@@ -17,7 +17,7 @@ namespace SpaceBoat.Movement {
         [SerializeField] private int jumpDecayDoublingFrames = 4;
         [SerializeField] private float gravityAcceleration = 30f;
         [SerializeField] private float gravityTerminalVelocity = 45f;
-
+        [SerializeField] private int hitStunFrames = 24;
         private CharacterMotor motor;
         private Collider2D coll;
         private Animator animator;
@@ -31,6 +31,7 @@ namespace SpaceBoat.Movement {
         public bool isGrounded {get; private set;} = false;
 
         private bool hitApex = false;
+        public int hitOnFrame {get; set;} = -999;
         
         public void ReplaceJump(IMovementModifier other) {
             if (other is IJump) {
@@ -50,7 +51,9 @@ namespace SpaceBoat.Movement {
         }
 
         public Vector2 Value {get
-            { return new Vector2(0, currentVerticalForce); }
+            { 
+                return new Vector2(0, currentVerticalForce); 
+            }
         }
 
         public bool Enabled {get; private set;} = false;
@@ -94,6 +97,11 @@ namespace SpaceBoat.Movement {
                 }
                 currentVerticalForce = Mathf.Max(0, currentVerticalForce - decay * deltaTime);
             } else if (jumpSquat && Time.frameCount > jumpStartTime + jumpSquatFrames) {
+                SoundManager sm = FindObjectOfType<SoundManager>();
+                sm.Play("Jump"); 
+                if (sm.IsPlaying("Walk")) {
+                    sm.Stop("Walk");
+                }
                 jumpSquat = false;
                 isJumping = true;
                 hitApex = false;
@@ -121,6 +129,10 @@ namespace SpaceBoat.Movement {
         }
 
         private bool CanJump() {
+                if (hitOnFrame + hitStunFrames > Time.frameCount) {
+                    Debug.Log("Player cant jump, is hitstunned");
+                    return false;
+                }
                 return Time.frameCount < jumpGrace || isGrounded;
             }
 
@@ -157,21 +169,41 @@ namespace SpaceBoat.Movement {
             return false;
         }
 
+        bool PlayerIsInContactWithRoof() {
+            return coll.IsTouchingLayers(LayerMask.GetMask("Roof"));
+        }
+        
+        
+
         void OnCollisionEnter2D(Collision2D other) {
             // if the player lands on the ground, reset their jump
-            if (!isGrounded && (other.gameObject.layer == LayerMask.NameToLayer("Ground"))) {
-                //Debug.Log("Collision with ground");
+            if (PlayerIsInContactWithRoof()) {
+                Debug.Log("touching a roof, not grounding");
+                isGrounded = false;
+                currentVerticalForce = 0;
+                StartCoroutine(Unstick());
+            } else if (!isGrounded && (other.gameObject.layer == LayerMask.NameToLayer("Ground"))) {
+                Debug.Log("Collision with ground");
                 if (IsContactWithGroundFromAbove(other)) {
                     //Debug.Log("Collision with ground from above");
-                    //TODO sound 
+                    if (isJumping) {
+                        FindObjectOfType<SoundManager>().Play("JumpStomp"); 
+                    }
                     isGrounded = true;
                     isJumping = false;
                     halfJump = false;
                     currentVerticalForce = 0;
-                } else if (IsContactWithGroundFromBelow(other)) {
-                    //Debug.Log("Collision with ground from below");
-                    currentVerticalForce = 0;
                 }
+            }
+        }
+
+        IEnumerator Unstick() {
+            yield return new WaitForSeconds(0.1f);
+            if (!isGrounded && coll.IsTouchingLayers(LayerMask.GetMask("Ground"))) {
+                isGrounded = true;
+                isJumping = false;
+                halfJump = false;
+                currentVerticalForce = 0;
             }
         }
 
