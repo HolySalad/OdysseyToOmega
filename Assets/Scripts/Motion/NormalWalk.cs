@@ -37,7 +37,6 @@ namespace SpaceBoat.Movement {
             get
             {
                 if (hitOnFrame + hitStunFrames > Time.frameCount) {
-                    Debug.Log("Player is hitstunned");
                     return Vector2.zero;
                 }
                 SoundManager sm = FindObjectOfType<SoundManager>();

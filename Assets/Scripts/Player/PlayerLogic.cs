@@ -8,7 +8,7 @@ namespace SpaceBoat.Player {
     public class PlayerLogic : MonoBehaviour
     {
         //serialized
-        [SerializeField] private float maxHealth = 3;
+        [SerializeField] private int maxHealth = 3;
         [SerializeField] private int hitInvulnerabilityFrames = 50;
 
         //movement behaviours
@@ -17,12 +17,13 @@ namespace SpaceBoat.Player {
         private NormalJump defaultjump;
         //private InsideShipJump insideShipJump;
         private Animator animator;
+        [SerializeField]private GameObject healthprefab;
 
         //controller
         private PlayerInput input;
 
         //game state
-        private float health;
+        private int health;
         private bool playerDiedFailure = false;
         private bool shipDiedFailure = false;
 
@@ -38,7 +39,18 @@ namespace SpaceBoat.Player {
         }
         //On Awake, initialize movement behaviours and enable them
         //initialize the player controller with the movement behaviours
+             //GUI
+        //OnGUI, draw the player's health
+        //If the player has failed, draw a failure screen
+        private GameObject healthbar;
+        private UI.HPUIManager healthbarManager;
+        
+            
         void Awake() {
+            if (healthbar == null) {
+                healthbar = Instantiate(healthprefab, new Vector3(-19, 27, 0), Quaternion.identity);
+                healthbarManager = healthbar.GetComponent<UI.HPUIManager>();
+            }
             motor = GetComponent<CharacterMotor>();
             Debug.Log("Enabling Movement Behaviours");
             defaultWalk = GetComponent<NormalWalk>();
@@ -79,11 +91,14 @@ namespace SpaceBoat.Player {
         }
 
         public void PlayerTakesDamage(int damage) {
+        
+            
             if (defaultWalk.hitOnFrame + hitInvulnerabilityFrames > Time.frameCount) {
                 return;
             }
             Debug.Log("Player takes "+ damage + " damage");
             health -= damage;
+            healthbarManager.SetHP(health);
             defaultWalk.hitOnFrame = Time.frameCount;
             defaultjump.hitOnFrame = Time.frameCount;
             if (health <= 0) {
@@ -98,10 +113,12 @@ namespace SpaceBoat.Player {
         public void PlayerHeals() {
             Debug.Log("Player heals");
             health = maxHealth;
+            healthbarManager.SetHP(maxHealth);
         }
 
         void PlayerDies() {
             SoundManager sm = FindObjectOfType<SoundManager>();
+            
             Debug.Log("Player Died");
             playerDiedFailure = true;
             //Time.timeScale = 0;    
@@ -169,19 +186,7 @@ namespace SpaceBoat.Player {
         }
 
 
-        //GUI
-        //OnGUI, draw the player's health
-        //If the player has failed, draw a failure screen
-        void OnGUI() {
-            GUI.Label(new Rect(10, 10, 100, 20), "Health: " + maxHealth);
-            GUI.Label(new Rect(10, 30, 100, 20), "Sails: " + (numSails-numBrokenSails) + "/" + numSails);
-            if (playerDiedFailure) {
-                GUI.Label(new Rect(Screen.width/2, Screen.height/2, Screen.width/2, Screen.height/2), "You Died");
-            }
-            if (shipDiedFailure) {
-                GUI.Label(new Rect(Screen.width/2, Screen.height/2, 100, 20), "The Ship Sank");
-            }
-        }
+   
 
     }
 }
