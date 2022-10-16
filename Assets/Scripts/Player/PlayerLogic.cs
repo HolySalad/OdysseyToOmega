@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using SpaceBoat.Movement;
+using UnityEngine.SceneManagement;
 
 namespace SpaceBoat.Player {
     public class PlayerLogic : MonoBehaviour
@@ -108,7 +109,7 @@ namespace SpaceBoat.Player {
             sm.Stop("LowHP"); 
             sm.Stop("ShipLowHP");
             sm.Play("Death"); 
-            //TODO scene transition to game over.
+            SceneManager.LoadScene("GameOver");
         }
 
         void PlayerDies(bool scream) {
