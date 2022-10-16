@@ -108,7 +108,7 @@ namespace SpaceBoat.Player {
             sm.Stop("LowHP"); 
             sm.Stop("ShipLowHP");
             sm.Play("Death"); 
-            //TODO scene transition to game over.
+            //TODO CHANGE FUCKING SCENE
         }
 
         void PlayerDies(bool scream) {
@@ -160,7 +160,7 @@ namespace SpaceBoat.Player {
             if (other.gameObject.layer == LayerMask.NameToLayer("BottomOfMap") 
             || other.gameObject.layer == LayerMask.NameToLayer("EndOfMapLeft")) {
                 Debug.Log("Player died from falling off the ship");
-                PlayerDies();
+                PlayerDies(true);
                 //Destroy(gameObject); //cant do this if you want to do the death screen from here because it destroys this script.
 
             }

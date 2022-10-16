@@ -60,6 +60,11 @@ namespace SpaceBoat.Hazards {
         [SerializeField] private float meteorSpawnYVariance = 5f; //how much variance is there in the Y spawn position of meteors
         [SerializeField] private float meteorSpeed = 25f; //how many units per second do meteors travel
 
+        private float musicStage1Length = 120f;
+        private float musicStage2Length = 120f;
+        private float musicStage3Length = 60f;
+        private int musicStage = 0;
+
 
         private float gameBeganTime;
 
@@ -201,6 +206,24 @@ namespace SpaceBoat.Hazards {
                     calcNextMeteorSpawnTime(timeSinceGameBegan, deltaTime);
                 }
             }
+            SoundManager sm = FindObjectOfType<SoundManager>();
+            // soundtrack
+            if (musicStage < 1) {
+                musicStage = 1;
+                //play sound
+            } else if (musicStage < 2 && timeSinceGameBegan > musicStage1Length) {
+                musicStage = 2;
+                //play sound
+            } else if (musicStage < 3 && timeSinceGameBegan > musicStage2Length) {
+                musicStage = 3;
+                //TODO play sound
+            } else if (musicStage < 4 && timeSinceGameBegan > musicStage2Length) {
+                musicStage = 4;
+                //TODO CHANGE FUCKING SCENE
+
+            }
+
+
         }
 
     }

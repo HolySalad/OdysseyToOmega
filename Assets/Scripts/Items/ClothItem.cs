@@ -19,6 +19,7 @@ using UnityEngine;
         void Repair() {
             Debug.Log("Player is repairing");
             this.gameObject.GetComponent<Animator>().SetBool("Repairing", true);
+            FindObjectOfType<SoundManager>().Play("Repair"); 
             StartCoroutine(FinishRepair());
         }
         public void Input()
