@@ -93,12 +93,12 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 873883056543888064, guid: 608905f3cc10a0e42bdda70b846e99a6, type: 3}
-      propertyPath: m_SortingLayer
-      value: 10
+      propertyPath: m_Size.x
+      value: 3.825
       objectReference: {fileID: 0}
     - target: {fileID: 873883056543888064, guid: 608905f3cc10a0e42bdda70b846e99a6, type: 3}
-      propertyPath: m_SortingLayerID
-      value: -521903187
+      propertyPath: m_Size.y
+      value: 6.522207
       objectReference: {fileID: 0}
     - target: {fileID: 6894931660551228940, guid: 608905f3cc10a0e42bdda70b846e99a6, type: 3}
       propertyPath: m_RootOrder

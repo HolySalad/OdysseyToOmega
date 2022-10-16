@@ -20,6 +20,7 @@ using UnityEngine;
             Debug.Log("Player is repairing");
             this.gameObject.GetComponent<Animator>().SetBool("Repairing", true);
             FindObjectOfType<SoundManager>().Play("Repair"); 
+            this.gameObject.GetComponent<Movement.CharacterMotor>().isBusy = true;
             StartCoroutine(FinishRepair());
         }
         public void Input()
@@ -61,6 +62,7 @@ using UnityEngine;
             this.gameObject.GetComponent<Player.PickupItems>().DropItem(true);
             this.gameObject.GetComponent<Animator>().SetBool("Repairing", false);
             this.gameObject.GetComponent<Animator>().SetTrigger("FinishedRepairing");
+            this.gameObject.GetComponent<Movement.CharacterMotor>().isBusy = false;
         }
 
         private bool GUIActive = false;
