@@ -69,8 +69,10 @@ namespace SpaceBoat.Movement {
             if (horizontalInput == 0) {
                 if (speed > 0) {
                     speed = Mathf.Max(speed - deceleration*deltaTime, 0);
+                    FindObjectOfType<SoundManager>().Play("Walk"); 
                 } else if (speed < 0) {
                     speed = Mathf.Min(speed + deceleration*deltaTime, 0);
+                    FindObjectOfType<SoundManager>().Play("Walk"); 
                 }
             } else {
                 float accel = acceleration;

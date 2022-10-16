@@ -24,15 +24,16 @@ namespace SpaceBoat.Player {
         private float health;
         private bool playerDiedFailure = false;
         private bool shipDiedFailure = false;
-
+        
         //contextual
         private bool isBelowDeck = false;
 
         private int numSails = 0;
         private int numBrokenSails = 0;
         
-        
-
+        void Start() {
+            FindObjectOfType<SoundManager>().Play("Spawn"); 
+        }
         //On Awake, initialize movement behaviours and enable them
         //initialize the player controller with the movement behaviours
         void Awake() {
@@ -87,7 +88,10 @@ namespace SpaceBoat.Player {
                 PlayerDies();
             } else {
                 animator.SetTrigger("Hit");
-                //TODO sound
+                FindObjectOfType<SoundManager>().Play("Hit"); 
+                if (health == 1) {
+                    FindObjectOfType<SoundManager>().Play("LowHP"); 
+                }
             }
         }
 
@@ -107,9 +111,9 @@ namespace SpaceBoat.Player {
 
         void PlayerDies(bool scream) {
             if (scream) {
-                //TODO sound queue for scream
+                FindObjectOfType<SoundManager>().Play("DeathFall"); 
             } else {
-                PlayerDies();
+                FindObjectOfType<SoundManager>().Play("Death"); 
             }
         }
 
@@ -131,6 +135,9 @@ namespace SpaceBoat.Player {
             numBrokenSails++;
             if (numBrokenSails >= numSails) {
                 ShipDies();
+            }
+            if (numBrokenSails - numSails <= 2) {
+                FindObjectOfType<SoundManager>().Play("ShipLowHP"); 
             }
         }
 

@@ -14,6 +14,7 @@ namespace SpaceBoat.Hazards{
             spriteRenderer.sprite = meteorSprites[Random.Range(0, meteorSprites.Length)];
             Rigidbody2D rb = GetComponent<Rigidbody2D>();
             rb.velocity = new Vector2(targetVector.normalized.x*speed, targetVector.normalized.y*speed);
+            FindObjectOfType<SoundManager>().Play("MeteorWhoosh_0"); 
         }
 
         void OnTriggerEnter2D(Collider2D other) {
@@ -23,6 +24,7 @@ namespace SpaceBoat.Hazards{
                 Sails sail = other.gameObject.GetComponent<Sails>();
                 if (!sail.IsBroken){sail.Break();
                 Destroy(this.gameObject);}
+                FindObjectOfType<SoundManager>().Play("MeteorImpact"); 
             }
         }
 
@@ -38,12 +40,12 @@ namespace SpaceBoat.Hazards{
                 Destroy(this.gameObject);
                 //TODO add small knockback?
                 //TODO rock breaking animation.
-                //TODO sound
+                FindObjectOfType<SoundManager>().Play("MeteorImpact"); 
                 Destroy(this.gameObject);
             } else if (collision.gameObject.layer == LayerMask.NameToLayer("Ground") && !collision.gameObject.tag.Equals("Platforms")) {
                 Destroy(this.gameObject);
                 //TODO rock breaking animation.
-                //TODO sound
+                FindObjectOfType<SoundManager>().Play("MeteorImpact"); 
             }
         }
     }
