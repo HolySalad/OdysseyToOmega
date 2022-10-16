@@ -10,6 +10,7 @@ public class HydraScript : MonoBehaviour
     }
 
     public void HydraAppear(){
+        Debug.Log("Yeah this works");
         GetComponent<Animator>().SetTrigger("Appear");
     }
 }

@@ -36,7 +36,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: AppearInScene
+    m_ConditionEvent: Appear
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -7076805356755884671}
@@ -86,7 +86,7 @@ AnimatorController:
   m_Name: Hydra
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: AppearInScene
+  - m_Name: Appear
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
