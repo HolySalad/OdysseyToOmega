@@ -15,6 +15,9 @@ TagManager:
   - EndOfMapLeft
   - BottomOfMap
   - Platforms
+  - Collectable
+  - Kitchen
+  - HarpoonGun
   layers:
   - Default
   - TransparentFX
@@ -30,7 +33,7 @@ TagManager:
   - ShipDoor
   - EndOfMapLeft
   - BottomOfMap
-  - 
+  - TaggedInteractables
   - 
   - 
   - 

@@ -56,6 +56,8 @@ namespace SpaceBoat.Player {
             input.Init(defaultWalk, defaultjump);
 
             Debug.Log("Player Logic Awoke");
+
+            health = maxHealth;
         }
 
         public void PlayerEntersOrExitsShip(Transform other) {
@@ -78,15 +80,20 @@ namespace SpaceBoat.Player {
                 return;
             }
             Debug.Log("Player takes "+ damage + " damage");
-            maxHealth -= damage;
+            health -= damage;
             defaultWalk.hitOnFrame = Time.frameCount;
             defaultjump.hitOnFrame = Time.frameCount;
-            if (maxHealth <= 0) {
+            if (health <= 0) {
                 PlayerDies();
             } else {
                 animator.SetTrigger("Hit");
                 //TODO sound
             }
+        }
+
+        public void PlayerHeals() {
+            Debug.Log("Player heals");
+            health = maxHealth;
         }
 
         void PlayerDies() {
@@ -95,6 +102,7 @@ namespace SpaceBoat.Player {
             Time.timeScale = 0;    
             animator.SetTrigger("Dead");
             //TODO sound
+            //TODO scene transition to game over.
         }
 
         void PlayerDies(bool scream) {
@@ -127,7 +135,7 @@ namespace SpaceBoat.Player {
         }
 
 
-        //TODO repair.
+
 
 
 
