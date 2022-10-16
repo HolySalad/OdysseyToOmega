@@ -24,7 +24,7 @@ namespace SpaceBoat.Player {
         private float health;
         private bool playerDiedFailure = false;
         private bool shipDiedFailure = false;
-        
+
         //contextual
         private bool isBelowDeck = false;
 
@@ -32,6 +32,7 @@ namespace SpaceBoat.Player {
         private int numBrokenSails = 0;
         
         void Start() {
+            FindObjectOfType<SoundManager>().Stop("MenuSoundtrack"); 
             FindObjectOfType<SoundManager>().Play("Spawn"); 
         }
         //On Awake, initialize movement behaviours and enable them
@@ -89,9 +90,7 @@ namespace SpaceBoat.Player {
             } else {
                 animator.SetTrigger("Hit");
                 FindObjectOfType<SoundManager>().Play("Hit"); 
-                if (health == 1) {
-                    FindObjectOfType<SoundManager>().Play("LowHP"); 
-                }
+
             }
         }
 
@@ -101,19 +100,22 @@ namespace SpaceBoat.Player {
         }
 
         void PlayerDies() {
+            SoundManager sm = FindObjectOfType<SoundManager>();
             Debug.Log("Player Died");
             playerDiedFailure = true;
             Time.timeScale = 0;    
             animator.SetTrigger("Dead");
-            //TODO sound
+            sm.Stop("LowHP"); 
+            sm.Stop("ShipLowHP");
+            sm.Play("Death"); 
             //TODO scene transition to game over.
         }
 
         void PlayerDies(bool scream) {
+            PlayerDies();
             if (scream) {
+                FindObjectOfType<SoundManager>().Stop("Death"); 
                 FindObjectOfType<SoundManager>().Play("DeathFall"); 
-            } else {
-                FindObjectOfType<SoundManager>().Play("Death"); 
             }
         }
 
@@ -124,7 +126,6 @@ namespace SpaceBoat.Player {
             Debug.Log("Ship Died");
             shipDiedFailure = true;
             Time.timeScale = 0;
-            //TODO sound
         }
 
         public void RegisterSail() {
@@ -136,16 +137,22 @@ namespace SpaceBoat.Player {
             if (numBrokenSails >= numSails) {
                 ShipDies();
             }
-            if (numBrokenSails - numSails <= 2) {
-                FindObjectOfType<SoundManager>().Play("ShipLowHP"); 
-            }
+
         }
 
         public void SailRepairs() {
             numBrokenSails--;
         }
 
-
+        void Update() {
+            SoundManager sm = FindObjectOfType<SoundManager>();
+            if (health == 1 && !sm.IsPlaying("LowHP")) {
+                sm.Play("LowHP"); 
+            }
+            if (numSails - numBrokenSails == 1 && !sm.IsPlaying("ShipLowHP")) {
+                sm.Play("ShipLowHP"); 
+            } 
+        }
 
 
         //events
@@ -155,6 +162,7 @@ namespace SpaceBoat.Player {
                 Debug.Log("Player died from falling off the ship");
                 PlayerDies();
                 //Destroy(gameObject); //cant do this if you want to do the death screen from here because it destroys this script.
+
             }
         }
 

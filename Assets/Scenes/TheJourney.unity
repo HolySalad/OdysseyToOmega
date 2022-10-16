@@ -4193,7 +4193,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 43
+  m_RootOrder: 42
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1425304551
 GameObject:
@@ -6412,6 +6412,10 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3046632251698612345, guid: f3f45cab2d9c4cb47b0580061cd01517, type: 3}
+      propertyPath: maxHealth
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 3287627985294731712, guid: f3f45cab2d9c4cb47b0580061cd01517, type: 3}
       propertyPath: m_Name
       value: Cthulk
