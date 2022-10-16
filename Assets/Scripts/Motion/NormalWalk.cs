@@ -30,12 +30,23 @@ namespace SpaceBoat.Movement {
         public int hitOnFrame {get; set;} = -999;
         private bool hitstun = false;
 
+        private float walkSoundTime = 2f;
+        private float lastWalkSound = 0f;
+
         public Vector2 Value { 
             get
             {
                 if (hitOnFrame + hitStunFrames > Time.frameCount) {
                     Debug.Log("Player is hitstunned");
                     return Vector2.zero;
+                }
+                SoundManager sm = FindObjectOfType<SoundManager>();
+                if (speed != 0 && !sm.IsPlaying("Walk")) {
+                    sm.Play("Walk"); 
+                    lastWalkSound = Time.fixedTime;
+                } else if (speed == 0 && sm.IsPlaying("Walk")) {
+                    sm.Stop("Walk");
+                    lastWalkSound = 0;
                 }
                 return new Vector2(speed*lastHorizontal, 0);
             }
@@ -69,10 +80,8 @@ namespace SpaceBoat.Movement {
             if (horizontalInput == 0) {
                 if (speed > 0) {
                     speed = Mathf.Max(speed - deceleration*deltaTime, 0);
-                    FindObjectOfType<SoundManager>().Play("Walk"); 
                 } else if (speed < 0) {
                     speed = Mathf.Min(speed + deceleration*deltaTime, 0);
-                    FindObjectOfType<SoundManager>().Play("Walk"); 
                 }
             } else {
                 float accel = acceleration;
