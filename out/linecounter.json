@@ -1,0 +1,703 @@
+{
+    "extension": "linecounter",
+    "version": "0.2.7",
+    "workspace": "c:\\Users\\matte\\GameJamPlus",
+    "linecount": [
+        {
+            "version": "0.2.7",
+            "counttime": "2022-10-16 11:35:43",
+            "filesum": 101,
+            "codesum": 45497,
+            "commentsum": 183,
+            "blanksum": 962,
+            "statistics": {
+                ".sln": {
+                    "code": 17,
+                    "comment": 0,
+                    "blank": 0
+                },
+                "": {
+                    "code": 82,
+                    "comment": 7,
+                    "blank": 17
+                },
+                ".csproj": {
+                    "code": 848,
+                    "comment": 0,
+                    "blank": 0
+                },
+                ".json": {
+                    "code": 521,
+                    "comment": 0,
+                    "blank": 0
+                },
+                ".settings": {
+                    "code": 1,
+                    "comment": 0,
+                    "blank": 0
+                },
+                ".log": {
+                    "code": 19616,
+                    "comment": 1,
+                    "blank": 640
+                },
+                ".controller": {
+                    "code": 1704,
+                    "comment": 0,
+                    "blank": 0
+                },
+                ".anim": {
+                    "code": 18296,
+                    "comment": 0,
+                    "blank": 0
+                },
+                ".dwlt": {
+                    "code": 2894,
+                    "comment": 0,
+                    "blank": 0
+                },
+                ".cs": {
+                    "code": 1518,
+                    "comment": 175,
+                    "blank": 305
+                }
+            },
+            "filelist": [
+                {
+                    "blank": 0,
+                    "code": 2,
+                    "comment": 0,
+                    "filename": ".gitattributes"
+                },
+                {
+                    "blank": 12,
+                    "code": 58,
+                    "comment": 7,
+                    "filename": ".gitignore"
+                },
+                {
+                    "blank": 1,
+                    "code": 5,
+                    "comment": 0,
+                    "filename": ".vsconfig"
+                },
+                {
+                    "blank": 0,
+                    "code": 848,
+                    "comment": 0,
+                    "filename": "Assembly-CSharp.csproj"
+                },
+                {
+                    "blank": 0,
+                    "code": 1632,
+                    "comment": 0,
+                    "filename": "Assets\\Animations\\PC\\PC.controller"
+                },
+                {
+                    "blank": 0,
+                    "code": 675,
+                    "comment": 0,
+                    "filename": "Assets\\Animations\\PC\\PC_ClimbIdle.anim"
+                },
+                {
+                    "blank": 0,
+                    "code": 1251,
+                    "comment": 0,
+                    "filename": "Assets\\Animations\\PC\\PC_ClimbUp.anim"
+                },
+                {
+                    "blank": 0,
+                    "code": 2030,
+                    "comment": 0,
+                    "filename": "Assets\\Animations\\PC\\PC_Death.anim"
+                },
+                {
+                    "blank": 0,
+                    "code": 6490,
+                    "comment": 0,
+                    "filename": "Assets\\Animations\\PC\\PC_Hit.anim"
+                },
+                {
+                    "blank": 0,
+                    "code": 467,
+                    "comment": 0,
+                    "filename": "Assets\\Animations\\PC\\PC_HoldingItem.anim"
+                },
+                {
+                    "blank": 0,
+                    "code": 1190,
+                    "comment": 0,
+                    "filename": "Assets\\Animations\\PC\\PC_Idle.anim"
+                },
+                {
+                    "blank": 0,
+                    "code": 770,
+                    "comment": 0,
+                    "filename": "Assets\\Animations\\PC\\PC_Jump.anim"
+                },
+                {
+                    "blank": 0,
+                    "code": 1319,
+                    "comment": 0,
+                    "filename": "Assets\\Animations\\PC\\PC_JumpSquat.anim"
+                },
+                {
+                    "blank": 0,
+                    "code": 1418,
+                    "comment": 0,
+                    "filename": "Assets\\Animations\\PC\\PC_Repairing.anim"
+                },
+                {
+                    "blank": 0,
+                    "code": 1136,
+                    "comment": 0,
+                    "filename": "Assets\\Animations\\PC\\PC_RepairStart.anim"
+                },
+                {
+                    "blank": 0,
+                    "code": 1475,
+                    "comment": 0,
+                    "filename": "Assets\\Animations\\PC\\PC_Walk.anim"
+                },
+                {
+                    "blank": 0,
+                    "code": 75,
+                    "comment": 0,
+                    "filename": "Assets\\Animations\\Projectiles\\Fire.anim"
+                },
+                {
+                    "blank": 0,
+                    "code": 72,
+                    "comment": 0,
+                    "filename": "Assets\\Animations\\Projectiles\\ProjectilesFlames_1.controller"
+                },
+                {
+                    "blank": 10,
+                    "code": 52,
+                    "comment": 3,
+                    "filename": "Assets\\BackgroundMovement.cs"
+                },
+                {
+                    "blank": 4,
+                    "code": 12,
+                    "comment": 2,
+                    "filename": "Assets\\Scripts\\Buttons\\ButtonBase.cs"
+                },
+                {
+                    "blank": 8,
+                    "code": 14,
+                    "comment": 0,
+                    "filename": "Assets\\Scripts\\Buttons\\ButtonManager.cs"
+                },
+                {
+                    "blank": 4,
+                    "code": 16,
+                    "comment": 4,
+                    "filename": "Assets\\Scripts\\GameCamera.cs"
+                },
+                {
+                    "blank": 5,
+                    "code": 12,
+                    "comment": 2,
+                    "filename": "Assets\\Scripts\\GameModel.cs"
+                },
+                {
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0,
+                    "filename": "Assets\\Scripts\\HarpoonGun.cs"
+                },
+                {
+                    "blank": 29,
+                    "code": 176,
+                    "comment": 46,
+                    "filename": "Assets\\Scripts\\HazardRoutines\\HazardManager.cs"
+                },
+                {
+                    "blank": 4,
+                    "code": 12,
+                    "comment": 2,
+                    "filename": "Assets\\Scripts\\HazardRoutines\\Hunger.cs"
+                },
+                {
+                    "blank": 4,
+                    "code": 12,
+                    "comment": 2,
+                    "filename": "Assets\\Scripts\\HazardRoutines\\Hydra.cs"
+                },
+                {
+                    "blank": 4,
+                    "code": 40,
+                    "comment": 6,
+                    "filename": "Assets\\Scripts\\HazardRoutines\\Meteorite.cs"
+                },
+                {
+                    "blank": 4,
+                    "code": 12,
+                    "comment": 2,
+                    "filename": "Assets\\Scripts\\HazardRoutines\\MeteorShower.cs"
+                },
+                {
+                    "blank": 4,
+                    "code": 12,
+                    "comment": 2,
+                    "filename": "Assets\\Scripts\\HazardRoutines\\Siren.cs"
+                },
+                {
+                    "blank": 7,
+                    "code": 47,
+                    "comment": 10,
+                    "filename": "Assets\\Scripts\\HazardRoutines\\SpaceRock.cs"
+                },
+                {
+                    "blank": 10,
+                    "code": 64,
+                    "comment": 2,
+                    "filename": "Assets\\Scripts\\Items\\ClothItem.cs"
+                },
+                {
+                    "blank": 14,
+                    "code": 61,
+                    "comment": 2,
+                    "filename": "Assets\\Scripts\\Items\\FoodItem.cs"
+                },
+                {
+                    "blank": 9,
+                    "code": 43,
+                    "comment": 3,
+                    "filename": "Assets\\Scripts\\Items\\HarpoonItem.cs"
+                },
+                {
+                    "blank": 6,
+                    "code": 17,
+                    "comment": 0,
+                    "filename": "Assets\\Scripts\\Items\\IHeldItems.cs"
+                },
+                {
+                    "blank": 12,
+                    "code": 58,
+                    "comment": 6,
+                    "filename": "Assets\\Scripts\\Motion\\CharacterMotor.cs"
+                },
+                {
+                    "blank": 4,
+                    "code": 12,
+                    "comment": 2,
+                    "filename": "Assets\\Scripts\\Motion\\ClimbingMovement.cs"
+                },
+                {
+                    "blank": 4,
+                    "code": 17,
+                    "comment": 0,
+                    "filename": "Assets\\Scripts\\Motion\\IJump.cs"
+                },
+                {
+                    "blank": 4,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": "Assets\\Scripts\\Motion\\IMovementModifier.cs"
+                },
+                {
+                    "blank": 3,
+                    "code": 14,
+                    "comment": 1,
+                    "filename": "Assets\\Scripts\\Motion\\IWalk.cs"
+                },
+                {
+                    "blank": 23,
+                    "code": 170,
+                    "comment": 14,
+                    "filename": "Assets\\Scripts\\Motion\\NormalJump.cs"
+                },
+                {
+                    "blank": 14,
+                    "code": 79,
+                    "comment": 6,
+                    "filename": "Assets\\Scripts\\Motion\\NormalWalk.cs"
+                },
+                {
+                    "blank": 21,
+                    "code": 107,
+                    "comment": 8,
+                    "filename": "Assets\\Scripts\\Player\\PickupItems.cs"
+                },
+                {
+                    "blank": 11,
+                    "code": 39,
+                    "comment": 4,
+                    "filename": "Assets\\Scripts\\Player\\PlayerInput.cs"
+                },
+                {
+                    "blank": 31,
+                    "code": 112,
+                    "comment": 27,
+                    "filename": "Assets\\Scripts\\Player\\PlayerLogic.cs"
+                },
+                {
+                    "blank": 13,
+                    "code": 79,
+                    "comment": 1,
+                    "filename": "Assets\\Scripts\\RewardSystem\\Comet.cs"
+                },
+                {
+                    "blank": 19,
+                    "code": 116,
+                    "comment": 16,
+                    "filename": "Assets\\Scripts\\RewardSystem\\RewardManager.cs"
+                },
+                {
+                    "blank": 5,
+                    "code": 17,
+                    "comment": 0,
+                    "filename": "Assets\\Scripts\\Sound\\Sound.cs"
+                },
+                {
+                    "blank": 8,
+                    "code": 34,
+                    "comment": 2,
+                    "filename": "Assets\\Scripts\\Sound\\SoundManager.cs"
+                },
+                {
+                    "blank": 1,
+                    "code": 16,
+                    "comment": 0,
+                    "filename": "Assets\\Scripts\\SpaceBoat\\BelowDeckTransition.cs"
+                },
+                {
+                    "blank": 6,
+                    "code": 33,
+                    "comment": 0,
+                    "filename": "Assets\\Scripts\\SpaceBoat\\Sails.cs"
+                },
+                {
+                    "filename": "Assets\\Sound effects\\menu soundtrack\\GameJam+ 0.mp3",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "Assets\\Sound effects\\other stuff\\Dragon.mp3",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "Assets\\Sound effects\\other stuff\\Drop item.mp3",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "Assets\\Sound effects\\other stuff\\Harpoon hit.mp3",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "Assets\\Sound effects\\other stuff\\Harpoon.mp3",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "Assets\\Sound effects\\other stuff\\Meteor IMPACT.mp3",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "Assets\\Sound effects\\other stuff\\Meteor Swoosh 2.mp3",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "Assets\\Sound effects\\other stuff\\Meteor Swoosh.mp3",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "Assets\\Sound effects\\other stuff\\Pick up item.mp3",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "Assets\\Sound effects\\other stuff\\Pull rope.mp3",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "Assets\\Sound effects\\other stuff\\Repair.mp3",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "Assets\\Sound effects\\other stuff\\Rock impact.mp3",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "Assets\\Sound effects\\other stuff\\Rock swoosh 2.mp3",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "Assets\\Sound effects\\other stuff\\Rock swoosh.mp3",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "Assets\\Sound effects\\other stuff\\Ship LOWHP.mp3",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "Assets\\Sound effects\\player effects\\Climb.mp3",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "Assets\\Sound effects\\player effects\\comet breaking.mp3",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "Assets\\Sound effects\\player effects\\Death Falling 2.mp3",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "Assets\\Sound effects\\player effects\\Death.mp3",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "Assets\\Sound effects\\player effects\\Injury.mp3",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "Assets\\Sound effects\\player effects\\Jump.mp3",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "Assets\\Sound effects\\player effects\\LOW HP.mp3",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "Assets\\Sound effects\\player effects\\Spawn.mp3",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "Assets\\Sound effects\\player effects\\Walk.mp3",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "Assets\\Sprites\\Chydra.psb",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "Assets\\Sprites\\Cthulk.psb",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "Assets\\thiccSprites\\meteor1.PNG",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "Assets\\thiccSprites\\spacerock1.PNG",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0,
+                    "filename": "Assets\\~UnityDirMonSyncFile~22b287b80c086344db574503d28f72f1~"
+                },
+                {
+                    "blank": 0,
+                    "code": 17,
+                    "comment": 0,
+                    "filename": "GameJamPlus.sln"
+                },
+                {
+                    "blank": 4,
+                    "code": 17,
+                    "comment": 0,
+                    "filename": "LICENSE"
+                },
+                {
+                    "blank": 50,
+                    "code": 1370,
+                    "comment": 0,
+                    "filename": "Logs\\AssetImportWorker0-prev.log"
+                },
+                {
+                    "blank": 108,
+                    "code": 3662,
+                    "comment": 0,
+                    "filename": "Logs\\AssetImportWorker0.log"
+                },
+                {
+                    "blank": 50,
+                    "code": 1304,
+                    "comment": 0,
+                    "filename": "Logs\\AssetImportWorker1-prev.log"
+                },
+                {
+                    "blank": 86,
+                    "code": 3486,
+                    "comment": 0,
+                    "filename": "Logs\\AssetImportWorker1.log"
+                },
+                {
+                    "blank": 98,
+                    "code": 4047,
+                    "comment": 1,
+                    "filename": "Logs\\AssetImportWorker2.log"
+                },
+                {
+                    "blank": 43,
+                    "code": 882,
+                    "comment": 0,
+                    "filename": "Logs\\AssetImportWorker3.log"
+                },
+                {
+                    "blank": 103,
+                    "code": 4302,
+                    "comment": 0,
+                    "filename": "Logs\\AssetImportWorker4.log"
+                },
+                {
+                    "blank": 30,
+                    "code": 128,
+                    "comment": 0,
+                    "filename": "Logs\\AssetImportWorker5.log"
+                },
+                {
+                    "blank": 33,
+                    "code": 278,
+                    "comment": 0,
+                    "filename": "Logs\\AssetImportWorker6.log"
+                },
+                {
+                    "blank": 30,
+                    "code": 102,
+                    "comment": 0,
+                    "filename": "Logs\\AssetImportWorker7.log"
+                },
+                {
+                    "blank": 6,
+                    "code": 49,
+                    "comment": 0,
+                    "filename": "Logs\\Packages-Update.log"
+                },
+                {
+                    "blank": 2,
+                    "code": 4,
+                    "comment": 0,
+                    "filename": "Logs\\shadercompiler-AssetImportWorker0.log"
+                },
+                {
+                    "blank": 1,
+                    "code": 2,
+                    "comment": 0,
+                    "filename": "Logs\\shadercompiler-UnityShaderCompiler.exe0.log"
+                },
+                {
+                    "blank": 0,
+                    "code": 45,
+                    "comment": 0,
+                    "filename": "Packages\\manifest.json"
+                },
+                {
+                    "blank": 0,
+                    "code": 476,
+                    "comment": 0,
+                    "filename": "Packages\\packages-lock.json"
+                },
+                {
+                    "blank": 0,
+                    "code": 918,
+                    "comment": 0,
+                    "filename": "UserSettings\\Layouts\\CurrentMaximizeLayout.dwlt"
+                },
+                {
+                    "blank": 0,
+                    "code": 963,
+                    "comment": 0,
+                    "filename": "UserSettings\\Layouts\\default-2021.dwlt"
+                },
+                {
+                    "blank": 0,
+                    "code": 1013,
+                    "comment": 0,
+                    "filename": "UserSettings\\Layouts\\default-2022.dwlt"
+                },
+                {
+                    "blank": 0,
+                    "code": 1,
+                    "comment": 0,
+                    "filename": "UserSettings\\Search.settings"
+                }
+            ]
+        }
+    ]
+}
