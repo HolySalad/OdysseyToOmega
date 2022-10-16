@@ -126,7 +126,8 @@ namespace SpaceBoat.Player {
         void ShipDies() {
             Debug.Log("Ship Died");
             shipDiedFailure = true;
-            Time.timeScale = 0;
+            //Time.timeScale = 0;
+            SceneManager.LoadScene("GameOver");
         }
 
         public void RegisterSail() {

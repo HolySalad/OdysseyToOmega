@@ -59,11 +59,11 @@ public class BackgroundMovement : MonoBehaviour
     }
     
     private IEnumerator GoToNextBG1(){
-        yield return new WaitForSeconds(120f);
+        yield return new WaitForSeconds(90f);
         nextBG++;
-        yield return new WaitForSeconds(120f);
+        yield return new WaitForSeconds(180f);
         nextBG++;
-        yield return new WaitForSeconds(50f);
+        yield return new WaitForSeconds(70f);
         Hydra.HydraAppear();
     }
 
