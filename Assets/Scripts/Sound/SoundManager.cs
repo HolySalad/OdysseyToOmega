@@ -9,16 +9,18 @@ public class SoundManager : MonoBehaviour
 
     public static SoundManager instance;
 
-    //Add to awake FindObjectOfType<SoundManager>() and then call it and ad .("WhatheverSoundName")
+    //TODO Add to awake FindObjectOfType<SoundManager>() and then call it and ad .("WhatheverSoundName")
     void Awake()
     {
-        if (instance = null)
-            instance = this;
-        else{
+        if (instance != null){
+            Debug.Log(instance.name);
             Destroy(gameObject);
             return;
         }
-
+        else{
+            
+            instance = this;
+        }
         DontDestroyOnLoad(gameObject); 
 
 
