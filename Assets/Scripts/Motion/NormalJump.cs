@@ -164,19 +164,25 @@ namespace SpaceBoat.Movement {
             return false;
         }
 
+        bool PlayerIsInContactWithRoof() {
+            return coll.IsTouchingLayers(LayerMask.GetMask("Roof"));
+        }
+        
+
         void OnCollisionEnter2D(Collision2D other) {
             // if the player lands on the ground, reset their jump
-            if (!isGrounded && (other.gameObject.layer == LayerMask.NameToLayer("Ground"))) {
-                //Debug.Log("Collision with ground");
+            if (PlayerIsInContactWithRoof()) {
+                Debug.Log("touching a roof, not grounding");
+                isGrounded = false;
+                currentVerticalForce = 0;
+            } else if (!isGrounded && (other.gameObject.layer == LayerMask.NameToLayer("Ground"))) {
+                Debug.Log("Collision with ground");
                 if (IsContactWithGroundFromAbove(other)) {
                     //Debug.Log("Collision with ground from above");
                     //TODO sound 
                     isGrounded = true;
                     isJumping = false;
                     halfJump = false;
-                    currentVerticalForce = 0;
-                } else if (IsContactWithGroundFromBelow(other)) {
-                    //Debug.Log("Collision with ground from below");
                     currentVerticalForce = 0;
                 }
             }
