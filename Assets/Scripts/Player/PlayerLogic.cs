@@ -104,7 +104,7 @@ namespace SpaceBoat.Player {
             SoundManager sm = FindObjectOfType<SoundManager>();
             Debug.Log("Player Died");
             playerDiedFailure = true;
-            Time.timeScale = 0;    
+            //Time.timeScale = 0;    
             animator.SetTrigger("Dead");
             sm.Stop("LowHP"); 
             sm.Stop("ShipLowHP");
