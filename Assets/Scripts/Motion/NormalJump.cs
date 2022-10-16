@@ -197,7 +197,7 @@ namespace SpaceBoat.Movement {
         }
 
         IEnumerator Unstick() {
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.05f);
             if (!isGrounded && coll.IsTouchingLayers(LayerMask.GetMask("Ground"))) {
                 isGrounded = true;
                 isJumping = false;

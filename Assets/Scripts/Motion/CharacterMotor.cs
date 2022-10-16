@@ -72,9 +72,9 @@ public class CharacterMotor : MonoBehaviour
                         }
                     //}
                 }
-            if (isBusy) {
-                movement = new Vector2(0, Mathf.Min(0, movement.y));
-            }
+            //if (isBusy) {
+              //  movement = new Vector2(0, Mathf.Min(0, movement.y));
+            //}
             rb.velocity = movement;
 
         }
