@@ -11,6 +11,8 @@ public class CharacterMotor : MonoBehaviour
         private Rigidbody2D rb;
         private List<IMovementModifier> movementModifiers = new List<IMovementModifier>();
 
+        public bool isBusy {get; set;} = false;
+
         // on Awake, add references to rigidbody, CharacterMotor and collider
         void Awake()
         {
@@ -53,21 +55,25 @@ public class CharacterMotor : MonoBehaviour
         private void Move()
         {
             Vector2 movement = Vector2.zero;
-            foreach (IMovementModifier modifier in movementModifiers)
-            {   
-                //if (modifier.Enabled) {
-                    movement += modifier.Value;
-                    //print("Character Motor " + modifier.GetType().Name + " Value: " + modifier.Value);
-                    modifier.UpdateModifier(Time.fixedDeltaTime);
-                    if (modifier is IJump) {
-                        IJump jump = (IJump)modifier;
-                        jump.UpdateAnimator();
-                    }
-                    if (modifier is IWalk) {
-                        IWalk walk = (IWalk)modifier;
-                        walk.UpdateAnimator();
-                    }
-                //}
+            
+                foreach (IMovementModifier modifier in movementModifiers)
+                {   
+                    //if (modifier.Enabled) {
+                        movement += modifier.Value;
+                        //print("Character Motor " + modifier.GetType().Name + " Value: " + modifier.Value);
+                        modifier.UpdateModifier(Time.fixedDeltaTime);
+                        if (modifier is IJump) {
+                            IJump jump = (IJump)modifier;
+                            jump.UpdateAnimator();
+                        }
+                        if (modifier is IWalk) {
+                            IWalk walk = (IWalk)modifier;
+                            walk.UpdateAnimator();
+                        }
+                    //}
+                }
+            if (isBusy) {
+                movement = new Vector2(0, Mathf.Min(0, movement.y));
             }
             rb.velocity = movement;
 

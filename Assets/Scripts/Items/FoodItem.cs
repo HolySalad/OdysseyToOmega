@@ -44,6 +44,7 @@ using UnityEngine;
         void Cook() {
             Debug.Log("Player is cooking");
             this.gameObject.GetComponent<Animator>().SetBool("Repairing", true);
+            this.gameObject.GetComponent<Movement.CharacterMotor>().isBusy = true;
             StartCoroutine(FinishCook());
         }
 
@@ -60,6 +61,8 @@ using UnityEngine;
             this.gameObject.GetComponent<Player.PickupItems>().DropItem(true);
             this.gameObject.GetComponent<Animator>().SetBool("Repairing", false);
             this.gameObject.GetComponent<Animator>().SetTrigger("FinishedRepairing");
+            
+            this.gameObject.GetComponent<Movement.CharacterMotor>().isBusy = false;
         }
 
         private bool GUIActive = false;
