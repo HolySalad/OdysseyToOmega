@@ -97,6 +97,7 @@ namespace SpaceBoat.Movement {
                 }
                 currentVerticalForce = Mathf.Max(0, currentVerticalForce - decay * deltaTime);
             } else if (jumpSquat && Time.frameCount > jumpStartTime + jumpSquatFrames) {
+                FindObjectOfType<SoundManager>().Play("Jump"); 
                 jumpSquat = false;
                 isJumping = true;
                 hitApex = false;
@@ -181,7 +182,9 @@ namespace SpaceBoat.Movement {
                 Debug.Log("Collision with ground");
                 if (IsContactWithGroundFromAbove(other)) {
                     //Debug.Log("Collision with ground from above");
-                    //TODO sound 
+                    if (isJumping) {
+                        FindObjectOfType<SoundManager>().Play("JumpStomp"); 
+                    }
                     isGrounded = true;
                     isJumping = false;
                     halfJump = false;

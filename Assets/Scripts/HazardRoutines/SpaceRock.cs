@@ -35,13 +35,13 @@ namespace SpaceBoat.Hazards {
                 Debug.Log("Rock hit player");
                 player.PlayerTakesDamage(1);
                 //TODO add small knockback?
-                //TODO rock breaking animation.
+                FindObjectOfType<SoundManager>().Play("RockImpact"); 
                 //TODO sound
                 Destroy(this.gameObject);
             } else if (collision.gameObject.layer == LayerMask.NameToLayer("Ground") && !collision.gameObject.tag.Equals("Platforms")) {
                 Destroy(this.gameObject);
                 //TODO rock breaking animation.
-                //TODO sound
+                FindObjectOfType<SoundManager>().Play("RockImpact"); 
             }
         }
 
@@ -58,6 +58,7 @@ namespace SpaceBoat.Hazards {
             Rigidbody2D rb = GetComponent<Rigidbody2D>();
             rb.AddTorque(1);
             rb.velocity = velocity;
+            FindObjectOfType<SoundManager>().Play("RockWhoosh_0"); 
         }
     }
 }

@@ -77,7 +77,7 @@ namespace SpaceBoat.Player {
             createdComponent.DropMode();
             playerInput.heldItems = null; //unbind the input
             itemInHand = null;
-
+            FindObjectOfType<SoundManager>().Play("DropItem"); 
             return droppedItem;
         }
 
@@ -91,10 +91,9 @@ namespace SpaceBoat.Player {
 
 
         public void GrabItem(GameObject item) {
-            Vector3 itemScale = item.transform.localScale;
-            itemPlace.localScale = itemScale;
             SpriteRenderer render = item.GetComponent<SpriteRenderer>();
             itemPlace.GetComponent<SpriteRenderer>().sprite = render.sprite;    //make the item a child so it follows the player
+            itemPlace.GetComponent<SpriteRenderer>().transform.localScale = new Vector3(1, 1, 1);
             animator.SetBool("HoldingObject", true);
             itemInHand = GetItemType(item);
             haveItem = true;
@@ -103,7 +102,7 @@ namespace SpaceBoat.Player {
             IHeldItems createdComponent = CreateItemComponent(player.gameObject, itemInHand);
             playerInput.heldItems = createdComponent;
             createdComponent.HeldMode();
-            
+            FindObjectOfType<SoundManager>().Play("PickItemUp"); 
         }
 
         private void CheckForItems(){

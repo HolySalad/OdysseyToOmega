@@ -37,6 +37,7 @@ public class SoundManager : MonoBehaviour
     // Update is called once per frame
     public void Play(string name){
         Sound s = Array.Find(sounds, sound => sound.name == name);
+        Debug.Log("Playing Sound " + name);
         if(s == null){
             Debug.LogWarning("Sound "+ name + " not found.");
             return;
