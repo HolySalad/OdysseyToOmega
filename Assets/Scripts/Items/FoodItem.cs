@@ -42,7 +42,7 @@ using UnityEngine;
 
         void Cook() {
             Debug.Log("Player is cooking");
-            //TODO play cook animation
+            this.gameObject.GetComponent<Animator>().SetBool("Repairing", true);
             StartCoroutine(FinishCook());
         }
 
@@ -51,12 +51,14 @@ using UnityEngine;
                 Cook();
             }
         }
-
+    
         IEnumerator FinishCook() {
             yield return new WaitForSeconds(cookingFrames*Time.deltaTime);
             Debug.Log("Food is cooked");
             this.gameObject.GetComponent<Player.PlayerLogic>().PlayerHeals();
             this.gameObject.GetComponent<Player.PickupItems>().DropItem(true);
+            this.gameObject.GetComponent<Animator>().SetBool("Repairing", false);
+            this.gameObject.GetComponent<Animator>().SetTrigger("FinishedRepairing");
         }
 
         private bool GUIActive = false;

@@ -20,8 +20,9 @@ namespace SpaceBoat.Hazards{
             Debug.Log("Meteorite OnTriggerEnter2D");
             int layer = other.gameObject.layer;
             if (layer == LayerMask.NameToLayer("Sails")) {
-                other.gameObject.GetComponent<Sails>().Break();
-                Destroy(this.gameObject);
+                Sails sail = other.gameObject.GetComponent<Sails>();
+                if (!sail.IsBroken){sail.Break();
+                Destroy(this.gameObject);}
             }
         }
 

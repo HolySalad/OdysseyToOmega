@@ -19,6 +19,7 @@ TagManager:
   - Collectable
   - Kitchen
   - HarpoonGun
+  - Roof
   - BackGround
   layers:
   - Default
@@ -36,7 +37,7 @@ TagManager:
   - EndOfMapLeft
   - BottomOfMap
   - TaggedInteractables
-  - 
+  - Roof
   - 
   - 
   - 
@@ -71,6 +72,9 @@ TagManager:
     locked: 0
   - name: Sail
     uniqueID: 475942731
+    locked: 0
+  - name: item
+    uniqueID: 418170571
     locked: 0
   - name: ShipFrontLayer
     uniqueID: 2074438875

@@ -56,6 +56,7 @@ namespace SpaceBoat.Hazards {
             CircleCollider2D collider = GetComponent<CircleCollider2D>();
             collider.transform.localScale = scaleVec;
             Rigidbody2D rb = GetComponent<Rigidbody2D>();
+            rb.AddTorque(1);
             rb.velocity = velocity;
         }
     }
