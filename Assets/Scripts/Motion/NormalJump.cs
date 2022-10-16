@@ -97,7 +97,11 @@ namespace SpaceBoat.Movement {
                 }
                 currentVerticalForce = Mathf.Max(0, currentVerticalForce - decay * deltaTime);
             } else if (jumpSquat && Time.frameCount > jumpStartTime + jumpSquatFrames) {
-                FindObjectOfType<SoundManager>().Play("Jump"); 
+                SoundManager sm = FindObjectOfType<SoundManager>();
+                sm.Play("Jump"); 
+                if (sm.IsPlaying("Walk")) {
+                    sm.Stop("Walk");
+                }
                 jumpSquat = false;
                 isJumping = true;
                 hitApex = false;

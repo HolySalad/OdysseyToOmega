@@ -29,7 +29,7 @@ public class SoundManager : MonoBehaviour
             sound.source.clip = sound.clip;
 
             sound.source.volume = sound.volume;
-            sound.source.pitch = sound.pitch;
+            sound.source.pitch = 1;
             sound.source.loop = sound.loop;
         }
     }
@@ -53,5 +53,14 @@ public class SoundManager : MonoBehaviour
             return;
         }
         s.source.Stop();
+    }
+
+    public bool IsPlaying(string name){
+        Sound s = Array.Find(sounds, sound => sound.name == name);
+        if(s == null){
+            Debug.LogWarning("Sound "+ name + " not found.");
+            return false;
+        }
+        return s.source.isPlaying;
     }
 }
