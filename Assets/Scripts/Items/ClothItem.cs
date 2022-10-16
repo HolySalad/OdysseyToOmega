@@ -5,11 +5,12 @@ using UnityEngine;
   namespace SpaceBoat.Items  {
     public class ClothItem : MonoBehaviour, IHeldItems
     {
+        [SerializeField] public Sprite itemSprite {get;}
+        [SerializeField] public Sprite encasedSprite {get;}
         public bool canBeUsed {get; private set;} = false;
         public bool isHeld {get; private set;} = false;
         private string interactionTag = "Sails";
         private int repairingFrames = 72;
-        public Sprite itemSprite {get;}
         private SpaceBoat.Sails sailScript;
 
         public string itemName {get;} = "Cloth";

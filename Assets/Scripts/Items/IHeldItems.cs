@@ -9,6 +9,7 @@ namespace SpaceBoat.Items {
         public bool isHeld {get; }
 
         public Sprite itemSprite {get;}
+        public Sprite encasedSprite {get;}
 
         public string itemName {get;}
         public string helpText {get;}
