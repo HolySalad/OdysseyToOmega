@@ -8,24 +8,35 @@ using UnityEngine;
         public bool canBeUsed {get; private set;} = false;
         public bool isHeld {get; private set;} = false;
         private string interactionTag = "Sails";
-
+        private int repairingFrames = 72;
         public Sprite itemSprite {get;}
+        private SpaceBoat.Sails sailScript;
 
         public string itemName {get;} = "Cloth";
         public string helpText {get;} = "=";
+
+        void Repair() {
+            Debug.Log("Player is repairing");
+            this.gameObject.GetComponent<Animator>().SetBool("Repairing", true);
+            StartCoroutine(FinishRepair());
+        }
         public void Input()
         {
-            throw new System.NotImplementedException();
+            if (canBeUsed) {
+                Repair();
+            }
         }
 
-                void OnTriggerEnter2D(Collider2D other) {
+        void OnTriggerEnter2D(Collider2D other) {
             if (other.gameObject.tag == interactionTag) {
+                sailScript = other.gameObject.GetComponent<SpaceBoat.Sails>();
                 canBeUsed = true;
             }
         }
 
         void OnTriggerExit2D(Collider2D other) {
             if (other.gameObject.tag == interactionTag) {
+                sailScript = null;
                 canBeUsed = false;
             }
         }
@@ -36,10 +47,19 @@ using UnityEngine;
 
         public void DropMode() {
             isHeld = false;
+            canBeUsed = false;
         }
 
     
-                //TODO repair.
+        IEnumerator FinishRepair() {
+            yield return new WaitForSeconds(repairingFrames*Time.deltaTime);
+            Debug.Log("Sail is repaired");
+            sailScript.Repair();
+            this.gameObject.GetComponent<Player.PlayerLogic>().SailRepairs();
+            this.gameObject.GetComponent<Player.PickupItems>().DropItem(true);
+            this.gameObject.GetComponent<Animator>().SetBool("Repairing", false);
+            this.gameObject.GetComponent<Animator>().SetTrigger("FinishedRepairing");
+        }
 
         private bool GUIActive = false;
         void OnGUI() {

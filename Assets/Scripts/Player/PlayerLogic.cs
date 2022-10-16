@@ -134,7 +134,9 @@ namespace SpaceBoat.Player {
             }
         }
 
-
+        public void SailRepairs() {
+            numBrokenSails--;
+        }
 
 
 
