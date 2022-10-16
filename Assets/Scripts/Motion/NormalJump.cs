@@ -165,18 +165,9 @@ namespace SpaceBoat.Movement {
         }
 
         bool PlayerIsInContactWithRoof() {
-            ContactPoint2D[] contacts = new ContactPoint2D[3];
-            coll.GetContacts(contacts);
-            foreach (ContactPoint2D contact in contacts) {
-                if (contact.collider != null && contact.collider.gameObject.CompareTag("Roof")) {
-                    if (contact.collider.gameObject.transform.position.y < transform.position.y) {
-                        Debug.Log("Player is in contact with roof returning true with comparisons " + contact.collider.gameObject.transform.position.y + " and " + transform.position.y);
-                        return true;
-                    }
-                }
-            }
-            return false;
+            return coll.IsTouchingLayers(LayerMask.GetMask("Roof"));
         }
+        
         
 
         void OnCollisionEnter2D(Collision2D other) {
@@ -185,6 +176,7 @@ namespace SpaceBoat.Movement {
                 Debug.Log("touching a roof, not grounding");
                 isGrounded = false;
                 currentVerticalForce = 0;
+                StartCoroutine(Unstick());
             } else if (!isGrounded && (other.gameObject.layer == LayerMask.NameToLayer("Ground"))) {
                 Debug.Log("Collision with ground");
                 if (IsContactWithGroundFromAbove(other)) {
@@ -195,6 +187,16 @@ namespace SpaceBoat.Movement {
                     halfJump = false;
                     currentVerticalForce = 0;
                 }
+            }
+        }
+
+        IEnumerator Unstick() {
+            yield return new WaitForSeconds(0.1f);
+            if (!isGrounded && coll.IsTouchingLayers(LayerMask.GetMask("Ground"))) {
+                isGrounded = true;
+                isJumping = false;
+                halfJump = false;
+                currentVerticalForce = 0;
             }
         }
 
