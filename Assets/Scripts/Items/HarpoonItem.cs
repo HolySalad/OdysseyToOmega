@@ -5,6 +5,8 @@ using UnityEngine;
     public class HarpoonItem : MonoBehaviour, IHeldItems
     {
         [SerializeField] public Sprite itemSprite {get;}
+        [SerializeField] public Sprite encasedSprite {get;}
+
         public bool canBeUsed {get; private set;} = false;
         public bool isHeld {get; private set;} = false;
         private string interactionTag = "HarpoonGun";
