@@ -130,7 +130,6 @@ namespace SpaceBoat.Movement {
 
         private bool CanJump() {
                 if (hitOnFrame + hitStunFrames > Time.frameCount) {
-                    Debug.Log("Player cant jump, is hitstunned");
                     return false;
                 }
                 return Time.frameCount < jumpGrace || isGrounded;
