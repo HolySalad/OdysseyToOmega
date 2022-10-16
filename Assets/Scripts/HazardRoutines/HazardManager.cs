@@ -73,6 +73,7 @@ namespace SpaceBoat.Hazards {
 
         private float nextMeteorSpawnTime; //when is the next meteor?
         private bool isNextMeteorSpawnTimeSet = false; //has the next meteor spawn time been set yet?
+        private bool firstMeteor = false; //is this the first meteor?
 
         void Awake() {
             gameBeganTime = Time.time;
@@ -146,6 +147,12 @@ namespace SpaceBoat.Hazards {
 
         void calcNextMeteorSpawnTime(float timeSinceGameBegan, float deltaTime) {
             Debug.Log("Determining next meteor spawn at " + timeSinceGameBegan);
+            if (!firstMeteor) {
+                handleMeteorSpawning(timeSinceGameBegan, deltaTime);
+                isNextMeteorSpawnTimeSet = true;
+                firstMeteor = true;
+                 Debug.Log("Next meteoer will spawn at " + nextMeteorSpawnTime);
+            }
             List<GameObject> sails = new List<GameObject>(FindGameObjectsInLayer(LayerMask.NameToLayer("Sails")));
             List<GameObject> nonbrokenSails = new List<GameObject>();
             foreach (GameObject sail in sails)
