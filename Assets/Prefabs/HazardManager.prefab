@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 443797838304632648}
   - component: {fileID: 3367701564478931810}
-  - component: {fileID: 2889215355153557502}
+  - component: {fileID: 8544168771500311338}
   m_Layer: 0
   m_Name: HazardManager
   m_TagString: Untagged
@@ -53,7 +53,7 @@ MonoBehaviour:
   lastRockSpawnTimer: 290
   lastMeteorSpawnTimer: 280
   meteorInterval: 27
-  meteorIntervalVariance: 0.9
+  meteorIntervalVariance: 0.2
   meteorIntervalRampTime: 40
   meteorIntervalRampRate: 3
   meteorIntervalNumRamps: 5
@@ -83,7 +83,7 @@ MonoBehaviour:
   meteorSpawnXVariance: 15
   meteorSpawnYVariance: 5
   meteorSpeed: 25
---- !u!114 &2889215355153557502
+--- !u!114 &8544168771500311338
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -92,44 +92,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 9124360315967182124}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 60ee6ee2a0495c14a8b6723a8dcda2a3, type: 3}
+  m_Script: {fileID: 11500000, guid: d03c4973ffe119643bc5bc15e306b5d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rockPrefab: {fileID: 189507748417666162, guid: a4f67d1775a9a984e950a805568f14db, type: 3}
-  meteorPrefab: {fileID: 189507748417666162, guid: 8ad86b7f340c2764ea7cf973e28b644b, type: 3}
-  asteroidPrefab: {fileID: 0}
-  firstRockSpawnTimer: 4
-  firstMeteorSpawnTimer: 999
-  lastRockSpawnTimer: 290
-  lastMeteorSpawnTimer: 280
-  meteorInterval: 32
-  meteorIntervalVariance: 0.9
-  meteorIntervalRampTime: 40
-  meteorIntervalRampRate: 3
-  meteorIntervalNumRamps: 5
-  meteorEaseOffIntervalSails: 3
-  meteorEaseOfIntervalRamp: 10
-  fullyRepairedTimerReduction: 0.7
-  rockVolleyLength: 8
-  peakRockPaceSwell: 2
-  firstSwellTimer: 70
-  swellCycleTime: 60
-  swellCycleRampTime: 40
-  swellCycleMinTime: 30
-  numRocksPerVolley: 3
-  firstExtraRockAddedTime: 150
-  secondExtraRockAddedTime: 210
-  bossFightStartTimer: 300
-  rockSpeed: 10
-  rockSpeedVariance: 0.3
-  baseRockSpawnHeight: 6
-  rockSpawnHeightVariance: 3
-  rockAngleOffset: -1
-  rockAngleVariance: 3
-  rockBaseSize: 1
-  rockSizeIncreaseVariance: 1.5
-  meteorSpawnXPos: 65
-  meteorSpawnYPos: 30
-  meteorSpawnXVariance: 15
-  meteorSpawnYVariance: 5
-  meteorSpeed: 25
+  clothPrefab: {fileID: 8273169938340841911, guid: 29dda14d70372bf4e8cd5a00e0f352c5, type: 3}
+  harpoonPrefab: {fileID: 8273169938340841911, guid: f873f9b434d22334ab22d1e353b73f5e, type: 3}
+  foodPrefab: {fileID: 8273169938340841911, guid: a8b181ba638d05b47a6fd7f95355f2e7, type: 3}
+  cometPrefab: {fileID: 189507748417666162, guid: 8f8721e54bbbb2e41b60ab982a8bbbe6, type: 3}
+  targetObject: {fileID: 0}
+  pityTarget: {fileID: 0}
+  playerCharacter: {fileID: 0}
+  clothRewardRelativeWeight: 5
+  harpoonRewardRelativeWeight: 1
+  foodRewardRelativeWeight: 2
+  projectileSpeed: 8
+  cometSpawnXPos: 10
+  cometSpawnYPos: 5
+  cometSpawnXVariance: 5
+  cometSpawnYVariance: 5
+  cometPityChance: 100
+  cometAngleOffset: 5
+  cometAngleVariance: 5
+  firstCometSpawnTimer: 50
+  lastCometSpawnTimer: 280
+  cometInterval: 32
+  cometIntervalVariance: 0.2
+  cometIntervalRampTime: 40
+  cometIntervalRampRate: 3
+  cometIntervalNumRamps: 5
