@@ -48,7 +48,7 @@ namespace SpaceBoat.Player {
             
         void Awake() {
             if (healthbar == null) {
-                healthbar = Instantiate(healthprefab, healthprefab.transform.position, Quaternion.identity);
+                healthbar = Instantiate(healthprefab, new Vector3(-19, 27, 0), Quaternion.identity);
                 healthbarManager = healthbar.GetComponent<UI.HPUIManager>();
             }
             motor = GetComponent<CharacterMotor>();
