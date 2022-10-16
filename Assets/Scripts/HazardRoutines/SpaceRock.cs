@@ -8,6 +8,8 @@ namespace SpaceBoat.Hazards {
     {
         // Create a rock from the prefab with the necessary.
     
+        [SerializeField] private Sprite[] rockSprites;
+
         private Vector2 velocity;
         private float height;
         private float scale;
@@ -45,8 +47,14 @@ namespace SpaceBoat.Hazards {
 
         IEnumerator LaunchAfterTime(float time) {
             yield return new WaitForSeconds(time);// Wait for one second
-            transform.localScale = new Vector3(scale, scale, 1);
+            Vector3 scaleVec = new Vector3(scale, scale, 1);
+            transform.localScale = scaleVec;
             transform.position = new Vector3(transform.position.x, height, transform.position.z);
+            SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+            spriteRenderer.sprite = rockSprites[Random.Range(0, rockSprites.Length)];
+            spriteRenderer.size = new Vector2(scale, scale);
+            CircleCollider2D collider = GetComponent<CircleCollider2D>();
+            collider.transform.localScale = scaleVec;
             Rigidbody2D rb = GetComponent<Rigidbody2D>();
             rb.velocity = velocity;
         }
