@@ -11,6 +11,8 @@ namespace SpaceBoat.Player {
         public Movement.IWalk walk {get; set;}
         public Player.PickupItems pickupItems  {get; set;}
 
+        public Items.IHeldItems heldItems {get; set;}
+
         private bool init = false;
 
         public void Init(IWalk walk, IJump jump) {
@@ -35,11 +37,17 @@ namespace SpaceBoat.Player {
             //Item pick up
             bool pickItemDown = Input.GetKeyDown(KeyCode.E);
 
+            //Item Usage
+            bool useItemDown = Input.GetKeyDown(KeyCode.Q); 
 
             // apply input to movement
             walk.Input(horizontal);
             jump.Input(jumpKeyDown);
             pickupItems.PickItem(pickItemDown);
+
+            if (heldItems != null && useItemDown) {
+                heldItems.Input();
+            }
         }
 
     }
