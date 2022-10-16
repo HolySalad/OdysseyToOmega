@@ -6800,6 +6800,10 @@ PrefabInstance:
       propertyPath: maxHealth
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 3046632251698612345, guid: f3f45cab2d9c4cb47b0580061cd01517, type: 3}
+      propertyPath: healthprefab
+      value: 
+      objectReference: {fileID: 250509576012989112, guid: c22ec2ef3864c8a48bd45ccffe951cf0, type: 3}
     - target: {fileID: 3287627985294731712, guid: f3f45cab2d9c4cb47b0580061cd01517, type: 3}
       propertyPath: m_Name
       value: Cthulk
