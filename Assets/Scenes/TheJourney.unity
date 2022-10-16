@@ -553,7 +553,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 42
+  m_RootOrder: 43
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &150182066
 GameObject:
@@ -4039,7 +4039,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7845923776220842005, guid: 29dda14d70372bf4e8cd5a00e0f352c5, type: 3}
       propertyPath: m_RootOrder
-      value: 43
+      value: 42
       objectReference: {fileID: 0}
     - target: {fileID: 7845923776220842005, guid: 29dda14d70372bf4e8cd5a00e0f352c5, type: 3}
       propertyPath: m_LocalScale.x
@@ -4881,6 +4881,18 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 115754254, guid: a4f67d1775a9a984e950a805568f14db, type: 3}
+      propertyPath: rockSprites.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 115754254, guid: a4f67d1775a9a984e950a805568f14db, type: 3}
+      propertyPath: rockSprites.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 684b7d2b8e8b7ea4f9b2f8d4e873b4b6, type: 3}
+    - target: {fileID: 115754254, guid: a4f67d1775a9a984e950a805568f14db, type: 3}
+      propertyPath: rockSprites.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: 684b7d2b8e8b7ea4f9b2f8d4e873b4b6, type: 3}
     - target: {fileID: 79812419825838042, guid: a4f67d1775a9a984e950a805568f14db, type: 3}
       propertyPath: m_SortingLayer
       value: 7
@@ -5005,7 +5017,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1645586201}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 63.34, y: 7.31, z: 0}
+  m_LocalPosition: {x: 54.9, y: 7.31, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
