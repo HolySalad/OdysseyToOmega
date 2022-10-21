@@ -10,6 +10,7 @@ using UnityEngine;
         [SerializeField] public Sprite encasedSprite {get;}
 
         public bool canBeUsed {get; private set;} = false;
+        public bool isBeingUsed {get; private set;} = false;
         private string interactionTag = "Kitchen";
         public string itemName {get;} = "Food";
         public string helpText {get;} = "=";
@@ -44,13 +45,13 @@ using UnityEngine;
         void Cook() {
             Debug.Log("Player is cooking");
             this.gameObject.GetComponent<Animator>().SetBool("Repairing", true);
-            this.gameObject.GetComponent<Movement.CharacterMotor>().isBusy = true;
+            isBeingUsed = true;
             FindObjectOfType<SoundManager>().Play("Cooking");
             StartCoroutine(FinishCook());
         }
 
         public void Input() {
-            if (canBeUsed) {
+            if (canBeUsed && !isBeingUsed) {
                 Cook();
             }
         }

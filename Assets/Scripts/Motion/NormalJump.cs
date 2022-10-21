@@ -130,7 +130,6 @@ namespace SpaceBoat.Movement {
 
         private bool CanJump() {
                 if (hitOnFrame + hitStunFrames > Time.frameCount) {
-                    Debug.Log("Player cant jump, is hitstunned");
                     return false;
                 }
                 return Time.frameCount < jumpGrace || isGrounded;
@@ -198,7 +197,7 @@ namespace SpaceBoat.Movement {
         }
 
         IEnumerator Unstick() {
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.05f);
             if (!isGrounded && coll.IsTouchingLayers(LayerMask.GetMask("Ground"))) {
                 isGrounded = true;
                 isJumping = false;

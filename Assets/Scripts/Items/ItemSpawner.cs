@@ -12,8 +12,9 @@ namespace SpaceBoat.Items {
         private float lastSpawnedAt = 0f;
         private float itemLeftAt = 0f;
         private bool firstSpawn = false;
+        private GameObject itemHeld;
         void respawnItem() {
-            Instantiate(itemPrefab, transform.position, Quaternion.identity);
+            itemHeld = Instantiate(itemPrefab, transform.position, Quaternion.identity);
         }
 
         void FixedUpdate() {
@@ -21,7 +22,7 @@ namespace SpaceBoat.Items {
                 respawnItem();
                 firstSpawn = true;
             } else {
-                if (Time.time > spawnRate + lastSpawnedAt && Time.time > spawnRate + itemLeftAt) {
+                if (itemHeld == null && Time.time > spawnRate + lastSpawnedAt && Time.time > spawnRate + itemLeftAt) {
                     respawnItem();
                     lastSpawnedAt = Time.time;
                 }
