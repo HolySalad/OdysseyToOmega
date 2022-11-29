@@ -376,6 +376,10 @@ namespace SpaceBoat {
         void updateItemUsage(int frameCount) {
             if (playerState == "working" && frameCount > itemUsageBeganFrame + itemInHand.usageFrames) {
                 itemInHand.ItemUsed(this);
+                if (itemInHand.isConsumed) {
+                    DropItems(true);
+                }
+                playerState = "ready";
             }
         }
 
@@ -406,7 +410,7 @@ namespace SpaceBoat {
 
         // Health
 
-        void PlayerDies(bool isFallToDeath) {
+        public void PlayerDies(bool isFallToDeath) {
             if (isFallToDeath) {
                 game.sound.Play("DeathFall");
             } else {
@@ -420,18 +424,18 @@ namespace SpaceBoat {
             SceneManager.LoadScene("GameOver");
         }
 
-        bool IsPlayerInvulnerable() {
+        public bool IsPlayerInvulnerable() {
             return Time.frameCount < invincibilityFrames + hitOnframe;
         }
 
-        void PlayerTakesDamage() {
+        public void PlayerTakesDamage() {
 
             needsHitSound = true;
             hitOnframe = Time.frameCount;
             playerState = "hit";
         }
 
-        void PlayerHeals() {
+        public void PlayerHeals() {
 
         }
 
@@ -479,7 +483,7 @@ namespace SpaceBoat {
 
             Vector2 movement = new Vector2(speed*lastHorizontal, currentVerticalForce);
             if (playerState == "working") {
-                movement = new Vector2(2, Mathf.Min(currentVerticalForce, 0));
+                movement = new Vector2(0, Mathf.Min(currentVerticalForce, 0));
             } else if (playerState == "hitstun") {
                 //TODO add hitstun knockback
                 movement = new Vector2(0, Mathf.Min(currentVerticalForce, 0));
@@ -517,6 +521,7 @@ namespace SpaceBoat {
             HitStunUpdate(frameCount);
             InputUpdate(deltaTime);
             MovementUpdate(deltaTime);
+            updateItemUsage(frameCount);
             animatorUpdate();
             SoundUpdate();
         }

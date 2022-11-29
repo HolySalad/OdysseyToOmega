@@ -7,6 +7,8 @@ namespace SpaceBoat.Items {
     {
         public string itemUsageValidTrigger {get;}
         public int usageFrames {get;}
+
+        public bool isConsumed {get;}
         public void ItemUsed(Player player);
 
 

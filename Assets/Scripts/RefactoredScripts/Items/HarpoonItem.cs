@@ -9,6 +9,8 @@ using UnityEngine;
             
         }
 
+        public bool isConsumed {get;} = true;
+
         public int usageFrames {get;} = 72;
 
     }
