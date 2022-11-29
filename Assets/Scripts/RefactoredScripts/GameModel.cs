@@ -7,6 +7,7 @@ using SpaceBoat.Items;
 namespace SpaceBoat {
     public class GameModel : MonoBehaviour
     {
+        public static GameModel Instance;
 
         [SerializeField] private GameObject[] shipSails;
         
@@ -59,6 +60,10 @@ namespace SpaceBoat {
             if (FindObjectsOfType<GameModel>().Length > 1) {
                 Destroy(gameObject);
             }
+            Instance = this;
+
+            QualitySettings.vSyncCount = 0;  // VSync must be disabled
+            Application.targetFrameRate = 24;
 
             // Find the playerCharacter 
             player = FindObjectOfType<Player>();
