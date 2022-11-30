@@ -103,6 +103,9 @@ namespace SpaceBoat {
         public void Start() {
             Debug.Log("Game is starting!");
             sound.Play("Spawn");
+            if (sound.IsPlaying("MenuSoundtrack")) {
+                sound.Stop("MenuSoundtrack");
+            }
             sound.Play("GameplaySoundtrack");
 
             //TODO add random hazard selection.
