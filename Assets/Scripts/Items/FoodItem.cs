@@ -7,7 +7,7 @@ using SpaceBoat;
     public class FoodItem : MonoBehaviour, IHeldItems
     {
         public string itemUsageValidTrigger {get;} = "Kitchen";
-        public void ItemUsed(Player player) {
+        public void ItemUsed(Player player, GameObject target) {
             player.PlayerHeals();
         }
 

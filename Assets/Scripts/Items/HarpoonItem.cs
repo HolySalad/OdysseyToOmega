@@ -5,7 +5,7 @@ using UnityEngine;
     public class HarpoonItem : MonoBehaviour, IHeldItems
     {
         public string itemUsageValidTrigger {get;} = "HarpoonGun";
-        public void ItemUsed(Player player) {
+        public void ItemUsed(Player player, GameObject target) {
             
         }
 

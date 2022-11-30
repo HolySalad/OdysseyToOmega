@@ -9,7 +9,7 @@ namespace SpaceBoat.Items {
         public int usageFrames {get;}
 
         public bool isConsumed {get;}
-        public void ItemUsed(Player player);
+        public void ItemUsed(Player player, GameObject target);
 
 
     }

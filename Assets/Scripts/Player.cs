@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using SpaceBoat.Items;
 
 namespace SpaceBoat {
@@ -90,6 +89,7 @@ namespace SpaceBoat {
         private string heldItemType;
         private int itemUsageBeganFrame = 0;
         private bool canPickItems;
+        private GameObject itemUsageTarget;
 
 
         void Awake() {
@@ -368,31 +368,36 @@ namespace SpaceBoat {
 
         // Item usage functions
 
-        void useItem() {
+        void useItem(GameObject target) {
             playerState = "working";
             itemUsageBeganFrame = Time.frameCount;
+            itemUsageTarget = target;
         }
 
         void updateItemUsage(int frameCount) {
             if (playerState == "working" && frameCount > itemUsageBeganFrame + itemInHand.usageFrames) {
-                itemInHand.ItemUsed(this);
+                itemInHand.ItemUsed(this, itemUsageTarget);
                 if (itemInHand.isConsumed) {
                     DropItems(true);
                 }
+                itemUsageTarget = null;
                 playerState = "ready";
+            } else if (playerState != "working") {
+                itemUsageBeganFrame = 0;
+                itemUsageTarget = null;
             }
         }
 
-        bool canUseItem(IHeldItems item) {
+        (bool, GameObject) canUseItem(IHeldItems item) {
             Collider2D[] colliders = new Collider2D[10];
             playerLocationTrigger.GetContacts(colliders);
             foreach (Collider2D coll in colliders) {
                 if (coll.CompareTag(item.itemUsageValidTrigger)) {
                     Debug.Log("Can use held item!");
-                    return true;
+                    return (true, coll.gameObject);
                 }
             }
-            return false;
+            return (false, null);
         }
 
 
@@ -400,8 +405,9 @@ namespace SpaceBoat {
         void itemUsageInput(bool keyDown) {
             if (keyDown && playerState == "ready") {
                 if (itemInHand != null) {
-                    if (canUseItem(itemInHand)) {
-                        useItem();
+                    (bool canUse, GameObject target) = canUseItem(itemInHand);
+                    if (canUse) {
+                        useItem(target);
                     }
                 }
             }
@@ -417,12 +423,10 @@ namespace SpaceBoat {
                 game.sound.Play("Death");
             } 
             animator.SetTrigger("Death");
+            StartCoroutine(GameModel.Instance.GameOver());
         }
 
-        IEnumerator GameOver() {
-            yield return new WaitForSeconds(2);
-            SceneManager.LoadScene("GameOver");
-        }
+
 
         public bool IsPlayerInvulnerable() {
             return Time.frameCount < invincibilityFrames + hitOnframe;
@@ -433,6 +437,10 @@ namespace SpaceBoat {
             needsHitSound = true;
             hitOnframe = Time.frameCount;
             playerState = "hit";
+            health =- 1;
+            if (health <= 0) {
+                PlayerDies(false);
+            }
         }
 
         public void PlayerHeals() {

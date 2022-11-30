@@ -33,7 +33,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &79812419825838042
 SpriteRenderer:
@@ -133,10 +133,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 189507748417666162}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a8236283318a7b4a87a1167adcc01e0, type: 3}
+  m_Script: {fileID: 11500000, guid: 9ed6096aa02eec844ba964a1850e8b5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   meteorSprites:
-  - {fileID: 21300000, guid: 32a318c6063cee244abe5cd224708fcc, type: 3}
-  - {fileID: 21300000, guid: 696ca904286235543b28db40736d51d5, type: 3}
-  - {fileID: 21300000, guid: 344f7dd3bf9069845ba9bcc08569cc2c, type: 3}
+  - {fileID: 1744708839, guid: b71ed146d4b3d164d828b1a09243969d, type: 3}
+  - {fileID: -1274507655, guid: b71ed146d4b3d164d828b1a09243969d, type: 3}
+  - {fileID: -1986345838, guid: b71ed146d4b3d164d828b1a09243969d, type: 3}

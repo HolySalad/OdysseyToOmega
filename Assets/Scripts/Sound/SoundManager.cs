@@ -7,19 +7,19 @@ public class SoundManager : MonoBehaviour
 {
     public Sound[] sounds;
 
-    public static SoundManager instance;
+    public static SoundManager Instance;
 
     //TODO Add to awake FindObjectOfType<SoundManager>() and then call it and ad .("WhatheverSoundName")
     void Awake()
     {
-        if (instance != null){
-            Debug.Log(instance.name);
+        if (Instance != null){
+            Debug.Log(Instance.name);
             Destroy(gameObject);
             return;
         }
         else{
             
-            instance = this;
+            Instance = this;
         }
         DontDestroyOnLoad(gameObject); 
 
@@ -53,6 +53,16 @@ public class SoundManager : MonoBehaviour
             return;
         }
         s.source.Stop();
+    }
+
+    public float Length(string name){
+        Sound s = Array.Find(sounds, sound => sound.name == name);
+        Debug.Log("Getting length of " + name);
+        if(s == null){
+            Debug.LogWarning("Sound "+ name + " not found.");
+            return 0f;
+        }
+        return s.clip.length;
     }
 
     public bool IsPlaying(string name){
