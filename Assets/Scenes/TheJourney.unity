@@ -123,6 +123,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &29571646 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8935974852401969425, guid: 87be2e9b4fefcd1429b54162e27fb1bd, type: 3}
+  m_PrefabInstance: {fileID: 8935974852375199515}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &43746829 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8935974852401969430, guid: 87be2e9b4fefcd1429b54162e27fb1bd, type: 3}
@@ -1769,7 +1774,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 12.7, y: 7.4, z: -10}
+  m_LocalPosition: {x: 16.7, y: 7.2, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -2742,6 +2747,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &891391521 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8935974852401969425, guid: 87be2e9b4fefcd1429b54162e27fb1bd, type: 3}
+  m_PrefabInstance: {fileID: 1379048821}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &923461496
 GameObject:
   m_ObjectHideFlags: 0
@@ -4159,6 +4169,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   repairedSprite: {fileID: 21300000, guid: c8ccdba82187c0c4fb8b8f6e44c09b51, type: 3}
   brokenSprite: {fileID: 21300000, guid: c3ca9918c9bb8e445b4b00c4a89dc6d6, type: 3}
+--- !u!1 &1273972549 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8935974852401969425, guid: 87be2e9b4fefcd1429b54162e27fb1bd, type: 3}
+  m_PrefabInstance: {fileID: 489973651}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1308166900
 GameObject:
   m_ObjectHideFlags: 0
@@ -5246,9 +5261,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 1645586201}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ffec0ff8ab364d4584f46c9b7879456, type: 3}
+  m_Script: {fileID: 11500000, guid: 9650ae26e92528c4183a0aec7d18918c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  constantVelocity: {x: -5, y: 0, z: 0}
+  BGList:
+  - {fileID: 21300000, guid: 3b943c76d71fabf449126e95c7ab63bb, type: 3}
+  - {fileID: 21300000, guid: 16f1d0fe00820bf42a2d0ddc2e430795, type: 3}
+  - {fileID: 21300000, guid: e7dc8a0fab648164f83afd8a84cce7db, type: 3}
+  - {fileID: 21300000, guid: 60af0dd9b8f645b44acf1ee577b643d0, type: 3}
+  BGDownList:
+  - {fileID: 21300000, guid: 5fa1b82cbf6605d468232316af99e89a, type: 3}
+  - {fileID: 21300000, guid: a8849ed3ee7625147bf98567a504395d, type: 3}
+  - {fileID: 21300000, guid: 51174ce9720ae2849ae1fdde625f4680, type: 3}
+  - {fileID: 21300000, guid: d7ee3b6c7dcd20e4dbd96edfd4ede743, type: 3}
+  BGUpList:
+  - {fileID: 21300000, guid: 34be97b0390fa0843bc3a2b0f1e89c54, type: 3}
+  - {fileID: 21300000, guid: 324bc158386bcbf4ca8b4888e3c0d4d6, type: 3}
+  - {fileID: 21300000, guid: 54a2fc1011f622d4cb9c20e56b314fb7, type: 3}
+  - {fileID: 21300000, guid: 8a2410e104707984cb1990d74ad349ab, type: 3}
+  nextBG: 0
+  BGPref: {fileID: 29571646}
+  inGameBG:
+  - {fileID: 29571646}
+  - {fileID: 1273972549}
+  - {fileID: 891391521}
 --- !u!4 &1645586203
 Transform:
   m_ObjectHideFlags: 0

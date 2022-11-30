@@ -21,7 +21,7 @@ namespace SpaceBoat.HazardManagers {
             SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
             spriteRenderer.sprite = meteorSprites[Random.Range(0, meteorSprites.Length)];
             velocity = new Vector2(targetVector.normalized.x*speed, targetVector.normalized.y*speed);
-            SoundManager.Instance.Play("MeteorWhoosh_0"); 
+            SoundManager.Instance.Oneshot("MeteorWhoosh_0"); 
             StartCoroutine(FireMeteor(launchDelay));
         }
 

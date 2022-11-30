@@ -88,6 +88,7 @@ namespace SpaceBoat {
         private IHeldItems itemInHand;
         private string heldItemType;
         private int itemUsageBeganFrame = 0;
+        private string itemUsageSound;
         private bool canPickItems;
         private GameObject itemUsageTarget;
 
@@ -372,6 +373,7 @@ namespace SpaceBoat {
             playerState = "working";
             itemUsageBeganFrame = Time.frameCount;
             itemUsageTarget = target;
+            itemUsageSound = itemInHand.itemUsageSound;
         }
 
         void updateItemUsage(int frameCount) {
@@ -464,10 +466,8 @@ namespace SpaceBoat {
             }
 
             // play the working sound when working;
-            if (playerState == "working" && !game.sound.IsPlaying("Working")) {
-                game.sound.Play("Working");
-            } else if (playerState != "working" && game.sound.IsPlaying("Working")) {
-                game.sound.Stop("Working");
+            if (playerState == "working" && itemUsageSound != "" && !game.sound.IsPlaying(itemUsageSound)) {
+                game.sound.Play(itemUsageSound);
             }
             
             if (needsHitSound) {

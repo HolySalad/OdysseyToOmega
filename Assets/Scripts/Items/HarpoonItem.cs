@@ -10,7 +10,7 @@ using UnityEngine;
         }
 
         public bool isConsumed {get;} = true;
-
+        public string itemUsageSound {get;} = "Repair";
         public int usageFrames {get;} = 72;
 
     }

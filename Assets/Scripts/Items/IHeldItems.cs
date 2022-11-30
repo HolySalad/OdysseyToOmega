@@ -6,6 +6,8 @@ namespace SpaceBoat.Items {
     public interface IHeldItems
     {
         public string itemUsageValidTrigger {get;}
+
+        public string itemUsageSound {get;}
         public int usageFrames {get;}
 
         public bool isConsumed {get;}

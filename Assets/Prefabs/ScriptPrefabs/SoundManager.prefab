@@ -30,7 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 49
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2652018774195889313
 MonoBehaviour:
@@ -129,7 +129,7 @@ MonoBehaviour:
     pitch: 0
     loop: 0
     source: {fileID: 0}
-  - name: Working
+  - name: Repair
     clip: {fileID: 8300000, guid: 0cd432117662da64ab110256ac9894c8, type: 3}
     volume: 1
     pitch: 0
@@ -161,7 +161,7 @@ MonoBehaviour:
     source: {fileID: 0}
   - name: Walk
     clip: {fileID: 8300000, guid: ee9e3a9d7b2306e4caa6e8016b84cd99, type: 3}
-    volume: 1
+    volume: 0.686
     pitch: 0
     loop: 0
     source: {fileID: 0}
@@ -185,6 +185,18 @@ MonoBehaviour:
     source: {fileID: 0}
   - name: Spawn
     clip: {fileID: 8300000, guid: 3633727421387ff4f836c7fa535f2dcb, type: 3}
+    volume: 1
+    pitch: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: GameplaySoundtrack
+    clip: {fileID: 8300000, guid: fa1c4c9f948f26548859879e32a8a3a6, type: 3}
+    volume: 1
+    pitch: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: Cooking
+    clip: {fileID: 8300000, guid: cd5280623de372347b9fcff30d265a87, type: 3}
     volume: 1
     pitch: 0
     loop: 0

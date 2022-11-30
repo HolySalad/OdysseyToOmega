@@ -10,6 +10,7 @@ using UnityEngine;
             target.GetComponent<Ship.Sails>().Repair();
         }
 
+        public string itemUsageSound {get;} = "Repair";
         public bool isConsumed {get;} = true;
 
         public int usageFrames {get;} = 72;

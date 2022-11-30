@@ -12,7 +12,7 @@ using SpaceBoat;
         }
 
         public bool isConsumed {get;} = true;
-
+        public string itemUsageSound {get;} = "Cooking";
         public int usageFrames {get;} = 72;
     }
 }
