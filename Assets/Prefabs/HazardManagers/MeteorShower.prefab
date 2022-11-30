@@ -45,9 +45,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meteorPrefab: {fileID: 189507748417666162, guid: 8ad86b7f340c2764ea7cf973e28b644b, type: 3}
-  firstMeteorSpawnTimer: 5
+  firstMeteorSpawnTimer: 3
   lastMeteorSpawnTimer: 280
-  meteorInterval: 32
+  meteorInterval: 12
   meteorIntervalVariance: 0.2
   meteorIntervalRampTime: 40
   meteorIntervalRampRate: 3
@@ -56,7 +56,7 @@ MonoBehaviour:
   meteorEaseOfIntervalRamp: 10
   fullyRepairedTimerReduction: 0.7
   meteorSpawnXPos: 56
-  meteorSpawnYPos: 31
+  meteorSpawnYPos: 33
   meteorSpawnXVariance: 15
-  meteorSpawnYVariance: 5
-  meteorSpeed: 20
+  meteorSpawnYVariance: 3
+  meteorSpeed: 22
