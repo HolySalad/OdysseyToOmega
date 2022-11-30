@@ -7,6 +7,8 @@ using UnityEngine.SceneManagement;
 
 
 namespace SpaceBoat {
+
+    public enum ItemTypes {ClothItem, FoodItem, HarpoonItem, None};
     public class GameModel : MonoBehaviour
     {
         public static GameModel Instance;
@@ -31,38 +33,43 @@ namespace SpaceBoat {
         public float GameBeganTime {get; private set;}
 
 
+    
         //item management
-        public string GetItemType(GameObject item) {
+
+        public ItemTypes GetItemType(GameObject item) {
             if (item.GetComponent<ClothItem>() != null) {
-                return "ClothItem";
-            } else if (item.GetComponent<HarpoonItem>() != null) {
-                return "HarpoonItem";
+                return ItemTypes.ClothItem;
             } else if (item.GetComponent<FoodItem>() != null) {
-                return "FoodItem";
+                return ItemTypes.FoodItem;
+            } else if (item.GetComponent<HarpoonItem>() != null) {
+                return ItemTypes.HarpoonItem;
+            } else {
+                return ItemTypes.None;
             }
-            return "";
         }
 
-        public IHeldItems CreateItemComponent(GameObject target, string itemType) {
-            if (itemType == "ClothItem") {
+        public IHeldItems CreateItemComponent(GameObject target, ItemTypes itemType) {
+            if (itemType == ItemTypes.ClothItem) {
                 return target.AddComponent<ClothItem>();
-            } else if (itemType == "HarpoonItem") {
+            } else if (itemType == ItemTypes.HarpoonItem) {
                 return target.AddComponent<HarpoonItem>();
-            } else if (itemType == "FoodItem") {
+            } else if (itemType == ItemTypes.FoodItem) {
                 return target.AddComponent<FoodItem>();
             }
+            Debug.Log("Unreigstered item type "+ itemType.ToString());
             return null;
         }
 
 
-        public GameObject PrefabForItemType(string itemType) {
-            if (itemType == "ClothItem") {
+        public GameObject PrefabForItemType(ItemTypes itemType) {
+            if (itemType == ItemTypes.ClothItem) {
                 return clothPrefab;
-            } else if (itemType == "HarpoonItem") {
+            } else if (itemType == ItemTypes.HarpoonItem) {
                 return harpoonPrefab;
-            } else if (itemType == "FoodItem") {
+            } else if (itemType == ItemTypes.FoodItem) {
                 return foodPrefab;
             }
+            Debug.Log("Unregistered item type " + itemType.ToString());
             return null;
         }
 
@@ -106,6 +113,7 @@ namespace SpaceBoat {
         public IEnumerator GameOver() {
             Debug.Log("Gameover!");
             yield return new WaitForSeconds(2);
+            //SoundManager.Instance.Stop("GameplaySoundtrack");
             SceneManager.LoadScene("GameOver");
         }
 

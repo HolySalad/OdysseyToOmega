@@ -4,14 +4,19 @@ using UnityEngine;
   namespace SpaceBoat.Items{
     public class HarpoonItem : MonoBehaviour, IHeldItems
     {
+        public ItemTypes itemType {get;} = ItemTypes.HarpoonItem;
         public string itemUsageValidTrigger {get;} = "HarpoonGun";
         public void ItemUsed(Player player, GameObject target) {
             
+        }
+        public bool itemUsageCondition(Player player, GameObject target) {
+            return false;
         }
 
         public bool isConsumed {get;} = true;
         public string itemUsageSound {get;} = "Repair";
         public int usageFrames {get;} = 72;
 
+        public bool currentlyHeld {get; set;} = false;
     }
 }

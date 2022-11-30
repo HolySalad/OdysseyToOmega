@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: -6608673861770336558}
   - component: {fileID: 682498775723590289}
   - component: {fileID: -5805164748617844762}
+  - component: {fileID: -2510800171901932503}
   m_Layer: 14
   m_Name: HarpoonItem
   m_TagString: Collectable
@@ -123,3 +124,15 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &-2510800171901932503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8273169938340841911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba194012e3e2dcb4c8077ebf933a4526, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
