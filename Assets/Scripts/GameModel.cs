@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using SpaceBoat.Items;
 using SpaceBoat.HazardManagers;
+using SpaceBoat.Ship;
 using UnityEngine.SceneManagement;
 
 
 namespace SpaceBoat {
 
     public enum ItemTypes {ClothItem, FoodItem, HarpoonItem, None};
+    public enum Activatables {HarpoonGun, None};
     public class GameModel : MonoBehaviour
     {
         public static GameModel Instance;
@@ -79,6 +81,24 @@ namespace SpaceBoat {
                 return Instantiate(meteorManagerPrefab).GetComponent<MeteorShower>();
             }
             return null;
+        }
+
+        // activatable management
+        public Activatables GetActivatableType(GameObject activatable) {
+            if (activatable.GetComponent<Ship.HarpoonGun>() != null) {
+                return Activatables.HarpoonGun;
+            } else {
+                return Activatables.None;
+            }
+        }
+
+        
+        public IActivatables GetActivatableComponent(GameObject activatable) {
+            if (activatable.GetComponent<Ship.HarpoonGun>() != null) {
+                return activatable.GetComponent<Ship.HarpoonGun>();
+            } else {
+                return null;
+            }
         }
 
 

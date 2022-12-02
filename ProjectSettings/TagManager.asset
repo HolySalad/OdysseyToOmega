@@ -22,6 +22,8 @@ TagManager:
   - Roof
   - BackGround
   - CometTarget
+  - ItemSpawners
+  - Activatable
   layers:
   - Default
   - TransparentFX
@@ -68,14 +70,14 @@ TagManager:
   - name: ShipBackLayer
     uniqueID: 2245820371
     locked: 0
-  - name: Crates and Harpoon
-    uniqueID: 2413030699
-    locked: 0
   - name: ShipBody
     uniqueID: 3178845289
     locked: 0
   - name: Sail
     uniqueID: 475942731
+    locked: 0
+  - name: Crates and Harpoon
+    uniqueID: 2413030699
     locked: 0
   - name: platforms
     uniqueID: 1617886639

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using SpaceBoat.Items;
+using SpaceBoat.Ship;
 
 namespace SpaceBoat {
     public class Player : MonoBehaviour
@@ -58,7 +59,7 @@ namespace SpaceBoat {
 
         // player states
         //possible states: ready, working, hitstun
-        public enum PlayerState {ready, working, hitstun};
+        public enum PlayerState {ready, working, hitstun, aiming};
         public PlayerState playerState = PlayerState.ready;
 
         // internal gameplay vars
@@ -92,6 +93,10 @@ namespace SpaceBoat {
         private string itemUsageSound;
         private bool canPickItems;
         private GameObject itemUsageTarget;
+
+        //activatables
+
+        public IActivatables activatableInUse {get; private set;}
 
 
         void Awake() {
@@ -418,6 +423,41 @@ namespace SpaceBoat {
             }
         }
 
+        // activatables 
+
+        void CheckForActivatables() {
+            Collider2D[] colliders = new Collider2D[10];
+            playerLocationTrigger.GetContacts(colliders);
+            foreach (Collider2D coll in colliders) {
+                if (coll != null && coll.gameObject != null && coll.CompareTag("Activatable")) {
+                    Debug.Log("Can activate " + coll.name);
+                    IActivatables activatable = game.GetActivatableComponent(coll.gameObject);
+                    if (activatable.ActivationCondition(this) ) {
+                        activatable.Activate(this);
+                        activatableInUse = activatable;
+                        playerState = activatable.playerState;
+                    }
+                }
+            }
+        }
+
+        public void DeactivateFromActivatable() {
+            activatableInUse = null;
+            playerState = PlayerState.ready;
+        }
+        
+
+        void ActivateInput(bool keyDown) {
+            if (keyDown && playerState == PlayerState.aiming && activatableInUse != null && activatableInUse.canManuallyDeactivate) {
+                activatableInUse.Deactivate(this);
+                activatableInUse = null;
+                playerState = PlayerState.ready;
+            }
+            if (keyDown && playerState == PlayerState.ready) {
+                CheckForActivatables();
+            }
+        }
+
 
         // Health
 
@@ -498,7 +538,7 @@ namespace SpaceBoat {
             float horizontal = lastHorizontal;
 
             Vector2 movement = new Vector2(speed*lastHorizontal, currentVerticalForce);
-            if (playerState == PlayerState.working) {
+            if (playerState == PlayerState.working || playerState == PlayerState.aiming) {
                 movement = new Vector2(0, Mathf.Min(currentVerticalForce, 0));
             } else if (playerState == PlayerState.hitstun) {
                 //TODO add hitstun knockback
@@ -515,7 +555,11 @@ namespace SpaceBoat {
 
         void InputUpdate(float deltaTime) {
             // get input
-
+            bool activateKeyDown = Input.GetKeyDown(KeyCode.F);
+            ActivateInput(activateKeyDown);
+            if (playerState ==  PlayerState.aiming) {
+                return;
+            }
             bool jumpKeyDown = Input.GetKey(KeyCode.Space);
             float horizontal = Input.GetAxisRaw("Horizontal");
 

@@ -15,13 +15,17 @@ namespace SpaceBoat.Items {
         private bool waitingToSpawn = false;
         private GameObject spawnedItem;
 
-        private GameModel game;
 
         void respawnItem() {
             //Instantiate(itemPrefab, transform.position, Quaternion.identity);
-            GameObject item = Instantiate(game.PrefabForItemType(itemType), transform.position, Quaternion.identity);
+            GameObject prefab = GameModel.Instance.PrefabForItemType(itemType);
+            if (prefab == null ) {
+                Debug.LogError("ItemSpawner: No prefab for item type "+ itemType);
+                return;
+            }
+            GameObject item = Instantiate(prefab, transform.position, Quaternion.identity);
             spawnedItem = item;
-            game.CreateItemComponent(item, itemType);
+            GameModel.Instance.CreateItemComponent(item, itemType);
             waitingToSpawn = false;
         }
 
@@ -41,9 +45,7 @@ namespace SpaceBoat.Items {
             }
         }
 
-        void Awake() {
-            game = GameModel.Instance;
-        }
+ 
         
 
     }
