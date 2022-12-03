@@ -6,33 +6,47 @@ using UnityEngine;
 namespace SpaceBoat.Items {
     public class ItemSpawner : MonoBehaviour
     {
-        [SerializeField] private GameObject itemPrefab;
-        [SerializeField] private float spawnRate = 15;
 
-        private float lastSpawnedAt = 0f;
-        private float itemLeftAt = 0f;
+        [SerializeField] private ItemTypes itemType;
+        [SerializeField] private float spawnRate = 15f;
+
+        private float nextRespawnTime = 0;
         private bool firstSpawn = false;
-        private GameObject itemHeld;
+        private bool waitingToSpawn = false;
+        private GameObject spawnedItem;
+
+
         void respawnItem() {
-            itemHeld = Instantiate(itemPrefab, transform.position, Quaternion.identity);
+            //Instantiate(itemPrefab, transform.position, Quaternion.identity);
+            GameObject prefab = GameModel.Instance.PrefabForItemType(itemType);
+            if (prefab == null ) {
+                Debug.LogError("ItemSpawner: No prefab for item type "+ itemType);
+                return;
+            }
+            GameObject item = Instantiate(prefab, transform.position, Quaternion.identity);
+            spawnedItem = item;
+            GameModel.Instance.CreateItemComponent(item, itemType);
+            waitingToSpawn = false;
         }
 
         void FixedUpdate() {
             if (!firstSpawn) {
                 respawnItem();
                 firstSpawn = true;
-            } else {
-                if (itemHeld == null && Time.time > spawnRate + lastSpawnedAt && Time.time > spawnRate + itemLeftAt) {
-                    respawnItem();
-                    lastSpawnedAt = Time.time;
-                }
+            }
+            if (spawnedItem == null && !waitingToSpawn) {
+                Debug.Log("Respawning " + itemType.ToString() + " in " + spawnRate + " seconds");
+                waitingToSpawn = true;
+                nextRespawnTime = Time.time + spawnRate;
+            }
+
+            if (waitingToSpawn && Time.time > nextRespawnTime) {
+                respawnItem();
             }
         }
 
-        void OnTriggerExit2D(Collider2D other) {
-            if (other.gameObject.tag == "Collectable") {
-                itemLeftAt = Time.time;
-            }
-        }
+ 
+        
+
     }
 }

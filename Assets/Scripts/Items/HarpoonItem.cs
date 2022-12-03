@@ -4,52 +4,27 @@ using UnityEngine;
   namespace SpaceBoat.Items{
     public class HarpoonItem : MonoBehaviour, IHeldItems
     {
-        [SerializeField] public Sprite itemSprite {get;}
-        [SerializeField] public Sprite encasedSprite {get;}
-
-        public bool canBeUsed {get; private set;} = false;
-        public bool isHeld {get; private set;} = false;
-        private string interactionTag = "HarpoonGun";
-        public string itemName {get;} = "Harpoon";
-        public string helpText {get;} = "=";
-
-
-        //TODO implement harpoon gun.
-        public void Input()
-        {
-            throw new System.NotImplementedException();
+        public ItemTypes itemType {get;} = ItemTypes.HarpoonItem;
+        public string itemUsageValidTrigger {get;} = "HarpoonGun";
+        public void ItemUsed(Player player, GameObject target) {
+            harpoonGun.LoadHarpoon();
+        }
+        public bool itemUsageCondition(Player player, GameObject target) {
+            return !harpoonGun.isLoaded;
         }
 
-        public void HeldMode() {
-            isHeld = true;
+        private Ship.HarpoonGun harpoonGun;
+
+        public void Awake() {
+            harpoonGun = FindObjectOfType<Ship.HarpoonGun>();
         }
 
-        public void DropMode() {
-            isHeld = false;
-        }
 
-        void OnTriggerEnter2D(Collider2D other) {
-            if (other.gameObject.tag == interactionTag) {
-                canBeUsed = true;
-            }
-        }
+        public bool isConsumed {get;} = true;
+        public string itemUsageSound {get;} = "Repair";
+         public string usageAnimation {get;} = "Repairing";
+        public int usageFrames {get;} = 72;
 
-        void OnTriggerExit2D(Collider2D other) {
-            if (other.gameObject.tag == interactionTag) {
-                canBeUsed = false;
-            }
-        }
-
-        private bool GUIActive = false;
-        void OnGUI() {
-            if (canBeUsed) {
-               GUIActive = true;
-               //TODO help text
-            } else {
-               GUIActive = false;
-               //TODO help text
-            }
-        }
-
+        public bool currentlyHeld {get; set;} = false;
     }
 }

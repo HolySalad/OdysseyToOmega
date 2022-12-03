@@ -1,23 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SpaceBoat;
 
 namespace SpaceBoat.Items {
     public interface IHeldItems
     {
-        public bool canBeUsed { get; }
-        public bool isHeld {get; }
+        public string itemUsageValidTrigger {get;}
+        public bool itemUsageCondition(Player player, GameObject target);
 
-        public Sprite itemSprite {get;}
-        public Sprite encasedSprite {get;}
+        public string itemUsageSound {get;}
+        public string usageAnimation {get;}
+        public int usageFrames {get;}
 
-        public string itemName {get;}
-        public string helpText {get;}
-        public void Input();
+        public bool isConsumed {get;}
+        public void ItemUsed(Player player, GameObject target);
 
-        public void HeldMode();
+        public ItemTypes itemType {get;}
 
-        public void DropMode();
-
+        public bool currentlyHeld {get; set;}
     }
 }

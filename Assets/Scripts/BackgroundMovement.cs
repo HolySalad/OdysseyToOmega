@@ -10,7 +10,7 @@ public class BackgroundMovement : MonoBehaviour
     [SerializeField] Sprite[] BGUpList;
     [SerializeField] int nextBG = 0;
     [SerializeField] GameObject BGPref;
-    public HydraScript Hydra;
+    //public HydraScript Hydra;
 
     [SerializeField] List<GameObject> inGameBG = new List<GameObject>();
     // Start is called before the first frame update
@@ -64,7 +64,7 @@ public class BackgroundMovement : MonoBehaviour
         yield return new WaitForSeconds(180f);
         nextBG++;
         yield return new WaitForSeconds(70f);
-        Hydra.HydraAppear();
+        //Hydra.HydraAppear();
     }
 
 }

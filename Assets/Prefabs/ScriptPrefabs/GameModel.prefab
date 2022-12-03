@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3531854334814964887
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4095740888964423092}
+  - component: {fileID: 6332493757859967071}
+  m_Layer: 0
+  m_Name: GameModel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4095740888964423092
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3531854334814964887}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 43
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6332493757859967071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3531854334814964887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 064406c1e13f1654ab93f0f0db328c25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shipSails:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  clothPrefab: {fileID: 8273169938340841911, guid: 29dda14d70372bf4e8cd5a00e0f352c5, type: 3}
+  harpoonPrefab: {fileID: 8273169938340841911, guid: f873f9b434d22334ab22d1e353b73f5e, type: 3}
+  foodPrefab: {fileID: 8273169938340841911, guid: a8b181ba638d05b47a6fd7f95355f2e7, type: 3}
+  meteorManagerPrefab: {fileID: 3819972910884401993, guid: 19d1b8fc8a639ad4485351aa38842945, type: 3}

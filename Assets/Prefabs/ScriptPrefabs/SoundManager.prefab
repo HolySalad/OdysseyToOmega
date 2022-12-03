@@ -1,0 +1,203 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2652018774195889315
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2652018774195889312}
+  - component: {fileID: 2652018774195889313}
+  m_Layer: 0
+  m_Name: SoundManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2652018774195889312
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2652018774195889315}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: -2.049828, y: 2.1022496, z: 1.4172863}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2652018774195889313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2652018774195889315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c5d725f62cc7af47b36995108ed8303, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: MenuSoundtrack
+    clip: {fileID: 8300000, guid: fe34c496596be7f41827644d29dd9233, type: 3}
+    volume: 1
+    pitch: 0
+    loop: 1
+    source: {fileID: 0}
+  - name: MeteorWhoosh_0
+    clip: {fileID: 8300000, guid: 0d98fe35d658cca4ea0e9940717067d2, type: 3}
+    volume: 1
+    pitch: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: MeteorWhoosh_1
+    clip: {fileID: 8300000, guid: a9fc0dfae132a0242a8745f72b0c4379, type: 3}
+    volume: 1
+    pitch: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: MeteorImpact
+    clip: {fileID: 8300000, guid: 344e90c00d04770409efd723adb121b8, type: 3}
+    volume: 1
+    pitch: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: RockWhoosh_0
+    clip: {fileID: 8300000, guid: 8d8236316791c6d40882858f792a7819, type: 3}
+    volume: 1
+    pitch: 0.1
+    loop: 0
+    source: {fileID: 0}
+  - name: RockWhoosh_1
+    clip: {fileID: 8300000, guid: 62f143cdd5942c544a3a12b39803eebc, type: 3}
+    volume: 1
+    pitch: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: RockImpact
+    clip: {fileID: 8300000, guid: 95a845f322f9b5d408d69b708f9d4401, type: 3}
+    volume: 1
+    pitch: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: CometBreaking
+    clip: {fileID: 8300000, guid: d510d692009f2bd43b74f1a0b89c1230, type: 3}
+    volume: 1
+    pitch: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: ShipLowHP
+    clip: {fileID: 8300000, guid: 2f64ab84e7717584b8dae32a35db02f3, type: 3}
+    volume: 1
+    pitch: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: DropItem
+    clip: {fileID: 8300000, guid: 08c1712c28ec8d647bdc0d2b9ac992b7, type: 3}
+    volume: 1
+    pitch: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: PickItemUp
+    clip: {fileID: 8300000, guid: 4cab6f45d586b564fbbfc462339948f7, type: 3}
+    volume: 1
+    pitch: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: HarpoonWhoosh
+    clip: {fileID: 8300000, guid: 174fe3e1bf4ed574fa8f516ba60a4f43, type: 3}
+    volume: 1
+    pitch: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: HarpoonHit
+    clip: {fileID: 8300000, guid: 493057149b2dcc4448f36ad57a0861b9, type: 3}
+    volume: 1
+    pitch: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: PullHarpoon
+    clip: {fileID: 8300000, guid: 2c920168110b7c44bb4d3387807d5c87, type: 3}
+    volume: 1
+    pitch: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: Repair
+    clip: {fileID: 8300000, guid: 0cd432117662da64ab110256ac9894c8, type: 3}
+    volume: 1
+    pitch: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: Hit
+    clip: {fileID: 8300000, guid: 51b118f0660a0fa4a931af907939361b, type: 3}
+    volume: 1
+    pitch: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: LowHP
+    clip: {fileID: 8300000, guid: 809bd1e21d52a9946ae49f59290792de, type: 3}
+    volume: 1
+    pitch: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: Death
+    clip: {fileID: 8300000, guid: b7825db4dae4e7847b1428eb6f279b1b, type: 3}
+    volume: 1
+    pitch: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: DeathFall
+    clip: {fileID: 8300000, guid: 95d2d6baa696d8f4a9418032a9c66d9a, type: 3}
+    volume: 1
+    pitch: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: Walk
+    clip: {fileID: 8300000, guid: ee9e3a9d7b2306e4caa6e8016b84cd99, type: 3}
+    volume: 0.686
+    pitch: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: Jump
+    clip: {fileID: 8300000, guid: 6075350f92de7b5428c14e1635ffb1c7, type: 3}
+    volume: 1
+    pitch: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: JumpStomp
+    clip: {fileID: 8300000, guid: b03504b95d685154399f52160738628a, type: 3}
+    volume: 1
+    pitch: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: Climb
+    clip: {fileID: 8300000, guid: 036016a75f8f0784f9eaabc946c6bf79, type: 3}
+    volume: 1
+    pitch: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: Spawn
+    clip: {fileID: 8300000, guid: 3633727421387ff4f836c7fa535f2dcb, type: 3}
+    volume: 1
+    pitch: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: GameplaySoundtrack
+    clip: {fileID: 8300000, guid: fa1c4c9f948f26548859879e32a8a3a6, type: 3}
+    volume: 1
+    pitch: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: Cooking
+    clip: {fileID: 8300000, guid: cd5280623de372347b9fcff30d265a87, type: 3}
+    volume: 1
+    pitch: 0
+    loop: 0
+    source: {fileID: 0}
