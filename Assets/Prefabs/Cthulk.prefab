@@ -283,7 +283,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1367167736505884000}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leg_LLimbSolver2D_Target
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -314,7 +314,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5361387640495821909}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Spine2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -432,7 +432,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4084955250579650875}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Spine1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -465,7 +465,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3046632251437722157}
   - component: {fileID: 3046632251437722156}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leg_R_LimbSolver2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -529,7 +529,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3046632251725029336}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leg_R_LimbSolver2D_Target
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -694,20 +694,21 @@ MonoBehaviour:
   jumpGraceWindow: 2
   halfJumpFrameWindow: 6
   jumpSquatFrames: 3
-  halfJumpDecayMultiplier: 1.7
+  halfJumpDecayMultiplier: 1.9
   jumpPower: 28
   jumpDecay: 28
   jumpDecayDoublingFrames: 4
-  gravityAcceleration: 30
-  gravityTerminalVelocity: 45
+  gravityAcceleration: 28
+  gravityTerminalVelocity: 60
   maxSpeed: 8
-  acceleration: 5
+  acceleration: 2
   deceleration: 7
-  accelerationStartMult: 2
-  accelerationMidMult: 2
-  accelerationStartRange: 2
-  accelerationMidRange: 3
+  accelerationStartMult: 8
+  accelerationMidMult: 5
+  accelerationStartRange: 3
+  accelerationMidRange: 6
   turningSpeedMult: 0.7
+  playerState: 0
 --- !u!70 &1003127097
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -1381,7 +1382,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3533554809114791222}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1412,7 +1413,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8073338953516900378}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Calves_L_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1489,7 +1490,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6070447487352168961}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Thight_L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1521,7 +1522,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1251905466581741444}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: UpperArm_R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1553,7 +1554,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5006859477285551570}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Thigh_R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1616,7 +1617,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6986666998548991175}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Calves_R_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1647,7 +1648,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 219833220996220604}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Calves_L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1786,7 +1787,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5585472885898869594}
   - component: {fileID: 1636993253360983984}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Leg_LLimbSolver2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1850,7 +1851,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3406267810416846795}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Calves_R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1882,7 +1883,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8607352285271425698}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: LowerArm_L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1997,7 +1998,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6513471891144746760}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Hip
   m_TagString: Untagged
   m_Icon: {fileID: 0}

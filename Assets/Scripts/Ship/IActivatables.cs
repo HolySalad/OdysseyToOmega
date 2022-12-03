@@ -8,6 +8,7 @@ namespace SpaceBoat.Ship {
         public bool isInUse {get;}
         public bool canManuallyDeactivate {get;}
         public Player.PlayerState playerState {get;}
+        public string usageAnimation {get;}
 
         public void Activate(Player player);
         public void Deactivate(Player player);

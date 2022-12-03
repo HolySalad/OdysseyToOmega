@@ -18,6 +18,7 @@ using SpaceBoat;
 
         public bool isConsumed {get;} = true;
         public string itemUsageSound {get;} = "Cooking";
+         public string usageAnimation {get;} = "Cooking";
         public int usageFrames {get;} = 72;
 
         public bool currentlyHeld {get; set;} = false;

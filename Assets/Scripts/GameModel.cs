@@ -32,6 +32,8 @@ namespace SpaceBoat {
         public Player player {get; private set;}
         public SoundManager sound {get; private set;}
 
+        public UI.HelpPrompts helpPrompts {get; private set;}
+
         public float GameBeganTime {get; private set;}
 
 
@@ -116,6 +118,7 @@ namespace SpaceBoat {
             // Find the playerCharacter 
             player = FindObjectOfType<Player>();
             sound = FindObjectOfType<SoundManager>();
+            helpPrompts = FindObjectOfType<UI.HelpPrompts>();
 
             GameBeganTime = Time.time;
         }
@@ -143,12 +146,27 @@ namespace SpaceBoat {
         // check if any sails remain unbroken
         // trigger gameover if none remain
         public void OnSailBroken() {
+            int num_surviving_sails = 0;
             foreach (GameObject sail in shipSails) {
                 if (sail.GetComponent<Ship.Sails>().isBroken == false) {
-                    return;
+                    num_surviving_sails++;
                 }
             }
-            StartCoroutine(GameOver());
+            if (num_surviving_sails == 0) {
+                StartCoroutine(GameOver());
+            } else if (num_surviving_sails == 1) {
+                sound.Stop("ShipLowHP");
+                sound.Play("ShipLowHP");
+                helpPrompts.DisplayPromptWithDeactivationCondition(helpPrompts.criticalShipPrompt, () => {
+                     int num_surviving_sails = 0;
+                    foreach (GameObject sail in shipSails) {
+                        if (sail.GetComponent<Ship.Sails>().isBroken == false) {
+                            num_surviving_sails++;
+                        }
+                    }
+                    return (num_surviving_sails < 2);
+                });
+            }
         }
 
     }

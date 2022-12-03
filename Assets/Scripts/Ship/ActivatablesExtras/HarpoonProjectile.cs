@@ -7,9 +7,9 @@ namespace SpaceBoat.Ship
     {
         [SerializeField] private float speed = 10f;
 
-        public void Fire(float angle) {
-            Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        public void Fire(Quaternion rotation) {
             Vector3 direction = transform.TransformDirection(rotation * Vector3.right);
+            Debug.DrawRay(transform.position, direction, Color.red, 5f);
             GetComponent<Rigidbody2D>().velocity = direction * speed;
         }
     }

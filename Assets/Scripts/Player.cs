@@ -78,6 +78,9 @@ namespace SpaceBoat {
         private float currentVerticalForce  = 0f;
         private bool hitApex = false;
 
+        private int lastJumpStompFrame = 0;
+        private int jumpStompCooldown = 18;
+
         private bool isFacingRight = true;
         private bool isWalking;
         private float lastHorizontal;
@@ -115,6 +118,17 @@ namespace SpaceBoat {
         // walk script
         // handles horizontal movement and sprite orientation
 
+        void AdjustFacing(float horizontalInput) {
+            if (horizontalInput > 0 && !isFacingRight || horizontalInput < 0 && isFacingRight) {
+                isFacingRight = !isFacingRight;
+                speed = -speed * turningSpeedMult;
+                Vector3 existingColliderLocation = bodyCollider.transform.position;
+                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+                Vector3 colliderOffset =  existingColliderLocation - bodyCollider.transform.position;
+                transform.position = new Vector3 (transform.position.x + colliderOffset.x, transform.position.y + colliderOffset.y, transform.position.z);
+            }
+        }
+
         public void WalkInput(float horizontalInput, float deltaTime) {
             if (horizontalInput != 0) {lastHorizontal = horizontalInput;}
             if (horizontalInput == 0) {
@@ -146,14 +160,7 @@ namespace SpaceBoat {
                     speed = 0;
                 }
             }
-            if (horizontalInput > 0 && !isFacingRight || horizontalInput < 0 && isFacingRight) {
-                isFacingRight = !isFacingRight;
-                speed = -speed * turningSpeedMult;
-                Vector3 existingColliderLocation = bodyCollider.transform.position;
-                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-                Vector3 colliderOffset =  existingColliderLocation - bodyCollider.transform.position;
-                transform.position = new Vector3 (transform.position.x + colliderOffset.x, transform.position.y + colliderOffset.y, transform.position.z);
-            }
+            AdjustFacing(horizontalInput);
         }
 
         // jump functions
@@ -201,12 +208,21 @@ namespace SpaceBoat {
             }
         }
 
-        private void JumpInput(bool keyDown) {
+        private void JumpInput(bool keyHeld, bool keyDown) {
             if (keyDown && !isJumping) {
                 StartJump();
-            } else if (!keyDown && isJumping && Time.frameCount < jumpStartTime + halfJumpFrameWindow) {
+            } else if (!keyHeld && isJumping && Time.frameCount < jumpStartTime + halfJumpFrameWindow) {
                 Debug.Log("Half Jump");
                 halfJump = true;
+            }
+        }
+
+        private void JumpStomp() {
+            if (Time.frameCount > lastJumpStompFrame + jumpStompCooldown) {
+                lastJumpStompFrame = Time.frameCount;
+                float jumpStompVolume = 0.2f + (Mathf.Abs(currentVerticalForce/gravityTerminalVelocity) * 0.8f);
+                Debug.Log("Jumpstomp with volume " + jumpStompVolume);
+                SoundManager.Instance.Play("JumpStomp", jumpStompVolume);
             }
         }
 
@@ -234,13 +250,13 @@ namespace SpaceBoat {
                 JumpGrace = Time.frameCount + jumpGraceWindow;
                 if (isJumping) {
                     Debug.Log("Player landed from jumping after " + (Time.frameCount - jumpStartTime) + " frames");
-                    game.sound.Play("JumpStomp"); 
+                    JumpStomp();
                     isJumping = false;
                     halfJump = false;
                     currentVerticalForce = 0;
                 } else if (!wasGrounded) {
                     Debug.Log("Player landed from falling after " + (Time.frameCount - jumpStartTime) + " frames");
-                    game.sound.Play("JumpStomp");
+                    JumpStomp();
                     isJumping = false;
                     halfJump = false;
                     currentVerticalForce = 0;
@@ -382,10 +398,16 @@ namespace SpaceBoat {
             itemUsageBeganFrame = Time.frameCount;
             itemUsageTarget = target;
             itemUsageSound = itemInHand.itemUsageSound;
+            if (itemInHand.usageAnimation != "") {
+                animator.SetBool(itemInHand.usageAnimation, true);
+            }
         }
 
         void updateItemUsage(int frameCount) {
             if (playerState == PlayerState.working && frameCount > itemUsageBeganFrame + itemInHand.usageFrames) {
+                if (itemInHand.usageAnimation != "") {
+                    animator.SetBool(itemInHand.usageAnimation, false);
+                }
                 itemInHand.ItemUsed(this, itemUsageTarget);
                 if (itemInHand.isConsumed) {
                     DropItems(true);
@@ -393,6 +415,14 @@ namespace SpaceBoat {
                 itemUsageTarget = null;
                 playerState = PlayerState.ready;
             } else if (playerState != PlayerState.working) {
+                if (itemInHand != null) { 
+                    if (itemInHand.usageAnimation != "") {
+                        animator.SetBool(itemInHand.usageAnimation, false);
+                    }
+                    if (itemInHand.itemUsageSound != "" && game.sound.IsPlaying(itemInHand.itemUsageSound)) {
+                        game.sound.Stop(itemInHand.itemUsageSound);
+                    }
+                }
                 itemUsageBeganFrame = 0;
                 itemUsageTarget = null;
             }
@@ -420,10 +450,24 @@ namespace SpaceBoat {
                         useItem(target);
                     }
                 }
+            } else if (keyDown && playerState == PlayerState.working) {
+                playerState = PlayerState.ready;
             }
         }
 
         // activatables 
+
+        void UseActivatable(IActivatables activatable, GameObject obj) {
+            Debug.Log("Using activatable "+ obj.name);
+            activatable.Activate(this);
+            activatableInUse = activatable;
+            playerState = activatable.playerState;
+            AdjustFacing(obj.transform.position.x - transform.position.x);
+            if (activatable.usageAnimation != "") {
+                animator.SetBool(activatable.usageAnimation, true);
+            }
+
+        }
 
         void CheckForActivatables() {
             Collider2D[] colliders = new Collider2D[10];
@@ -433,27 +477,27 @@ namespace SpaceBoat {
                     Debug.Log("Can activate " + coll.name);
                     IActivatables activatable = game.GetActivatableComponent(coll.gameObject);
                     if (activatable.ActivationCondition(this) ) {
-                        activatable.Activate(this);
-                        activatableInUse = activatable;
-                        playerState = activatable.playerState;
+                        UseActivatable(activatable, coll.gameObject);
                     }
                 }
             }
         }
 
-        public void DeactivateFromActivatable() {
-            activatableInUse = null;
+        public void DetatchFromActivatable() {
+            Debug.Log("stopped using " + activatableInUse.ToString());
+            if (activatableInUse.usageAnimation != "") {
+                animator.SetBool(activatableInUse.usageAnimation, false);
+            }
             playerState = PlayerState.ready;
+            activatableInUse = null;
         }
         
 
         void ActivateInput(bool keyDown) {
             if (keyDown && playerState == PlayerState.aiming && activatableInUse != null && activatableInUse.canManuallyDeactivate) {
                 activatableInUse.Deactivate(this);
-                activatableInUse = null;
-                playerState = PlayerState.ready;
-            }
-            if (keyDown && playerState == PlayerState.ready) {
+                DetatchFromActivatable();
+            } else if (keyDown && playerState == PlayerState.ready) {
                 CheckForActivatables();
             }
         }
@@ -490,6 +534,13 @@ namespace SpaceBoat {
             } else {
                 animator.SetTrigger("Hit");
                 SoundManager.Instance.Play("Hit"); 
+                if (activatableInUse != null) {
+                    activatableInUse.Deactivate(this);
+                    DetatchFromActivatable();
+                }
+                if (health == 1) {
+                    game.helpPrompts.DisplayPromptWithDeactivationCondition(game.helpPrompts.criticalPlayerPrompt, () => { return health > 1; });
+                }
             }
         }
 
@@ -548,19 +599,26 @@ namespace SpaceBoat {
         }
 
         void animatorUpdate() {
-            animator.SetFloat("Speed", Mathf.Abs(speed));
+            if (playerState == PlayerState.ready) {
+                animator.SetFloat("Speed", Mathf.Abs(speed));
+                animator.SetBool("HoldingObject", (itemInHand != null));
+            } else {
+                animator.SetFloat("Speed", 0);
+                animator.SetBool("HoldingObject", false);
+            }
             animator.SetBool("Grounded", isGrounded);
-            animator.SetBool("HoldingObject", (itemInHand != null));
         }
 
         void InputUpdate(float deltaTime) {
             // get input
+            bool playerStateWasAiming = playerState == PlayerState.aiming;
             bool activateKeyDown = Input.GetKeyDown(KeyCode.F);
             ActivateInput(activateKeyDown);
-            if (playerState ==  PlayerState.aiming) {
+            if (playerStateWasAiming) {
                 return;
             }
-            bool jumpKeyDown = Input.GetKey(KeyCode.Space);
+            bool jumpKeyDown = Input.GetKeyDown(KeyCode.Space);
+            bool jumpKeyHeld = Input.GetKey(KeyCode.Space);
             float horizontal = Input.GetAxisRaw("Horizontal");
 
             //Item pick up
@@ -570,7 +628,7 @@ namespace SpaceBoat {
             bool useItemDown = Input.GetKeyDown(KeyCode.Q); 
 
             WalkInput(horizontal, deltaTime);
-            JumpInput(jumpKeyDown);
+            JumpInput(jumpKeyHeld, jumpKeyDown);
             ItemInput(pickItemDown);
             itemUsageInput(useItemDown);
         }

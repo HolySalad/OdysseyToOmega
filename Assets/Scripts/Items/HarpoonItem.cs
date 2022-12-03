@@ -22,6 +22,7 @@ using UnityEngine;
 
         public bool isConsumed {get;} = true;
         public string itemUsageSound {get;} = "Repair";
+         public string usageAnimation {get;} = "Repairing";
         public int usageFrames {get;} = 72;
 
         public bool currentlyHeld {get; set;} = false;

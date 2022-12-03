@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4720557574620510596}
   - component: {fileID: 7812046966816553969}
-  - component: {fileID: 7019897733277266027}
-  - component: {fileID: -7226991755806610351}
+  - component: {fileID: 6649914654227323378}
+  - component: {fileID: 9118066573287599604}
   m_Layer: 14
   m_Name: Harpoon
   m_TagString: Untagged
@@ -86,7 +86,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &7019897733277266027
+--- !u!114 &6649914654227323378
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -98,8 +98,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 834f958055727324ea7e9431dfc69e8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
---- !u!50 &-7226991755806610351
+  speed: 25
+--- !u!50 &9118066573287599604
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -107,16 +107,16 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4792589185087811438}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4

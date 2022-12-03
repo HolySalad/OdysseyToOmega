@@ -10,6 +10,7 @@ namespace SpaceBoat.Items {
         public bool itemUsageCondition(Player player, GameObject target);
 
         public string itemUsageSound {get;}
+        public string usageAnimation {get;}
         public int usageFrames {get;}
 
         public bool isConsumed {get;}
