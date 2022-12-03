@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7845923776220842005}
   - component: {fileID: -6608673861770336558}
   - component: {fileID: 682498775723590289}
+  - component: {fileID: -3391960592461383249}
   m_Layer: 14
   m_Name: ClothItem
   m_TagString: Collectable
@@ -101,3 +102,15 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.79
+--- !u!114 &-3391960592461383249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8273169938340841911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba194012e3e2dcb4c8077ebf933a4526, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

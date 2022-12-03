@@ -6,20 +6,27 @@ using UnityEngine;
 namespace SpaceBoat.Items {
     public class ItemSpawner : MonoBehaviour
     {
-        public enum itemTypes {ClothItem, FoodItem, HarpoonItem};
-        [SerializeField] private itemTypes itemType;
-        [SerializeField] private float spawnRate = 15;
 
-        private float lastSpawnedAt = 0f;
-        private float itemLeftAt = 0f;
+        [SerializeField] private ItemTypes itemType;
+        [SerializeField] private float spawnRate = 15f;
+
+        private float nextRespawnTime = 0;
         private bool firstSpawn = false;
+        private bool waitingToSpawn = false;
+        private GameObject spawnedItem;
 
-        private GameModel game;
 
         void respawnItem() {
             //Instantiate(itemPrefab, transform.position, Quaternion.identity);
-            GameObject item = Instantiate(game.PrefabForItemType(itemType.ToString()), transform.position, Quaternion.identity);
-            game.CreateItemComponent(item, itemType.ToString());
+            GameObject prefab = GameModel.Instance.PrefabForItemType(itemType);
+            if (prefab == null ) {
+                Debug.LogError("ItemSpawner: No prefab for item type "+ itemType);
+                return;
+            }
+            GameObject item = Instantiate(prefab, transform.position, Quaternion.identity);
+            spawnedItem = item;
+            GameModel.Instance.CreateItemComponent(item, itemType);
+            waitingToSpawn = false;
         }
 
         void FixedUpdate() {
@@ -27,11 +34,19 @@ namespace SpaceBoat.Items {
                 respawnItem();
                 firstSpawn = true;
             }
+            if (spawnedItem == null && !waitingToSpawn) {
+                Debug.Log("Respawning " + itemType.ToString() + " in " + spawnRate + " seconds");
+                waitingToSpawn = true;
+                nextRespawnTime = Time.time + spawnRate;
+            }
+
+            if (waitingToSpawn && Time.time > nextRespawnTime) {
+                respawnItem();
+            }
         }
 
-        void Awake() {
-            game = FindObjectOfType<GameModel>();
-        }
+ 
         
+
     }
 }

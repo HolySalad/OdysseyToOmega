@@ -10,12 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 7169763930740829833}
   - component: {fileID: 79812419825838042}
+  - component: {fileID: 8601753968135896071}
   - component: {fileID: 3122664309955227073}
-  - component: {fileID: 115754254}
-  - component: {fileID: 7355884829224560756}
-  m_Layer: 6
-  m_Name: RockHazard
-  m_TagString: SpaceRocks
+  - component: {fileID: -455227422987495029}
+  m_Layer: 7
+  m_Name: MeteorHazard
+  m_TagString: Meteorites
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -76,17 +76,33 @@ SpriteRenderer:
   m_SortingLayerID: -521903187
   m_SortingLayer: 10
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 684b7d2b8e8b7ea4f9b2f8d4e873b4b6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 32a318c6063cee244abe5cd224708fcc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.9257143, y: 2.73}
+  m_Size: {x: 2.98, y: 2.53}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!58 &8601753968135896071
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 189507748417666162}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!50 &3122664309955227073
 Rigidbody2D:
   serializedVersion: 4
@@ -108,7 +124,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &115754254
+--- !u!114 &-455227422987495029
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -117,26 +133,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 189507748417666162}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de170e035d66b314cbe7c7931ad40ac0, type: 3}
+  m_Script: {fileID: 11500000, guid: 9ed6096aa02eec844ba964a1850e8b5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rockSprites:
-  - {fileID: 612721070, guid: 1e33d6925c2d4c741828f01a492f6985, type: 3}
-  - {fileID: 1107638078, guid: 1e33d6925c2d4c741828f01a492f6985, type: 3}
-  - {fileID: 1106252968, guid: 1e33d6925c2d4c741828f01a492f6985, type: 3}
---- !u!58 &7355884829224560756
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 189507748417666162}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 1.4628571
+  meteorSprites:
+  - {fileID: 1744708839, guid: b71ed146d4b3d164d828b1a09243969d, type: 3}
+  - {fileID: -1274507655, guid: b71ed146d4b3d164d828b1a09243969d, type: 3}
+  - {fileID: -1986345838, guid: b71ed146d4b3d164d828b1a09243969d, type: 3}
