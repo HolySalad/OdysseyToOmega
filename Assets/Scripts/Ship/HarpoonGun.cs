@@ -47,9 +47,10 @@ namespace SpaceBoat.Ship {
             isLoaded = false;
             harpoonLocation.GetComponent<SpriteRenderer>().enabled = false;
             GameObject harpoon = Instantiate(harpoonPrefab, harpoonLocation.transform.position, harpoonLocation.transform.rotation);
-            Vector3 gunAxis = backBarrel.transform.position - frontBarrel.transform.position;
-            Vector3 direction = harpoonLocation.transform.TransformDirection(gunAxis);
-            harpoon.GetComponent<Ship.HarpoonProjectile>().Fire(harpoonLocation.transform.rotation);
+            //Vector3 gunAxis = backBarrel.transform.position - frontBarrel.transform.position;
+            Vector3 direction = harpoonLocation.transform.TransformDirection(Vector3.right);
+            harpoon.GetComponent<Ship.HarpoonProjectile>().Fire(direction);
+            SoundManager.Instance.Play("HarpoonWhoosh");
             Deactivate(GameModel.Instance.player, true);
         }
 
@@ -67,10 +68,11 @@ namespace SpaceBoat.Ship {
 
         public void Update() {
             if (isInUse) {
-
+                Debug.DrawRay(harpoonLocation.transform.position, harpoonLocation.transform.TransformDirection(Vector3.right)*100, Color.red, Time.deltaTime );
                 if (Input.GetAxis("Horizontal") != 0) {
                     targetRotation += Input.GetAxis("Horizontal") *-1 * RotationSpeed;
                     targetRotation = Mathf.Clamp(targetRotation, minAngle, maxAngle);
+
                 }
 
                 if (Input.GetKeyDown(KeyCode.Space)) {

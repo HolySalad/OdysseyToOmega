@@ -5,12 +5,16 @@ using SpaceBoat.Items;
 using SpaceBoat.HazardManagers;
 using SpaceBoat.Ship;
 using UnityEngine.SceneManagement;
+using UnityEngine.Playables;
 
 
 namespace SpaceBoat {
 
     public enum ItemTypes {ClothItem, FoodItem, HarpoonItem, None};
     public enum Activatables {HarpoonGun, None};
+
+    public enum HazardProjectiles {Meteor, SpacRock, None}
+
     public class GameModel : MonoBehaviour
     {
         public static GameModel Instance;
@@ -103,6 +107,29 @@ namespace SpaceBoat {
             }
         }
 
+        //animations 
+        private List<PlayableGraph> playableGraphs = new List<PlayableGraph>();
+        public void PlayAnimation(AnimationClip clip, GameObject target) {
+            Animator anim;
+            if (target.GetComponent<Animator>() != null) {
+                anim = target.GetComponent<Animator>();
+            } else {
+                anim = target.AddComponent<Animator>();
+            }
+            if (anim == null) {
+                Debug.Log("Null animator for " + target.name);
+                return;
+            }
+            PlayableGraph playableGraph;
+            AnimationPlayableUtilities.PlayClip(anim, clip, out playableGraph);
+            StartCoroutine(DestroyGraph(playableGraph, clip.length));
+        }
+
+        public IEnumerator DestroyGraph(PlayableGraph graph, float delay) {
+            yield return new WaitForSeconds(delay);
+            graph.Destroy();
+        }
+
 
 
         void Awake() {
@@ -164,7 +191,7 @@ namespace SpaceBoat {
                             num_surviving_sails++;
                         }
                     }
-                    return (num_surviving_sails < 2);
+                    return (num_surviving_sails > 1);
                 });
             }
         }

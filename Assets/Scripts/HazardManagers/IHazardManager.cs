@@ -6,5 +6,6 @@ namespace SpaceBoat.HazardManagers {
     public interface IHazardManager
     {
         public void StartHazard();
+        public float hazardDuration {get;}
     }
 }
