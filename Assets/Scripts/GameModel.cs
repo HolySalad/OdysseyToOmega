@@ -21,6 +21,8 @@ namespace SpaceBoat {
 
         [Header("Ship")]
         [SerializeField] public List<GameObject> shipSails;
+        [SerializeField] public GameObject cometFlightTarget;
+        [SerializeField] public GameObject cometDeckTarget;
         
         // item prefabs
         [Header("Item Prefabs")]

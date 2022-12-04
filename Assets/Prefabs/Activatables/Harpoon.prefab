@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 6649914654227323378}
   - component: {fileID: 9118066573287599604}
   - component: {fileID: 6281772511670880187}
-  m_Layer: 14
+  m_Layer: 19
   m_Name: Harpoon
-  m_TagString: Untagged
+  m_TagString: HarpoonGun
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -100,6 +100,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 25
+  impactTime: 0.1
+  reelInDelay: 0.5
+  endReelDistance: 4
 --- !u!50 &9118066573287599604
 Rigidbody2D:
   serializedVersion: 4
