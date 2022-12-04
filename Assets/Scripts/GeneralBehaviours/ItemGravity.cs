@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-namespace SpaceBoat.Items {
+namespace SpaceBoat {
     public class ItemGravity : MonoBehaviour
     {
         private Collider2D itemCollider;

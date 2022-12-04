@@ -24,6 +24,8 @@ TagManager:
   - CometTarget
   - ItemSpawners
   - Activatable
+  - EndOfMapRight
+  - TopOfMap
   layers:
   - Default
   - TransparentFX
@@ -31,20 +33,20 @@ TagManager:
   - PlayerChar
   - Water
   - UI
-  - PlayerHazards
-  - ShipHazards
+  - PhysicalHazards
+  - IntangibleHazards
   - Ground
   - Sails
   - Ladders
   - ShipDoor
-  - EndOfMapLeft
-  - BottomOfMap
+  - MapBounds
+  - Enemies
   - TaggedInteractables
   - Roof
   - CometTarget
   - CometPityTarget
-  - 
-  - 
+  - Harpoonables
+  - PlayerProjectiles
   - 
   - 
   - 

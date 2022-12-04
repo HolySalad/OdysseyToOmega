@@ -16,6 +16,8 @@ using SpaceBoat;
             return player.health < player.maxHealth;
         }
 
+        
+
         public bool isConsumed {get;} = true;
         public string itemUsageSound {get;} = "Cooking";
          public string usageAnimation {get;} = "Cooking";

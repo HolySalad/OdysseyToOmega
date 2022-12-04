@@ -20,7 +20,7 @@ namespace SpaceBoat.Ship {
         public Player.PlayerState playerState {get;} = Player.PlayerState.aiming;
         public string usageAnimation {get;} = "Repairing";
 
-        private float targetRotation;
+
 
         public void Activate(Player player) {
             isInUse = true;
@@ -47,9 +47,10 @@ namespace SpaceBoat.Ship {
             isLoaded = false;
             harpoonLocation.GetComponent<SpriteRenderer>().enabled = false;
             GameObject harpoon = Instantiate(harpoonPrefab, harpoonLocation.transform.position, harpoonLocation.transform.rotation);
-            Vector3 gunAxis = backBarrel.transform.position - frontBarrel.transform.position;
-            Vector3 direction = harpoonLocation.transform.TransformDirection(gunAxis);
-            harpoon.GetComponent<Ship.HarpoonProjectile>().Fire(harpoonLocation.transform.rotation);
+            //Vector3 gunAxis = backBarrel.transform.position - frontBarrel.transform.position;
+            Vector3 direction = harpoonLocation.transform.TransformDirection(Vector3.right);
+            harpoon.GetComponent<Ship.HarpoonProjectile>().Fire(direction);
+            SoundManager.Instance.Play("HarpoonWhoosh");
             Deactivate(GameModel.Instance.player, true);
         }
 
@@ -62,23 +63,17 @@ namespace SpaceBoat.Ship {
             } else {
                 harpoonLocation.GetComponent<SpriteRenderer>().enabled = isLoaded;
             }
-            targetRotation = transform.rotation.eulerAngles.z;
         }
 
         public void Update() {
             if (isInUse) {
-
-                if (Input.GetAxis("Horizontal") != 0) {
-                    targetRotation += Input.GetAxis("Horizontal") *-1 * RotationSpeed;
-                    targetRotation = Mathf.Clamp(targetRotation, minAngle, maxAngle);
-                }
-
+                Debug.DrawRay(harpoonLocation.transform.position, harpoonLocation.transform.TransformDirection(Vector3.right)*100, Color.red, Time.deltaTime );
                 if (Input.GetKeyDown(KeyCode.Space)) {
                     FireHarpoon();
                     Deactivate(GameModel.Instance.player);
                 }
                 
-                Quaternion target = Quaternion.Euler(transform.rotation.eulerAngles.x,transform.rotation.eulerAngles.y,targetRotation);
+                Quaternion target = Quaternion.Euler(transform.rotation.eulerAngles.x,transform.rotation.eulerAngles.y,Mathf.Clamp(transform.rotation.eulerAngles.z + (Input.GetAxis("Horizontal") *-1 * RotationSpeed), minAngle, maxAngle));
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, target, RotationSpeed);
             }
         }

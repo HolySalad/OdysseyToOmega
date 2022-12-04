@@ -15,6 +15,7 @@ namespace SpaceBoat.Items {
 
         public bool isConsumed {get;}
         public void ItemUsed(Player player, GameObject target);
+        //public void RandomizeSprite();
 
         public ItemTypes itemType {get;}
 

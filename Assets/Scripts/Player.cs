@@ -19,7 +19,6 @@ namespace SpaceBoat {
         [SerializeField] private int groundCheckJumpMargin = 24; //how many frames after jumping to check for ground
         [SerializeField] private float wallCheckDistance = 0.5f;
         [SerializeField] private float ceilingCheckDistance = 0.1f;
-        [SerializeField] private float slipSpeed = 4f;
         [SerializeField] private Transform footCollider;
         [SerializeField] private Transform headCollider;
         [SerializeField] private Transform bodyCollider;
@@ -85,6 +84,8 @@ namespace SpaceBoat {
         private bool isWalking;
         private float lastHorizontal;
         private float speed;
+        private float horizontalImpact;
+        private bool justLanded = false;
 
         private bool isSlipping = false;
         private bool isSlippingLeft = false;
@@ -209,12 +210,13 @@ namespace SpaceBoat {
         }
 
         private void JumpInput(bool keyHeld, bool keyDown) {
-            if (keyDown && !isJumping) {
+            if ((keyDown || (justLanded && keyHeld)) && !isJumping) {
                 StartJump();
             } else if (!keyHeld && isJumping && Time.frameCount < jumpStartTime + halfJumpFrameWindow) {
                 Debug.Log("Half Jump");
                 halfJump = true;
             }
+            justLanded = false;
         }
 
         private void JumpStomp() {
@@ -253,12 +255,14 @@ namespace SpaceBoat {
                     JumpStomp();
                     isJumping = false;
                     halfJump = false;
+                    justLanded = true;
                     currentVerticalForce = 0;
                 } else if (!wasGrounded) {
                     Debug.Log("Player landed from falling after " + (Time.frameCount - jumpStartTime) + " frames");
                     JumpStomp();
                     isJumping = false;
                     halfJump = false;
+                    justLanded = true;
                     currentVerticalForce = 0;
                 }
             } else {
@@ -511,7 +515,7 @@ namespace SpaceBoat {
             } else {
                 game.sound.Play("Death");
             } 
-            animator.SetTrigger("Death");
+            animator.SetTrigger("Dead");
             StartCoroutine(GameModel.Instance.GameOver());
         }
 
