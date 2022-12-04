@@ -10,12 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 5786614222782331398}
   - component: {fileID: 5786614222782331399}
-  - component: {fileID: -7528488888109580423}
-  - component: {fileID: 5786614222782331448}
   - component: {fileID: 658968993215094126}
   - component: {fileID: 2054134114878871225}
-  m_Layer: 14
-  m_Name: IceShardPrefab
+  - component: {fileID: 2296426028242159876}
+  - component: {fileID: 5326433508104214161}
+  m_Layer: 18
+  m_Name: RewardComet
   m_TagString: Comets
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -79,7 +79,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -910102194, guid: 670024a6f914e6240829666765d26dc8, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.9019608}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -89,41 +89,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &-7528488888109580423
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5786614222782331449}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10c41966bbcb72249a99b73e5a7b6a48, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &5786614222782331448
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5786614222782331449}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad2daf87538a6384997963fc5acbf312, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  posibleShards:
-  - {fileID: -910102194, guid: 670024a6f914e6240829666765d26dc8, type: 3}
-  - {fileID: -1995246199, guid: 670024a6f914e6240829666765d26dc8, type: 3}
-  - {fileID: 71515211, guid: 670024a6f914e6240829666765d26dc8, type: 3}
-  - {fileID: -89945676, guid: 670024a6f914e6240829666765d26dc8, type: 3}
-  - {fileID: 2004483598, guid: 670024a6f914e6240829666765d26dc8, type: 3}
-  - {fileID: 527700108, guid: 670024a6f914e6240829666765d26dc8, type: 3}
-  - {fileID: 1559283260, guid: 670024a6f914e6240829666765d26dc8, type: 3}
-  - {fileID: -371622189, guid: 670024a6f914e6240829666765d26dc8, type: 3}
-  - {fileID: 1341042413, guid: 670024a6f914e6240829666765d26dc8, type: 3}
-  breakAnimation: {fileID: 5307099799660360984, guid: 7954a0cb6d8172447b6615c431259eb7, type: 3}
 --- !u!58 &658968993215094126
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -161,6 +126,36 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &2296426028242159876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5786614222782331449}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f913d64bc1e373042b11610b4e2dd26a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemPlace: {fileID: 8365239716216963486}
+  speed: 1
+  containedItem: 3
+--- !u!114 &5326433508104214161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5786614222782331449}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12a4a57e49474574d965c20881ebd236, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 1
+  destructionAnimation: {fileID: 7400000, guid: 68e390d28830da74484789936a0d8712, type: 2}
+  destructionSound: CometBreaking
 --- !u!1 &8365239716216963486
 GameObject:
   m_ObjectHideFlags: 0
@@ -170,7 +165,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7378836145059617735}
-  m_Layer: 14
+  m_Layer: 18
   m_Name: ItemPlace
   m_TagString: Untagged
   m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}

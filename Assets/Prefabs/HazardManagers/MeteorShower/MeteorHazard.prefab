@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 8601753968135896071}
   - component: {fileID: 3122664309955227073}
   - component: {fileID: -455227422987495029}
-  m_Layer: 7
+  - component: {fileID: 373218851462441606}
+  m_Layer: 6
   m_Name: MeteorHazard
   m_TagString: Meteorites
   m_Icon: {fileID: 0}
@@ -140,3 +141,18 @@ MonoBehaviour:
   - {fileID: 1744708839, guid: b71ed146d4b3d164d828b1a09243969d, type: 3}
   - {fileID: -1274507655, guid: b71ed146d4b3d164d828b1a09243969d, type: 3}
   - {fileID: -1986345838, guid: b71ed146d4b3d164d828b1a09243969d, type: 3}
+--- !u!114 &373218851462441606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 189507748417666162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12a4a57e49474574d965c20881ebd236, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 1
+  destructionAnimation: {fileID: 0}
+  destructionSound: MeteorImpact

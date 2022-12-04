@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3122664309955227073}
   - component: {fileID: 115754254}
   - component: {fileID: 7355884829224560756}
+  - component: {fileID: 726232682565087844}
   m_Layer: 6
   m_Name: RockHazard
   m_TagString: SpaceRocks
@@ -140,3 +141,18 @@ CircleCollider2D:
   m_Offset: {x: -0.031060219, y: -0.012424111}
   serializedVersion: 2
   m_Radius: 0.7981657
+--- !u!114 &726232682565087844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 189507748417666162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12a4a57e49474574d965c20881ebd236, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 1
+  destructionAnimation: {fileID: 7400000, guid: 3ffe6616f4b54464bbf1b0a62f6b643d, type: 2}
+  destructionSound: RockImpact
