@@ -174,7 +174,7 @@ namespace SpaceBoat {
 
         // check if any sails remain unbroken
         // trigger gameover if none remain
-        public void OnSailBroken() {
+        public void Update() {
             int num_surviving_sails = 0;
             foreach (GameObject sail in shipSails) {
                 if (sail.GetComponent<Ship.Sails>().isBroken == false) {
@@ -184,8 +184,9 @@ namespace SpaceBoat {
             if (num_surviving_sails == 0) {
                 StartCoroutine(GameOver());
             } else if (num_surviving_sails == 1) {
-                sound.Stop("ShipLowHP");
-                sound.Play("ShipLowHP");
+                if (!sound.IsPlaying("ShipLowHP")) {
+                    sound.Play("ShipLowHP");
+                }
                 helpPrompts.DisplayPromptWithDeactivationCondition(helpPrompts.criticalShipPrompt, () => {
                      int num_surviving_sails = 0;
                     foreach (GameObject sail in shipSails) {
@@ -195,6 +196,10 @@ namespace SpaceBoat {
                     }
                     return (num_surviving_sails > 1);
                 });
+            } else if (num_surviving_sails > 1) {
+                if (sound.IsPlaying("ShipLowHP")) {
+                    sound.Stop("ShipLowHP");
+                }
             }
         }
 

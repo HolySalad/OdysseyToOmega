@@ -436,7 +436,7 @@ namespace SpaceBoat {
             Collider2D[] colliders = new Collider2D[10];
             playerLocationTrigger.GetContacts(colliders);
             foreach (Collider2D coll in colliders) {
-                if (coll.CompareTag(item.itemUsageValidTrigger)) {
+                if (coll != null && coll.CompareTag(item.itemUsageValidTrigger)) {
                     Debug.Log("Can use held item on " + coll.name);
                     return (item.itemUsageCondition(this, coll.gameObject), coll.gameObject);
                 }

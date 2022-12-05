@@ -11,6 +11,7 @@ namespace SpaceBoat.UI
         [SerializeField] public Sprite usePrompt;
         [SerializeField] public Sprite criticalShipPrompt;
         [SerializeField] public Sprite criticalPlayerPrompt;
+        [SerializeField] public Sprite cometPrompt;
         [SerializeField] private float promptDuration = 4f;
 
         private float fadeSpeedPerFrame = 0.05f;
@@ -30,38 +31,48 @@ namespace SpaceBoat.UI
             StartCoroutine(DisplayPromptLong(StartupPrompts));
         }
 
-        public IEnumerator DisplayPromptLong(List<Sprite> prompts) {
+        IEnumerator DisplayPromptLong(List<Sprite> prompts) {
             foreach (Sprite prompt in prompts) {
                 image.sprite = prompt;
                 Color color = image.color;
+                isPromptDisplayed = true;
                 while (color.a < 1f) {
                     color.a += fadeSpeedPerFrame;
                     image.color = color;
                     yield return new WaitForEndOfFrame();
                 }
                 yield return new WaitForSeconds(promptDuration);
+                isPromptDisplayed = false;
+                isFadingOut = true;
                 while (color.a > 0f) {
                     color.a -= fadeSpeedPerFrame;
                     image.color = color;
                     yield return new WaitForEndOfFrame();
                 }
+
+                isFadingOut = false;
             }
         }
 
-        public IEnumerator DisplayPromptLong(Sprite prompt) {
+        IEnumerator DisplayPromptLong(Sprite prompt) {
+            Debug.Log("Displaying prompt: "+prompt.name);
             image.sprite = prompt;
             Color color = image.color;
+            isPromptDisplayed = true;
             while (color.a < 1f) {
                 color.a += fadeSpeedPerFrame;
                 image.color = color;
                 yield return new WaitForEndOfFrame();
             }
             yield return new WaitForSeconds(promptDuration);
+            isPromptDisplayed = false;
+            isFadingOut = true;
             while (color.a > 0f) {
                 color.a -= fadeSpeedPerFrame;
                 image.color = color;
                 yield return new WaitForEndOfFrame();
             }
+            isFadingOut = false;
         }
 
         IEnumerator FadeInPrompt(Sprite prompt) {
@@ -94,13 +105,9 @@ namespace SpaceBoat.UI
         IEnumerator FadePromptInAfterNextFadesOut(Sprite prompt) { 
             Color color = image.color;
             isPromptDisplayed = true;
-            isFadingOut = true;
             while (color.a > 0f) {
-                color.a -= fadeSpeedPerFrame;
-                image.color = color;
                 yield return new WaitForEndOfFrame();
             }
-            isFadingOut = false;
             StartCoroutine(FadeInPrompt(prompt));
         }
 
@@ -113,6 +120,18 @@ namespace SpaceBoat.UI
            } else {
                StartCoroutine(FadeInPrompt(prompt));
                StartCoroutine(FadeOutPromptAfterTimeOrCondition(DeactivationCondition));
+           }
+        }
+
+        public void DisplayPrompt(Sprite prompt) {
+            if (isPromptDisplayed) {
+               Debug.Log("Asked for a prompt when one is already present!");
+           } else if (isFadingOut) {
+               Debug.Log("Asked for a prompt when one is fading out!");
+               FadePromptInAfterNextFadesOut(prompt);
+           } else {
+                StartCoroutine(FadeInPrompt(prompt));
+                StartCoroutine(FadeOutPromptAfterTimeOrCondition(() => false));
            }
         }
     }

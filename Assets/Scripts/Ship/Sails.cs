@@ -29,7 +29,6 @@ namespace SpaceBoat.Ship {
         public void Break() {
             isBroken = true;
             spriteRenderer.sprite = brokenSprite;
-            GameModel.Instance.OnSailBroken();
         }
 
     }

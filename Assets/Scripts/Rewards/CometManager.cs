@@ -16,12 +16,20 @@ namespace SpaceBoat.Rewards {
         [SerializeField] private float cometSpawnYVariance = 2f;
 
         [SerializeField] private int cometFoodChance = 1;
+        [SerializeField] private int cometFoodNumber = 1;
         [SerializeField] private int cometClothChance = 3;
+        [SerializeField] private int cometClothNumber = 1;
+        
+        [SerializeField] private Dictionary<ItemTypes, int> itemQuantities = new Dictionary<ItemTypes, int>{
 
-        private float cometSpawnTimer = 5f;
+        };
+        
+        [SerializeField] private float firstCometTime = 20f;
+
+        private float cometSpawnTimer = -5f;
         private float cometPityTimer = 0f;
         private List<ItemTypes> randomItemSelector = new List<ItemTypes>();
-
+        private bool isFirstComet = true;
         public void Awake() {
             for (int i = 0; i < cometFoodChance; i++) {
                 randomItemSelector.Add(ItemTypes.FoodItem);
@@ -29,6 +37,8 @@ namespace SpaceBoat.Rewards {
             for (int i = 0; i < cometClothChance; i++) {
                 randomItemSelector.Add(ItemTypes.ClothItem);
             }
+            itemQuantities.Add(ItemTypes.FoodItem, cometFoodNumber);
+            itemQuantities.Add(ItemTypes.ClothItem, cometClothNumber);
         }
 
         void SpawnComet(bool isPity, ItemTypes itemType) {
@@ -39,6 +49,12 @@ namespace SpaceBoat.Rewards {
             RewardComet rewardComet = comet.GetComponent<RewardComet>();
             rewardComet.SetItemType(itemType);
             rewardComet.LaunchComet(isPity);
+            rewardComet.numItems = itemQuantities[itemType];
+            if (isFirstComet) {
+                isFirstComet = false;
+                Debug.Log("First comet: displaying help text");
+                GameModel.Instance.helpPrompts.DisplayPrompt(GameModel.Instance.helpPrompts.cometPrompt);
+            }
         }
 
         (bool, ItemTypes) CheckNeededItemsAndPity() {
@@ -59,7 +75,10 @@ namespace SpaceBoat.Rewards {
         }
 
         public void Update() {
-
+            if (cometSpawnTimer < 0f) {
+                cometSpawnTimer = firstCometTime;
+                return;
+            }
             if (Time.time > cometSpawnTimer ) {
                 (bool shouldPity, ItemTypes itemType) = CheckNeededItemsAndPity();
                 if (shouldPity && Time.time > cometPityTimer) {
