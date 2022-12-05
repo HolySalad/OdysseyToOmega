@@ -15,11 +15,8 @@ namespace SpaceBoat.Rewards {
 
         private Destructable destructable;
 
-        //TODO find a nicer way of doing below
-        private float destructionYRight = -2.00f;
-        private float destructionYLeft = 5f;
-        private float destructionLeftRightBoundryX = -6f;
-        private bool beingDestroyed = false;
+
+        //private bool beingDestroyed = false;
 
 
         public void Start() {
@@ -58,8 +55,8 @@ namespace SpaceBoat.Rewards {
             containedItem = GameModel.Instance.CreateItemComponent(this.gameObject, itemType);
         }
 
-        void DropItemAndDestruct() {
-            beingDestroyed = true;
+        public void DropItemAndDestruct() {
+            //beingDestroyed = true;
             for (int i = 0; i < numItems; i++) {
                 Vector3 position = transform.position + new Vector3(Mathf.Floor((numItems - i)*3 - numItems), 0, 0);
                 GameObject item = Instantiate(GameModel.Instance.PrefabForItemType(containedItemType), position, Quaternion.identity);
@@ -70,18 +67,23 @@ namespace SpaceBoat.Rewards {
 
         //this odesn't work becuas the ship is static
         //fixing it is a bitch.
-        public void OnColliderEnter2D(Collider2D other) {
-            if (other.gameObject.CompareTag("Ship")) {
+        public void OnTriggerEnter2D(Collider2D other) {
+            Debug.Log("Reward Comet hit "+ other.gameObject.name);
+            if (other.gameObject.CompareTag("CometTarget")) {
                 DropItemAndDestruct();
             }
         }
-
+        /*
+        this does work but it's disgusting.
+        private float destructionYRight = -2.00f;
+        private float destructionYLeft = 5f;
+        private float destructionLeftRightBoundryX = -6f;
         public void Update() {
             if (beingDestroyed) return;
             if ((transform.position.x < destructionLeftRightBoundryX && transform.position.y < destructionYLeft)
             || (transform.position.x > destructionLeftRightBoundryX && transform.position.y < destructionYRight)) {
                 DropItemAndDestruct();
             }       
-        }
+        }*/
     }
 }
