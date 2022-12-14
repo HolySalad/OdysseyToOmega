@@ -4,6 +4,9 @@ using UnityEngine;
 namespace SpaceBoat.HazardManagers {
     public class MeteorShower : MonoBehaviour, IHazardManager
     {
+        [Header("General Hazard Settings")]
+        [SerializeField] private float baseDuration = 280f; //how many seconds into the game does the last meteor spawn.
+
         [Header("Meteor Settings")]
         [SerializeField] private GameObject meteorPrefab;
 
@@ -51,7 +54,8 @@ namespace SpaceBoat.HazardManagers {
         [SerializeField] private float rockAngleVariance = 5f; //degrees of variance in the angle of rocks from the default 270 degrees
         [SerializeField] private float rockBaseSize = 1f; //base size of rocks
         [SerializeField] private float rockSizeIncreaseVariance = 1.5f; //how much bigger can rocks be?
-        [SerializeField] public float hazardDuration {get;} = 280f; //how many seconds into the game does the last meteor spawn.
+        public bool hasEnded {get; private set;} = false;
+        public float hazardDuration {get; private set;} = 0f;
         public float hazardBeganTime {get; private set;} = -1;
 
         private float nextMeteorSpawnTime; //when is the next meteor?
@@ -162,6 +166,13 @@ namespace SpaceBoat.HazardManagers {
             float deltaTime = Time.fixedDeltaTime;
             float timeSinceStart = Time.time - hazardBeganTime;
 
+            if (timeSinceStart > hazardDuration) {
+                Debug.Log("Hazard " + this.gameObject.name + " has ended");
+                hazardBeganTime = -1;
+                hasEnded = true;
+                return;
+            }
+
             if (timeSinceStart > firstMeteorSpawnTimer && timeSinceStart < hazardDuration) {
                 if (isNextMeteorSpawnTimeSet) {
                     if (nextMeteorSpawnTime < timeSinceStart) {
@@ -196,6 +207,8 @@ namespace SpaceBoat.HazardManagers {
         }
 
         public void StartHazard() {
+            Debug.Log("Starting hazard " + this.gameObject.name);
+            hazardDuration = baseDuration;
             hazardBeganTime = Time.time;
             meteorSoundDuration = SoundManager.Instance.Length("MeteorWhoosh_0");
             nextSwellTime = hazardBeganTime + firstSwellTimer;

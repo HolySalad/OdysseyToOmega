@@ -154,7 +154,7 @@ namespace SpaceBoat {
                 float castDirection = (speed*lastHorizontal > 0 ? 1 : -1);
                 List<RaycastHit2D> hits = new List<RaycastHit2D>();
                 ContactFilter2D filter = new ContactFilter2D();
-                filter.layerMask = LayerMask.GetMask("Ground");
+                filter.SetLayerMask(LayerMask.GetMask("Ground"));
                 float numHits = bodyCollider.gameObject.GetComponent<Collider2D>().Cast(Vector2.right * castDirection, filter, hits, wallCheckDistance, true);
                 if (numHits > 0) {
                     Debug.Log("Walking into a wall");
@@ -239,7 +239,7 @@ namespace SpaceBoat {
             
             bool wasGrounded = isGrounded;
             ContactFilter2D filter = new ContactFilter2D();
-            filter.layerMask = LayerMask.GetMask("Ground");
+            filter.SetLayerMask(LayerMask.GetMask("Ground"));
             List<RaycastHit2D> hits = new List<RaycastHit2D>();
             //RaycastHit2D hit = Physics2D.CircleCast(footCollider.position, footCollider.gameObject.GetComponent<Collider2D>().bounds.extents.x, new Vector3(0, -1, 0), groundCheckDistance, LayerMask.GetMask("Ground"));
             int hitCount = footCollider.gameObject.GetComponent<Collider2D>().Cast(new Vector3(0, -1, 0), filter, hits, groundCheckDistance, true);
@@ -516,7 +516,7 @@ namespace SpaceBoat {
                 game.sound.Play("Death");
             } 
             animator.SetTrigger("Dead");
-            StartCoroutine(GameModel.Instance.GameOver());
+            GameModel.Instance.TriggerGameOver();
         }
 
 
@@ -621,9 +621,12 @@ namespace SpaceBoat {
             if (playerStateWasAiming) {
                 return;
             }
-            bool jumpKeyDown = Input.GetKeyDown(KeyCode.Space);
-            bool jumpKeyHeld = Input.GetKey(KeyCode.Space);
+            bool jumpKeyDown = Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W);
+            bool jumpKeyHeld = Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W);
             float horizontal = Input.GetAxisRaw("Horizontal");
+            bool crouchHeld = Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftControl);
+
+            animator.SetBool("Crouching", crouchHeld);
 
             //Item pick up
             bool pickItemDown = Input.GetKeyDown(KeyCode.E);
