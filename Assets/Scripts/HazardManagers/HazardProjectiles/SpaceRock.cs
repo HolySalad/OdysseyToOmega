@@ -14,6 +14,11 @@ namespace SpaceBoat.HazardManagers {
         private float height;
         private float scale;
 
+        private Destructable destructable;
+
+        public void Awake() {
+            destructable = GetComponent<Destructable>();
+        }
 
         public void SetupRock(float speed, float angle, float scale, float spawnHeight, float launchTime) {
             // send a rock flying at the player
@@ -27,20 +32,16 @@ namespace SpaceBoat.HazardManagers {
 
         void OnCollisionEnter2D(Collision2D collision) {
             //Debug.Log("Rock hit " + collision.gameObject.name + " Layer mask " + LayerMask.LayerToName(collision.gameObject.layer));
-            if (collision.gameObject.layer == LayerMask.NameToLayer("EndOfMapLeft")) {
+            if (collision.gameObject.layer == LayerMask.NameToLayer("MapBounds")) {
                 //Debug.Log("Rock Reached the End of the Map");
                 Destroy(this.gameObject);
             } else if (collision.gameObject.layer == LayerMask.NameToLayer("PlayerChar")) {
                 GameModel.Instance.player.PlayerTakesDamage();
                 Debug.Log("Rock hit player");
                 //TODO add small knockback?
-                FindObjectOfType<SoundManager>().Play("RockImpact"); 
-                //TODO sound
-                Destroy(this.gameObject);
+                destructable.Destruct();
             } else if (collision.gameObject.layer == LayerMask.NameToLayer("Ground") && !collision.gameObject.tag.Equals("Platforms")) {
-                Destroy(this.gameObject);
-                //TODO rock breaking animation.
-                FindObjectOfType<SoundManager>().Play("RockImpact"); 
+                destructable.Destruct();
             }
         }
 

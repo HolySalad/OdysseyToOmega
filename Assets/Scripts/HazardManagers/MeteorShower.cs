@@ -4,12 +4,15 @@ using UnityEngine;
 namespace SpaceBoat.HazardManagers {
     public class MeteorShower : MonoBehaviour, IHazardManager
     {
+        [Header("General Hazard Settings")]
+        [SerializeField] private float baseDuration = 280f; //how many seconds into the game does the last meteor spawn.
+
         [Header("Meteor Settings")]
         [SerializeField] private GameObject meteorPrefab;
 
         [Header("Meteor Spawn Rate")]
         [SerializeField] private float firstMeteorSpawnTimer = 10f; //how many seconds into the game does the first meteor spawn.
-        [SerializeField] private float lastMeteorSpawnTimer = 280f; //how many seconds into the game does the last meteor spawn.
+
 
         [SerializeField] private float meteorInterval = 32f; // how often does a meteor spawn to break a sail by default.
         [SerializeField] private float meteorIntervalVariance = 0.2f; //% variance in meteor base interval.
@@ -32,7 +35,6 @@ namespace SpaceBoat.HazardManagers {
 
         [Header("Space Rock Spawn Rate")]
         [SerializeField] private float firstRockSpawnTimer = 30f; //how many seconds into the game does the first rock spawn.
-        [SerializeField] private float lastRockSpawnTimer = 290f; //how many seconds into the game does the last rock spawn.
 
         [SerializeField] private float rockVolleyLength = 8f; // how long does a volley of rocks last.
         [SerializeField] private float peakRockPaceSwell = 2f; // how many more rocks should be thrown during a swell.
@@ -52,7 +54,8 @@ namespace SpaceBoat.HazardManagers {
         [SerializeField] private float rockAngleVariance = 5f; //degrees of variance in the angle of rocks from the default 270 degrees
         [SerializeField] private float rockBaseSize = 1f; //base size of rocks
         [SerializeField] private float rockSizeIncreaseVariance = 1.5f; //how much bigger can rocks be?
-
+        public bool hasEnded {get; private set;} = false;
+        public float hazardDuration {get; private set;} = 0f;
         public float hazardBeganTime {get; private set;} = -1;
 
         private float nextMeteorSpawnTime; //when is the next meteor?
@@ -163,7 +166,14 @@ namespace SpaceBoat.HazardManagers {
             float deltaTime = Time.fixedDeltaTime;
             float timeSinceStart = Time.time - hazardBeganTime;
 
-            if (timeSinceStart > firstMeteorSpawnTimer && timeSinceStart < lastMeteorSpawnTimer) {
+            if (timeSinceStart > hazardDuration) {
+                Debug.Log("Hazard " + this.gameObject.name + " has ended");
+                hazardBeganTime = -1;
+                hasEnded = true;
+                return;
+            }
+
+            if (timeSinceStart > firstMeteorSpawnTimer && timeSinceStart < hazardDuration) {
                 if (isNextMeteorSpawnTimeSet) {
                     if (nextMeteorSpawnTime < timeSinceStart) {
                         handleMeteorSpawning(timeSinceStart, deltaTime);
@@ -190,13 +200,15 @@ namespace SpaceBoat.HazardManagers {
                 rockSwellStartTime = timeSinceStart;
                 Debug.Log("Starting rock swell at " + timeSinceStart);
             }
-            if (timeSinceStart > firstRockSpawnTimer && timeSinceStart < lastRockSpawnTimer && (rockVolleyStartTime + rockVolleyLength < timeSinceStart)) {
+            if (timeSinceStart > firstRockSpawnTimer && timeSinceStart < hazardDuration && (rockVolleyStartTime + rockVolleyLength < timeSinceStart)) {
                 Debug.Log("Starting Rock Volley. Time since game began: " + timeSinceStart + " Rock volley start time: " + rockVolleyStartTime + " Rock volley length: " + rockVolleyLength);
                 handleRockSpawning (timeSinceStart, deltaTime);
             } 
         }
 
         public void StartHazard() {
+            Debug.Log("Starting hazard " + this.gameObject.name);
+            hazardDuration = baseDuration;
             hazardBeganTime = Time.time;
             meteorSoundDuration = SoundManager.Instance.Length("MeteorWhoosh_0");
             nextSwellTime = hazardBeganTime + firstSwellTimer;

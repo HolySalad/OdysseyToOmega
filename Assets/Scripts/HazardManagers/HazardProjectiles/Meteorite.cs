@@ -10,6 +10,11 @@ namespace SpaceBoat.HazardManagers {
         private Vector2 velocity;
 
         private GameObject target;
+        private Destructable destructable;
+
+        public void Awake() {
+            destructable = GetComponent<Destructable>();
+        }
 
         public void SetupMeteor(float speed, Vector3 startingPosition, GameObject targetSail, float soundTime) {
             //define a vector from the starting position to the target sail
@@ -45,21 +50,16 @@ namespace SpaceBoat.HazardManagers {
 
         void OnCollisionEnter2D(Collision2D collision) {
             Debug.Log("Rock hit " + collision.gameObject.name + " Layer mask " + LayerMask.LayerToName(collision.gameObject.layer));
-            if (collision.gameObject.layer == LayerMask.NameToLayer("EndOfMapLeft")) {
+            if (collision.gameObject.layer == LayerMask.NameToLayer("MapBounds")) {
                 Debug.LogWarning("Meteor Reached the End of the Map. This shouldn't happen, they are supposed to always hit sails.");
                 Destroy(this.gameObject);
             } else if (collision.gameObject.layer == LayerMask.NameToLayer("PlayerChar")) {
                 Debug.Log("Meteor hit player");
                 GameModel.Instance.player.PlayerTakesDamage();
-                Destroy(this.gameObject);
-                //TODO add small knockback?
-                //TODO rock breaking animation.
-                FindObjectOfType<SoundManager>().Play("MeteorImpact"); 
+                destructable.Destruct();
                 Destroy(this.gameObject);
             } else if (collision.gameObject.layer == LayerMask.NameToLayer("Ground") && !collision.gameObject.tag.Equals("Platforms")) {
-                Destroy(this.gameObject);
-                //TODO rock breaking animation.
-                FindObjectOfType<SoundManager>().Play("MeteorImpact"); 
+                destructable.Destruct();
             }
         }
     }

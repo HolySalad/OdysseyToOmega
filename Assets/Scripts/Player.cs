@@ -19,7 +19,6 @@ namespace SpaceBoat {
         [SerializeField] private int groundCheckJumpMargin = 24; //how many frames after jumping to check for ground
         [SerializeField] private float wallCheckDistance = 0.5f;
         [SerializeField] private float ceilingCheckDistance = 0.1f;
-        [SerializeField] private float slipSpeed = 4f;
         [SerializeField] private Transform footCollider;
         [SerializeField] private Transform headCollider;
         [SerializeField] private Transform bodyCollider;
@@ -85,6 +84,8 @@ namespace SpaceBoat {
         private bool isWalking;
         private float lastHorizontal;
         private float speed;
+        private float horizontalImpact;
+        private bool justLanded = false;
 
         private bool isSlipping = false;
         private bool isSlippingLeft = false;
@@ -153,7 +154,7 @@ namespace SpaceBoat {
                 float castDirection = (speed*lastHorizontal > 0 ? 1 : -1);
                 List<RaycastHit2D> hits = new List<RaycastHit2D>();
                 ContactFilter2D filter = new ContactFilter2D();
-                filter.layerMask = LayerMask.GetMask("Ground");
+                filter.SetLayerMask(LayerMask.GetMask("Ground"));
                 float numHits = bodyCollider.gameObject.GetComponent<Collider2D>().Cast(Vector2.right * castDirection, filter, hits, wallCheckDistance, true);
                 if (numHits > 0) {
                     Debug.Log("Walking into a wall");
@@ -209,12 +210,13 @@ namespace SpaceBoat {
         }
 
         private void JumpInput(bool keyHeld, bool keyDown) {
-            if (keyDown && !isJumping) {
+            if ((keyDown || (justLanded && keyHeld)) && !isJumping) {
                 StartJump();
             } else if (!keyHeld && isJumping && Time.frameCount < jumpStartTime + halfJumpFrameWindow) {
                 Debug.Log("Half Jump");
                 halfJump = true;
             }
+            justLanded = false;
         }
 
         private void JumpStomp() {
@@ -237,7 +239,7 @@ namespace SpaceBoat {
             
             bool wasGrounded = isGrounded;
             ContactFilter2D filter = new ContactFilter2D();
-            filter.layerMask = LayerMask.GetMask("Ground");
+            filter.SetLayerMask(LayerMask.GetMask("Ground"));
             List<RaycastHit2D> hits = new List<RaycastHit2D>();
             //RaycastHit2D hit = Physics2D.CircleCast(footCollider.position, footCollider.gameObject.GetComponent<Collider2D>().bounds.extents.x, new Vector3(0, -1, 0), groundCheckDistance, LayerMask.GetMask("Ground"));
             int hitCount = footCollider.gameObject.GetComponent<Collider2D>().Cast(new Vector3(0, -1, 0), filter, hits, groundCheckDistance, true);
@@ -253,12 +255,14 @@ namespace SpaceBoat {
                     JumpStomp();
                     isJumping = false;
                     halfJump = false;
+                    justLanded = true;
                     currentVerticalForce = 0;
                 } else if (!wasGrounded) {
                     Debug.Log("Player landed from falling after " + (Time.frameCount - jumpStartTime) + " frames");
                     JumpStomp();
                     isJumping = false;
                     halfJump = false;
+                    justLanded = true;
                     currentVerticalForce = 0;
                 }
             } else {
@@ -432,7 +436,7 @@ namespace SpaceBoat {
             Collider2D[] colliders = new Collider2D[10];
             playerLocationTrigger.GetContacts(colliders);
             foreach (Collider2D coll in colliders) {
-                if (coll.CompareTag(item.itemUsageValidTrigger)) {
+                if (coll != null && coll.CompareTag(item.itemUsageValidTrigger)) {
                     Debug.Log("Can use held item on " + coll.name);
                     return (item.itemUsageCondition(this, coll.gameObject), coll.gameObject);
                 }
@@ -511,8 +515,8 @@ namespace SpaceBoat {
             } else {
                 game.sound.Play("Death");
             } 
-            animator.SetTrigger("Death");
-            StartCoroutine(GameModel.Instance.GameOver());
+            animator.SetTrigger("Dead");
+            GameModel.Instance.TriggerGameOver();
         }
 
 
@@ -617,9 +621,12 @@ namespace SpaceBoat {
             if (playerStateWasAiming) {
                 return;
             }
-            bool jumpKeyDown = Input.GetKeyDown(KeyCode.Space);
-            bool jumpKeyHeld = Input.GetKey(KeyCode.Space);
+            bool jumpKeyDown = Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W);
+            bool jumpKeyHeld = Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W);
             float horizontal = Input.GetAxisRaw("Horizontal");
+            bool crouchHeld = Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftControl);
+
+            animator.SetBool("Crouching", crouchHeld);
 
             //Item pick up
             bool pickItemDown = Input.GetKeyDown(KeyCode.E);

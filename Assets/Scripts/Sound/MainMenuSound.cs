@@ -7,7 +7,7 @@ public class MainMenuSound : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {   
-        FindObjectOfType<SoundManager>().Play("MenuSoundtrack"); 
+        SoundManager.Instance.Play("MenuSoundtrack"); 
     }
 
 }
