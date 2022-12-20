@@ -9,6 +9,7 @@ namespace SpaceBoat {
     {
   
         [Header("General Player Settings")]
+        [SerializeField] private GameObject playerCamera;
         [SerializeField] private int hitStunFrames = 24;
         [SerializeField] private int invincibilityFrames = 50;
         [SerializeField] public int maxHealth = 3;
@@ -35,11 +36,17 @@ namespace SpaceBoat {
         [SerializeField] private float jumpDecay = 28f;
         [SerializeField] private int jumpDecayDoublingFrames = 4;
         [SerializeField] private float gravityAcceleration = 30f;
+        [SerializeField] private float slipSpeedVertical = 10f;
         [SerializeField] private float gravityTerminalVelocity = 45f;
+        [SerializeField] private float jumpHorizontalMultiplier = 1.2f;
+        [SerializeField] private float jumpHorizontalSpeedWindow = 0.5f;
+        [SerializeField] private float landingHorizontalDrag = 0.7f;
 
 
         [Header("Walk Movement Settings")]
-        [SerializeField] private float maxSpeed = 8f;
+        [SerializeField] private float maxWalkSpeed = 6f;
+        [SerializeField] private float maxHoriontalVelocity = 10f;
+
         [SerializeField] private float acceleration = 5f;
         [SerializeField] private float deceleration = 7f;
         [SerializeField] private float accelerationStartMult = 5f;
@@ -67,7 +74,7 @@ namespace SpaceBoat {
         private bool needsHitSound = false;
 
         //internal movement vars
-        private bool isGrounded = false;
+        public bool isGrounded {get; private set;} = false;
         private int JumpGrace = 0;
         private int jumpGrace = 0;
         private bool  jumpSquat = false;
@@ -87,7 +94,7 @@ namespace SpaceBoat {
         private float horizontalImpact;
         private bool justLanded = false;
 
-        private bool isSlipping = false;
+        public bool isSlipping {get; private set;} = false;
         private bool isSlippingLeft = false;
 
         //item vars
@@ -102,6 +109,7 @@ namespace SpaceBoat {
 
         public IActivatables activatableInUse {get; private set;}
 
+        private UI.CameraControls cameraControls;
 
         void Awake() {
             //fill references
@@ -114,6 +122,11 @@ namespace SpaceBoat {
 
             //set default values
             health = maxHealth;
+
+            if (playerCamera == null) {
+                playerCamera = GameObject.Find("MainCamera");
+            }
+            cameraControls = playerCamera?.GetComponent<UI.CameraControls>();
         }
 
         // walk script
@@ -126,27 +139,32 @@ namespace SpaceBoat {
                 Vector3 existingColliderLocation = bodyCollider.transform.position;
                 transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
                 Vector3 colliderOffset =  existingColliderLocation - bodyCollider.transform.position;
+                if (!isFacingRight) {cameraControls?.SetPlayerFocusXOffset(-colliderOffset.x) ;} else cameraControls?.SetPlayerFocusXOffset(0);
                 transform.position = new Vector3 (transform.position.x + colliderOffset.x, transform.position.y + colliderOffset.y, transform.position.z);
             }
         }
 
         public void WalkInput(float horizontalInput, float deltaTime) {
             if (horizontalInput != 0) {lastHorizontal = horizontalInput;}
-            if (horizontalInput == 0) {
+            // if we aren't pressing an input or if our speed is in excess of max walk speed while on the ground, we decelerate.
+            if (horizontalInput == 0 || (Mathf.Abs(speed) > maxHoriontalVelocity && isGrounded)) {
                 if (speed > 0) {
                     speed = Mathf.Max(speed - deceleration*deltaTime, 0);
                 } else if (speed < 0) {
                     speed = Mathf.Min(speed + deceleration*deltaTime, 0);
                 }
-            } else {
+            } else  {
                 float accel = acceleration;
                 if (Mathf.Abs(speed) < accelerationStartRange) {
                     accel *= accelerationStartMult;
                 } else if (Mathf.Abs(speed) < accelerationMidRange) {
                     accel *= accelerationMidMult;
                 }
-                speed = Mathf.Min(speed + accel*deltaTime, maxSpeed);
+                //return speed after acceleration if it is higher than current speed.
+                speed = Mathf.Max(Mathf.Min(speed + accel*deltaTime, maxWalkSpeed), speed);
             }
+
+            //collisions
             if (isSlipping) {
                 speed = (isSlippingLeft ? -1 : 1);
                 isSlipping = false;
@@ -199,13 +217,20 @@ namespace SpaceBoat {
                 isGrounded = false;
                 hitApex = false;
                 currentVerticalForce = jumpPower;
+                if (speed > maxWalkSpeed * jumpHorizontalSpeedWindow) {
+                    speed = speed * jumpHorizontalMultiplier;
+                }
             } else if (!isGrounded) {
                 if (!hitApex) {
                     Debug.Log("Hit Apex after " + (Time.frameCount - jumpStartTime) + " frames");
                     hitApex = true;
                     //TODO jump animation > fall animation
                 }
-                currentVerticalForce = Mathf.Max(-gravityTerminalVelocity, currentVerticalForce - gravityAcceleration * deltaTime);
+                if (isSlipping) {
+                    currentVerticalForce = -slipSpeedVertical;
+                } else {
+                    currentVerticalForce = Mathf.Max(-gravityTerminalVelocity, currentVerticalForce - gravityAcceleration * deltaTime);
+                }
             }
         }
 
@@ -257,6 +282,7 @@ namespace SpaceBoat {
                     halfJump = false;
                     justLanded = true;
                     currentVerticalForce = 0;
+                    speed = speed * landingHorizontalDrag;
                 } else if (!wasGrounded) {
                     Debug.Log("Player landed from falling after " + (Time.frameCount - jumpStartTime) + " frames");
                     JumpStomp();
@@ -303,36 +329,6 @@ namespace SpaceBoat {
             }
         }
 
-        /*echos the OnColliderEnter2D() function from the player's foot collider
-        public void OnFColliderEnter(Collider2D coll, Collision2D other) {
-            if (!isGrounded && (other.gameObject.layer == LayerMask.NameToLayer("Ground"))) {
-                if (isJumping) {
-                    game.sound.Play("JumpStomp"); 
-                }
-                isGrounded = true;
-                isJumping = false;
-                halfJump = false;
-                currentVerticalForce = 0;
-            }
-        }
-
-        //echos the OnColliderExit2D() function from the player's foot collider
-        public void OnFColliderExit(Collider2D coll,Collision2D other) {
-            if (other.gameObject.layer == LayerMask.NameToLayer("Ground") && !coll.IsTouchingLayers(LayerMask.GetMask("Ground"))) {
-                //Debug.Log("Collision Exit from ground");
-                jumpGrace = Time.frameCount + jumpGraceWindow;
-                isGrounded = false;
-            }
-        }
-
-        //does the same with the head collider for ceiling collisions
-        public void OnHColliderEnter(Collider2D coll, Collision2D other) {
-            if (!isGrounded) {
-                currentVerticalForce = 0;
-            }
-        }
-
-        */
         // end of movement functions
 
         // item functions
@@ -592,7 +588,7 @@ namespace SpaceBoat {
             updateJump(deltaTime);
             float horizontal = lastHorizontal;
 
-            Vector2 movement = new Vector2(speed*lastHorizontal, currentVerticalForce);
+            Vector2 movement = new Vector2(Mathf.Min(speed*lastHorizontal, maxHoriontalVelocity), currentVerticalForce);
             if (playerState == PlayerState.working || playerState == PlayerState.aiming) {
                 movement = new Vector2(0, Mathf.Min(currentVerticalForce, 0));
             } else if (playerState == PlayerState.hitstun) {
@@ -638,6 +634,11 @@ namespace SpaceBoat {
             JumpInput(jumpKeyHeld, jumpKeyDown);
             ItemInput(pickItemDown);
             itemUsageInput(useItemDown);
+
+            // Camera Toggles
+            if (Input.GetKeyDown(KeyCode.C)) {
+                cameraControls?.ToggleShipView();
+            }
         }
 
         void Update() {

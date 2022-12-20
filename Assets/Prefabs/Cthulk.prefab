@@ -673,6 +673,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40045d4af4a979f409f4aa2d3ef23e0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerCamera: {fileID: 0}
   hitStunFrames: 24
   invincibilityFrames: 50
   maxHealth: 3
@@ -692,18 +693,22 @@ MonoBehaviour:
   jumpSquatFrames: 3
   halfJumpDecayMultiplier: 1.9
   jumpPower: 28
-  jumpDecay: 28
-  jumpDecayDoublingFrames: 4
-  gravityAcceleration: 28
-  gravityTerminalVelocity: 60
-  maxSpeed: 8
-  acceleration: 2
-  deceleration: 7
+  jumpDecay: 42
+  jumpDecayDoublingFrames: 5
+  gravityAcceleration: 56
+  gravityTerminalVelocity: 72
+  jumpHorizontalMultiplier: 1.3
+  jumpHorizontalSpeedWindow: 0.75
+  landingHorizontalDrag: 0.7
+  maxWalkSpeed: 8
+  maxHoriontalVelocity: 24
+  acceleration: 3
+  deceleration: 16
   accelerationStartMult: 8
-  accelerationMidMult: 5
+  accelerationMidMult: 4
   accelerationStartRange: 3
-  accelerationMidRange: 6
-  turningSpeedMult: 0.7
+  accelerationMidRange: 5
+  turningSpeedMult: 0.6
   playerState: 0
 --- !u!70 &1003127097
 CapsuleCollider2D:
