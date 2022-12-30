@@ -19,7 +19,7 @@ namespace SpaceBoat.UI {
         [SerializeField] private bool shipViewByDefault = false;
 
         private Player player;
-        private bool isShipView = false;
+        public bool isShipView {get; private set;} = false;
         private bool cameraFollowedLastFrame = false;
         private Vector3 lastGroundedPlayerPosition;
         private Camera mainCamera;
@@ -31,23 +31,35 @@ namespace SpaceBoat.UI {
         [SerializeField] private float camBoundYMin;
         [SerializeField] private float camBoundYMax;
 
+        [SerializeField] private float disableShipCamBelowY = -10f;
+        private bool restoreCamera = false;
+
         void Start() {
             player = GameModel.Instance.player;
             isShipView = shipViewByDefault;
+            mainCamera = GetComponent<Camera>();
             if (isShipView) {
-                mainCamera = GetComponent<Camera>();
                 mainCamera.orthographicSize = shipViewDistance;
                 transform.position = shipViewTarget.position;
             } else {
                 Vector3 playerPos = GameModel.Instance.player.transform.position;
                 Vector3 targetPos =  new Vector3(Mathf.Clamp(playerPos.x + playerRotationXOffset, camBoundXMin, camBoundXMax), Mathf.Clamp(playerPos.y + playerViewHeightOffset, camBoundYMin, camBoundYMax), -10);
                 transform.position = targetPos;
+                mainCamera.orthographicSize = playerViewDistance;
             }
         }
 
 
         public void ToggleShipView() {
+            if (player.gameObject.transform.position.y < disableShipCamBelowY) {
+                return;
+            }
             isShipView = !isShipView;
+            transitionTargetEndTime = Time.time + cameraShiftTime;
+        }
+
+        public void ToggleShipView(bool forceSetting) {
+            isShipView = forceSetting;
             transitionTargetEndTime = Time.time + cameraShiftTime;
         }
 
@@ -74,7 +86,7 @@ namespace SpaceBoat.UI {
         private void PlayerViewUpdate() {
             bool isTransitioning = Time.time < transitionTargetEndTime;
             Vector3 playerPos = player.transform.position;
-            if (player.isGrounded && !player.isSlipping) {
+            if (player.GetIsGrounded(true) && !player.isSlipping) {
                 lastGroundedPlayerPosition = playerPos;
             } else if (playerPos.y > lastGroundedPlayerPosition.y) {
                 // Don't follow the player upwards when they are jumping.
@@ -119,9 +131,22 @@ namespace SpaceBoat.UI {
 
         void Update() {
             if (isShipView) {
+                //Debug.Log("In ship view, player y is " + player.gameObject.transform.position.y + " and disableShipCamBelowY is " + disableShipCamBelowY);
+                if (player.gameObject.transform.position.y < disableShipCamBelowY) {
+                    Debug.Log("Disabling ship view because we're below deck");
+                    restoreCamera = isShipView;
+                    ToggleShipView(false);
+                    return;
+                }
                 ShipViewUpdate();
             } else {
                 PlayerViewUpdate();
+                if (lastGroundedPlayerPosition.y > disableShipCamBelowY && restoreCamera) {
+                    Debug.Log("Enabling ship view because we're above deck");
+                    ToggleShipView(true);
+                    restoreCamera = false;
+                    return;
+                }
             }
         }
     }
