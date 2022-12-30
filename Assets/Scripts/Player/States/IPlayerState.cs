@@ -10,8 +10,11 @@ namespace SpaceBoat.PlayerStates {
         public PlayerStateName transitionState {get;}
 
         public void EnterState(Player player);
-        public void ExitState(Player player);
-        public void UpdateState(Player player);
+        public void ExitState();
+        public void UpdateState();
+        public void StateInput();
+
+        public void HandleAddedPlayerMomentum(EntityMomentum momentum);
 
     }
 }
