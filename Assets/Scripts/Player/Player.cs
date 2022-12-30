@@ -5,7 +5,9 @@ using SpaceBoat.Items;
 using SpaceBoat.Ship;
 
 namespace SpaceBoat {
+    public enum PlayerState {ready, working, hitstun, aiming};
     public class Player : MonoBehaviour
+    
     {
   
         [Header("General Player Settings")]
@@ -70,7 +72,6 @@ namespace SpaceBoat {
 
         // player states
         //possible states: ready, working, hitstun
-        public enum PlayerState {ready, working, hitstun, aiming};
         public PlayerState playerState = PlayerState.ready;
 
         // internal gameplay vars

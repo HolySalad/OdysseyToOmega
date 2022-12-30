@@ -18,7 +18,7 @@ namespace SpaceBoat.Ship {
         public bool isInUse {get; private set;} = false;
         private bool returnPlayerToSmallCamera = false;
         public bool canManuallyDeactivate {get;} = true;
-        public Player.PlayerState playerState {get;} = Player.PlayerState.aiming;
+        public PlayerState playerState {get;} = PlayerState.aiming;
         public string usageAnimation {get;} = "Repairing";
 
 
