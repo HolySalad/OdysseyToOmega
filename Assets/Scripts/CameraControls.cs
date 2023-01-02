@@ -86,7 +86,7 @@ namespace SpaceBoat.UI {
         private void PlayerViewUpdate() {
             bool isTransitioning = Time.time < transitionTargetEndTime;
             Vector3 playerPos = player.transform.position;
-            if (player.isGrounded) {
+            if (player.GetIsGrounded(true) && !player.isSlipping) {
                 lastGroundedPlayerPosition = playerPos;
             } else if (playerPos.y > lastGroundedPlayerPosition.y) {
                 // Don't follow the player upwards when they are jumping.

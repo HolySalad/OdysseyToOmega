@@ -7,9 +7,20 @@ namespace SpaceBoat.PlayerStates
 {    
     public class ReadyState : MonoBehaviour, IPlayerState
     {
+        [Header("Collision Detection Settings")]
+        [SerializeField] private float groundCheckDistance = 0.1f;
+        [SerializeField] private float slipCheckDistance = 0.2f;
+        [SerializeField] private int groundCheckJumpMargin = 24; //how many frames after jumping to check for ground
+        [SerializeField] private float wallCheckDistance = 0.5f;
+        [SerializeField] private float ceilingCheckDistance = 0.1f;
+        [SerializeField] private Transform footCollider;
+        [SerializeField] private Transform headCollider;
+        [SerializeField] private Transform bodyCollider;
+        [SerializeField] private Transform leftSlipCollider;
+        [SerializeField] private Transform rightSlipCollider;
+        [SerializeField] private Transform headSlipCollider;
 
         [Header("Jump Settings")]
-        [SerializeField] private int groundCheckJumpMargin = 24; //how many frames after jumping to check for ground
         [SerializeField] private int jumpGraceWindow = 3;
         [SerializeField] private int halfJumpFrameWindow = 6;
         [SerializeField] private int jumpSquatFrames = 3;
@@ -43,6 +54,9 @@ namespace SpaceBoat.PlayerStates
         [SerializeField] private int momentumAccelerationTime = 12; //frames to reach max momentum
 
         //internal movement vars
+        private bool isGrounded = false;
+        private bool groundedOnHazard = false;
+
         private int JumpGrace = 0;
         private int jumpGrace = 0;
         private bool  jumpSquat = false;
@@ -81,23 +95,36 @@ namespace SpaceBoat.PlayerStates
         private Player player;
         private CameraControls cameraControls;
         private Animator animator;
-        private Rigidbody2D rb;
+
+        void OnEnable() {
+            player = GetComponent<Player>();
+            if (player == null) {Debug.LogError("PlayerMovement: Player reference not found.");}
+            cameraControls = Camera.main.GetComponent<CameraControls>();
+            if (cameraControls == null) {Debug.LogError("PlayerMovement: CameraControls reference not found.");}
+            animator = GetComponent<Animator>();
+            if (animator == null) {Debug.LogError("PlayerMovement: Animator reference not found.");}
+        }
+
 
         // walk script
         // handles horizontal movement and sprite orientation
-        void AdjustFacing(float horizontalInput) {
-            if (player.AdjustFacing(horizontalInput)) {
+
+        public void AdjustFacing(float horizontalInput) {
+            if (horizontalInput > 0 && !isFacingRight || horizontalInput < 0 && isFacingRight) {
+                isFacingRight = !isFacingRight;
                 speed = -speed * turningSpeedMult;
+                Vector3 existingColliderLocation = bodyCollider.transform.position;
+                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+                Vector3 colliderOffset =  existingColliderLocation - bodyCollider.transform.position;
+                if (!isFacingRight) {cameraControls?.SetPlayerFocusXOffset(-colliderOffset.x) ;} else cameraControls?.SetPlayerFocusXOffset(0);
+                transform.position = new Vector3 (transform.position.x + colliderOffset.x, transform.position.y + colliderOffset.y, transform.position.z);
             }
         }
-        
-                
 
-        public void WalkInput(float horizontalInput) {
-            float deltaTime = Time.deltaTime;
+        public void WalkInput(float horizontalInput, float deltaTime) {
             if (horizontalInput != 0) {lastHorizontal = horizontalInput;}
             // if we aren't pressing an input or if our speed is in excess of max walk speed while on the ground, we decelerate.
-            if (horizontalInput == 0 || (Mathf.Abs(speed) > maxHoriontalVelocity && player.isGrounded)) {
+            if (horizontalInput == 0 || (Mathf.Abs(speed) > maxHoriontalVelocity && isGrounded)) {
                 if (speed > 0) {
                     speed = Mathf.Max(speed - deceleration*deltaTime, 0);
                 } else if (speed < 0) {
@@ -119,8 +146,12 @@ namespace SpaceBoat.PlayerStates
                 speed = (isSlippingLeft ? -1 : 1);
                 isSlipping = false;
             } else if (speed != 0) {
-                (bool walkingIntoWall, List<RaycastHit2D> hits) = player.CheckWall();
-                if (walkingIntoWall) {
+                float castDirection = (speed*lastHorizontal > 0 ? 1 : -1);
+                List<RaycastHit2D> hits = new List<RaycastHit2D>();
+                ContactFilter2D filter = new ContactFilter2D();
+                filter.SetLayerMask(LayerMask.GetMask("Ground"));
+                float numHits = bodyCollider.gameObject.GetComponent<Collider2D>().Cast(Vector2.right * castDirection, filter, hits, wallCheckDistance, true);
+                if (numHits > 0) {
                     Debug.Log("Walking into a wall");
                     speed = 0;
                 }
@@ -150,10 +181,11 @@ namespace SpaceBoat.PlayerStates
         }
 
         private bool CanJump() {
-            return Time.frameCount < jumpGrace || player.isGrounded;
+            if (player.playerState != PlayerStateName.ready) {return false;}
+            return Time.frameCount < jumpGrace || isGrounded;
         }
 
-        void updateJump() {
+        void updateJump(float deltaTime) {
             if (currentVerticalForce > 0) {
                 float decay = jumpDecay;
                 if (halfJump) {
@@ -162,20 +194,20 @@ namespace SpaceBoat.PlayerStates
                 if (Time.frameCount > jumpStartTime + jumpSquatFrames + jumpDecayDoublingFrames) {
                     decay *= 2;
                 }
-                currentVerticalForce = Mathf.Max(0, currentVerticalForce - decay * Time.deltaTime);
+                currentVerticalForce = Mathf.Max(0, currentVerticalForce - decay * deltaTime);
             } else if (jumpSquat && Time.frameCount > jumpStartTime + jumpSquatFrames) {
                 SoundManager sm = FindObjectOfType<SoundManager>();
                 sm.Play("Jump"); 
                 Debug.Log("JumpSquat > Jump");
                 jumpSquat = false;
                 isJumping = true;
-                player.LeavesGround();
+                isGrounded = false;
                 hitApex = false;
                 currentVerticalForce = jumpPower;
                 if (speed > maxWalkSpeed * jumpHorizontalSpeedWindow) {
                     speed = speed * jumpHorizontalMultiplier;
                 }
-            } else if (!player.isGrounded) {
+            } else if (!isGrounded) {
                 if (!hitApex) {
                     Debug.Log("Hit Apex after " + (Time.frameCount - jumpStartTime) + " frames");
                     hitApex = true;
@@ -184,7 +216,7 @@ namespace SpaceBoat.PlayerStates
                 if (isSlipping) {
                     currentVerticalForce = -slipSpeedVertical;
                 } else if (targetVerticalMomentum <= 0) {
-                    currentVerticalForce = Mathf.Max(-gravityTerminalVelocity, currentVerticalForce - gravityAcceleration * Time.deltaTime);
+                    currentVerticalForce = Mathf.Max(-gravityTerminalVelocity, currentVerticalForce - gravityAcceleration * deltaTime);
                 }
             }
         }
@@ -216,8 +248,20 @@ namespace SpaceBoat.PlayerStates
             if (Time.frameCount < jumpStartTime + groundCheckJumpMargin) {
                 return;
             }
-            (bool isGrounded, bool wasGrounded, List<RaycastHit2D> hits) = player.CheckGrounded();
+            
+            bool wasGrounded = isGrounded;
+            ContactFilter2D filter = new ContactFilter2D();
+            filter.SetLayerMask(LayerMask.GetMask("Ground", "PhysicalHazards"));
+            List<RaycastHit2D> hits = new List<RaycastHit2D>();
+            //RaycastHit2D hit = Physics2D.CircleCast(footCollider.position, footCollider.gameObject.GetComponent<Collider2D>().bounds.extents.x, new Vector3(0, -1, 0), groundCheckDistance, LayerMask.GetMask("Ground"));
+            int hitCount = footCollider.gameObject.GetComponent<Collider2D>().Cast(new Vector3(0, -1, 0), filter, hits, groundCheckDistance, true);
+            Debug.DrawRay(footCollider.position, transform.TransformDirection(new Vector3(0, -groundCheckDistance, 0)), Color.yellow);
+            Debug.DrawRay(rightSlipCollider.position, transform.TransformDirection(new Vector3(0, -groundCheckDistance, 0)), Color.yellow);
+            Debug.DrawRay(leftSlipCollider.position, transform.TransformDirection(new Vector3(0, -groundCheckDistance, 0)), Color.yellow);
+            Debug.DrawRay(headSlipCollider.position, transform.TransformDirection(new Vector3(0, -groundCheckDistance, 0)), Color.yellow);
+            isGrounded = hitCount > 0;
             if (isGrounded) {
+                groundedOnHazard = hits.TrueForAll(hit => hit.collider.gameObject.layer == LayerMask.NameToLayer("PhysicalHazards"));
                 JumpGrace = Time.frameCount + jumpGraceWindow;
                 if (isJumping) {
                     Debug.Log("Player landed from jumping after " + (Time.frameCount - jumpStartTime) + " frames");
@@ -240,27 +284,41 @@ namespace SpaceBoat.PlayerStates
                     verticalMomentum = 0;
                 }
             } else {
+                groundedOnHazard = false;
                 if (wasGrounded) {
                     Debug.Log("Player left ground at " + Time.frameCount);
                 } else {
-                    (bool slippingLeft, bool slippingRight) = player.CheckSlipColliders();
-                    if (slippingLeft && slippingRight) {
+                    RaycastHit2D hitRight = Physics2D.Raycast(rightSlipCollider.position, new Vector3(0, -1, 0), slipCheckDistance, LayerMask.GetMask("Ground"));
+                    RaycastHit2D hitLeft = Physics2D.Raycast(leftSlipCollider.position, new Vector3(0, -1, 0), slipCheckDistance, LayerMask.GetMask("Ground"));
+                    if (hitRight.collider != null && hitLeft.collider != null) {
                         Debug.Log("Player was wedged between two walls");
-                        //give them cayote time so they can jump out of the wedge.
                         isJumping = false;
                         halfJump = false;
                         currentVerticalForce = 0;
-                        jumpGrace = Time.frameCount + jumpGraceWindow;
-                    } else if (slippingRight) {
+                        isGrounded = true;
+                    } else if (hitRight.collider != null) {
                         Debug.Log("Player slipped right");
                         isSlipping = true;
                         isSlippingLeft = true;
-                    } else if (slippingLeft) {
+                       
+                    } else if (hitLeft.collider != null) {
                         Debug.Log("Player slipped left");
                         isSlipping = true;
                         isSlippingLeft = false;
-                    } 
+                    } else if (Physics2D.Raycast(headSlipCollider.position, new Vector3(0, -1, 0), slipCheckDistance, LayerMask.GetMask("Ground")).collider != null)
+                    {
+
+                    }
                 }
+            }
+        }
+
+        private void CheckHeadBump() {
+            RaycastHit2D hit = Physics2D.Raycast(headCollider.position, Vector3.up, ceilingCheckDistance, LayerMask.GetMask("Ground"));
+            Debug.DrawRay(footCollider.position, transform.TransformDirection(new Vector3(0, ceilingCheckDistance, 0)), Color.yellow, 0.1f);
+            if (hit.collider != null) {
+                Debug.Log("Ouch! My fucking head!");
+                currentVerticalForce = Mathf.Min(0, currentVerticalForce);
             }
         }
 
@@ -297,84 +355,35 @@ namespace SpaceBoat.PlayerStates
             }
         }
 
-        void animatorUpdate() {
-            if (playerState == PlayerStateName.ready) {
-                animator.SetFloat("Speed", Mathf.Abs(speed));
-                animator.SetBool("HoldingObject", (player.itemInHand != null));
-            } else {
-                animator.SetFloat("Speed", 0);
-                animator.SetBool("HoldingObject", false);
-            }
-            animator.SetBool("Grounded", player.isGrounded);
+
+
+        //accessors
+        public bool GetIsGrounded() {
+            return GetIsGrounded(true);
         }
 
+        public  bool GetIsGrounded(bool includeHazards) {
+            if (includeHazards) {
+                return isGrounded || jumpGrace > 0;
+            } else {
+                return isGrounded;
+            }
+        }
 
         //interface methods
 
-        public void HandleAddedPlayerMomentum(EntityMomentum momentum) {
-
-        }
-
         public void EnterState(Player player) {
             readyToTransition = false;
-            this.player = player;
-            cameraControls = Camera.main.GetComponent<CameraControls>();
-            if (cameraControls == null) {Debug.LogError("PlayerMovement: CameraControls reference not found.");}
-            animator = GetComponent<Animator>();
-            if (animator == null) {Debug.LogError("PlayerMovement: Animator reference not found.");}
-            rb = GetComponent<Rigidbody2D>();
-            if (rb == null) {Debug.LogError("PlayerMovement: Rigidbody2D reference not found.");}
-
-            Debug.Log("Entered Ready State");
         }
 
-        public void ExitState() {
+        public void ExitState(Player player) {
 
             readyToTransition = false;
             transitionState = PlayerStateName.empty;
         }
 
-        public void UpdateState() {
-            CheckGrounded();
-            if (isJumping) {
-                //CheckHeadBump();
-                //TODO add head bump
-            }
-            updateJump();
-            float horizontal = lastHorizontal;
-
-            Vector2 movement = new Vector2(Mathf.Min((speed*lastHorizontal)+horizontalMomentum, maxHoriontalVelocity), currentVerticalForce + verticalMomentum);
-            if (playerState == PlayerStateName.working || playerState == PlayerStateName.aiming) {
-                movement = new Vector2(0, Mathf.Min(currentVerticalForce, 0));
-            } else if (playerState == PlayerStateName.hitstun) {
-                //TODO add hitstun knockback
-                movement = new Vector2(horizontalMomentum, Mathf.Min(currentVerticalForce, 0) + verticalMomentum);
-            }
-            rb.velocity = movement;
-
-            animatorUpdate();
-            //SoundUpdate();
-        }
-
-        public void StateInput() {
-            bool jumpKeyDown = Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W);
-            bool jumpKeyHeld = Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W);
-            float horizontal = Input.GetAxisRaw("Horizontal");
-            bool crouchHeld = Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftControl);
-
-            animator.SetBool("Crouching", crouchHeld);
-
-            //Item pick up
-            bool pickItemDown = Input.GetKeyDown(KeyCode.E);
-
-            //Item Usage
-            bool useItemDown = Input.GetKeyDown(KeyCode.Q); 
-
-            WalkInput(horizontal);
-            JumpInput(jumpKeyHeld, jumpKeyDown);
-            //ItemInput(pickItemDown);
-            //itemUsageInput(useItemDown);
+        public void UpdateState(Player player) {
+            
         }
     }
-
 }

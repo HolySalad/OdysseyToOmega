@@ -18,22 +18,14 @@ namespace SpaceBoat.PlayerStates
             readyToTransition = false;
         }
 
-        public void ExitState() {
+        public void ExitState(Player player) {
 
             readyToTransition = false;
             transitionState = PlayerStateName.empty;
         }
 
-        public void UpdateState() {
+        public void UpdateState(Player player) {
             
-        }
-
-        public void StateInput() {
-            
-        }
-
-        public void HandleAddedPlayerMomentum(EntityMomentum momentum) {
-
         }
     }
 }
