@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using SpaceBoat.Items;
 using SpaceBoat.Ship;
-using SpaceBoat.PlayerStates;
 
 namespace SpaceBoat {
-    public enum PlayerStateName {ready, working, hitstun, aiming, empty};
+    public enum PlayerState {ready, working, hitstun, aiming};
     public class Player : MonoBehaviour
     
     {
@@ -73,9 +72,7 @@ namespace SpaceBoat {
 
         // player states
         //possible states: ready, working, hitstun
-        public PlayerStateName playerState = PlayerStateName.ready;
-
-        private Dictionary<PlayerStateName, IPlayerState> playerStates = new Dictionary<PlayerStateName, IPlayerState>();
+        public PlayerState playerState = PlayerState.ready;
 
         // internal gameplay vars
         public int health {get; private set;}
@@ -232,7 +229,7 @@ namespace SpaceBoat {
         }
 
         private bool CanJump() {
-            if (playerState != PlayerStateName.ready) {return false;}
+            if (playerState != PlayerState.ready) {return false;}
             return Time.frameCount < jumpGrace || isGrounded;
         }
 
@@ -457,7 +454,7 @@ namespace SpaceBoat {
         }
 
         void ItemInput(bool keyDown) {
-            if (keyDown && playerState == PlayerStateName.ready) {
+            if (keyDown && playerState == PlayerState.ready) {
                 if (itemInHand != null) {
                     DropItems();
                 } else if (itemInHand == null) {
@@ -469,7 +466,7 @@ namespace SpaceBoat {
         // Item usage functions
 
         void useItem(GameObject target) {
-            playerState = PlayerStateName.working;
+            playerState = PlayerState.working;
             itemUsageBeganFrame = Time.frameCount;
             itemUsageTarget = target;
             itemUsageSound = itemInHand.itemUsageSound;
@@ -479,7 +476,7 @@ namespace SpaceBoat {
         }
 
         void updateItemUsage(int frameCount) {
-            if (playerState == PlayerStateName.working && frameCount > itemUsageBeganFrame + itemInHand.usageFrames) {
+            if (playerState == PlayerState.working && frameCount > itemUsageBeganFrame + itemInHand.usageFrames) {
                 if (itemInHand.usageAnimation != "") {
                     animator.SetBool(itemInHand.usageAnimation, false);
                 }
@@ -488,8 +485,8 @@ namespace SpaceBoat {
                     DropItems(true);
                 }
                 itemUsageTarget = null;
-                playerState = PlayerStateName.ready;
-            } else if (playerState != PlayerStateName.working) {
+                playerState = PlayerState.ready;
+            } else if (playerState != PlayerState.working) {
                 if (itemInHand != null) { 
                     if (itemInHand.usageAnimation != "") {
                         animator.SetBool(itemInHand.usageAnimation, false);
@@ -518,15 +515,15 @@ namespace SpaceBoat {
 
 
         void itemUsageInput(bool keyDown) {
-            if (keyDown && playerState == PlayerStateName.ready) {
+            if (keyDown && playerState == PlayerState.ready) {
                 if (itemInHand != null) {
                     (bool canUse, GameObject target) = canUseItem(itemInHand);
                     if (canUse) {
                         useItem(target);
                     }
                 }
-            } else if (keyDown && playerState == PlayerStateName.working) {
-                playerState = PlayerStateName.ready;
+            } else if (keyDown && playerState == PlayerState.working) {
+                playerState = PlayerState.ready;
             }
         }
 
@@ -563,16 +560,16 @@ namespace SpaceBoat {
             if (activatableInUse.usageAnimation != "") {
                 animator.SetBool(activatableInUse.usageAnimation, false);
             }
-            playerState = PlayerStateName.ready;
+            playerState = PlayerState.ready;
             activatableInUse = null;
         }
         
 
         void ActivateInput(bool keyDown) {
-            if (keyDown && playerState == PlayerStateName.aiming && activatableInUse != null && activatableInUse.canManuallyDeactivate) {
+            if (keyDown && playerState == PlayerState.aiming && activatableInUse != null && activatableInUse.canManuallyDeactivate) {
                 activatableInUse.Deactivate(this);
                 DetatchFromActivatable();
-            } else if (keyDown && playerState == PlayerStateName.ready) {
+            } else if (keyDown && playerState == PlayerState.ready) {
                 CheckForActivatables();
             }
         }
@@ -602,7 +599,7 @@ namespace SpaceBoat {
             }
             needsHitSound = true;
             hitOnframe = Time.frameCount;
-            playerState = PlayerStateName.hitstun;
+            playerState = PlayerState.hitstun;
             Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("PlayerChar"), LayerMask.NameToLayer("PhysicalHazards"), true);
             health -= 1;
             if (health <= 0) {
@@ -627,22 +624,22 @@ namespace SpaceBoat {
         // Update functions
 
         void HitStunUpdate(int frameCount) {
-            if (playerState == PlayerStateName.hitstun && frameCount > hitStunFrames + hitOnframe) {
-                playerState = PlayerStateName.ready;
+            if (playerState == PlayerState.hitstun && frameCount > hitStunFrames + hitOnframe) {
+                playerState = PlayerState.ready;
                 Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("PlayerChar"), LayerMask.NameToLayer("PhysicalHazards"), false);
             }
         }
 
         void SoundUpdate() {
             // play walking sound when moving in the ready state on the ground
-            if (!game.sound.IsPlaying("Walk") && playerState == PlayerStateName.ready && speed != 0 && isGrounded) {
+            if (!game.sound.IsPlaying("Walk") && playerState == PlayerState.ready && speed != 0 && isGrounded) {
                 game.sound.Play("Walk"); 
-            } else if (game.sound.IsPlaying("Walk") && (playerState != PlayerStateName.ready || speed == 0 || !isGrounded)) {
+            } else if (game.sound.IsPlaying("Walk") && (playerState != PlayerState.ready || speed == 0 || !isGrounded)) {
                 game.sound.Stop("Walk");
             }
 
             // play the working sound when working;
-            if (playerState == PlayerStateName.working && itemUsageSound != "" && !game.sound.IsPlaying(itemUsageSound)) {
+            if (playerState == PlayerState.working && itemUsageSound != "" && !game.sound.IsPlaying(itemUsageSound)) {
                 game.sound.Play(itemUsageSound);
             }
             
@@ -666,9 +663,9 @@ namespace SpaceBoat {
             float horizontal = lastHorizontal;
 
             Vector2 movement = new Vector2(Mathf.Min((speed*lastHorizontal)+horizontalMomentum, maxHoriontalVelocity), currentVerticalForce + verticalMomentum);
-            if (playerState == PlayerStateName.working || playerState == PlayerStateName.aiming) {
+            if (playerState == PlayerState.working || playerState == PlayerState.aiming) {
                 movement = new Vector2(0, Mathf.Min(currentVerticalForce, 0));
-            } else if (playerState == PlayerStateName.hitstun) {
+            } else if (playerState == PlayerState.hitstun) {
                 //TODO add hitstun knockback
                 movement = new Vector2(horizontalMomentum, Mathf.Min(currentVerticalForce, 0) + verticalMomentum);
             }
@@ -676,7 +673,7 @@ namespace SpaceBoat {
         }
 
         void animatorUpdate() {
-            if (playerState == PlayerStateName.ready) {
+            if (playerState == PlayerState.ready) {
                 animator.SetFloat("Speed", Mathf.Abs(speed));
                 animator.SetBool("HoldingObject", (itemInHand != null));
             } else {
@@ -688,7 +685,7 @@ namespace SpaceBoat {
 
         void InputUpdate(float deltaTime) {
             // get input
-            bool playerStateWasAiming = playerState == PlayerStateName.aiming;
+            bool playerStateWasAiming = playerState == PlayerState.aiming;
             bool activateKeyDown = Input.GetKeyDown(KeyCode.F);
             ActivateInput(activateKeyDown);
             if (playerStateWasAiming) {
