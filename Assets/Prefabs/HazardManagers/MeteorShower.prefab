@@ -44,9 +44,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35d5be2b24a3e5449b75301801353c48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseDuration: 270
   meteorPrefab: {fileID: 189507748417666162, guid: 8ad86b7f340c2764ea7cf973e28b644b, type: 3}
-  firstMeteorSpawnTimer: 0
-  lastMeteorSpawnTimer: 280
+  firstMeteorSpawnTimer: 8
   meteorInterval: 24
   meteorIntervalVariance: 0.2
   meteorIntervalRampTime: 40
@@ -61,8 +61,7 @@ MonoBehaviour:
   meteorSpawnYVariance: 3
   meteorSpeed: 22
   rockPrefab: {fileID: 189507748417666162, guid: a4f67d1775a9a984e950a805568f14db, type: 3}
-  firstRockSpawnTimer: 20
-  lastRockSpawnTimer: 290
+  firstRockSpawnTimer: 24
   rockVolleyLength: 8
   peakRockPaceSwell: 2
   firstSwellTimer: 70
@@ -78,5 +77,5 @@ MonoBehaviour:
   rockSpawnHeightVariance: 3
   rockAngleOffset: 3
   rockAngleVariance: 5
-  rockBaseSize: 1
-  rockSizeIncreaseVariance: 1.5
+  rockBaseSize: 1.7
+  rockSizeIncreaseVariance: 1.3

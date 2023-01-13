@@ -24,6 +24,8 @@ TagManager:
   - CometTarget
   - ItemSpawners
   - Activatable
+  - EndOfMapRight
+  - TopOfMap
   layers:
   - Default
   - TransparentFX
@@ -31,20 +33,20 @@ TagManager:
   - PlayerChar
   - Water
   - UI
-  - PlayerHazards
-  - ShipHazards
+  - PhysicalHazards
+  - IntangibleHazards
   - Ground
   - Sails
   - Ladders
   - ShipDoor
-  - EndOfMapLeft
-  - BottomOfMap
+  - MapBounds
+  - Enemies
   - TaggedInteractables
   - Roof
   - CometTarget
   - CometPityTarget
-  - 
-  - 
+  - Harpoonables
+  - PlayerProjectiles
   - 
   - 
   - 
@@ -66,6 +68,9 @@ TagManager:
     locked: 0
   - name: Foreground1
     uniqueID: 3735844731
+    locked: 0
+  - name: Foreground2
+    uniqueID: 2555070193
     locked: 0
   - name: ShipBackLayer
     uniqueID: 2245820371
@@ -93,9 +98,6 @@ TagManager:
     locked: 0
   - name: SpaceRocks
     uniqueID: 3773064109
-    locked: 0
-  - name: Foreground2
-    uniqueID: 2555070193
     locked: 0
   - name: New Layer 3
     uniqueID: 345971511

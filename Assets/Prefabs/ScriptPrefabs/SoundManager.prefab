@@ -30,7 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2652018774195889313
 MonoBehaviour:
@@ -197,6 +197,12 @@ MonoBehaviour:
     source: {fileID: 0}
   - name: Cooking
     clip: {fileID: 8300000, guid: cd5280623de372347b9fcff30d265a87, type: 3}
+    volume: 1
+    pitch: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: HydraRoar
+    clip: {fileID: 8300000, guid: 813aac21351d0c6488eb5396f85a34f8, type: 3}
     volume: 1
     pitch: 0
     loop: 0

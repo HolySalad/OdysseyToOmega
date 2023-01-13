@@ -6,6 +6,8 @@ using UnityEngine;
     public class ClothItem : MonoBehaviour, IHeldItems
     {
         public ItemTypes itemType {get;} = ItemTypes.ClothItem;
+
+
         public string itemUsageValidTrigger {get;} = "Sails";
         public void ItemUsed(Player player, GameObject target) {
             target.GetComponent<Ship.Sails>().Repair();

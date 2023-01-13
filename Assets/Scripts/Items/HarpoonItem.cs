@@ -12,6 +12,7 @@ using UnityEngine;
         public bool itemUsageCondition(Player player, GameObject target) {
             return !harpoonGun.isLoaded;
         }
+        
 
         private Ship.HarpoonGun harpoonGun;
 
