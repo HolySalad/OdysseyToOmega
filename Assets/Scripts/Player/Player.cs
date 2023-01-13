@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using SpaceBoat.Items;
 using SpaceBoat.Ship;
+using SpaceBoat.PlayerStates;
 
 namespace SpaceBoat {
-    public enum PlayerState {ready, working, hitstun, aiming};
+    public enum PlayerStateName {ready, working, hitstun, aiming, nullState};
     public class Player : MonoBehaviour
     
     {
   
         [Header("General Player Settings")]
         [SerializeField] private GameObject playerCamera;
-        [SerializeField] private int hitStunFrames = 24;
         [SerializeField] private int invincibilityFrames = 50;
         [SerializeField] public int maxHealth = 3;
 
@@ -64,24 +64,26 @@ namespace SpaceBoat {
 
         // References
         private GameModel game;
-        private Animator animator;
+        public Animator animator;
         private Rigidbody2D rb;
         private Collider2D playerLocationTrigger;
-        private Transform itemPlace;
+        public Transform itemPlace;
         private Transform originOverride;
 
         // player states
         //possible states: ready, working, hitstun
-        public PlayerState playerState = PlayerState.ready;
+        public PlayerStateName currentPlayerStateName = PlayerStateName.ready;
+        private IPlayerState currentPlayerState;
+        private Dictionary<PlayerStateName, IPlayerState> playerStates = new Dictionary<PlayerStateName, IPlayerState>();
+
 
         // internal gameplay vars
         public int health {get; private set;}
         private int hitOnframe;
-        private bool needsHitSound = false;
 
         //internal movement vars
         private bool isGrounded = false;
-        private bool groundedOnHazard = false;
+        private GameObject groundedOnObject;
         public bool GetIsGrounded() {
             return GetIsGrounded(true);
         }
@@ -107,10 +109,8 @@ namespace SpaceBoat {
         private int jumpStompCooldown = 18;
 
         private bool isFacingRight = true;
-        private bool isWalking;
-        private float lastHorizontal;
-        private float speed;
-        private float horizontalImpact;
+        private float lastHorizontalInput;
+        private float currentWalkingSpeed;
         private bool justLanded = false;
 
         public bool isSlipping {get; private set;} = false;
@@ -125,10 +125,9 @@ namespace SpaceBoat {
         //item vars
         public IHeldItems itemInHand {get; private set;}
         private ItemTypes heldItemType;
-        private int itemUsageBeganFrame = 0;
         private string itemUsageSound;
         private bool canPickItems;
-        private GameObject itemUsageTarget;
+        public GameObject itemUsageTarget;
 
         //activatables
 
@@ -152,6 +151,24 @@ namespace SpaceBoat {
                 playerCamera = GameObject.Find("MainCamera");
             }
             cameraControls = playerCamera?.GetComponent<UI.CameraControls>();
+
+            //set up player states
+            playerStates.Add(PlayerStateName.ready, GetComponent<ReadyState>() ?? gameObject.AddComponent<ReadyState>());
+            playerStates.Add(PlayerStateName.hitstun, GetComponent<HitstunState>() ?? gameObject.AddComponent<HitstunState>());
+            playerStates.Add(PlayerStateName.working, GetComponent<WorkingState>() ?? gameObject.AddComponent<WorkingState>());
+            playerStates.Add(PlayerStateName.aiming, GetComponent<AimingState>() ?? gameObject.AddComponent<AimingState>());
+
+            currentPlayerState = playerStates[currentPlayerStateName];
+        }
+        
+        public void ChangeState(PlayerStateName newStateName) {
+            if (currentPlayerStateName != newStateName) {
+                PlayerStateName oldStateName = currentPlayerStateName;
+                currentPlayerStateName = newStateName;
+                currentPlayerState = playerStates[newStateName];
+                playerStates[oldStateName].ExitState(newStateName);
+                currentPlayerState.EnterState(oldStateName);
+            }
         }
 
         // walk script
@@ -160,7 +177,7 @@ namespace SpaceBoat {
         void AdjustFacing(float horizontalInput) {
             if (horizontalInput > 0 && !isFacingRight || horizontalInput < 0 && isFacingRight) {
                 isFacingRight = !isFacingRight;
-                speed = -speed * turningSpeedMult;
+                currentWalkingSpeed = -currentWalkingSpeed * turningSpeedMult;
                 Vector3 existingColliderLocation = bodyCollider.transform.position;
                 transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
                 Vector3 colliderOffset =  existingColliderLocation - bodyCollider.transform.position;
@@ -169,39 +186,40 @@ namespace SpaceBoat {
             }
         }
 
-        public void WalkInput(float horizontalInput, float deltaTime) {
-            if (horizontalInput != 0) {lastHorizontal = horizontalInput;}
+        public void WalkInput(float horizontalInput) {
+            float deltaTime = Time.deltaTime;
+            if (horizontalInput != 0) {lastHorizontalInput = horizontalInput;}
             // if we aren't pressing an input or if our speed is in excess of max walk speed while on the ground, we decelerate.
-            if (horizontalInput == 0 || (Mathf.Abs(speed) > maxHoriontalVelocity && isGrounded)) {
-                if (speed > 0) {
-                    speed = Mathf.Max(speed - deceleration*deltaTime, 0);
-                } else if (speed < 0) {
-                    speed = Mathf.Min(speed + deceleration*deltaTime, 0);
+            if (horizontalInput == 0 || (Mathf.Abs(currentWalkingSpeed) > maxHoriontalVelocity && isGrounded)) {
+                if (currentWalkingSpeed > 0) {
+                    currentWalkingSpeed = Mathf.Max(currentWalkingSpeed - deceleration*deltaTime, 0);
+                } else if (currentWalkingSpeed < 0) {
+                    currentWalkingSpeed = Mathf.Min(currentWalkingSpeed + deceleration*deltaTime, 0);
                 }
             } else  {
                 float accel = acceleration;
-                if (Mathf.Abs(speed) < accelerationStartRange) {
+                if (Mathf.Abs(currentWalkingSpeed) < accelerationStartRange) {
                     accel *= accelerationStartMult;
-                } else if (Mathf.Abs(speed) < accelerationMidRange) {
+                } else if (Mathf.Abs(currentWalkingSpeed) < accelerationMidRange) {
                     accel *= accelerationMidMult;
                 }
                 //return speed after acceleration if it is higher than current speed.
-                speed = Mathf.Max(Mathf.Min(speed + accel*deltaTime, maxWalkSpeed), speed);
+                currentWalkingSpeed = Mathf.Max(Mathf.Min(currentWalkingSpeed + accel*deltaTime, maxWalkSpeed), currentWalkingSpeed);
             }
 
             //collisions
             if (isSlipping) {
-                speed = (isSlippingLeft ? -1 : 1);
+                currentWalkingSpeed = (isSlippingLeft ? -1 : 1);
                 isSlipping = false;
-            } else if (speed != 0) {
-                float castDirection = (speed*lastHorizontal > 0 ? 1 : -1);
+            } else if (currentWalkingSpeed != 0) {
+                float castDirection = (currentWalkingSpeed*lastHorizontalInput > 0 ? 1 : -1);
                 List<RaycastHit2D> hits = new List<RaycastHit2D>();
                 ContactFilter2D filter = new ContactFilter2D();
                 filter.SetLayerMask(LayerMask.GetMask("Ground"));
                 float numHits = bodyCollider.gameObject.GetComponent<Collider2D>().Cast(Vector2.right * castDirection, filter, hits, wallCheckDistance, true);
                 if (numHits > 0) {
                     Debug.Log("Walking into a wall");
-                    speed = 0;
+                    currentWalkingSpeed = 0;
                 }
             }
             AdjustFacing(horizontalInput);
@@ -218,22 +236,11 @@ namespace SpaceBoat {
             }
         }
 
-        public void forceInstantHalfJump() {
-            if (CanJump()) {
-                isJumping = true;
-                halfJump = true;
-                jumpStartTime = Time.frameCount;
-                jumpSquat = false;
-                animator.SetTrigger("Jump");
-            }
-        }
-
         private bool CanJump() {
-            if (playerState != PlayerState.ready) {return false;}
             return Time.frameCount < jumpGrace || isGrounded;
         }
 
-        void updateJump(float deltaTime) {
+        void updateJump() {
             if (currentVerticalForce > 0) {
                 float decay = jumpDecay;
                 if (halfJump) {
@@ -242,7 +249,7 @@ namespace SpaceBoat {
                 if (Time.frameCount > jumpStartTime + jumpSquatFrames + jumpDecayDoublingFrames) {
                     decay *= 2;
                 }
-                currentVerticalForce = Mathf.Max(0, currentVerticalForce - decay * deltaTime);
+                currentVerticalForce = Mathf.Max(0, currentVerticalForce - decay * Time.deltaTime);
             } else if (jumpSquat && Time.frameCount > jumpStartTime + jumpSquatFrames) {
                 SoundManager sm = FindObjectOfType<SoundManager>();
                 sm.Play("Jump"); 
@@ -252,8 +259,8 @@ namespace SpaceBoat {
                 isGrounded = false;
                 hitApex = false;
                 currentVerticalForce = jumpPower;
-                if (speed > maxWalkSpeed * jumpHorizontalSpeedWindow) {
-                    speed = speed * jumpHorizontalMultiplier;
+                if (currentWalkingSpeed > maxWalkSpeed * jumpHorizontalSpeedWindow) {
+                    currentWalkingSpeed = currentWalkingSpeed * jumpHorizontalMultiplier;
                 }
             } else if (!isGrounded) {
                 if (!hitApex) {
@@ -264,12 +271,12 @@ namespace SpaceBoat {
                 if (isSlipping) {
                     currentVerticalForce = -slipSpeedVertical;
                 } else if (targetVerticalMomentum <= 0) {
-                    currentVerticalForce = Mathf.Max(-gravityTerminalVelocity, currentVerticalForce - gravityAcceleration * deltaTime);
+                    currentVerticalForce = Mathf.Max(-gravityTerminalVelocity, currentVerticalForce - gravityAcceleration * Time.deltaTime);
                 }
             }
         }
 
-        private void JumpInput(bool keyHeld, bool keyDown) {
+        public void JumpInput(bool keyHeld, bool keyDown) {
             if ((keyDown || (justLanded && keyHeld)) && !isJumping) {
                 StartJump();
             } else if (!keyHeld && isJumping && Time.frameCount < jumpStartTime + halfJumpFrameWindow) {
@@ -290,13 +297,7 @@ namespace SpaceBoat {
 
         //collision functions
 
-        private void CheckGrounded() {
-            // if we are within a margin of starting a jump, we are still grounded
-            // but we don't want to reset vertical momentum.
-            if (Time.frameCount < jumpStartTime + groundCheckJumpMargin) {
-                return;
-            }
-            
+        private (bool, bool, List<RaycastHit2D>) CheckGrounded() {
             bool wasGrounded = isGrounded;
             ContactFilter2D filter = new ContactFilter2D();
             filter.SetLayerMask(LayerMask.GetMask("Ground", "PhysicalHazards"));
@@ -307,9 +308,19 @@ namespace SpaceBoat {
             Debug.DrawRay(rightSlipCollider.position, transform.TransformDirection(new Vector3(0, -groundCheckDistance, 0)), Color.yellow);
             Debug.DrawRay(leftSlipCollider.position, transform.TransformDirection(new Vector3(0, -groundCheckDistance, 0)), Color.yellow);
             Debug.DrawRay(headSlipCollider.position, transform.TransformDirection(new Vector3(0, -groundCheckDistance, 0)), Color.yellow);
-            isGrounded = hitCount > 0;
+            return (hitCount > 0, wasGrounded, hits);
+        }
+
+        private void UpdateGrounded() {
+            // if we are within a margin of starting a jump, we are still grounded
+            // but we don't want to reset vertical momentum.
+            if (Time.frameCount < jumpStartTime + groundCheckJumpMargin) {
+                return;
+            }
+            (bool isGrounded, bool wasGrounded, List<RaycastHit2D> hits) = CheckGrounded();
+            this.isGrounded = isGrounded;
             if (isGrounded) {
-                groundedOnHazard = hits.TrueForAll(hit => hit.collider.gameObject.layer == LayerMask.NameToLayer("PhysicalHazards"));
+                groundedOnObject = hits[0].collider.gameObject;
                 JumpGrace = Time.frameCount + jumpGraceWindow;
                 if (isJumping) {
                     Debug.Log("Player landed from jumping after " + (Time.frameCount - jumpStartTime) + " frames");
@@ -320,7 +331,7 @@ namespace SpaceBoat {
                     currentVerticalForce = 0;
                     targetVerticalMomentum = 0;
                     verticalMomentum = 0;
-                    speed = speed * landingHorizontalDrag;
+                    currentWalkingSpeed = currentWalkingSpeed * landingHorizontalDrag;
                 } else if (!wasGrounded) {
                     Debug.Log("Player landed from falling after " + (Time.frameCount - jumpStartTime) + " frames");
                     JumpStomp();
@@ -332,7 +343,7 @@ namespace SpaceBoat {
                     verticalMomentum = 0;
                 }
             } else {
-                groundedOnHazard = false;
+                groundedOnObject = null;
                 if (wasGrounded) {
                     Debug.Log("Player left ground at " + Time.frameCount);
                 } else {
@@ -374,33 +385,12 @@ namespace SpaceBoat {
         // momentum 
 
         public void AddMomentum(Vector2 momentum) {
-            momentumAddedOnFrame = Time.frameCount;
-            targetHorizontalMomentum = momentum.x;
-            targetVerticalMomentum = momentum.y;
-            Debug.Log("Player gained momentum " + targetHorizontalMomentum + ", " + targetVerticalMomentum);
+            
         }
 
 
-        void UpdateMomentum(float deltaTime) {
-            if (Time.frameCount > momentumAddedOnFrame + momentumAccelerationTime && !(verticalMomentum == 0 && horizontalMomentum == 0)) {
-                if (verticalMomentum != 0) verticalMomentum = Mathf.Max(0, Mathf.Abs(verticalMomentum)-(momentumDecayVertical*deltaTime)) * (verticalMomentum/Mathf.Abs(verticalMomentum));
-                if (horizontalMomentum !=0) horizontalMomentum = Mathf.Max(0, Mathf.Abs(horizontalMomentum)-(momentumDecayHorizontal*deltaTime)) * (horizontalMomentum/Mathf.Abs(horizontalMomentum));
-                Debug.Log("decelerating momentum to " + horizontalMomentum + ", " + verticalMomentum );
-                if (verticalMomentum == 0 && horizontalMomentum == 0) {
-                    Debug.Log("Player momentum stopped");
-                    targetHorizontalMomentum = 0;
-                    targetVerticalMomentum = 0;
-                }
-            } else if (Time.frameCount > momentumAddedOnFrame && !(targetHorizontalMomentum == 0 && targetVerticalMomentum == 0)) {
-                float targetProportion = (Time.frameCount - momentumAddedOnFrame) / momentumAccelerationTime;
-                if (Mathf.Abs(verticalMomentum) < Mathf.Abs(targetVerticalMomentum)*targetProportion) {
-                    verticalMomentum = targetVerticalMomentum*targetProportion;
-                }
-                if (Mathf.Abs(horizontalMomentum) < Mathf.Abs(targetHorizontalMomentum)*targetProportion) {
-                    horizontalMomentum = targetHorizontalMomentum*targetProportion;
-                }
-                Debug.Log("accelerating momentum stage ("+targetProportion+") to " + horizontalMomentum + ", " + verticalMomentum );
-            }
+        void UpdateMomentum() {
+           
         }
 
         // item functions
@@ -453,8 +443,8 @@ namespace SpaceBoat {
             DropItems(false);
         }
 
-        void ItemInput(bool keyDown) {
-            if (keyDown && playerState == PlayerState.ready) {
+        public void ItemInput(bool keyDown) {
+            if (keyDown) {
                 if (itemInHand != null) {
                     DropItems();
                 } else if (itemInHand == null) {
@@ -465,40 +455,38 @@ namespace SpaceBoat {
 
         // Item usage functions
 
-        void useItem(GameObject target) {
-            playerState = PlayerState.working;
-            itemUsageBeganFrame = Time.frameCount;
+        void BeginUseItem(GameObject target) {
             itemUsageTarget = target;
             itemUsageSound = itemInHand.itemUsageSound;
             if (itemInHand.usageAnimation != "") {
                 animator.SetBool(itemInHand.usageAnimation, true);
             }
+            ChangeState(PlayerStateName.working);
         }
 
-        void updateItemUsage(int frameCount) {
-            if (playerState == PlayerState.working && frameCount > itemUsageBeganFrame + itemInHand.usageFrames) {
+        public void CompleteItemUsage() {
+            if (itemInHand.usageAnimation != "") {
+                animator.SetBool(itemInHand.usageAnimation, false);
+            }
+            itemInHand.ItemUsed(this, itemUsageTarget);
+            if (itemInHand.isConsumed) {
+                DropItems(true);
+            }
+            itemUsageTarget = null;
+        }
+
+        public void CancelItemUsage() {
+            if (itemInHand != null) { 
                 if (itemInHand.usageAnimation != "") {
                     animator.SetBool(itemInHand.usageAnimation, false);
                 }
-                itemInHand.ItemUsed(this, itemUsageTarget);
-                if (itemInHand.isConsumed) {
-                    DropItems(true);
+                if (itemInHand.itemUsageSound != "" && game.sound.IsPlaying(itemInHand.itemUsageSound)) {
+                    game.sound.Stop(itemInHand.itemUsageSound);
                 }
-                itemUsageTarget = null;
-                playerState = PlayerState.ready;
-            } else if (playerState != PlayerState.working) {
-                if (itemInHand != null) { 
-                    if (itemInHand.usageAnimation != "") {
-                        animator.SetBool(itemInHand.usageAnimation, false);
-                    }
-                    if (itemInHand.itemUsageSound != "" && game.sound.IsPlaying(itemInHand.itemUsageSound)) {
-                        game.sound.Stop(itemInHand.itemUsageSound);
-                    }
-                }
-                itemUsageBeganFrame = 0;
-                itemUsageTarget = null;
             }
+            itemUsageTarget = null;
         }
+
 
         (bool, GameObject) canUseItem(IHeldItems item) {
             Collider2D[] colliders = new Collider2D[10];
@@ -514,17 +502,19 @@ namespace SpaceBoat {
 
 
 
-        void itemUsageInput(bool keyDown) {
-            if (keyDown && playerState == PlayerState.ready) {
+        public bool ItemUsageInput(bool keyDown) {
+            if (keyDown && currentPlayerStateName == PlayerStateName.ready) {
                 if (itemInHand != null) {
                     (bool canUse, GameObject target) = canUseItem(itemInHand);
                     if (canUse) {
-                        useItem(target);
+                        BeginUseItem(target);
+                        return true;
                     }
                 }
-            } else if (keyDown && playerState == PlayerState.working) {
-                playerState = PlayerState.ready;
+            } else if (keyDown && currentPlayerStateName == PlayerStateName.working) {
+                ChangeState(PlayerStateName.ready);
             }
+            return false;
         }
 
         // activatables 
@@ -533,15 +523,14 @@ namespace SpaceBoat {
             Debug.Log("Using activatable "+ obj.name);
             activatable.Activate(this);
             activatableInUse = activatable;
-            playerState = activatable.playerState;
             AdjustFacing(obj.transform.position.x - transform.position.x);
             if (activatable.usageAnimation != "") {
                 animator.SetBool(activatable.usageAnimation, true);
             }
-
+            ChangeState(activatable.playerState);
         }
 
-        void CheckForActivatables() {
+        bool CheckForActivatables() {
             Collider2D[] colliders = new Collider2D[10];
             playerLocationTrigger.GetContacts(colliders);
             foreach (Collider2D coll in colliders) {
@@ -550,9 +539,11 @@ namespace SpaceBoat {
                     IActivatables activatable = game.GetActivatableComponent(coll.gameObject);
                     if (activatable.ActivationCondition(this) ) {
                         UseActivatable(activatable, coll.gameObject);
+                        return true;
                     }
                 }
             }
+            return false;
         }
 
         public void DetatchFromActivatable() {
@@ -560,18 +551,20 @@ namespace SpaceBoat {
             if (activatableInUse.usageAnimation != "") {
                 animator.SetBool(activatableInUse.usageAnimation, false);
             }
-            playerState = PlayerState.ready;
             activatableInUse = null;
+            ChangeState(PlayerStateName.ready);
         }
         
 
-        void ActivateInput(bool keyDown) {
-            if (keyDown && playerState == PlayerState.aiming && activatableInUse != null && activatableInUse.canManuallyDeactivate) {
+        public bool ActivateInput(bool keyDown) {
+            if (keyDown && activatableInUse != null && activatableInUse.canManuallyDeactivate) {
                 activatableInUse.Deactivate(this);
                 DetatchFromActivatable();
-            } else if (keyDown && playerState == PlayerState.ready) {
-                CheckForActivatables();
+                return true;
+            } else if (keyDown) {
+                return CheckForActivatables();
             }
+            return false;
         }
 
 
@@ -597,24 +590,23 @@ namespace SpaceBoat {
             if (IsPlayerInvulnerable()) {
                 return;
             }
-            needsHitSound = true;
             hitOnframe = Time.frameCount;
-            playerState = PlayerState.hitstun;
-            Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("PlayerChar"), LayerMask.NameToLayer("PhysicalHazards"), true);
+            ChangeState(PlayerStateName.hitstun);
             health -= 1;
             if (health <= 0) {
                 PlayerDies(false);
-            } else {
-                animator.SetTrigger("Hit");
-                SoundManager.Instance.Play("Hit"); 
-                if (activatableInUse != null) {
-                    activatableInUse.Deactivate(this);
-                    DetatchFromActivatable();
-                }
-                if (health == 1) {
-                    game.helpPrompts.DisplayPromptWithDeactivationCondition(game.helpPrompts.criticalPlayerPrompt, () => { return health > 1; });
-                }
+                return;
+            }  
+            animator.SetTrigger("Hit");
+            SoundManager.Instance.Play("Hit"); 
+            if (activatableInUse != null) {
+                activatableInUse.Deactivate(this);
+                DetatchFromActivatable();
             }
+            if (health == 1) {
+                game.helpPrompts.DisplayPromptWithDeactivationCondition(game.helpPrompts.criticalPlayerPrompt, () => { return health > 1; });
+            }
+            
         }
 
         public void PlayerHeals() {
@@ -623,29 +615,17 @@ namespace SpaceBoat {
 
         // Update functions
 
-        void HitStunUpdate(int frameCount) {
-            if (playerState == PlayerState.hitstun && frameCount > hitStunFrames + hitOnframe) {
-                playerState = PlayerState.ready;
-                Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("PlayerChar"), LayerMask.NameToLayer("PhysicalHazards"), false);
-            }
-        }
-
         void SoundUpdate() {
             // play walking sound when moving in the ready state on the ground
-            if (!game.sound.IsPlaying("Walk") && playerState == PlayerState.ready && speed != 0 && isGrounded) {
+            if (!game.sound.IsPlaying("Walk") && currentPlayerStateName == PlayerStateName.ready && currentWalkingSpeed != 0 && isGrounded) {
                 game.sound.Play("Walk"); 
-            } else if (game.sound.IsPlaying("Walk") && (playerState != PlayerState.ready || speed == 0 || !isGrounded)) {
+            } else if (game.sound.IsPlaying("Walk") && (currentPlayerStateName != PlayerStateName.ready || currentWalkingSpeed == 0 || !isGrounded)) {
                 game.sound.Stop("Walk");
             }
 
             // play the working sound when working;
-            if (playerState == PlayerState.working && itemUsageSound != "" && !game.sound.IsPlaying(itemUsageSound)) {
+            if (currentPlayerStateName == PlayerStateName.working && itemUsageSound != "" && !game.sound.IsPlaying(itemUsageSound)) {
                 game.sound.Play(itemUsageSound);
-            }
-            
-            if (needsHitSound) {
-                game.sound.Play("Hit");
-                needsHitSound = false;
             }
 
             if (health == 1 && !game.sound.IsPlaying("LowHP")) {
@@ -654,27 +634,22 @@ namespace SpaceBoat {
 
         }
 
-        void MovementUpdate(float deltaTime) {
-            CheckGrounded();
+        void MovementUpdate() {
+            UpdateGrounded();
             if (isJumping) {
                 CheckHeadBump();
             }
-            updateJump(deltaTime);
-            float horizontal = lastHorizontal;
+            updateJump();
+            float horizontal = lastHorizontalInput;
 
-            Vector2 movement = new Vector2(Mathf.Min((speed*lastHorizontal)+horizontalMomentum, maxHoriontalVelocity), currentVerticalForce + verticalMomentum);
-            if (playerState == PlayerState.working || playerState == PlayerState.aiming) {
-                movement = new Vector2(0, Mathf.Min(currentVerticalForce, 0));
-            } else if (playerState == PlayerState.hitstun) {
-                //TODO add hitstun knockback
-                movement = new Vector2(horizontalMomentum, Mathf.Min(currentVerticalForce, 0) + verticalMomentum);
-            }
+            Vector2 movement = new Vector2(currentWalkingSpeed*lastHorizontalInput, currentVerticalForce);
+           
             rb.velocity = movement;
         }
 
         void animatorUpdate() {
-            if (playerState == PlayerState.ready) {
-                animator.SetFloat("Speed", Mathf.Abs(speed));
+            if (currentPlayerStateName == PlayerStateName.ready) {
+                animator.SetFloat("Speed", Mathf.Abs(currentWalkingSpeed));
                 animator.SetBool("HoldingObject", (itemInHand != null));
             } else {
                 animator.SetFloat("Speed", 0);
@@ -683,9 +658,11 @@ namespace SpaceBoat {
             animator.SetBool("Grounded", isGrounded);
         }
 
+
+        // this method is unused; replaced by UpdateState;
         void InputUpdate(float deltaTime) {
             // get input
-            bool playerStateWasAiming = playerState == PlayerState.aiming;
+            bool playerStateWasAiming = currentPlayerStateName == PlayerStateName.aiming;
             bool activateKeyDown = Input.GetKeyDown(KeyCode.F);
             ActivateInput(activateKeyDown);
             if (playerStateWasAiming) {
@@ -704,10 +681,10 @@ namespace SpaceBoat {
             //Item Usage
             bool useItemDown = Input.GetKeyDown(KeyCode.Q); 
 
-            WalkInput(horizontal, deltaTime);
+            WalkInput(horizontal);
             JumpInput(jumpKeyHeld, jumpKeyDown);
             ItemInput(pickItemDown);
-            itemUsageInput(useItemDown);
+            ItemUsageInput(useItemDown);
 
             // Camera Toggles
             if (Input.GetKeyDown(KeyCode.C)) {
@@ -716,19 +693,53 @@ namespace SpaceBoat {
         }
 
         void Update() {
-            float deltaTime = Time.deltaTime;
             int frameCount = Time.frameCount;
-            HitStunUpdate(frameCount);
-            InputUpdate(deltaTime);
-            UpdateMomentum(deltaTime);
-            MovementUpdate(deltaTime);
-            updateItemUsage(frameCount);
+            //InputUpdate(deltaTime);
+            UpdateMomentum();
+            MovementUpdate();
             animatorUpdate();
             SoundUpdate();
+            currentPlayerState.UpdateState();
         }
 
         //input functions
 
 
+    }
+
+
+    public class CthulkInput {
+
+        public static bool JumpKeyDown() {
+            return Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W);
+        }
+
+        public static bool JumpKeyHeld() {
+            return Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W);
+        }
+
+        public static bool CrouchHeld() {
+            return Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftControl);
+        }
+
+        public static bool ActivateKeyDown() {
+            return Input.GetKeyDown(KeyCode.F);
+        }
+
+        public static bool PickItemDown() {
+            return Input.GetKeyDown(KeyCode.E);
+        }
+
+        public static bool UseItemDown() {
+            return Input.GetKeyDown(KeyCode.Q);
+        }
+
+        public static float HorizontalInput() {
+            return Input.GetAxisRaw("Horizontal");
+        }
+
+        public static bool CameraToggleDown() {
+            return Input.GetKeyDown(KeyCode.C);
+        }
     }
 }
