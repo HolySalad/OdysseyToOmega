@@ -10,11 +10,11 @@ using UnityEngine;
 
         public string itemUsageValidTrigger {get;} = "Sails";
         public void ItemUsed(Player player, GameObject target) {
-            target.GetComponent<Ship.Sails>().Repair();
+            target.GetComponent<Ship.SailsActivatable>().Repair();
         }
 
         public bool itemUsageCondition(Player player, GameObject target) {
-            return target.GetComponent<Ship.Sails>().isBroken;
+            return target.GetComponent<Ship.SailsActivatable>().isBroken;
         }
 
         public string itemUsageSound {get;} = "Repair";

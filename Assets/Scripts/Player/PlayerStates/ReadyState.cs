@@ -5,7 +5,7 @@ using UnityEngine;
 namespace SpaceBoat.PlayerStates {
     public class ReadyState : MonoBehaviour, IPlayerState
     {
-        public bool stealInput {get;}
+        public bool stealVelocityControl {get;} = false;
 
         private int frameEnteredState = 0;
         private bool jumpLockOut = false;
@@ -16,6 +16,10 @@ namespace SpaceBoat.PlayerStates {
 
         void Awake() {
             player = GetComponent<Player>();
+        }
+
+        public void JumpLockOut() {
+            jumpLockOut = true;
         }
 
         public void EnterState(PlayerStateName previousState) {
@@ -33,7 +37,7 @@ namespace SpaceBoat.PlayerStates {
             // Handle Input
             // Inputs which can change state go first.
 
-                        //Item Usage
+            //Item Usage
             if (player.ItemUsageInput(CthulkInput.UseItemDown())) return;
             if (player.ActivateInput(CthulkInput.ActivateKeyDown())) return;
 
@@ -43,7 +47,7 @@ namespace SpaceBoat.PlayerStates {
             float horizontal = CthulkInput.HorizontalInput();
             bool crouchHeld = CthulkInput.CrouchHeld();
 
-            player.animator.SetBool("Crouching", crouchHeld);
+            player.CrouchInput(crouchHeld);
 
             //Item pick up
             bool pickItemDown = CthulkInput.PickItemDown();
