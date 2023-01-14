@@ -140,7 +140,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!81 &143746099
 AudioListener:
   m_ObjectHideFlags: 0
@@ -262,30 +262,6 @@ PrefabInstance:
     - target: {fileID: 1718333555117010131, guid: 697037ddd57fc584f89df1c6c61517be, type: 3}
       propertyPath: m_Name
       value: Cthulk2.0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2614300272389203499, guid: 697037ddd57fc584f89df1c6c61517be, type: 3}
-      propertyPath: bodyCollider
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 2614300272389203499, guid: 697037ddd57fc584f89df1c6c61517be, type: 3}
-      propertyPath: footCollider
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 2614300272389203499, guid: 697037ddd57fc584f89df1c6c61517be, type: 3}
-      propertyPath: headCollider
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 2614300272389203499, guid: 697037ddd57fc584f89df1c6c61517be, type: 3}
-      propertyPath: headSlipCollider
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 2614300272389203499, guid: 697037ddd57fc584f89df1c6c61517be, type: 3}
-      propertyPath: leftSlipCollider
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 2614300272389203499, guid: 697037ddd57fc584f89df1c6c61517be, type: 3}
-      propertyPath: rightSlipCollider
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
