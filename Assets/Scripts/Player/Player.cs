@@ -167,7 +167,7 @@ namespace SpaceBoat {
         }
         
         public void ChangeState(PlayerStateName newStateName) {
-            if (currentPlayerStateName != newStateName) {
+            if (currentPlayerStateName != newStateName && newStateName != PlayerStateName.nullState) {
                 PlayerStateName oldStateName = currentPlayerStateName;
                 currentPlayerStateName = newStateName;
                 currentPlayerState = playerStates[newStateName];
@@ -474,6 +474,8 @@ namespace SpaceBoat {
         }
 
         public void ItemInput(bool keyDown) {
+            return;
+            /*
             if (keyDown) {
                 if (itemInHand != null) {
                     DropItems();
@@ -481,6 +483,7 @@ namespace SpaceBoat {
                     CheckForItems();
                 }
             }
+            */
         }
 
         // Item usage functions
@@ -533,6 +536,8 @@ namespace SpaceBoat {
 
 
         public bool ItemUsageInput(bool keyDown) {
+            return false; 
+            /*
             if (keyDown && currentPlayerStateName == PlayerStateName.ready) {
                 if (itemInHand != null) {
                     (bool canUse, GameObject target) = canUseItem(itemInHand);
@@ -544,7 +549,8 @@ namespace SpaceBoat {
             } else if (keyDown && currentPlayerStateName == PlayerStateName.working) {
                 ChangeState(PlayerStateName.ready);
             }
-            return false;
+            return false; 
+            */
         }
 
         // activatables 
@@ -556,6 +562,9 @@ namespace SpaceBoat {
             AdjustFacing(obj.transform.position.x - transform.position.x);
             if (activatable.usageAnimation != "") {
                 animator.SetBool(activatable.usageAnimation, true);
+            }
+            if (activatable.usageSound != "") {
+                game.sound.Play(activatable.usageSound);
             }
             ChangeState(activatable.playerState);
         }
@@ -580,6 +589,9 @@ namespace SpaceBoat {
             Debug.Log("stopped using " + activatableInUse.ToString());
             if (activatableInUse.usageAnimation != "") {
                 animator.SetBool(activatableInUse.usageAnimation, false);
+            }
+            if (activatableInUse.usageSound != "" && game.sound.IsPlaying(activatableInUse.usageSound)) {
+                game.sound.Stop(activatableInUse.usageSound);
             }
             activatableInUse = null;
             ChangeState(PlayerStateName.ready);

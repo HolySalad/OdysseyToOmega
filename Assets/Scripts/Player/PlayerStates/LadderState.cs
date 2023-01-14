@@ -41,7 +41,6 @@ namespace SpaceBoat.PlayerStates {
         }
 
         public void UpdateState() {
-            Debug.Log("Updating Ladder State");
             if (player.ActivateInput(CthulkInput.ActivateKeyDown())) return;
 
 

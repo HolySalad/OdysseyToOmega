@@ -3,13 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace SpaceBoat.Ship {
-    public class SailsActivatable : MonoBehaviour
+    public class SailsActivatable : MonoBehaviour, IActivatables
     {
         [SerializeField] private Sprite repairedSprite;
         [SerializeField] private Sprite brokenSprite;
+        [SerializeField] private int repairFrames = 72;
 
+        public ActivatablesNames kind {get;} = ActivatablesNames.Sails;
+        public bool isInUse {get; private set;} = false;
         private SpriteRenderer spriteRenderer;
         public bool isBroken {get; private set;} = false;
+        public bool canManuallyDeactivate {get;} = true;
+        public PlayerStateName playerState {get;} = PlayerStateName.working;
+        public string usageAnimation {get;} = "Repairing";
+        public string usageSound {get;} = "Repair";
+
+
+        private int timeBeganRepairing = 0;
+
+        private Player player;
 
         void Awake() {
             spriteRenderer = GetComponent<SpriteRenderer>();
@@ -30,6 +42,31 @@ namespace SpaceBoat.Ship {
             isBroken = true;
             spriteRenderer.sprite = brokenSprite;
         }
+
+        public void Activate(Player player) {
+            this.player = player;
+            isInUse = true;
+            timeBeganRepairing = Time.frameCount;
+        }
+
+        public void Deactivate(Player player) {
+            isInUse = false;
+        }
+
+        public bool ActivationCondition(Player player) {
+            return isBroken;
+        }
+
+        void Update() {
+            if (isInUse && isBroken) {
+                if (Time.frameCount - timeBeganRepairing >= repairFrames) {
+                    Repair();
+                    Deactivate(player);
+                    player.DetatchFromActivatable();
+                }
+            }
+        }
+
 
     }
 }

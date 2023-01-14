@@ -8,10 +8,12 @@ namespace SpaceBoat.Ship {
         [SerializeField] private GameObject ladderTop;
         [SerializeField] private GameObject ladderBottom;
 
+        public ActivatablesNames kind {get;} = ActivatablesNames.Ladder;
         public bool isInUse {get; private set;} = false;
         public bool canManuallyDeactivate {get;} = true;
         public PlayerStateName playerState {get;} = PlayerStateName.ladder; 
         public string usageAnimation {get;} = "OnLadder";
+        public string usageSound {get;} = "LadderClimb";
 
         private Player player;
 

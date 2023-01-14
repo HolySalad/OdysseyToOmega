@@ -13,13 +13,16 @@ namespace SpaceBoat.Ship {
         [SerializeField] private float maxAngle = 30;
         [SerializeField] private float RotationSpeed = 5f;
 
-        public bool isLoaded {get; private set;} = false;
+        public bool isLoaded {get; private set;} = true;
+        public ActivatablesNames kind {get;} = ActivatablesNames.HarpoonGun;
 
         public bool isInUse {get; private set;} = false;
         private bool returnPlayerToSmallCamera = false;
         public bool canManuallyDeactivate {get;} = true;
         public PlayerStateName playerState {get;} = PlayerStateName.aiming;
         public string usageAnimation {get;} = "Repairing";
+        public string usageSound {get;}
+
 
 
 
@@ -58,7 +61,9 @@ namespace SpaceBoat.Ship {
             GameObject harpoon = Instantiate(harpoonPrefab, harpoonLocation.transform.position, harpoonLocation.transform.rotation);
             //Vector3 gunAxis = backBarrel.transform.position - frontBarrel.transform.position;
             Vector3 direction = harpoonLocation.transform.TransformDirection(Vector3.right);
-            harpoon.GetComponent<Ship.HarpoonProjectile>().Fire(direction);
+            HarpoonProjectile harpoonProjectile = harpoon.GetComponent<Ship.HarpoonProjectile>();
+            harpoonProjectile.Fire(direction);
+            harpoonProjectile.harpoonGun = this;
             SoundManager.Instance.Play("HarpoonWhoosh");
             Deactivate(GameModel.Instance.player, true);
         }
