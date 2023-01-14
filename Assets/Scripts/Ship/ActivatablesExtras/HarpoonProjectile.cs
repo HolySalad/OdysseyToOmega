@@ -15,6 +15,8 @@ namespace SpaceBoat.Ship
         private Rigidbody2D rbHit;
         private Rigidbody2D rbHarpoon;
 
+        private Vector3 RespawnLocation = new Vector3(-2.12f, -8.40f, 0f);
+
         public void Awake() {
             rbHarpoon = GetComponent<Rigidbody2D>();
         }
@@ -25,6 +27,18 @@ namespace SpaceBoat.Ship
             rbHarpoon.velocity = direction * speed;
             directionFired = direction;
         }
+
+        public void TransformBackIntoItem(Vector3 position) {
+                GameObject item = Instantiate(GameModel.Instance.PrefabForItemType(ItemTypes.HarpoonItem), position, Quaternion.identity);
+                GameModel.Instance.CreateItemComponent(item, ItemTypes.HarpoonItem);
+                item.transform.rotation = Quaternion.Euler(0, 0, -90);
+                Destroy(gameObject);
+        }
+
+        public void TransformBackIntoItem() {
+            TransformBackIntoItem(transform.position);
+        }
+
 
         // reel the harpoon in towards the ship.
         // when 
@@ -55,15 +69,20 @@ namespace SpaceBoat.Ship
             Debug.Log("Harpoon detatching!");
             Vector3 pullVector = Vector3.Cross(reelLocation - transform.position, GameModel.Instance.cometDeckTarget.transform.position - transform.position);
             rbHarpoon.velocity = pullVector.normalized * speed;
-            Destroy(gameObject); 
+            //Destroy(gameObject); 
+            TransformBackIntoItem();
+        }
+
+        IEnumerator RespawnHarpoon() {
+            yield return new WaitForSeconds(5f);
+            TransformBackIntoItem(RespawnLocation);
         }
 
         public void OnCollisionEnter2D(Collision2D collision) {
             if (collision.gameObject.layer == LayerMask.NameToLayer("MapBounds")) {
                 Debug.Log("Harpoon hit map bounds");
-                Destroy(this.gameObject);
+                StartCoroutine(RespawnHarpoon());
             } else  if (collision.gameObject.layer == LayerMask.NameToLayer("PhysicalHazards")) {
-
                 Destructable destructable = collision.gameObject.GetComponent<Destructable>();
                 if (destructable != null) {
                     Debug.Log("Harpoon hit a physical hazard with a destruction behaviour");
