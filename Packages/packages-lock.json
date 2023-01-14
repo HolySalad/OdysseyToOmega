@@ -1,15 +1,5 @@
 {
   "dependencies": {
-    "com.totem.totemcore": {
-      "version": "https://github.com/Totem-gdn/TotemGeneratorUnity.git",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {
-        "com.unity.textmeshpro": "3.0.6",
-        "com.unity.nuget.newtonsoft-json": "3.0.1"
-      },
-      "hash": "7e6d207adb534979531a6bf18ff866dc68813bd2"
-    },
     "com.unity.2d.animation": {
       "version": "8.0.3",
       "depth": 1,
@@ -161,7 +151,7 @@
     },
     "com.unity.nuget.newtonsoft-json": {
       "version": "3.0.2",
-      "depth": 1,
+      "depth": 2,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"

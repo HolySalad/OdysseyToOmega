@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UI;
 using TotemEntities;
 using TotemEntities.DNA;
 using TotemServices.DNA;
@@ -11,22 +10,8 @@ using TMPro;
 
 namespace TotemDemo
 {
-
-
     public class TotemDemoManager : MonoBehaviour
     {
-    enum Avatarss
-    {
-            HatOne,
-            HatTwo,
-            HatThree,
-            HatFour,
-            HatFive,
-            HatSix,
-            HatSeven
-    }
-
-
         public static TotemDemoManager Instance;
         private TotemCore totemCore;
 
@@ -44,8 +29,6 @@ namespace TotemDemo
         [SerializeField] private GameObject googleLoginObject;
         [SerializeField] private GameObject profileNameObject;
         [SerializeField] private TextMeshProUGUI profileNameText;
-        [SerializeField] private TMP_Dropdown dropdown;
-        Dictionary<string,Avatarss> avatarssDictionary = new Dictionary<string,Avatarss>();
 
         [Header("Legacy UI")]
         [SerializeField] private TMP_InputField legacyGameIdInput;
@@ -53,13 +36,11 @@ namespace TotemDemo
         [SerializeField] private UIAssetsList assetList;
         [SerializeField] private UIAssetLegacyRecordsList legacyRecordsList;
         [SerializeField] private Animator popupAnimator;
-        [SerializeField] List<TMP_Dropdown.OptionData> optionList;
 
         //Meta Data
         private TotemUser _currentUser;
         private List<TotemDNADefaultAvatar> _userAvatars;
-       [SerializeField] private Sprite[] avatarSprites = new Sprite[8];
-       [SerializeField] private SpriteRenderer spriteRenderer;
+
         //Default Avatar reference - use for your game
         private TotemDNADefaultAvatar firstAvatar;
 
@@ -74,24 +55,7 @@ namespace TotemDemo
                 Destroy(gameObject);
             }
         }
-        private void Update()
-        {
-            if (_userAvatars != null)
-            {
 
-                foreach (TotemDNADefaultAvatar avatar in _userAvatars)
-                {
-                    Debug.Log(avatarssDictionary[avatar.hair_styles]);
-                    Debug.Log(dropdown.options[dropdown.value].text);
-
-                    if (avatar.ToString() == dropdown.options[dropdown.value].text)
-                    {
-                        spriteRenderer.sprite = avatarSprites[(int)avatarssDictionary[avatar.hair_styles]];
-                        spriteRenderer.color = avatar.primary_color;
-                    }
-                }
-            }
-        }
         /// <summary>
         /// Initializing TotemCore
         /// </summary>
@@ -99,19 +63,8 @@ namespace TotemDemo
         {
             totemCore = new TotemCore(_gameId);
 
-
-            avatarssDictionary.Add("afro", Avatarss.HatOne);
-            avatarssDictionary.Add("asymmetrical", Avatarss.HatTwo);
-            avatarssDictionary.Add("braids", Avatarss.HatThree);
-            avatarssDictionary.Add("buzz cut", Avatarss.HatFour);
-            avatarssDictionary.Add("dreadlocks", Avatarss.HatFive);
-            avatarssDictionary.Add("long", Avatarss.HatSix);
-            avatarssDictionary.Add("ponytail", Avatarss.HatSeven);
-            avatarssDictionary.Add("short", Avatarss.HatOne);
-
             legacyGameIdInput.onEndEdit.AddListener(OnGameIdInputEndEdit);
         }
-
 
         #region USER AUTHENTICATION
         public void OnLoginButtonClick()
@@ -127,31 +80,23 @@ namespace TotemDemo
             //Using default filter with a default avatar model. You can implement your own filters and/or models
             totemCore.GetUserAvatars<TotemDNADefaultAvatar>(user, TotemDNAFilter.DefaultAvatarFilter, (avatars) =>
             {
-            googleLoginObject.SetActive(false);
-            profileNameObject.SetActive(true);
-            profileNameText.SetText(user.Name);
+                googleLoginObject.SetActive(false);
+                profileNameObject.SetActive(true);
+                profileNameText.SetText(user.Name);
 
-            //UI
-            assetList.ClearList();
-            legacyRecordsList.ClearList();
+                //UI
+                assetList.ClearList();
+                legacyRecordsList.ClearList();
+                
 
+                //Avatars
+                _userAvatars = avatars;
+                firstAvatar = avatars.Count > 0 ? avatars[0] : null;
+                //
 
-            //Avatars
-            _userAvatars = avatars;
-            firstAvatar = avatars.Count > 0 ? avatars[0] : null;
-            //
-            BuildAvatarList();
-
-            //
-            foreach (var avatar in avatars)
-            {
-                Debug.Log(avatarssDictionary[avatar.hair_styles]);
-          
-            }
                 //UI Example Methods
-                AddToDropDown();
+                BuildAvatarList();
                 ShowAvatarRecords();
-
 
             });
 
@@ -228,24 +173,6 @@ namespace TotemDemo
         private void BuildAvatarList()
         {
             assetList.BuildList(_userAvatars);
-        }
-
-        private void AddToDropDown()
-        {
-            foreach (TotemDNADefaultAvatar avatar in _userAvatars)
-            {
-                if (avatar != null)
-                {
-
-                    TMP_Dropdown.OptionData data = new TMP_Dropdown.OptionData();
-                    data.text = avatar.ToString();
-                    optionList.Add(data);
-                }
-            }
-                dropdown.ClearOptions();
-            dropdown.AddOptions(optionList);
-
-
         }
 
         private void OnGameIdInputEndEdit(string text)
