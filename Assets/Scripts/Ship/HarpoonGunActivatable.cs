@@ -14,12 +14,15 @@ namespace SpaceBoat.Ship {
         [SerializeField] private float RotationSpeed = 5f;
 
         public bool isLoaded {get; private set;} = false;
+        public ActivatablesNames kind {get;} = ActivatablesNames.HarpoonGun;
 
         public bool isInUse {get; private set;} = false;
         private bool returnPlayerToSmallCamera = false;
         public bool canManuallyDeactivate {get;} = true;
         public PlayerStateName playerState {get;} = PlayerStateName.aiming;
         public string usageAnimation {get;} = "Repairing";
+        public string usageSound {get;}
+
 
 
 

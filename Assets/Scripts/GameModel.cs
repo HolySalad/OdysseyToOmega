@@ -11,7 +11,7 @@ using UnityEngine.Playables;
 namespace SpaceBoat {
 
     public enum ItemTypes {ClothItem, FoodItem, HarpoonItem, None};
-    public enum Activatables {HarpoonGun, None};
+    public enum ActivatablesNames {HarpoonGun, Kitchen, Ladder, Sails, None};
 
     public enum HazardProjectiles {Meteor, SpacRock, None}
 
@@ -101,23 +101,13 @@ namespace SpaceBoat {
         }
 
         // activatable management
-        public Activatables GetActivatableType(GameObject activatable) {
-            if (activatable.GetComponent<Ship.HarpoonGunActivatable>() != null) {
-                return Activatables.HarpoonGun;
-            } else {
-                return Activatables.None;
-            }
+        public ActivatablesNames GetActivatableType(GameObject activatable) {
+            return activatable.GetComponent<IActivatables>().kind;
         }
 
-        
+
         public IActivatables GetActivatableComponent(GameObject activatable) {
-            if (activatable.GetComponent<Ship.HarpoonGunActivatable>() != null) {
-                return activatable.GetComponent<Ship.HarpoonGunActivatable>();
-            } else if (activatable.GetComponent<Ship.LadderActivatable>() != null) {
-                return activatable.GetComponent<Ship.LadderActivatable>();
-            } else {
-                return null;
-            }
+            return activatable.GetComponent<IActivatables>();
         }
 
         //animations 
