@@ -6,7 +6,7 @@ using SpaceBoat.Ship;
 using SpaceBoat.PlayerStates;
 
 namespace SpaceBoat {
-    public enum PlayerStateName {ready, working, hitstun, aiming, nullState};
+    public enum PlayerStateName {ready, working, hitstun, aiming, ladder, nullState};
     public class Player : MonoBehaviour
     
     {
@@ -56,11 +56,14 @@ namespace SpaceBoat {
         [SerializeField] private float accelerationStartRange = 1f;
         [SerializeField] private float accelerationMidRange = 3f;
         [SerializeField] private float turningSpeedMult = 0.7f;
-        
+        [SerializeField] private float crouchedMovementMult = 0.4f;
+
+
+
         [Header("Momentum Settings")]
-        [SerializeField] private float momentumDecayHorizontal = 10f;
-        [SerializeField] private float momentumDecayVertical = 15f;
-        [SerializeField] private int momentumAccelerationTime = 12; //frames to reach max momentum
+        //[SerializeField] private float momentumDecayHorizontal = 10f;
+        //[SerializeField] private float momentumDecayVertical = 15f;
+        //[SerializeField] private int momentumAccelerationTime = 12; //frames to reach max momentum
 
         // References
         private GameModel game;
@@ -83,6 +86,7 @@ namespace SpaceBoat {
 
         //internal movement vars
         private bool isGrounded = false;
+        private bool isCrouched = false;
         private GameObject groundedOnObject;
         public bool GetIsGrounded() {
             return GetIsGrounded(true);
@@ -157,6 +161,7 @@ namespace SpaceBoat {
             playerStates.Add(PlayerStateName.hitstun, GetComponent<HitstunState>() ?? gameObject.AddComponent<HitstunState>());
             playerStates.Add(PlayerStateName.working, GetComponent<WorkingState>() ?? gameObject.AddComponent<WorkingState>());
             playerStates.Add(PlayerStateName.aiming, GetComponent<AimingState>() ?? gameObject.AddComponent<AimingState>());
+            playerStates.Add(PlayerStateName.ladder, GetComponent<LadderState>() ?? gameObject.AddComponent<LadderState>());
 
             currentPlayerState = playerStates[currentPlayerStateName];
         }
@@ -189,8 +194,10 @@ namespace SpaceBoat {
         public void WalkInput(float horizontalInput) {
             float deltaTime = Time.deltaTime;
             if (horizontalInput != 0) {lastHorizontalInput = horizontalInput;}
+            float maxSpeed = maxWalkSpeed;
+            if (isCrouched) {maxSpeed *= crouchedMovementMult;}
             // if we aren't pressing an input or if our speed is in excess of max walk speed while on the ground, we decelerate.
-            if (horizontalInput == 0 || (Mathf.Abs(currentWalkingSpeed) > maxHoriontalVelocity && isGrounded)) {
+            if (horizontalInput == 0 || (Mathf.Abs(currentWalkingSpeed) > maxWalkSpeed && isGrounded)) {
                 if (currentWalkingSpeed > 0) {
                     currentWalkingSpeed = Mathf.Max(currentWalkingSpeed - deceleration*deltaTime, 0);
                 } else if (currentWalkingSpeed < 0) {
@@ -227,8 +234,8 @@ namespace SpaceBoat {
 
         // jump functions
 
-        private void StartJump() {
-            if (CanJump()) {
+        private void StartJump(bool forceJump = false) {
+            if (CanJump() || forceJump) {
                 isJumping = true;
                 jumpStartTime = Time.frameCount;
                 jumpSquat = true;
@@ -286,12 +293,29 @@ namespace SpaceBoat {
             justLanded = false;
         }
 
+        public void ForceJump(bool lockOutReadyState = false) {
+            StartJump(true);
+            if (lockOutReadyState) {
+                IPlayerState ready = playerStates[PlayerStateName.ready];
+                if (ready is ReadyState) {
+                    ((ReadyState)ready).JumpLockOut();
+                }
+            }
+        }
+
         private void JumpStomp() {
             if (Time.frameCount > lastJumpStompFrame + jumpStompCooldown) {
                 lastJumpStompFrame = Time.frameCount;
                 float jumpStompVolume = 0.2f + (Mathf.Abs(currentVerticalForce/gravityTerminalVelocity) * 0.8f);
                 Debug.Log("Jumpstomp with volume " + jumpStompVolume);
                 SoundManager.Instance.Play("JumpStomp", jumpStompVolume);
+            }
+        }
+
+        public void CrouchInput(bool crouchHeld) {
+            if (crouchHeld) {
+                isCrouched = true;
+                animator.SetBool("Crouching", true);
             }
         }
 
@@ -376,6 +400,12 @@ namespace SpaceBoat {
             RaycastHit2D hit = Physics2D.Raycast(headCollider.position, Vector3.up, ceilingCheckDistance, LayerMask.GetMask("Ground"));
             Debug.DrawRay(footCollider.position, transform.TransformDirection(new Vector3(0, ceilingCheckDistance, 0)), Color.yellow, 0.1f);
             if (hit.collider != null) {
+                if (hit.collider.gameObject.GetComponent<PlatformEffector2D>() != null) {
+                    PlatformEffector2D platform = hit.collider.gameObject.GetComponent<PlatformEffector2D>();
+                    if (platform.useOneWay) {
+                        return;
+                    }
+                }
                 Debug.Log("Ouch! My fucking head!");
                 currentVerticalForce = Mathf.Min(0, currentVerticalForce);
             }
@@ -635,14 +665,22 @@ namespace SpaceBoat {
         }
 
         void MovementUpdate() {
+            if (currentPlayerState.stealVelocityControl) {
+                return;
+            }
             UpdateGrounded();
             if (isJumping) {
                 CheckHeadBump();
             }
             updateJump();
-            float horizontal = lastHorizontalInput;
+            float totalHorizontalVelocity = currentWalkingSpeed*lastHorizontalInput;
+            float totalVerticalVelocity = currentVerticalForce;
+            if (groundedOnObject != null) {
+                totalHorizontalVelocity += groundedOnObject.GetComponent<Rigidbody2D>().velocity.x;
+                totalVerticalVelocity += groundedOnObject.GetComponent<Rigidbody2D>().velocity.y;
+            }
 
-            Vector2 movement = new Vector2(currentWalkingSpeed*lastHorizontalInput, currentVerticalForce);
+            Vector2 movement = new Vector2(totalHorizontalVelocity, totalVerticalVelocity);
            
             rb.velocity = movement;
         }
@@ -659,7 +697,8 @@ namespace SpaceBoat {
         }
 
 
-        // this method is unused; replaced by UpdateState;
+        // this method is unused; replaced by UpdateState; 
+        /*
         void InputUpdate(float deltaTime) {
             // get input
             bool playerStateWasAiming = currentPlayerStateName == PlayerStateName.aiming;
@@ -691,6 +730,7 @@ namespace SpaceBoat {
                 cameraControls?.ToggleShipView();
             }
         }
+        */
 
         void Update() {
             int frameCount = Time.frameCount;
@@ -731,7 +771,7 @@ namespace SpaceBoat {
         }
 
         public static bool UseItemDown() {
-            return Input.GetKeyDown(KeyCode.Q);
+            return Input.GetKeyDown(KeyCode.F);
         }
 
         public static float HorizontalInput() {

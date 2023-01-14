@@ -41,7 +41,7 @@ namespace SpaceBoat.HazardManagers {
         void OnTriggerEnter2D(Collider2D other) {
             Debug.Log("Meteorite OnTriggerEnter2D");
             if (other.gameObject == target) {
-                Ship.Sails sail = other.gameObject.GetComponent<Ship.Sails>();
+                Ship.SailsActivatable sail = other.gameObject.GetComponent<Ship.SailsActivatable>();
                 if (!sail.isBroken){sail.Break();
                 Destroy(this.gameObject);}
                 SoundManager.Instance.Play("MeteorImpact"); 
