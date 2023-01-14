@@ -17,6 +17,7 @@ namespace SpaceBoat.UI {
         [SerializeField] private float cameraVerticalFollowStartThreshold = 2f;
 
         [SerializeField] private bool shipViewByDefault = false;
+        [SerializeField] private bool simpleCameraFollow = false;
 
         private Player player;
         public bool isShipView {get; private set;} = false;
@@ -130,6 +131,12 @@ namespace SpaceBoat.UI {
         }
 
         void Update() {
+            if (simpleCameraFollow) {
+                Vector3 playerPos = player.transform.position;
+                Vector3 targetPos = new Vector3(playerPos.x + playerRotationXOffset, playerPos.y + playerViewHeightOffset, -10);
+                transform.position = targetPos;
+                return;
+            }
             if (isShipView) {
                 //Debug.Log("In ship view, player y is " + player.gameObject.transform.position.y + " and disableShipCamBelowY is " + disableShipCamBelowY);
                 if (player.gameObject.transform.position.y < disableShipCamBelowY) {
