@@ -16,17 +16,26 @@ namespace SpaceBoat.Ship {
         public bool isLoaded {get; private set;} = false;
 
         public bool isInUse {get; private set;} = false;
+        private bool returnPlayerToSmallCamera = false;
         public bool canManuallyDeactivate {get;} = true;
-        public Player.PlayerState playerState {get;} = Player.PlayerState.aiming;
+        public PlayerStateName playerState {get;} = PlayerStateName.aiming;
         public string usageAnimation {get;} = "Repairing";
 
 
 
         public void Activate(Player player) {
             isInUse = true;
+            if (!player.cameraControls.isShipView) {
+                returnPlayerToSmallCamera = true;
+                player.cameraControls.ToggleShipView();
+            }
         }
         public void Deactivate(Player player) {
             isInUse = false;
+            if (returnPlayerToSmallCamera) {
+                player.cameraControls.ToggleShipView();
+                returnPlayerToSmallCamera = false;
+            }
         }
 
         public void Deactivate(Player player, bool internalDeactivation) {

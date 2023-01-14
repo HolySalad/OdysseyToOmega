@@ -19,6 +19,10 @@ namespace SpaceBoat {
     {
         public static GameModel Instance;
 
+        [Header("Game Settings")]
+        [SerializeField] private bool environmentTesting = false;
+        [SerializeField] private bool slowMo = false;
+
         [Header("Ship")]
         [SerializeField] public List<GameObject> shipSails;
         [SerializeField] public GameObject cometFlightTarget;
@@ -160,6 +164,13 @@ namespace SpaceBoat {
             Debug.Log("Game is starting!");
             
             sound = SoundManager.Instance;
+
+            if (slowMo) {
+                Time.timeScale = 0.1f;
+            }
+
+
+            if (environmentTesting) return;
             sound.Play("Spawn");
             if (sound.IsPlaying("MenuSoundtrack")) {
                 sound.Stop("MenuSoundtrack");
@@ -169,7 +180,7 @@ namespace SpaceBoat {
             //TODO add random hazard selection.
             currentHazardManager = CreateHazardManager("MeteorShower");
             
-            currentHazardManager.StartHazard();
+            currentHazardManager?.StartHazard();
 
         }
 
@@ -232,9 +243,10 @@ namespace SpaceBoat {
         // check if any sails remain unbroken
         // trigger gameover if none remain
         public void Update() {
+            if (environmentTesting) return;
             int num_surviving_sails = 0;
             foreach (GameObject sail in shipSails) {
-                if (sail.GetComponent<Ship.Sails>().isBroken == false) {
+                 if (sail.GetComponent<Ship.Sails>().isBroken == false) {
                     num_surviving_sails++;
                 }
             }
