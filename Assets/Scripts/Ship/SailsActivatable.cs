@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace SpaceBoat.Ship {
-    public class Sails : MonoBehaviour
+    public class SailsActivatable : MonoBehaviour
     {
         [SerializeField] private Sprite repairedSprite;
         [SerializeField] private Sprite brokenSprite;

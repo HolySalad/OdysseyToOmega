@@ -14,10 +14,10 @@ using UnityEngine;
         }
         
 
-        private Ship.HarpoonGun harpoonGun;
+        private Ship.HarpoonGunActivatable harpoonGun;
 
         public void Awake() {
-            harpoonGun = FindObjectOfType<Ship.HarpoonGun>();
+            harpoonGun = FindObjectOfType<Ship.HarpoonGunActivatable>();
         }
 
 

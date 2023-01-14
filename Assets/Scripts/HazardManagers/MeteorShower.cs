@@ -78,7 +78,7 @@ namespace SpaceBoat.HazardManagers {
             List<GameObject> nonbrokenSails = new List<GameObject>();
             foreach (GameObject sail in sails)
             {
-                if (!sail.GetComponent<Ship.Sails>().isBroken)
+                if (!sail.GetComponent<Ship.SailsActivatable>().isBroken)
                 {
                     nonbrokenSails.Add(sail);
                 }
@@ -110,7 +110,7 @@ namespace SpaceBoat.HazardManagers {
             List<GameObject> nonbrokenSails = new List<GameObject>();
             foreach (GameObject sail in sails)
             {
-                if (!sail.GetComponent<Ship.Sails>().isBroken)
+                if (!sail.GetComponent<Ship.SailsActivatable>().isBroken)
                 {
                     nonbrokenSails.Add(sail);
                 }

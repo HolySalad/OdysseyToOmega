@@ -102,7 +102,7 @@ namespace SpaceBoat {
 
         // activatable management
         public Activatables GetActivatableType(GameObject activatable) {
-            if (activatable.GetComponent<Ship.HarpoonGun>() != null) {
+            if (activatable.GetComponent<Ship.HarpoonGunActivatable>() != null) {
                 return Activatables.HarpoonGun;
             } else {
                 return Activatables.None;
@@ -111,8 +111,10 @@ namespace SpaceBoat {
 
         
         public IActivatables GetActivatableComponent(GameObject activatable) {
-            if (activatable.GetComponent<Ship.HarpoonGun>() != null) {
-                return activatable.GetComponent<Ship.HarpoonGun>();
+            if (activatable.GetComponent<Ship.HarpoonGunActivatable>() != null) {
+                return activatable.GetComponent<Ship.HarpoonGunActivatable>();
+            } else if (activatable.GetComponent<Ship.LadderActivatable>() != null) {
+                return activatable.GetComponent<Ship.LadderActivatable>();
             } else {
                 return null;
             }
@@ -246,7 +248,7 @@ namespace SpaceBoat {
             if (environmentTesting) return;
             int num_surviving_sails = 0;
             foreach (GameObject sail in shipSails) {
-                 if (sail.GetComponent<Ship.Sails>().isBroken == false) {
+                 if (sail.GetComponent<Ship.SailsActivatable>().isBroken == false) {
                     num_surviving_sails++;
                 }
             }
@@ -259,7 +261,7 @@ namespace SpaceBoat {
                 helpPrompts.DisplayPromptWithDeactivationCondition(helpPrompts.criticalShipPrompt, () => {
                      int num_surviving_sails = 0;
                     foreach (GameObject sail in shipSails) {
-                        if (sail.GetComponent<Ship.Sails>().isBroken == false) {
+                        if (sail.GetComponent<Ship.SailsActivatable>().isBroken == false) {
                             num_surviving_sails++;
                         }
                     }
