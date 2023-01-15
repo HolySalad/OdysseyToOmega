@@ -7,7 +7,7 @@ namespace SpaceBoat.Ship {
     {
         [SerializeField] private Sprite repairedSprite;
         [SerializeField] private Sprite brokenSprite;
-        [SerializeField] private int repairFrames = 72;
+        [SerializeField] private float repairTime = 3;
 
         public ActivatablesNames kind {get;} = ActivatablesNames.Sails;
         public bool isInUse {get; private set;} = false;
@@ -19,7 +19,7 @@ namespace SpaceBoat.Ship {
         public string usageSound {get;} = "Repair";
 
 
-        private int timeBeganRepairing = 0;
+        private float timeBeganRepairing = 0;
 
         private Player player;
 
@@ -46,7 +46,7 @@ namespace SpaceBoat.Ship {
         public void Activate(Player player) {
             this.player = player;
             isInUse = true;
-            timeBeganRepairing = Time.frameCount;
+            timeBeganRepairing = Time.time;
         }
 
         public void Deactivate(Player player) {
@@ -59,7 +59,7 @@ namespace SpaceBoat.Ship {
 
         void Update() {
             if (isInUse && isBroken) {
-                if (Time.frameCount - timeBeganRepairing >= repairFrames) {
+                if (Time.time - timeBeganRepairing >= repairTime) {
                     Repair();
                     Deactivate(player);
                     player.DetatchFromActivatable();

@@ -66,7 +66,7 @@ namespace SpaceBoat.PlayerStates {
                 // force them to jump off the ladder if they are.
                 if (ladder.ExitInContactWithPlayer(player)) {
                     Debug.Log("Reached top of ladder");
-                    player.ForceJump(true);
+                    if (ladder.jumpAtEnd) player.ForceJump(true);
                     player.DetatchFromActivatable();
                     return;
                 } else {

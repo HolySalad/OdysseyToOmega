@@ -22,9 +22,9 @@ namespace SpaceBoat {
         [SerializeField] private int groundCheckJumpMargin = 24; //how many frames after jumping to check for ground
         [SerializeField] private float wallCheckDistance = 0.5f;
         [SerializeField] private float ceilingCheckDistance = 0.1f;
-        [SerializeField] private Transform footCollider;
-        [SerializeField] private Transform headCollider;
-        [SerializeField] private Transform bodyCollider;
+        [SerializeField] public Transform footCollider;
+        [SerializeField] public Transform headCollider;
+        [SerializeField] public Transform bodyCollider;
         [SerializeField] private Transform leftSlipCollider;
         [SerializeField] private Transform rightSlipCollider;
         [SerializeField] private Transform headSlipCollider;
@@ -119,10 +119,6 @@ namespace SpaceBoat {
         public bool isSlipping {get; private set;} = false;
         private bool isSlippingLeft = false;
 
-        private float verticalMomentum = 0f;
-        private float horizontalMomentum = 0f;
-        private float targetVerticalMomentum = 0f;
-        private float targetHorizontalMomentum = 0f;
 
         //item vars
         public IHeldItems itemInHand {get; private set;}
@@ -275,7 +271,7 @@ namespace SpaceBoat {
                 }
                 if (isSlipping) {
                     currentVerticalForce = -slipSpeedVertical;
-                } else if (targetVerticalMomentum <= 0) {
+                } else {
                     currentVerticalForce = Mathf.Max(-gravityTerminalVelocity, currentVerticalForce - gravityAcceleration * Time.deltaTime);
                 }
             }
@@ -343,6 +339,10 @@ namespace SpaceBoat {
             this.isGrounded = isGrounded;
             if (isGrounded) {
                 groundedOnObject = hits[0].collider.gameObject;
+                if (groundedOnObject.GetComponent<Rigidbody2D>() == null) {
+                    Debug.LogWarning("Grounded on object without rigidbody2d: " + groundedOnObject.name);
+                    groundedOnObject = null;
+                }
                 jumpGrace = Time.frameCount + jumpGraceWindow;
                 if (isJumping) {
                     Debug.Log("Player landed from jumping after " + (Time.frameCount - jumpStartTime) + " frames");
@@ -351,8 +351,6 @@ namespace SpaceBoat {
                     halfJump = false;
                     justLanded = true;
                     currentVerticalForce = 0;
-                    targetVerticalMomentum = 0;
-                    verticalMomentum = 0;
                     currentWalkingSpeed = currentWalkingSpeed * landingHorizontalDrag;
                 } else if (!wasGrounded) {
                     Debug.Log("Player landed from falling after " + (Time.frameCount - jumpStartTime) + " frames");
@@ -361,11 +359,11 @@ namespace SpaceBoat {
                     halfJump = false;
                     justLanded = true;
                     currentVerticalForce = 0;
-                    targetVerticalMomentum = 0;
-                    verticalMomentum = 0;
                 }
             } else {
-                groundedOnObject = null;
+                if (Time.frameCount > jumpGrace) {
+                    groundedOnObject = null;
+                }
                 if (wasGrounded) {
                     Debug.Log("Player left ground at " + Time.frameCount);
                 } else {
@@ -388,7 +386,8 @@ namespace SpaceBoat {
                         isSlippingLeft = false;
                     } else if (Physics2D.Raycast(headSlipCollider.position, new Vector3(0, -1, 0), slipCheckDistance, LayerMask.GetMask("Ground")).collider != null)
                     {
-
+                        isSlipping = true;
+                        isSlippingLeft = isFacingRight;
                     }
                 }
             }
@@ -747,10 +746,10 @@ namespace SpaceBoat {
                 lastJumpStompFrame += 1;
                 jumpGrace += 1;
                 jumpStartTime += 1;
+                hitOnframe += 1;
                 return;
             }
             //InputUpdate(deltaTime);
-            UpdateMomentum();
             MovementUpdate();
             animatorUpdate();
             SoundUpdate();
