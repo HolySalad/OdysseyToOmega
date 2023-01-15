@@ -51,6 +51,35 @@ namespace SpaceBoat {
 
         private IHazardManager currentHazardManager;
 
+        public bool isPaused {get; private set;}
+        public delegate void PauseEvent();
+        private List<PauseEvent> pauseEvents = new List<PauseEvent>();
+        private List<PauseEvent> unpauseEvents = new List<PauseEvent>();
+
+        // Pause
+        public void PauseGame() {
+            isPaused = true;
+            Time.timeScale = 0f;
+            foreach (PauseEvent pauseEvent in pauseEvents) {
+                pauseEvent();
+            }
+        }
+
+        public void AddPauseEvent(PauseEvent pauseEvent) {
+            pauseEvents.Add(pauseEvent);
+        }
+
+        public void UnpauseGame() {
+            isPaused = false;
+            Time.timeScale = 1f;
+            foreach (PauseEvent unpauseEvent in unpauseEvents) {
+                unpauseEvent();
+            }
+        }
+
+        public void AddUnpauseEvent(PauseEvent unpauseEvent) {
+            unpauseEvents.Add(unpauseEvent);
+        }
 
     
         //item management

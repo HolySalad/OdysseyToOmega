@@ -100,7 +100,6 @@ namespace SpaceBoat {
             }
         }
 
-        private int JumpGrace = 0;
         private int jumpGrace = 0;
         private bool  jumpSquat = false;
         private bool isJumping = false;
@@ -122,7 +121,6 @@ namespace SpaceBoat {
 
         private float verticalMomentum = 0f;
         private float horizontalMomentum = 0f;
-        private int momentumAddedOnFrame = 0;
         private float targetVerticalMomentum = 0f;
         private float targetHorizontalMomentum = 0f;
 
@@ -345,7 +343,7 @@ namespace SpaceBoat {
             this.isGrounded = isGrounded;
             if (isGrounded) {
                 groundedOnObject = hits[0].collider.gameObject;
-                JumpGrace = Time.frameCount + jumpGraceWindow;
+                jumpGrace = Time.frameCount + jumpGraceWindow;
                 if (isJumping) {
                     Debug.Log("Player landed from jumping after " + (Time.frameCount - jumpStartTime) + " frames");
                     JumpStomp();
@@ -745,7 +743,12 @@ namespace SpaceBoat {
         */
 
         void Update() {
-            int frameCount = Time.frameCount;
+            if (game.isPaused) {
+                lastJumpStompFrame += 1;
+                jumpGrace += 1;
+                jumpStartTime += 1;
+                return;
+            }
             //InputUpdate(deltaTime);
             UpdateMomentum();
             MovementUpdate();
