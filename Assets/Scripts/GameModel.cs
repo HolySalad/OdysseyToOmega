@@ -48,6 +48,7 @@ namespace SpaceBoat {
         public UI.HelpPrompts helpPrompts {get; private set;}
 
         public float GameBeganTime {get; private set;}
+        public int lastSurvivingSailCount {get; private set;}
 
         private IHazardManager currentHazardManager;
 
@@ -179,6 +180,7 @@ namespace SpaceBoat {
             helpPrompts = FindObjectOfType<UI.HelpPrompts>();
 
             GameBeganTime = Time.time;
+            lastSurvivingSailCount = shipSails.Count;
         }
 
         public void Start() {
@@ -291,6 +293,7 @@ namespace SpaceBoat {
                     sound.Stop("ShipLowHP");
                 }
             }
+            lastSurvivingSailCount = num_surviving_sails;
 
             CheckHazardProgress();
         }

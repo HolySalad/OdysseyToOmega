@@ -306,6 +306,37 @@ PlatformEffector2D:
   m_UseSideFriction: 0
   m_UseSideBounce: 0
   m_SideArc: 1
+--- !u!1 &941289798065666031
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7076263995517862899}
+  m_Layer: 9
+  m_Name: LightningTarget (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7076263995517862899
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 941289798065666031}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.47, y: 1.34, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2455461551069076078}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2071413966448462559
 GameObject:
   m_ObjectHideFlags: 0
@@ -614,6 +645,37 @@ PlatformEffector2D:
   m_UseSideFriction: 0
   m_UseSideBounce: 0
   m_SideArc: 1
+--- !u!1 &2358121066671080429
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6922434024704948985}
+  m_Layer: 9
+  m_Name: LightningTarget (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6922434024704948985
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2358121066671080429}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.29, y: -1.52, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3861797049108873869}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3021673151280228200
 GameObject:
   m_ObjectHideFlags: 0
@@ -644,7 +706,8 @@ Transform:
   m_LocalPosition: {x: 4.24, y: 4.27, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 6922434024704948985}
   m_Father: {fileID: 7837276630178798449}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -714,7 +777,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   repairedSprite: {fileID: 21300000, guid: 74beecc9368494f4d839d42509286914, type: 3}
   brokenSprite: {fileID: 21300000, guid: b639ecc865469694a83d2a3f84657d18, type: 3}
+  hazardTarget: {fileID: 6922434024704948985}
   repairTime: 3
+  targettingCooldown: 30
+  targetFlagTimeout: 10
 --- !u!61 &1840950220746983144
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1232,7 +1298,8 @@ Transform:
   m_LocalPosition: {x: -4.23, y: -4.11, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1582349550943209700}
   m_Father: {fileID: 7837276630178798449}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1302,7 +1369,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   repairedSprite: {fileID: 21300000, guid: 6cede7c875718844db4ec41cead3f178, type: 3}
   brokenSprite: {fileID: 21300000, guid: 44dbf9105c535f240a0fc6fdb32ae7cc, type: 3}
+  hazardTarget: {fileID: 1582349550943209700}
   repairTime: 3
+  targettingCooldown: 30
+  targetFlagTimeout: 10
 --- !u!61 &5049153848543242102
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1329,6 +1399,68 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 8.914286, y: 8.885715}
   m_EdgeRadius: 0
+--- !u!1 &6537657013318278203
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1582349550943209700}
+  m_Layer: 9
+  m_Name: LightningTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1582349550943209700
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6537657013318278203}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.96, y: 0.65, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6244316601799621081}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6619309555166183221
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5926253566011312995}
+  m_Layer: 9
+  m_Name: LightningTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5926253566011312995
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6619309555166183221}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.99, y: -1.42, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6507281759987442029}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7452074824509621033
 GameObject:
   m_ObjectHideFlags: 0
@@ -2186,7 +2318,8 @@ Transform:
   m_LocalPosition: {x: 4.2449417, y: -4.1415653, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 7076263995517862899}
   m_Father: {fileID: 7837276630178798449}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2256,7 +2389,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   repairedSprite: {fileID: 21300000, guid: 09f28e6e165402f439573dc86e2041f6, type: 3}
   brokenSprite: {fileID: 21300000, guid: da94a9789da312b48a7577985bc1a540, type: 3}
+  hazardTarget: {fileID: 7076263995517862899}
   repairTime: 3
+  targettingCooldown: 30
+  targetFlagTimeout: 10
 --- !u!61 &4815250026004944927
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2313,7 +2449,8 @@ Transform:
   m_LocalPosition: {x: -4.242378, y: 4.29, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 5926253566011312995}
   m_Father: {fileID: 7837276630178798449}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2383,7 +2520,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   repairedSprite: {fileID: 21300000, guid: 3503fb30292574b43a8baf3ad1c1a8c0, type: 3}
   brokenSprite: {fileID: 21300000, guid: ade56f31aa42a784091175d7097a62e5, type: 3}
+  hazardTarget: {fileID: 5926253566011312995}
   repairTime: 3
+  targettingCooldown: 30
+  targetFlagTimeout: 10
 --- !u!61 &6614020060423688797
 BoxCollider2D:
   m_ObjectHideFlags: 0

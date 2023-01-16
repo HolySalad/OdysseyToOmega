@@ -8,9 +8,7 @@ using SpaceBoat.PlayerStates;
 namespace SpaceBoat {
     public enum PlayerStateName {ready, working, hitstun, aiming, ladder, nullState};
     public class Player : MonoBehaviour
-    
     {
-  
         [Header("General Player Settings")]
         [SerializeField] private GameObject playerCamera;
         [SerializeField] private int invincibilityFrames = 50;
@@ -47,7 +45,6 @@ namespace SpaceBoat {
 
         [Header("Walk Movement Settings")]
         [SerializeField] private float maxWalkSpeed = 6f;
-        [SerializeField] private float maxHoriontalVelocity = 10f;
 
         [SerializeField] private float acceleration = 5f;
         [SerializeField] private float deceleration = 7f;
@@ -61,6 +58,9 @@ namespace SpaceBoat {
 
 
         [Header("Momentum Settings")]
+        [SerializeField] private float momentumDecayStartTime = 0.5f;
+        [SerializeField] private float momentumDecayTime = 2f;
+        [SerializeField] private float groundedMomentumDecayDivisor = 2f;
         //[SerializeField] private float momentumDecayHorizontal = 10f;
         //[SerializeField] private float momentumDecayVertical = 15f;
         //[SerializeField] private int momentumAccelerationTime = 12; //frames to reach max momentum
@@ -118,6 +118,13 @@ namespace SpaceBoat {
 
         public bool isSlipping {get; private set;} = false;
         private bool isSlippingLeft = false;
+
+        //imparted momentum
+        
+        private float currentHazardMomentum = 0f;
+        private float lastAppliedHazardMomentum = 0f;
+        private float lastMomentumAppliedTime = 0f;
+        //private Dictionary<Environment.MomentumImpartingEffectKind, momentumEntry> momentumEntries = new Dictionary<Environment.MomentumImpartingEffectKind, momentumEntry>();
 
 
         //item vars
@@ -653,6 +660,36 @@ namespace SpaceBoat {
         }
 
         // Update functions
+         
+        void MomentumUpdate() {
+            List<Collider2D> momentumImpartingColliders = new List<Collider2D>();
+            ContactFilter2D filter = new ContactFilter2D();
+            filter.SetLayerMask(LayerMask.GetMask("MomentumHazards"));
+            filter.useTriggers = true;
+            int numInContact =  Physics2D.OverlapCollider(GetComponent<Collider2D>(), filter, momentumImpartingColliders);
+            foreach (Collider2D coll in momentumImpartingColliders) {
+                if (coll != null && coll.gameObject != null) {
+                    Environment.MomentumImpartingEffect momentumImpartingEffect = coll.gameObject.GetComponent<Environment.MomentumImpartingEffect>();
+                    if (Mathf.Abs(momentumImpartingEffect.horizontalMomentum) > Mathf.Abs(currentHazardMomentum)) {
+                        currentHazardMomentum = momentumImpartingEffect.horizontalMomentum;
+                        lastAppliedHazardMomentum = currentHazardMomentum;
+                        lastMomentumAppliedTime = Time.time;
+                    }
+                }
+            }
+            float decayStartTime = momentumDecayStartTime;
+            if (isGrounded) {
+                decayStartTime = decayStartTime/groundedMomentumDecayDivisor;
+            }
+            if (Time.time - lastMomentumAppliedTime > momentumDecayStartTime) {
+                
+                float decay = ((Time.time - lastMomentumAppliedTime) - momentumDecayStartTime) / (momentumDecayTime / (isGrounded ? groundedMomentumDecayDivisor : 1));
+                if (decay > 1) {
+                    decay = 1;
+                }
+                currentHazardMomentum = lastAppliedHazardMomentum * (1 - decay);
+            }
+        }
 
         void SoundUpdate() {
             // play walking sound when moving in the ready state on the ground
@@ -678,11 +715,12 @@ namespace SpaceBoat {
                 return;
             }
             UpdateGrounded();
+            MomentumUpdate();
             if (isJumping) {
                 CheckHeadBump();
             }
             updateJump();
-            float totalHorizontalVelocity = currentWalkingSpeed*lastHorizontalInput;
+            float totalHorizontalVelocity = (currentWalkingSpeed*lastHorizontalInput) + currentHazardMomentum;
             float totalVerticalVelocity = currentVerticalForce;
             if (groundedOnObject != null) {
                 totalHorizontalVelocity += groundedOnObject.GetComponent<Rigidbody2D>().velocity.x;

@@ -17,32 +17,55 @@ namespace SpaceBoat.HazardManagers {
         [SerializeField] private GameObject cloudPrefab;
 
         [SerializeField] private float cloudSpeed = 1f;
-        [SerializeField] private float cloudSpeedVariation = 0.3f;
+        [SerializeField] private float cloudSpeedVariationPercentage = 0.3f;
         
         [SerializeField] private float cloudSpawnInterval = 0.5f;
         [SerializeField] private float cloudSpawnYVariation = 1f;
-        [SerializeField] private float cloudSizeVariation = 0.3f;
+        [SerializeField] private float cloudSizeVariationPercentage = 0.3f;
 
+        [SerializeField] private float windStartupDelay = 10f;
         [SerializeField] private float windSpeed = 6f;
-        [SerializeField] private float windSpawnInterval = 0.5f;
-        [SerializeField] private float lightningStrikeInterval = 1f;
+        [SerializeField] private float windSpeedVariationPercentage = 0.3f;
+        [SerializeField] private float windFirstSpawnVariationAbsolute = 4f;
+        [SerializeField] private float windSpawnInterval = 1.5f;
+        [SerializeField] private float windSpawnIntervalVariationAbsolute = 0.5f;
+        [SerializeField] private float windSpawnYVariationAbsolute = 1f;
+        [SerializeField] private float lightningStrikeInterval = 25f; // TODO vary this based on num remaining sails
+        [SerializeField] private int baseNumStrikes = 2;
+        [SerializeField] private int numStrikesAllSailsRepaired = 1;
+        [SerializeField] private int numStrikesCriticalSailsRepaired = -1;
+        [SerializeField] private float lightningFirstStrikeTime = 5f;
 
 
 
         public int LightningStrikesPending { get; set; }
+        private bool hasLightningStruck = false;
+        private bool hasStartedWind = false;
         
         public bool hasEnded { get; private set; }
         public float hazardDuration { get; private set; }
 
         private float lastCloudSpawnedTime = 0f;
-        private float lastWindVolleyTime = 0f;
         private float lastLightningPendedTime = 0f;
+
+        private float hazardBeganTime = -1f;
 
 
         List<GameObject> clouds = new List<GameObject>();
 
 
         IEnumerator EmitWindVolley(Transform emitter) {
+            float nextWindSpawn = Time.time + Random.Range(0, windFirstSpawnVariationAbsolute);
+            while (!hasEnded) {
+                if (Time.time > nextWindSpawn) {
+                    float yPos = emitter.position.y + Random.Range(-windSpawnYVariationAbsolute, windSpawnYVariationAbsolute);
+                    GameObject wind = Instantiate(windPrefab, new Vector3(emitter.position.x, yPos, 0), Quaternion.identity);
+                    float speedMult = Random.Range(1-windSpeedVariationPercentage, 1+windSpeedVariationPercentage); 
+                    wind.GetComponent<Rigidbody2D>().velocity = new Vector2(-windSpeed*speedMult, 0f);
+                    nextWindSpawn = Random.Range(windSpawnInterval - windSpawnIntervalVariationAbsolute, windSpawnInterval + windSpawnIntervalVariationAbsolute) + Time.time;
+                }
+                yield return null;
+            }
             yield break;
         }
 
@@ -52,12 +75,12 @@ namespace SpaceBoat.HazardManagers {
                 emitter.position.y + Random.Range(-cloudSpawnYVariation, cloudSpawnYVariation),
                 emitter.position.z
             );
-            float size = Random.Range(1-cloudSizeVariation, 1+cloudSizeVariation);
+            float size = Random.Range(1-cloudSizeVariationPercentage, 1+cloudSizeVariationPercentage);
             GameObject cloud = Instantiate(cloudPrefab, spawnPosition, Quaternion.identity);
-            cloud.GetComponent<Rigidbody2D>().velocity = new Vector2(-cloudSpeed*(2-size)- cloudSpeed * Random.Range(1-cloudSizeVariation, 1+ cloudSizeVariation), 0f);
+            cloud.GetComponent<Rigidbody2D>().velocity = new Vector2(-cloudSpeed*(2-size) * Random.Range(1-cloudSpeedVariationPercentage, 1+ cloudSpeedVariationPercentage), 0f);
             cloud.transform.localScale = new Vector3(
-                cloud.transform.localScale.x + Random.Range(-cloudSizeVariation, cloudSizeVariation),
-                cloud.transform.localScale.y + Random.Range(-cloudSizeVariation, cloudSizeVariation),
+                cloud.transform.localScale.x + Random.Range(-cloudSizeVariationPercentage, cloudSizeVariationPercentage),
+                cloud.transform.localScale.y + Random.Range(-cloudSizeVariationPercentage, cloudSizeVariationPercentage),
                 cloud.transform.localScale.z
             );
 
@@ -70,12 +93,33 @@ namespace SpaceBoat.HazardManagers {
             hasEnded = false;
         }
 
+        void AddStrikes() {
+            int totalSails = GameModel.Instance.shipSails.Count;
+            int numSailsRepaired = GameModel.Instance.lastSurvivingSailCount;
+            int numStrikes = baseNumStrikes;
+            if (numSailsRepaired == totalSails) {
+                numStrikes = numStrikesAllSailsRepaired;
+            } else if (numSailsRepaired < totalSails/4) {
+                numStrikes = numStrikesCriticalSailsRepaired;
+            }
+            LightningStrikesPending += numStrikes;
+        }
+
 
         void FixedUpdate() {
+            if (hazardBeganTime < 0) {
+                hazardBeganTime = Time.time;
+            }
             if (hasEnded) return;
 
-            if (Time.time > lastLightningPendedTime + lightningStrikeInterval) {
-                LightningStrikesPending++;
+            if (!hasLightningStruck) {
+                if (Time.time > lightningFirstStrikeTime+hazardBeganTime) {
+                    AddStrikes();
+                    hasLightningStruck = true;
+                    lastLightningPendedTime = Time.time;
+                }
+            } else if (Time.time > lastLightningPendedTime + lightningStrikeInterval) {
+                AddStrikes();
                 Debug.Log("Lightning strikes pending: " + LightningStrikesPending);
                 lastLightningPendedTime = Time.time;
                 List<GameObject> cloudsToRemove = new List<GameObject>();
@@ -96,10 +140,12 @@ namespace SpaceBoat.HazardManagers {
                 lastCloudSpawnedTime = Time.time;
             }
 
-
+            if (!hasStartedWind && Time.time > windStartupDelay + hazardBeganTime) {
+                foreach (GameObject emitter in windEmitters) {
+                    StartCoroutine(EmitWindVolley(emitter.transform));
+                }
+                hasStartedWind = true;
+            }
         }
-
-
-
     }
 }

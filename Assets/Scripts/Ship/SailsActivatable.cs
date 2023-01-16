@@ -7,12 +7,16 @@ namespace SpaceBoat.Ship {
     {
         [SerializeField] private Sprite repairedSprite;
         [SerializeField] private Sprite brokenSprite;
+        [SerializeField] public Transform hazardTarget;
         [SerializeField] private float repairTime = 3;
+        [SerializeField] private float targettingCooldown = 30f;
+        [SerializeField] private float targetFlagTimeout = 10f;
 
         public ActivatablesNames kind {get;} = ActivatablesNames.Sails;
         public bool isInUse {get; private set;} = false;
         private SpriteRenderer spriteRenderer;
         public bool isBroken {get; private set;} = false;
+        public bool isTargetted {get; private set;} = false;
         public bool canManuallyDeactivate {get;} = true;
         public PlayerStateName playerState {get;} = PlayerStateName.working;
         public string usageAnimation {get;} = "Repairing";
@@ -20,6 +24,7 @@ namespace SpaceBoat.Ship {
 
 
         private float timeBeganRepairing = 0;
+        private float lastTargettedTime = 0;
 
         private Player player;
 
@@ -40,6 +45,7 @@ namespace SpaceBoat.Ship {
 
         public void Break() {
             isBroken = true;
+            isTargetted = false;
             spriteRenderer.sprite = brokenSprite;
         }
 
@@ -47,6 +53,15 @@ namespace SpaceBoat.Ship {
             this.player = player;
             isInUse = true;
             timeBeganRepairing = Time.time;
+        }
+
+        public bool IsOnCooldown() {
+            return Time.time - lastTargettedTime < targettingCooldown;
+        }
+
+        public void TargetSail() {
+            isTargetted = true;
+            lastTargettedTime = Time.time;
         }
 
         public void Deactivate(Player player) {
@@ -57,6 +72,13 @@ namespace SpaceBoat.Ship {
             return isBroken;
         }
 
+        void OnTriggerExit2D(Collider2D other) {
+            if (isInUse && other.gameObject.tag == "Player") {
+                Deactivate(player);
+                player.DetatchFromActivatable();
+            }
+        }
+
         void Update() {
             if (isInUse && isBroken) {
                 if (Time.time - timeBeganRepairing >= repairTime) {
@@ -65,8 +87,9 @@ namespace SpaceBoat.Ship {
                     player.DetatchFromActivatable();
                 }
             }
+            if (isTargetted && Time.time - lastTargettedTime > targetFlagTimeout) {
+                isTargetted = false;
+            }
         }
-
-
     }
 }

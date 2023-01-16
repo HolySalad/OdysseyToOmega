@@ -120,8 +120,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adc74368762a22f43b6a28d4a54e6462, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attemptLightningChance: 10
-  lightningHeightBase: 17
+  cloudSprites:
+  - {fileID: 21300000, guid: ae6893d75fa2e9f4c9eb4815c121430d, type: 3}
+  - {fileID: 21300000, guid: 5ebbb3bf59128fa4d9d1abc6da904e4a, type: 3}
+  - {fileID: 21300000, guid: e02c431b5ce2b3f4888485a9b1eb71cf, type: 3}
+  attemptLightningChance: 2
+  lightningHeightBase: 9
   lightningPrefab: {fileID: 6912201486785401274, guid: 95b4da82452e67f45a56ff5990f58198, type: 3}
   lightningSound: {fileID: 8300000, guid: 467855d4c35a0f842b4af8960107aa1b, type: 3}
   chargeSound: {fileID: 8300000, guid: 3957a52501e41214c8cde124840632a5, type: 3}
