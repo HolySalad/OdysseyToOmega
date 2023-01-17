@@ -231,13 +231,16 @@ MonoBehaviour:
   cloudSpawnYVariation: 2.5
   cloudSizeVariationPercentage: 0.3
   windStartupDelay: 10
-  windSpeed: 7
+  windSpeed: 7.2
   windSpeedVariationPercentage: 0.3
   windFirstSpawnVariationAbsolute: 4
   windSpawnInterval: 7
   windSpawnIntervalVariationAbsolute: 2
   windSpawnYVariationAbsolute: 1
   lightningStrikeInterval: 30
+  baseNumStrikes: 2
+  numStrikesAllSailsRepaired: 1
+  numStrikesCriticalSailsRepaired: -1
   lightningFirstStrikeTime: 5
 --- !u!1 &6313531324637527190
 GameObject:

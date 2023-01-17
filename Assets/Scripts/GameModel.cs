@@ -21,6 +21,7 @@ namespace SpaceBoat {
 
         [Header("Game Settings")]
         [SerializeField] private bool environmentTesting = false;
+        [SerializeField] private bool playSoundtrack = true;
         [SerializeField] private bool slowMo = false;
 
         [Header("Ship")]
@@ -192,14 +193,12 @@ namespace SpaceBoat {
                 Time.timeScale = 0.1f;
             }
 
-
-            if (environmentTesting) return;
             sound.Play("Spawn");
             if (sound.IsPlaying("MenuSoundtrack")) {
                 sound.Stop("MenuSoundtrack");
             }
-            sound.Play("GameplaySoundtrack");
-
+            if (playSoundtrack) sound.Play("GameplaySoundtrack");
+            if (environmentTesting) return;
             //TODO add random hazard selection.
             currentHazardManager = CreateHazardManager("MeteorShower");
             

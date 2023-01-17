@@ -98,9 +98,9 @@ namespace SpaceBoat.HazardManagers {
             int numSailsRepaired = GameModel.Instance.lastSurvivingSailCount;
             int numStrikes = baseNumStrikes;
             if (numSailsRepaired == totalSails) {
-                numStrikes = numStrikesAllSailsRepaired;
+                numStrikes += numStrikesAllSailsRepaired;
             } else if (numSailsRepaired < totalSails/4) {
-                numStrikes = numStrikesCriticalSailsRepaired;
+                numStrikes += numStrikesCriticalSailsRepaired;
             }
             LightningStrikesPending += numStrikes;
         }

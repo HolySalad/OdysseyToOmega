@@ -9,25 +9,46 @@ namespace SpaceBoat {
         private Player player; 
         private Camera cameraComponent;
 
+        [SerializeField] private Transform shipViewTarget;
+        [SerializeField] private float shipViewSize = 34f;
         [SerializeField] private float cameraSizeShiftTime = 1f;
-        [SerializeField] private float cameraYShiftSpeed = 1f;
-        [SerializeField] private float cameraXShiftSpeed = 1f;
+        [SerializeField] private float cameraXYShiftTime = 1f;
+        [SerializeField] private float shipViewShiftTime = 1.5f;
 
-        private bool cameraIsAdjustingX = true;
+        [SerializeField] private float cameraXMax = 100f;
+        [SerializeField] private float cameraXMin = -100f;
+        [SerializeField] private float shipViewCameraXMax = 100f;
+        [SerializeField] private float shipViewCameraXMin = -100f;
+
         private bool cameraIsAdjustingY = false;
+        private bool cameraIsAdjustingX = false;
         private bool wasGroundedYetDuringYTransition = false;
         private bool cameraIsAdjustingSize = false;
+        private bool inShipView = false;
+        private bool shipViewForced = false;
 
         private float targetCameraY = 0f;
+        private float previousCameraY = 0f;
         private float targetCameraSize = 0f;
         private float previousCameraSize = 0f;
+        private float previousCameraX = 0f;
         private float cameraSizeTransitionBeganTime = 0f;
+        private float cameraXYTransitionBeganTime = 0f;
+        private float shipViewTransitionBeganTime = 0f;
 
         void Start() {
             cameraXZone = GetComponent<Collider2D>();
             player = GameModel.Instance.player;
             cameraComponent = GetComponent<Camera>();
+       
+            AdjustCameraX();
+            CheckCameraZones();
+            cameraComponent.orthographicSize = targetCameraSize;
+            transform.position = new Vector3(transform.position.x, targetCameraY, transform.position.z);
             previousCameraSize = cameraComponent.orthographicSize;
+            previousCameraY = transform.position.y;
+            cameraIsAdjustingY = false;
+            cameraIsAdjustingSize = false;
         }
 
         void CheckCameraZones() {
@@ -63,8 +84,8 @@ namespace SpaceBoat {
             }
             if (newTargetCameraY != targetCameraY) {
                 cameraIsAdjustingY = true;
-                wasGroundedYetDuringYTransition = false;
                 targetCameraY = newTargetCameraY;
+                wasGroundedYetDuringYTransition = false;
                 Debug.Log("Adjusting camera Y to " + targetCameraY + " for " + cameraZoneName);
             }
             if (newTargetCameraSize != targetCameraSize) {
@@ -75,18 +96,25 @@ namespace SpaceBoat {
             }
         }
 
-        void OnTriggerExit2D() {
-            cameraIsAdjustingX = true;
-        }
 
         void AdjustCameraX() {
-            float currentPosition = transform.position.x;
-            float targetPosition = player.transform.position.x + player.playerCameraXFocusOffset;
-            //float newPosition = Mathf.MoveTowards(currentPosition, targetPosition, cameraXShiftSpeed * Time.deltaTime);
-            transform.position = new Vector3(targetPosition, transform.position.y, transform.position.z);
-            //if (newPosition == targetPosition) {
-                //cameraIsAdjustingX = false;
-            //}
+            float targetPosition = Mathf.Clamp(player.transform.position.x + player.playerCameraXFocusOffset, cameraXMin, cameraXMax);
+            if (!cameraIsAdjustingX) {
+                float currentPosition = transform.position.x;
+                if (inShipView) {
+                    targetPosition = Mathf.Clamp(player.transform.position.x + player.playerCameraXFocusOffset, shipViewCameraXMin, shipViewCameraXMax);
+                }
+                transform.position = new Vector3(targetPosition, transform.position.y, transform.position.z);
+                return;
+            } else if (inShipView) {
+                return;
+            }
+            float transitionPercentTime = Mathf.Min((Time.time - cameraXYTransitionBeganTime) / cameraSizeShiftTime, 1f);
+            float newPosition = previousCameraX + ((targetPosition-previousCameraX) * transitionPercentTime);
+            transform.position = new Vector3(newPosition, transform.position.y, transform.position.z);
+            if (newPosition == targetPosition) {
+                cameraIsAdjustingX = false;
+            }
         }
 
         void AdjustCameraY() {
@@ -94,18 +122,21 @@ namespace SpaceBoat {
             //only move camera up if player is grounded
             if (!wasGroundedYetDuringYTransition && currentPosition < targetCameraY && !player.GetIsGrounded(false)) {
                 return;
+            } else if (!wasGroundedYetDuringYTransition) {
+                wasGroundedYetDuringYTransition = true;
+                cameraXYTransitionBeganTime = Time.time;
             }
-            wasGroundedYetDuringYTransition = true;
-            float newPosition = Mathf.MoveTowards(currentPosition, targetCameraY, cameraYShiftSpeed * Time.deltaTime);
+            float transitionPercentTime = Mathf.Min((Time.time - cameraXYTransitionBeganTime) / cameraXYShiftTime, 1f);
+            Debug.Log("Camera Y transition percent time: " + transitionPercentTime);
+            float newPosition = previousCameraY + ((targetCameraY-previousCameraY) * transitionPercentTime);
             transform.position = new Vector3(transform.position.x, newPosition, transform.position.z);
             if (newPosition == targetCameraY) {
                 cameraIsAdjustingY = false;
+                previousCameraY = targetCameraY;
             }
         }
 
         void AdjustCameraSize() {
-
-            float currentSize = cameraComponent.orthographicSize;
             float transitionPercentTime = Mathf.Min((Time.time - cameraSizeTransitionBeganTime) / cameraSizeShiftTime, 1f);
             Debug.Log("Camera size transition percent time: " + transitionPercentTime);
             float newSize = previousCameraSize + ((targetCameraSize-previousCameraSize) * transitionPercentTime);
@@ -113,15 +144,61 @@ namespace SpaceBoat {
             if (newSize == targetCameraSize) {
                 Debug.Log("Camera size transition which began at " +cameraSizeTransitionBeganTime+" complete at "+Time.time);
                 cameraIsAdjustingSize = false;
+                previousCameraSize = targetCameraSize;
+            }
+        }
+
+
+        void StartShipView() {
+            shipViewTransitionBeganTime = Time.time;
+            targetCameraSize = shipViewSize;
+            targetCameraY = shipViewTarget.position.y;
+        }
+
+        void AdjustShipView() {
+            float transitionPercentTime = Mathf.Min((Time.time - shipViewTransitionBeganTime) / shipViewShiftTime, 1f);
+            float newPositionY = previousCameraY + ((targetCameraY-previousCameraY) * transitionPercentTime);
+            float currentCameraMaxX = cameraXMax + ((shipViewCameraXMax - cameraXMax) * transitionPercentTime);
+            float currentCameraMinX = cameraXMin + ((shipViewCameraXMin - cameraXMin) * transitionPercentTime);
+            float targetCameraX = Mathf.Clamp(player.transform.position.x + player.playerCameraXFocusOffset, currentCameraMinX, currentCameraMaxX);
+            float newPositionX = previousCameraX + ((targetCameraX-previousCameraX) * transitionPercentTime);
+            float newSize = previousCameraSize + ((targetCameraSize-previousCameraSize) * transitionPercentTime);
+            cameraComponent.orthographicSize = newSize;
+            transform.position = new Vector3(newPositionX, newPositionY, transform.position.z);
+            if (newPositionY == targetCameraY && newSize == targetCameraSize) {
+                previousCameraY = targetCameraY;
+                previousCameraSize = targetCameraSize;
+                cameraIsAdjustingX = false;
             }
         }
 
 
         void Update() {
-            CheckCameraZones();
-            if (cameraIsAdjustingX) AdjustCameraX();
-            if (cameraIsAdjustingY) AdjustCameraY();
-            if (cameraIsAdjustingSize) AdjustCameraSize();
+            bool shipViewHeld = Input.GetKey(KeyCode.C);
+            bool wasInShipView = inShipView;
+            inShipView = shipViewHeld || shipViewForced;
+
+            if (!inShipView && wasInShipView) {
+                previousCameraY = transform.position.y;
+                previousCameraSize = cameraComponent.orthographicSize;
+                previousCameraX = transform.position.x;
+                cameraIsAdjustingX = true;
+            } else if (inShipView && !wasInShipView) {
+                previousCameraY = transform.position.y;
+                previousCameraSize = cameraComponent.orthographicSize;
+                previousCameraX = transform.position.x;
+                StartShipView();
+            }
+            if (!inShipView) {
+                CheckCameraZones();           
+                if (cameraIsAdjustingY) AdjustCameraY();
+                if (cameraIsAdjustingSize) AdjustCameraSize();
+            } else {
+                AdjustShipView();
+            }
+            
+            AdjustCameraX();
+ 
         }
     }
 }

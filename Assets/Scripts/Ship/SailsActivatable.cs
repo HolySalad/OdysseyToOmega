@@ -11,6 +11,7 @@ namespace SpaceBoat.Ship {
         [SerializeField] private float repairTime = 3;
         [SerializeField] private float targettingCooldown = 30f;
         [SerializeField] private float targetFlagTimeout = 10f;
+        [SerializeField] private bool breakOnStart = false;
 
         public ActivatablesNames kind {get;} = ActivatablesNames.Sails;
         public bool isInUse {get; private set;} = false;
@@ -35,6 +36,12 @@ namespace SpaceBoat.Ship {
             }
             if (brokenSprite == null) {
                 Debug.LogError("Sails: No broken sprite set on "+ this.gameObject.name);
+            }
+        }
+
+        void Start() {
+            if (breakOnStart) {
+                Break();
             }
         }
 
