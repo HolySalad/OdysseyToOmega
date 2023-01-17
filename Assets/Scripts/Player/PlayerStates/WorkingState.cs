@@ -6,9 +6,6 @@ namespace SpaceBoat.PlayerStates {
     public class WorkingState : MonoBehaviour, IPlayerState
     {
         public bool stealVelocityControl {get;} = false;
-
-        private int frameEnteredState = 0;
-        private bool finishedUsage = false;
         private Player player;
         
 

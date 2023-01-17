@@ -5,7 +5,7 @@ namespace SpaceBoat.HazardManagers {
     public class MeteorShower : MonoBehaviour, IHazardManager
     {
         [Header("General Hazard Settings")]
-        [SerializeField] private float baseDuration = 280f; //how many seconds into the game does the last meteor spawn.
+        [SerializeField] private float baseDuration = 120f; //how many seconds into the game does the last meteor spawn.
 
         [Header("Meteor Settings")]
         [SerializeField] private GameObject meteorPrefab;

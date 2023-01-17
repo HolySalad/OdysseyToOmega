@@ -7,6 +7,7 @@ namespace SpaceBoat.Ship {
     {
         [SerializeField] private GameObject ladderTop;
         [SerializeField] private GameObject ladderBottom;
+        [SerializeField] public bool jumpAtEnd = false;
 
         public ActivatablesNames kind {get;} = ActivatablesNames.Ladder;
         public bool isInUse {get; private set;} = false;

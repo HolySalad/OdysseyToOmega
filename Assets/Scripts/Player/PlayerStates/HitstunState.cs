@@ -7,24 +7,24 @@ namespace SpaceBoat.PlayerStates {
     {
         public bool stealVelocityControl {get;} = false;
 
-        private int frameEnteredState = 0;
+        private float timeEnteredState = 0;
         private Player player;
         
-        [SerializeField] private int hitStunFrames = 24;
+        [SerializeField] private float hitStunTime = 1;
 
         void Awake() {
             player = GetComponent<Player>();
         }
 
         public void EnterState(PlayerStateName previousState) {
-            frameEnteredState = Time.frameCount;
+            timeEnteredState = Time.time;
             Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("PlayerChar"), LayerMask.NameToLayer("PhysicalHazards"), true);
         }
         public void ExitState(PlayerStateName nextState) {
             Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("PlayerChar"), LayerMask.NameToLayer("PhysicalHazards"), false);
         }
         public void UpdateState() {
-            if (Time.frameCount - frameEnteredState > hitStunFrames) {
+            if (Time.time - timeEnteredState > hitStunTime) {
                 player.ChangeState(PlayerStateName.ready);
                 return;
             }

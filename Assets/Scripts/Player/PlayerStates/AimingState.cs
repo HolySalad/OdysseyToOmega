@@ -7,7 +7,6 @@ namespace SpaceBoat.PlayerStates {
     {
         public bool stealVelocityControl {get;} = false;
 
-        private int frameEnteredState = 0;
         private Player player;
         
 

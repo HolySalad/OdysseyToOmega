@@ -5,7 +5,7 @@ using UnityEngine;
 namespace SpaceBoat.Ship {
     public class KitchenActivatable : MonoBehaviour, IActivatables
     {
-        [SerializeField] private int healFrames = 72;
+        [SerializeField] private float healTime = 3;
 
         public ActivatablesNames kind {get;} = ActivatablesNames.Kitchen;
         public bool isInUse {get; private set;} = false;
@@ -16,14 +16,14 @@ namespace SpaceBoat.Ship {
         public string usageSound {get;} = "Cooking";
 
 
-        private int timeBeganCooking = 0;
+        private float timeBeganCooking = 0;
 
         private Player player;
 
         public void Activate(Player player) {
             this.player = player;
             isInUse = true;
-            timeBeganCooking = Time.frameCount;
+            timeBeganCooking = Time.time;
         }
 
         public void Deactivate(Player player) {
@@ -36,7 +36,7 @@ namespace SpaceBoat.Ship {
 
         void Update() {
             if (isInUse) {
-                if (Time.frameCount - timeBeganCooking >= healFrames) {
+                if (Time.time - timeBeganCooking >= healTime) {
                     player.PlayerHeals();
                     Deactivate(player);
                     player.DetatchFromActivatable();
