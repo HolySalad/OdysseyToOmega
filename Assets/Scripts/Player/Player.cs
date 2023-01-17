@@ -92,8 +92,8 @@ namespace SpaceBoat {
             return GetIsGrounded(true);
         }
 
-        public  bool GetIsGrounded(bool includeHazards) {
-            if (includeHazards) {
+        public  bool GetIsGrounded(bool includeJumpGrace) {
+            if (includeJumpGrace) {
                 return isGrounded || jumpGrace > 0;
             } else {
                 return isGrounded;
@@ -139,6 +139,7 @@ namespace SpaceBoat {
         public IActivatables activatableInUse {get; private set;}
 
         public UI.CameraControls cameraControls;
+        public float playerCameraXFocusOffset;
 
         void Awake() {
             //fill references
@@ -187,7 +188,7 @@ namespace SpaceBoat {
                 Vector3 existingColliderLocation = bodyCollider.transform.position;
                 transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
                 Vector3 colliderOffset =  existingColliderLocation - bodyCollider.transform.position;
-                if (!isFacingRight) {cameraControls?.SetPlayerFocusXOffset(-colliderOffset.x) ;} else cameraControls?.SetPlayerFocusXOffset(0);
+                if (!isFacingRight) {playerCameraXFocusOffset = -colliderOffset.x ;} else playerCameraXFocusOffset = 0;
                 transform.position = new Vector3 (transform.position.x + colliderOffset.x, transform.position.y + colliderOffset.y, transform.position.z);
             }
         }

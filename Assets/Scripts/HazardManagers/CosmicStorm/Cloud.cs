@@ -88,7 +88,7 @@ namespace SpaceBoat.HazardManagers {
                 StartCoroutine(LightningStrike(targetSail, distance, additionalDelay));
                 return true;
             } else {
-                Debug.Log("Lightning check did not hit anything");
+                //Debug.Log("Lightning check did not hit anything");
                 return false;
             }
         }
@@ -104,7 +104,7 @@ namespace SpaceBoat.HazardManagers {
         {
             if (storm == null) return;
             if (Random.Range(0, 100) < attemptLightningChance && storm.LightningStrikesPending > 0) {
-                Debug.Log("Checking lightning strike");
+                //Debug.Log("Checking lightning strike");
                 storm.LightningStrikesPending--;
                 if (!CheckLightningStrike()) {
                     storm.LightningStrikesPending++;

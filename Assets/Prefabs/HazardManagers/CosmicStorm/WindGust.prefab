@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 561960579184092576}
   - component: {fileID: 653873643848027199}
   - component: {fileID: -5540693831488661534}
+  - component: {fileID: 5259379489711739542}
   m_Layer: 7
   m_Name: WindGust
   m_TagString: Untagged
@@ -134,7 +135,7 @@ Rigidbody2D:
   m_GameObject: {fileID: 561960579184092580}
   m_BodyType: 1
   m_Simulated: 1
-  m_UseFullKinematicContacts: 0
+  m_UseFullKinematicContacts: 1
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
@@ -158,3 +159,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   horizontalMomentum: -16
+--- !u!114 &5259379489711739542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 561960579184092580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ed178064b1e6ef4dbdb802a0a375be0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
