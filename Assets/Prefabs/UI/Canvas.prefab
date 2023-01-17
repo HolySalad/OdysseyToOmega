@@ -166,7 +166,7 @@ RectTransform:
   - {fileID: 601514396429086470}
   - {fileID: 601514397847145177}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -514,11 +514,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StartupPrompts:
   - {fileID: 21300000, guid: 15edea0010a0f52409d02d5f16509d81, type: 3}
+  - {fileID: 21300000, guid: 288fa9467ce7a804abe608525166d03b, type: 3}
+  - {fileID: 21300000, guid: 30e0a3744aa47634f9393684dc2d8377, type: 3}
   - {fileID: 21300000, guid: 97f0cda43d0eb214d974302baece2876, type: 3}
   pickupPrompt: {fileID: 21300000, guid: 288fa9467ce7a804abe608525166d03b, type: 3}
   usePrompt: {fileID: 21300000, guid: 6c89c58c1724c0742be82df56e1154f7, type: 3}
   criticalShipPrompt: {fileID: 21300000, guid: 3c4a22985725d004189390b816b56390, type: 3}
   criticalPlayerPrompt: {fileID: 21300000, guid: 4cad570467e0ac2488d2a2140dfd0aae, type: 3}
+  cometPrompt: {fileID: 21300000, guid: 3a0f0beeb647ec24abe31511db1f4390, type: 3}
   promptDuration: 4
 --- !u!1 &601514397858184070
 GameObject:

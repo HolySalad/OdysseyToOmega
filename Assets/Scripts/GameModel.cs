@@ -21,6 +21,7 @@ namespace SpaceBoat {
 
         [Header("Game Settings")]
         [SerializeField] private bool environmentTesting = false;
+        [SerializeField] private bool playSoundtrack = true;
         [SerializeField] private bool slowMo = false;
 
         [Header("Ship")]
@@ -48,9 +49,39 @@ namespace SpaceBoat {
         public UI.HelpPrompts helpPrompts {get; private set;}
 
         public float GameBeganTime {get; private set;}
+        public int lastSurvivingSailCount {get; private set;}
 
         private IHazardManager currentHazardManager;
 
+        public bool isPaused {get; private set;}
+        public delegate void PauseEvent();
+        private List<PauseEvent> pauseEvents = new List<PauseEvent>();
+        private List<PauseEvent> unpauseEvents = new List<PauseEvent>();
+
+        // Pause
+        public void PauseGame() {
+            isPaused = true;
+            Time.timeScale = 0f;
+            foreach (PauseEvent pauseEvent in pauseEvents) {
+                pauseEvent();
+            }
+        }
+
+        public void AddPauseEvent(PauseEvent pauseEvent) {
+            pauseEvents.Add(pauseEvent);
+        }
+
+        public void UnpauseGame() {
+            isPaused = false;
+            Time.timeScale = 1f;
+            foreach (PauseEvent unpauseEvent in unpauseEvents) {
+                unpauseEvent();
+            }
+        }
+
+        public void AddUnpauseEvent(PauseEvent unpauseEvent) {
+            unpauseEvents.Add(unpauseEvent);
+        }
 
     
         //item management
@@ -150,6 +181,7 @@ namespace SpaceBoat {
             helpPrompts = FindObjectOfType<UI.HelpPrompts>();
 
             GameBeganTime = Time.time;
+            lastSurvivingSailCount = shipSails.Count;
         }
 
         public void Start() {
@@ -161,14 +193,12 @@ namespace SpaceBoat {
                 Time.timeScale = 0.1f;
             }
 
-
-            if (environmentTesting) return;
             sound.Play("Spawn");
             if (sound.IsPlaying("MenuSoundtrack")) {
                 sound.Stop("MenuSoundtrack");
             }
-            sound.Play("GameplaySoundtrack");
-
+            if (playSoundtrack) sound.Play("GameplaySoundtrack");
+            if (environmentTesting) return;
             //TODO add random hazard selection.
             currentHazardManager = CreateHazardManager("MeteorShower");
             
@@ -262,6 +292,7 @@ namespace SpaceBoat {
                     sound.Stop("ShipLowHP");
                 }
             }
+            lastSurvivingSailCount = num_surviving_sails;
 
             CheckHazardProgress();
         }

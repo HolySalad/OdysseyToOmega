@@ -7,19 +7,25 @@ namespace SpaceBoat.Ship {
     {
         [SerializeField] private Sprite repairedSprite;
         [SerializeField] private Sprite brokenSprite;
-        [SerializeField] private int repairFrames = 72;
+        [SerializeField] public Transform hazardTarget;
+        [SerializeField] private float repairTime = 3;
+        [SerializeField] private float targettingCooldown = 30f;
+        [SerializeField] private float targetFlagTimeout = 10f;
+        [SerializeField] private bool breakOnStart = false;
 
         public ActivatablesNames kind {get;} = ActivatablesNames.Sails;
         public bool isInUse {get; private set;} = false;
         private SpriteRenderer spriteRenderer;
         public bool isBroken {get; private set;} = false;
+        public bool isTargetted {get; private set;} = false;
         public bool canManuallyDeactivate {get;} = true;
         public PlayerStateName playerState {get;} = PlayerStateName.working;
         public string usageAnimation {get;} = "Repairing";
         public string usageSound {get;} = "Repair";
 
 
-        private int timeBeganRepairing = 0;
+        private float timeBeganRepairing = 0;
+        private float lastTargettedTime = 0;
 
         private Player player;
 
@@ -33,6 +39,12 @@ namespace SpaceBoat.Ship {
             }
         }
 
+        void Start() {
+            if (breakOnStart) {
+                Break();
+            }
+        }
+
         public void Repair() {
             isBroken = false;
             spriteRenderer.sprite = repairedSprite;
@@ -40,13 +52,23 @@ namespace SpaceBoat.Ship {
 
         public void Break() {
             isBroken = true;
+            isTargetted = false;
             spriteRenderer.sprite = brokenSprite;
         }
 
         public void Activate(Player player) {
             this.player = player;
             isInUse = true;
-            timeBeganRepairing = Time.frameCount;
+            timeBeganRepairing = Time.time;
+        }
+
+        public bool IsOnCooldown() {
+            return Time.time - lastTargettedTime < targettingCooldown;
+        }
+
+        public void TargetSail() {
+            isTargetted = true;
+            lastTargettedTime = Time.time;
         }
 
         public void Deactivate(Player player) {
@@ -57,16 +79,24 @@ namespace SpaceBoat.Ship {
             return isBroken;
         }
 
+        void OnTriggerExit2D(Collider2D other) {
+            if (isInUse && other.gameObject.tag == "Player") {
+                Deactivate(player);
+                player.DetatchFromActivatable();
+            }
+        }
+
         void Update() {
             if (isInUse && isBroken) {
-                if (Time.frameCount - timeBeganRepairing >= repairFrames) {
+                if (Time.time - timeBeganRepairing >= repairTime) {
                     Repair();
                     Deactivate(player);
                     player.DetatchFromActivatable();
                 }
             }
+            if (isTargetted && Time.time - lastTargettedTime > targetFlagTimeout) {
+                isTargetted = false;
+            }
         }
-
-
     }
 }
