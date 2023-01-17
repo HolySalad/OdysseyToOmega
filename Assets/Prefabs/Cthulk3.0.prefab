@@ -610,7 +610,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: e61d1eac024ac3844ae7e77a323ba06c, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: e61d1eac024ac3844ae7e77a323ba06c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1177,12 +1177,12 @@ MonoBehaviour:
   groundCheckJumpMargin: 8
   wallCheckDistance: 0.5
   ceilingCheckDistance: 0.1
-  footCollider: {fileID: 0}
-  headCollider: {fileID: 0}
-  bodyCollider: {fileID: 0}
-  leftSlipCollider: {fileID: 0}
-  rightSlipCollider: {fileID: 0}
-  headSlipCollider: {fileID: 0}
+  footCollider: {fileID: 454636594286692956}
+  headCollider: {fileID: 5382724557997511954}
+  bodyCollider: {fileID: 6358311638649131248}
+  leftSlipCollider: {fileID: 356471824}
+  rightSlipCollider: {fileID: 1959255203}
+  headSlipCollider: {fileID: 1190948508}
   jumpGraceWindow: 2
   halfJumpFrameWindow: 6
   jumpSquatFrames: 3
@@ -1207,7 +1207,7 @@ MonoBehaviour:
   turningSpeedMult: 0.6
   crouchedMovementMult: 0.4
   animator: {fileID: 0}
-  itemPlace: {fileID: 0}
+  itemPlace: {fileID: 1147388610}
   currentPlayerStateName: 0
   itemUsageTarget: {fileID: 0}
   cameraControls: {fileID: 0}
