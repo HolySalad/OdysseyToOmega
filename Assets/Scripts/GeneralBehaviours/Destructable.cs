@@ -22,10 +22,11 @@ namespace SpaceBoat {
             if (destructionSound != null && destructionSound != "") {
                 SoundManager.Instance.Play(destructionSound);
             }
-            foreach (Coroutine coroutine in coroutines) {
-                StopCoroutine(coroutine);
+            MonoBehaviour[] behaviours;
+            behaviours = GetComponents<MonoBehaviour>();
+            foreach (MonoBehaviour behaviour in behaviours) {
+                behaviour.StopAllCoroutines();
             }
-            coroutines.Clear();
             Destroy(this.gameObject, delay);
         }
 
@@ -39,15 +40,15 @@ namespace SpaceBoat {
             if (destructionSound != null && destructionSound != "") {
                 SoundManager.Instance.Play(destructionSound);
             }
-            foreach (Coroutine coroutine in coroutines) {
-                StopCoroutine(coroutine);
+            MonoBehaviour[] behaviours;
+            behaviours = parent.GetComponents<MonoBehaviour>();
+            foreach (MonoBehaviour behaviour in behaviours) {
+                behaviour.StopAllCoroutines();
             }
-            coroutines.Clear();
             Destroy(parent, delay);
         }
 
         private int hp;
-        private List<Coroutine> coroutines = new List<Coroutine>();
 
         public void Start() {
             hp = health;
@@ -58,14 +59,6 @@ namespace SpaceBoat {
             if (hp <= 0) {
                 Destruct();
             }
-        }
-
-        public void RegisterCoroutine(Coroutine coroutine) {
-            coroutines.Add(coroutine);
-        }
-
-        public void RemoveCoroutine(Coroutine coroutine) {
-            coroutines.Remove(coroutine);
         }
     }
 }

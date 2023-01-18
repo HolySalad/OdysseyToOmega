@@ -54,6 +54,7 @@ namespace SpaceBoat.HazardManagers {
         [SerializeField] private float rockAngleVariance = 5f; //degrees of variance in the angle of rocks from the default 270 degrees
         [SerializeField] private float rockBaseSize = 1f; //base size of rocks
         [SerializeField] private float rockSizeIncreaseVariance = 1.5f; //how much bigger can rocks be?
+        [SerializeField] private int rockSoundChance = 50; //% chance that a rock will play a sound when it spawns.
         public bool hasEnded {get; private set;} = false;
         public float hazardDuration {get; private set;} = 0f;
         public float hazardBeganTime {get; private set;} = -1;
@@ -140,7 +141,8 @@ namespace SpaceBoat.HazardManagers {
                     float speed = rockSpeed* (1- Random.Range(-rockSpeedVariance, rockSpeedVariance));
                     float angle = rockAngleOffset + Random.Range(-rockAngleVariance, rockAngleVariance);
                     float scale = rockBaseSize * (1 + Random.Range(0, rockSizeIncreaseVariance));
-                    rock.SetupRock(speed, angle, scale);
+                    bool sound = Random.Range(0, 100) < rockSoundChance;
+                    rock.SetupRock(speed, angle, scale, sound);
                     nextRockSpawn = Time.time + rockVolleyBaseInterval / (GetCurrentRockRate(hazardBeganTime - Time.time) * (1 - Random.Range(-rockVolleyIntervalVariance, rockVolleyIntervalVariance)));
                 }
                 yield return null;

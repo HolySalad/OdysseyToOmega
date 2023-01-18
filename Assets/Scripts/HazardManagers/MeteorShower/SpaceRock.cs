@@ -9,6 +9,7 @@ namespace SpaceBoat.HazardManagers {
         // Create a rock from the prefab with the necessary.
     
         [SerializeField] private Sprite[] rockSprites;
+        [SerializeField] private AudioClip rockWhoosh;
 
         private Destructable destructable;
         private SpriteRenderer spriteRenderer;
@@ -21,20 +22,24 @@ namespace SpaceBoat.HazardManagers {
             spriteTransform = spriteRenderer.transform;
         }
 
-        public void SetupRock(float speed, float angle, float scale) {
+        public void SetupRock(float speed, float angle, float scale, bool playSound) {
             // send a rock flying at the player
             Vector3 scaleVec = new Vector3(scale, scale, 1);
             transform.localScale = scaleVec;
             spriteRenderer.sprite = rockSprites[Random.Range(0, rockSprites.Length)];
             Rigidbody2D rb = GetComponent<Rigidbody2D>();
             rb.velocity = new Vector2(-speed * Mathf.Cos(Mathf.Deg2Rad *angle), speed * Mathf.Sin(Mathf.Deg2Rad * angle));
-            destructable.RegisterCoroutine(StartCoroutine(SpinRock()));
+            if (playSound) {
+                AudioSource source = gameObject.AddComponent<AudioSource>();
+                source.PlayOneShot(rockWhoosh);
+            }
         }
 
         void OnCollisionEnter2D(Collision2D collision) {
             //Debug.Log("Rock hit " + collision.gameObject.name + " Layer mask " + LayerMask.LayerToName(collision.gameObject.layer));
             if (collision.gameObject.layer == LayerMask.NameToLayer("MapBounds")) {
                 //Debug.Log("Rock Reached the End of the Map");
+                StopAllCoroutines();
                 Destroy(this.gameObject);
             } else if (collision.gameObject.layer == LayerMask.NameToLayer("PlayerChar")) {
                 GameModel.Instance.player.PlayerTakesDamage();

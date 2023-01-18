@@ -2058,14 +2058,6 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: -5974397870093916663, guid: 19d1b8fc8a639ad4485351aa38842945, type: 3}
-      propertyPath: meteorSpawnXPos
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: -5974397870093916663, guid: 19d1b8fc8a639ad4485351aa38842945, type: 3}
-      propertyPath: meteorSpawnXVariance
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 3670898647483130851, guid: 19d1b8fc8a639ad4485351aa38842945, type: 3}
       propertyPath: m_RootOrder
       value: 7
@@ -7684,10 +7676,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2652018774195889313, guid: 63d98d3d85ef08f48b61f125cc5c237f, type: 3}
-      propertyPath: sounds.Array.data[24].clip
-      value: 
-      objectReference: {fileID: 8300000, guid: 1e2e2be988f01ec4a8ed673ee7bcc16c, type: 3}
     - target: {fileID: 2652018774195889315, guid: 63d98d3d85ef08f48b61f125cc5c237f, type: 3}
       propertyPath: m_Name
       value: SoundManager
@@ -9633,18 +9621,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: playSoundtrack
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: environmentTesting
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: shipSails.Array.size
-      value: 11
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
       propertyPath: shipSails.Array.data[0]
       value: 
       objectReference: {fileID: 1788339013}
@@ -9936,6 +9912,10 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: groundCheckDistance
+      value: 0.15
+      objectReference: {fileID: 0}
     - target: {fileID: 7691977599830055013, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
       propertyPath: m_Name
       value: Cthulk3.0
