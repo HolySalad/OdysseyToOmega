@@ -350,6 +350,7 @@ GameObject:
   - component: {fileID: 1230529181700302419}
   - component: {fileID: 1903780936398718818}
   - component: {fileID: 4617857297304852433}
+  - component: {fileID: 7064823109124592952}
   m_Layer: 8
   m_Name: platform_middle (11)
   m_TagString: Platforms
@@ -492,6 +493,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &7064823109124592952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2071413966448462559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fff811bf63ab304a92d77e567eab0b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2330989399842968322
 GameObject:
   m_ObjectHideFlags: 0
@@ -974,6 +987,7 @@ GameObject:
   - component: {fileID: 409952397727786286}
   - component: {fileID: 981156269781265861}
   - component: {fileID: 6291452067516448384}
+  - component: {fileID: 1362647173093110098}
   m_Layer: 8
   m_Name: platform_middle (13)
   m_TagString: Platforms
@@ -1116,6 +1130,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &1362647173093110098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4046304174430004083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fff811bf63ab304a92d77e567eab0b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4111441027729641520
 GameObject:
   m_ObjectHideFlags: 0
@@ -1629,6 +1655,7 @@ GameObject:
   - component: {fileID: 1393060489733406717}
   - component: {fileID: 1634697233999979234}
   - component: {fileID: 1236148528033981511}
+  - component: {fileID: 7891893559757077550}
   m_Layer: 8
   m_Name: platform_middle (12)
   m_TagString: Platforms
@@ -1771,6 +1798,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &7891893559757077550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7466380707639778254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fff811bf63ab304a92d77e567eab0b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7632757826552635357
 GameObject:
   m_ObjectHideFlags: 0
@@ -1784,6 +1823,7 @@ GameObject:
   - component: {fileID: 498739539419623018}
   - component: {fileID: 5817461336928120874}
   - component: {fileID: 6565919231114223351}
+  - component: {fileID: 2502181512429626017}
   m_Layer: 8
   m_Name: platform_middle (14)
   m_TagString: Platforms
@@ -1926,6 +1966,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &2502181512429626017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7632757826552635357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fff811bf63ab304a92d77e567eab0b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7837276630178798450
 GameObject:
   m_ObjectHideFlags: 0

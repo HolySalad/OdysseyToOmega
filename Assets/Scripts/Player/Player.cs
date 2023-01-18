@@ -221,13 +221,7 @@ namespace SpaceBoat {
                 currentWalkingSpeed = (isSlippingLeft ? -1 : 1);
                 isSlipping = false;
             } else if (currentWalkingSpeed != 0) {
-                float castDirection = (currentWalkingSpeed*lastHorizontalInput > 0 ? 1 : -1);
-                List<RaycastHit2D> hits = new List<RaycastHit2D>();
-                ContactFilter2D filter = new ContactFilter2D();
-                filter.SetLayerMask(LayerMask.GetMask("Ground"));
-                float numHits = bodyCollider.gameObject.GetComponent<Collider2D>().Cast(Vector2.right * castDirection, filter, hits, wallCheckDistance, true);
-                if (numHits > 0) {
-                    Debug.Log("Walking into a wall");
+                if (CheckWallBump() && isGrounded) {
                     currentWalkingSpeed = 0;
                 }
             }
@@ -249,7 +243,11 @@ namespace SpaceBoat {
             return Time.frameCount < jumpGrace || isGrounded;
         }
 
-        void updateJump() {
+        void updateJump(bool headBumped) {
+            if (headBumped) {
+                jumpSquat = false;
+                currentVerticalForce = slipSpeedVertical*(1-landingHorizontalDrag);
+            } else 
             if (currentVerticalForce > 0) {
                 float decay = jumpDecay;
                 if (halfJump) {
@@ -401,19 +399,38 @@ namespace SpaceBoat {
             }
         }
 
-        private void CheckHeadBump() {
+        private bool CheckHeadBump() {
             RaycastHit2D hit = Physics2D.Raycast(headCollider.position, Vector3.up, ceilingCheckDistance, LayerMask.GetMask("Ground"));
             Debug.DrawRay(footCollider.position, transform.TransformDirection(new Vector3(0, ceilingCheckDistance, 0)), Color.yellow, 0.1f);
             if (hit.collider != null) {
                 if (hit.collider.gameObject.GetComponent<PlatformEffector2D>() != null) {
                     PlatformEffector2D platform = hit.collider.gameObject.GetComponent<PlatformEffector2D>();
                     if (platform.useOneWay) {
-                        return;
+                        return false;
                     }
                 }
                 Debug.Log("Ouch! My fucking head!");
-                currentVerticalForce = Mathf.Min(0, currentVerticalForce);
+                return true;
             }
+            return false;
+        }
+
+        bool CheckWallBump(float castDirection) {
+            List<RaycastHit2D> hits = new List<RaycastHit2D>();
+            ContactFilter2D filter = new ContactFilter2D();
+            filter.SetLayerMask(LayerMask.GetMask("Ground"));
+            float numHits = bodyCollider.gameObject.GetComponent<Collider2D>().Cast(Vector2.right * castDirection, filter, hits, wallCheckDistance, true);
+            if (numHits > 0) {
+                Debug.Log("Walking into a wall");
+                return true;
+            }
+            return false;
+        }
+
+
+        bool CheckWallBump() {
+            float castDirection = (currentWalkingSpeed*lastHorizontalInput > 0 ? 1 : -1);
+           return CheckWallBump(castDirection);
         }
 
         // end of movement functions
@@ -717,15 +734,24 @@ namespace SpaceBoat {
             }
             UpdateGrounded();
             MomentumUpdate();
-            if (isJumping) {
-                CheckHeadBump();
-            }
-            updateJump();
+            bool headBump = CheckHeadBump();
+            updateJump(headBump);
             float totalHorizontalVelocity = (currentWalkingSpeed*lastHorizontalInput) + currentHazardMomentum;
             float totalVerticalVelocity = currentVerticalForce;
+
             if (groundedOnObject != null) {
                 totalHorizontalVelocity += groundedOnObject.GetComponent<Rigidbody2D>().velocity.x;
                 totalVerticalVelocity += groundedOnObject.GetComponent<Rigidbody2D>().velocity.y;
+                if (groundedOnObject.GetComponent<Environment.RotatingPlatformMovementHelper>() != null) {
+                    Vector3 positionalChange = groundedOnObject.GetComponent<Environment.RotatingPlatformMovementHelper>().lastPositionChange;
+                    totalHorizontalVelocity = totalHorizontalVelocity + (positionalChange.x / Time.deltaTime);
+                }
+            }
+            if (CheckWallBump(Mathf.Sign(totalHorizontalVelocity))) {
+                totalHorizontalVelocity = 0;
+            }
+            if (headBump) {
+                totalVerticalVelocity = Mathf.Min(totalVerticalVelocity, -slipSpeedVertical);
             }
 
             Vector2 movement = new Vector2(totalHorizontalVelocity, totalVerticalVelocity);

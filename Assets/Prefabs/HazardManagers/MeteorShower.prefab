@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1347728577421383755}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 29.3, y: 25.7, z: 0}
+  m_LocalPosition: {x: 49.8, y: 25.7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -65,7 +65,7 @@ Transform:
   - {fileID: 7283248847181200330}
   - {fileID: 5815784251928571201}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &-5974397870093916663
 MonoBehaviour:
@@ -79,7 +79,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35d5be2b24a3e5449b75301801353c48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseDuration: 270
+  testMode: 1
+  baseDuration: 120
   meteorPrefab: {fileID: 189507748417666162, guid: 8ad86b7f340c2764ea7cf973e28b644b, type: 3}
   firstMeteorSpawnTimer: 8
   meteorInterval: 24
@@ -90,30 +91,35 @@ MonoBehaviour:
   meteorEaseOffIntervalSails: 3
   meteorEaseOfIntervalRamp: 10
   fullyRepairedTimerReduction: 0.7
-  meteorSpawnXPos: 56
-  meteorSpawnYPos: 33
-  meteorSpawnXVariance: 15
+  meteorSpawnXPos: 5
+  meteorSpawnYPos: 64
+  meteorSpawnXVariance: 10
   meteorSpawnYVariance: 3
   meteorSpeed: 22
   rockPrefab: {fileID: 189507748417666162, guid: a4f67d1775a9a984e950a805568f14db, type: 3}
-  firstRockSpawnTimer: 24
-  rockVolleyLength: 8
+  rockEmiters:
+  - {fileID: 7278928038957370028}
+  - {fileID: 6243599343133029079}
+  - {fileID: 1347728577421383755}
+  - {fileID: 5279424593327033233}
+  firstRockSpawnTimer: 16
+  rockVolleyBaseInterval: 8
+  rockVolleyIntervalVariance: 0.2
   peakRockPaceSwell: 2
   firstSwellTimer: 70
   swellCycleTime: 60
   swellCycleRampTime: 40
   swellCycleMinTime: 30
-  numRocksPerVolley: 3
-  firstExtraRockAddedTime: 150
-  secondExtraRockAddedTime: 210
-  rockSpeed: 7
+  baseRockRate: 1
+  firstExtraRockAddedTime: 55
+  secondExtraRockAddedTime: 85
+  rockSpeed: 8
   rockSpeedVariance: 0.25
-  baseRockSpawnHeight: 6
-  rockSpawnHeightVariance: 3
-  rockAngleOffset: 3
-  rockAngleVariance: 5
-  rockBaseSize: 1.7
-  rockSizeIncreaseVariance: 1.3
+  rockSpawnHeightVariance: 1.5
+  rockAngleOffset: 2
+  rockAngleVariance: 3
+  rockBaseSize: 2
+  rockSizeIncreaseVariance: 1
 --- !u!1 &5279424593327033233
 GameObject:
   m_ObjectHideFlags: 0
@@ -138,7 +144,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5279424593327033233}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 29.3, y: 33.6, z: 0}
+  m_LocalPosition: {x: 49.8, y: 33.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -169,7 +175,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6243599343133029079}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 29.3, y: 17.8, z: 0}
+  m_LocalPosition: {x: 49.8, y: 17.8, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -200,7 +206,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7278928038957370028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 29.3, y: 7.1, z: 0}
+  m_LocalPosition: {x: 49.8, y: 7.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
