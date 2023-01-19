@@ -1,8 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using SpaceBoat.Items;
-
+/*
 namespace SpaceBoat.Rewards {    
     public class CometManager : MonoBehaviour
     {
@@ -95,3 +94,4 @@ namespace SpaceBoat.Rewards {
         }
     }
 }
+*/

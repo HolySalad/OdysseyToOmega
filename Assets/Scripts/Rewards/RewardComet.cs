@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using SpaceBoat.Items;
 namespace SpaceBoat.Rewards {
+    /*
     public class RewardComet : MonoBehaviour
     {
         [SerializeField] private GameObject itemPlace;
@@ -73,7 +73,6 @@ namespace SpaceBoat.Rewards {
                 DropItemAndDestruct();
             }
         }
-        /*
         this does work but it's disgusting.
         private float destructionYRight = -2.00f;
         private float destructionYLeft = 5f;
@@ -84,6 +83,7 @@ namespace SpaceBoat.Rewards {
             || (transform.position.x > destructionLeftRightBoundryX && transform.position.y < destructionYRight)) {
                 DropItemAndDestruct();
             }       
-        }*/
+
     }
+    */
 }

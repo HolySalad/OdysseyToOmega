@@ -30,16 +30,6 @@ namespace SpaceBoat.Ship
             directionFired = direction;
         }
 
-        public void TransformBackIntoItem(Vector3 position) {
-                GameObject item = Instantiate(GameModel.Instance.PrefabForItemType(ItemTypes.HarpoonItem), position, Quaternion.identity);
-                GameModel.Instance.CreateItemComponent(item, ItemTypes.HarpoonItem);
-                item.transform.rotation = Quaternion.Euler(0, 0, -90);
-                Destroy(gameObject);
-        }
-
-        public void TransformBackIntoItem() {
-            TransformBackIntoItem(transform.position);
-        }
 
 
         // reel the harpoon in towards the ship.
@@ -79,7 +69,7 @@ namespace SpaceBoat.Ship
 
         IEnumerator RespawnHarpoon() {
             yield return new WaitForSeconds(5f);
-            TransformBackIntoItem(RespawnLocation);
+            harpoonGun.LoadHarpoon();
         }
 
         public void OnCollisionEnter2D(Collision2D collision) {
