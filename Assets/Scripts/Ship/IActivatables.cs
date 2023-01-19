@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace SpaceBoat.Ship {
+
+    public delegate void UsageCallback();
     public interface IActivatables
     {
         public ActivatablesNames kind {get;}
@@ -15,6 +17,9 @@ namespace SpaceBoat.Ship {
         public void Activate(Player player);
         public void Deactivate(Player player);
         public bool ActivationCondition(Player player);
+
+        public void AddActivationCallback(UsageCallback callback);
+        public void AddDeactivationCallback(UsageCallback callback);
         
     }
 }

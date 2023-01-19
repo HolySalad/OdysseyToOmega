@@ -13,32 +13,37 @@ namespace SpaceBoat.Ship {
         [SerializeField] private float maxAngle = 30;
         [SerializeField] private float RotationSpeed = 5f;
 
+
+
         public bool isLoaded {get; private set;} = true;
         public ActivatablesNames kind {get;} = ActivatablesNames.HarpoonGun;
 
         public bool isInUse {get; private set;} = false;
-        private bool returnPlayerToSmallCamera = false;
         public bool canManuallyDeactivate {get;} = true;
         public PlayerStateName playerState {get;} = PlayerStateName.aiming;
         public string usageAnimation {get;} = "Repairing";
         public string usageSound {get;}
 
-
-
+        private List<UsageCallback> usageCallbacks = new List<UsageCallback>();
+        private List<UsageCallback> deactivationCallbacks = new List<UsageCallback>();
+        public void AddActivationCallback(UsageCallback callback) {
+            usageCallbacks.Add(callback);
+        }
+        public void AddDeactivationCallback(UsageCallback callback) {
+            deactivationCallbacks.Add(callback);
+        }
 
         public void Activate(Player player) {
-            isInUse = true;
-            if (!player.cameraControls.isShipView) {
-                returnPlayerToSmallCamera = true;
-                player.cameraControls.ToggleShipView();
+            isInUse = true;            
+            foreach (UsageCallback callback in usageCallbacks) {
+                callback();
             }
         }
         public void Deactivate(Player player) {
-            isInUse = false;
-            if (returnPlayerToSmallCamera) {
-                player.cameraControls.ToggleShipView();
-                returnPlayerToSmallCamera = false;
+            foreach (UsageCallback callback in deactivationCallbacks) {
+                callback();
             }
+            isInUse = false;
         }
 
         public void Deactivate(Player player, bool internalDeactivation) {

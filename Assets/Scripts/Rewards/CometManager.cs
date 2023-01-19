@@ -53,7 +53,7 @@ namespace SpaceBoat.Rewards {
             if (isFirstComet) {
                 isFirstComet = false;
                 Debug.Log("First comet: displaying help text");
-                GameModel.Instance.helpPrompts.DisplayPrompt(GameModel.Instance.helpPrompts.cometPrompt);
+                //GameModel.Instance.helpPrompts.DisplayPrompt(GameModel.Instance.helpPrompts.cometPrompt);
             }
         }
 

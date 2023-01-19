@@ -18,6 +18,15 @@ namespace SpaceBoat.Ship {
 
         private Player player;
 
+        private List<UsageCallback> usageCallbacks = new List<UsageCallback>();
+        private List<UsageCallback> deactivationCallbacks = new List<UsageCallback>();
+        public void AddActivationCallback(UsageCallback callback) {
+            usageCallbacks.Add(callback);
+        }
+        public void AddDeactivationCallback(UsageCallback callback) {
+            deactivationCallbacks.Add(callback);
+        }
+
         public (Vector2, float) LadderDirection() {
             Vector3 direction = ladderTop.transform.position - ladderBottom.transform.position;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
@@ -35,10 +44,16 @@ namespace SpaceBoat.Ship {
         public void Activate(Player player) {
             this.player = player;
             isInUse = true;
+            foreach (UsageCallback callback in usageCallbacks) {
+                callback();
+            }
         }
         public void Deactivate(Player player) {
             isInUse = false;
             this.player = null;
+            foreach (UsageCallback callback in deactivationCallbacks) {
+                callback();
+            }
         }
         public bool ActivationCondition(Player player) {
             return player;
