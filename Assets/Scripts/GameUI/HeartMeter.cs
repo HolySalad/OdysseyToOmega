@@ -13,6 +13,7 @@ namespace SpaceBoat.UI
 
         public void OnGUI() {
             Player player = GameModel.Instance.player;
+            if (player == null) return;
             int health = player.health;
             if (health >= value) {
                 GetComponent<Image>().sprite = heartFull;

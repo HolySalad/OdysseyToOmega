@@ -11,7 +11,7 @@ using UnityEngine.Playables;
 namespace SpaceBoat {
 
     public enum ItemTypes {ClothItem, FoodItem, HarpoonItem, None};
-    public enum Activatables {HarpoonGun, None};
+    public enum ActivatablesNames {HarpoonGun, Kitchen, Ladder, Sails, None};
 
     public enum HazardProjectiles {Meteor, SpacRock, None}
 
@@ -21,6 +21,7 @@ namespace SpaceBoat {
 
         [Header("Game Settings")]
         [SerializeField] private bool environmentTesting = false;
+        [SerializeField] private bool playSoundtrack = true;
         [SerializeField] private bool slowMo = false;
 
         [Header("Ship")]
@@ -48,9 +49,39 @@ namespace SpaceBoat {
         public UI.HelpPrompts helpPrompts {get; private set;}
 
         public float GameBeganTime {get; private set;}
+        public int lastSurvivingSailCount {get; private set;}
 
         private IHazardManager currentHazardManager;
 
+        public bool isPaused {get; private set;}
+        public delegate void PauseEvent();
+        private List<PauseEvent> pauseEvents = new List<PauseEvent>();
+        private List<PauseEvent> unpauseEvents = new List<PauseEvent>();
+
+        // Pause
+        public void PauseGame() {
+            isPaused = true;
+            Time.timeScale = 0f;
+            foreach (PauseEvent pauseEvent in pauseEvents) {
+                pauseEvent();
+            }
+        }
+
+        public void AddPauseEvent(PauseEvent pauseEvent) {
+            pauseEvents.Add(pauseEvent);
+        }
+
+        public void UnpauseGame() {
+            isPaused = false;
+            Time.timeScale = 1f;
+            foreach (PauseEvent unpauseEvent in unpauseEvents) {
+                unpauseEvent();
+            }
+        }
+
+        public void AddUnpauseEvent(PauseEvent unpauseEvent) {
+            unpauseEvents.Add(unpauseEvent);
+        }
 
     
         //item management
@@ -101,23 +132,13 @@ namespace SpaceBoat {
         }
 
         // activatable management
-        public Activatables GetActivatableType(GameObject activatable) {
-            if (activatable.GetComponent<Ship.HarpoonGunActivatable>() != null) {
-                return Activatables.HarpoonGun;
-            } else {
-                return Activatables.None;
-            }
+        public ActivatablesNames GetActivatableType(GameObject activatable) {
+            return activatable.GetComponent<IActivatables>().kind;
         }
 
-        
+
         public IActivatables GetActivatableComponent(GameObject activatable) {
-            if (activatable.GetComponent<Ship.HarpoonGunActivatable>() != null) {
-                return activatable.GetComponent<Ship.HarpoonGunActivatable>();
-            } else if (activatable.GetComponent<Ship.LadderActivatable>() != null) {
-                return activatable.GetComponent<Ship.LadderActivatable>();
-            } else {
-                return null;
-            }
+            return activatable.GetComponent<IActivatables>();
         }
 
         //animations 
@@ -160,6 +181,7 @@ namespace SpaceBoat {
             helpPrompts = FindObjectOfType<UI.HelpPrompts>();
 
             GameBeganTime = Time.time;
+            lastSurvivingSailCount = shipSails.Count;
         }
 
         public void Start() {
@@ -171,14 +193,12 @@ namespace SpaceBoat {
                 Time.timeScale = 0.1f;
             }
 
-
-            if (environmentTesting) return;
             sound.Play("Spawn");
             if (sound.IsPlaying("MenuSoundtrack")) {
                 sound.Stop("MenuSoundtrack");
             }
-            sound.Play("GameplaySoundtrack");
-
+            if (playSoundtrack) sound.Play("GameplaySoundtrack");
+            if (environmentTesting) return;
             //TODO add random hazard selection.
             currentHazardManager = CreateHazardManager("MeteorShower");
             
@@ -272,6 +292,7 @@ namespace SpaceBoat {
                     sound.Stop("ShipLowHP");
                 }
             }
+            lastSurvivingSailCount = num_surviving_sails;
 
             CheckHazardProgress();
         }

@@ -7,11 +7,11 @@ namespace SpaceBoat.PlayerStates {
     {
         public bool stealVelocityControl {get;} = false;
 
-        private int frameEnteredState = 0;
+        private float timeEnteredState = 0;
         private bool jumpLockOut = false;
         private Player player;
 
-        [SerializeField] private int jumpLockOutFrames = 6;
+        [SerializeField] private float jumpLockOutTime = 0.4f;
         
 
         void Awake() {
@@ -23,7 +23,7 @@ namespace SpaceBoat.PlayerStates {
         }
 
         public void EnterState(PlayerStateName previousState) {
-           frameEnteredState = Time.frameCount;
+           timeEnteredState = Time.time;
            // if we were previosuly aiming, we don't want the spacebar input 
            if (previousState == PlayerStateName.aiming) {
                 jumpLockOut = true;
@@ -52,10 +52,8 @@ namespace SpaceBoat.PlayerStates {
             //Item pick up
             bool pickItemDown = CthulkInput.PickItemDown();
 
-
-
             player.WalkInput(horizontal);
-            if (jumpLockOut && (jumpKeyDown || (Time.frameCount > frameEnteredState + jumpLockOutFrames))) {
+            if (jumpLockOut && (jumpKeyDown || (Time.time > timeEnteredState + jumpLockOutTime))) {
                 jumpLockOut = false;
             }
             player.JumpInput(jumpKeyHeld && !jumpLockOut, jumpKeyDown);
