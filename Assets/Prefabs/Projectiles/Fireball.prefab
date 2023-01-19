@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 5275087259869894873}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -11.276903, y: 3.2149806, z: 0}
-  m_LocalScale: {x: 0.55806, y: 0.55806, z: 0.55806}
+  m_LocalScale: {x: 0.2571708, y: 0.2571708, z: 0.2571708}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -910102194, guid: 670024a6f914e6240829666765d26dc8, type: 3}
+  m_Sprite: {fileID: -1231676409, guid: c04e647eee8924541ad723e3084a4fdc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -100,9 +100,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 2.5095046}
   serializedVersion: 2
-  m_Radius: 1.19
+  m_Radius: 3.699505
 --- !u!50 &7029948593518617539
 Rigidbody2D:
   serializedVersion: 4
@@ -136,4 +136,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cd5e786da2ad67489cc852e648201ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fireballSprite: {fileID: 21300000, guid: 8e33e2bccea331646abdfbd91e92d3b9, type: 3}
+  fireballSprite: {fileID: -1231676409, guid: c04e647eee8924541ad723e3084a4fdc, type: 3}

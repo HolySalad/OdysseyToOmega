@@ -157,7 +157,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &232218250 stripped
 GameObject:
@@ -191,7 +191,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 509089927291040944, guid: 697037ddd57fc584f89df1c6c61517be, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 509089927291040944, guid: 697037ddd57fc584f89df1c6c61517be, type: 3}
       propertyPath: m_LocalPosition.x
@@ -631,6 +631,83 @@ Transform:
   m_Father: {fileID: 1376397498}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &685819451
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 2
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 985743160901259012, guid: 0e8c82a1b3bddab4ba05b5cf2dd35b57, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 985743160901259012, guid: 0e8c82a1b3bddab4ba05b5cf2dd35b57, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 49.50576
+      objectReference: {fileID: 0}
+    - target: {fileID: 985743160901259012, guid: 0e8c82a1b3bddab4ba05b5cf2dd35b57, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.9304004
+      objectReference: {fileID: 0}
+    - target: {fileID: 985743160901259012, guid: 0e8c82a1b3bddab4ba05b5cf2dd35b57, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 985743160901259012, guid: 0e8c82a1b3bddab4ba05b5cf2dd35b57, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 985743160901259012, guid: 0e8c82a1b3bddab4ba05b5cf2dd35b57, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 985743160901259012, guid: 0e8c82a1b3bddab4ba05b5cf2dd35b57, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 985743160901259012, guid: 0e8c82a1b3bddab4ba05b5cf2dd35b57, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 985743160901259012, guid: 0e8c82a1b3bddab4ba05b5cf2dd35b57, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 985743160901259012, guid: 0e8c82a1b3bddab4ba05b5cf2dd35b57, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 985743160901259012, guid: 0e8c82a1b3bddab4ba05b5cf2dd35b57, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 985743160901259013, guid: 0e8c82a1b3bddab4ba05b5cf2dd35b57, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 985743160901259032, guid: 0e8c82a1b3bddab4ba05b5cf2dd35b57, type: 3}
+      propertyPath: m_Name
+      value: ChydraParent
+      objectReference: {fileID: 0}
+    - target: {fileID: 985743160901259035, guid: 0e8c82a1b3bddab4ba05b5cf2dd35b57, type: 3}
+      propertyPath: mBehaviorSource.mTaskData.JSONSerialization
+      value: '{"EntryTask":{"Type":"BehaviorDesigner.Runtime.Tasks.EntryTask","NodeData":{"Offset":"(470.727264,59)"},"ID":0,"Name":"Entry","Instant":true},"RootTask":{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(0,130)"},"ID":1,"Name":"Boss
+        Battle","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Repeater","NodeData":{"Offset":"(-454.68222,118.571289)"},"ID":2,"Name":"Repeater","Instant":true,"SharedIntcount":{"Type":"BehaviorDesigner.Runtime.SharedInt","Name":"","Int32mValue":1},"SharedBoolrepeatForever":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"","BooleanmValue":false},"SharedBoolendOnFailure":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"","BooleanmValue":true},"Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-4.28570843,130)"},"ID":3,"Name":"Stage
+        1","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"ShootPlayer","NodeData":{"Offset":"(-114.255585,142.5539)"},"ID":4,"Name":"Shoot
+        Player","Instant":true,"Int32fireballCount":2,"SingleprepareShotTime":0,"SinglefireballSpeed":3,"Singleshooting_delay":2,"StringanimationTriggerName":"AtkPlayer","TransformmouthPosition":0,"GameObjectfireballPrefab":1},{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(8.416626,144.277679)"},"ID":5,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":"","SinglemValue":2},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"","BooleanmValue":false},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":"","SinglemValue":1},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":"","SinglemValue":1}},{"Type":"ShootSails","NodeData":{"Offset":"(135.744385,138.499817)"},"ID":6,"Name":"Shoot
+        Sails","Instant":true,"Int32fireballCount":1,"SingleprepareShotTime":1,"SinglefireballSpeed":4,"Singleshooting_delay":2,"StringanimationTriggerName":"AtkSail","TransformmouthPosition":2,"GameObjectfireballPrefab":3}]}]}]},"DetachedTasks":[{"Type":"BehaviorDesigner.Runtime.Tasks.Repeater","NodeData":{"Offset":"(220.7338,344.079346)"},"ID":7,"Name":"Repeater","Instant":true,"SharedIntcount":{"Type":"BehaviorDesigner.Runtime.SharedInt","Name":"","Int32mValue":1},"SharedBoolrepeatForever":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"","BooleanmValue":true},"SharedBoolendOnFailure":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"","BooleanmValue":true},"Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(0,120)"},"ID":8,"Name":"Stage
+        2","Instant":true,"AbortTypeabortType":"None"}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Repeater","NodeData":{"Offset":"(366.363739,327.2727)"},"ID":9,"Name":"Repeater","Instant":true,"SharedIntcount":{"Type":"BehaviorDesigner.Runtime.SharedInt","Name":"","Int32mValue":1},"SharedBoolrepeatForever":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"","BooleanmValue":true},"SharedBoolendOnFailure":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"","BooleanmValue":true},"Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(0,120)"},"ID":10,"Name":"Stage
+        2","Instant":true,"AbortTypeabortType":"None"}]}]}'
+      objectReference: {fileID: 0}
+    - target: {fileID: 985743160901259035, guid: 0e8c82a1b3bddab4ba05b5cf2dd35b57, type: 3}
+      propertyPath: mBehaviorSource.mTaskData.fieldSerializationData.unityObjects.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_AddedGameObjects: []
+  m_SourcePrefab: {fileID: 100100000, guid: 0e8c82a1b3bddab4ba05b5cf2dd35b57, type: 3}
 --- !u!1001 &700681520
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -865,7 +942,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1045371283 stripped
 Transform:
@@ -1364,7 +1441,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 601514396458854649, guid: 1867d33c320fca94a9e5fee0301a56d1, type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 601514396458854649, guid: 1867d33c320fca94a9e5fee0301a56d1, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1499,7 +1576,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8665030423660503956, guid: e6d50831bfeae064c86fc4ad0112803f, type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8665030423660503956, guid: e6d50831bfeae064c86fc4ad0112803f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1558,7 +1635,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4095740888964423092, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4095740888964423092, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1657,7 +1734,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7862040123259408490, guid: 9dd813acacbfd164bbc3e00d5fbb8ce8, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 7862040123259408490, guid: 9dd813acacbfd164bbc3e00d5fbb8ce8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1720,7 +1797,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8215067789176602123, guid: 674e99118ffc5924b9056eae976b6f39, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 8215067789176602123, guid: 674e99118ffc5924b9056eae976b6f39, type: 3}
       propertyPath: m_LocalPosition.x
