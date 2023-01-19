@@ -38,7 +38,6 @@ namespace SpaceBoat.PlayerStates {
             // Inputs which can change state go first.
 
             //Item Usage
-            if (player.ItemUsageInput(CthulkInput.UseItemDown())) return;
             if (player.ActivateInput(CthulkInput.ActivateKeyDown())) return;
 
 

@@ -30,7 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2652018774195889313
 MonoBehaviour:
@@ -190,7 +190,7 @@ MonoBehaviour:
     loop: 0
     source: {fileID: 0}
   - name: GameplaySoundtrack
-    clip: {fileID: 8300000, guid: fa1c4c9f948f26548859879e32a8a3a6, type: 3}
+    clip: {fileID: 8300000, guid: 1e2e2be988f01ec4a8ed673ee7bcc16c, type: 3}
     volume: 1
     pitch: 0
     loop: 0

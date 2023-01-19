@@ -52,14 +52,7 @@ MonoBehaviour:
   - {fileID: 612721070, guid: 1e33d6925c2d4c741828f01a492f6985, type: 3}
   - {fileID: 1107638078, guid: 1e33d6925c2d4c741828f01a492f6985, type: 3}
   - {fileID: 1106252968, guid: 1e33d6925c2d4c741828f01a492f6985, type: 3}
-  rockBobBaseSpeed: 16
-  rockBobDownAcceleration: 12
-  rockReboundSpeed: 10
-  rockReboundAcceleration: 6
-  playerUpwardForceOnRebound: 6
-  rockBobBaseDistance: 0.5
-  rockBobDistanceFalloff: 0.4
-  bobBobMinDistance: 0.1
+  rockWhoosh: {fileID: 8300000, guid: 8d8236316791c6d40882858f792a7819, type: 3}
 --- !u!50 &7561198582813906779
 Rigidbody2D:
   serializedVersion: 4
@@ -249,7 +242,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -521903187
-  m_SortingLayer: 11
+  m_SortingLayer: 7
   m_SortingOrder: 0
   m_Sprite: {fileID: 612721070, guid: 1e33d6925c2d4c741828f01a492f6985, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

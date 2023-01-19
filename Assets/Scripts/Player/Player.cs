@@ -101,6 +101,7 @@ namespace SpaceBoat {
         }
 
         private int jumpGrace = 0;
+        private int frameLeftGround = 0;
         private bool  jumpSquat = false;
         private bool isJumping = false;
         private bool halfJump = false;
@@ -130,7 +131,6 @@ namespace SpaceBoat {
         //item vars
         public IHeldItems itemInHand {get; private set;}
         private ItemTypes heldItemType;
-        private string itemUsageSound;
         private bool canPickItems;
         public GameObject itemUsageTarget;
 
@@ -221,13 +221,7 @@ namespace SpaceBoat {
                 currentWalkingSpeed = (isSlippingLeft ? -1 : 1);
                 isSlipping = false;
             } else if (currentWalkingSpeed != 0) {
-                float castDirection = (currentWalkingSpeed*lastHorizontalInput > 0 ? 1 : -1);
-                List<RaycastHit2D> hits = new List<RaycastHit2D>();
-                ContactFilter2D filter = new ContactFilter2D();
-                filter.SetLayerMask(LayerMask.GetMask("Ground"));
-                float numHits = bodyCollider.gameObject.GetComponent<Collider2D>().Cast(Vector2.right * castDirection, filter, hits, wallCheckDistance, true);
-                if (numHits > 0) {
-                    Debug.Log("Walking into a wall");
+                if (CheckWallBump() && isGrounded) {
                     currentWalkingSpeed = 0;
                 }
             }
@@ -249,7 +243,11 @@ namespace SpaceBoat {
             return Time.frameCount < jumpGrace || isGrounded;
         }
 
-        void updateJump() {
+        void updateJump(bool headBumped) {
+            if (headBumped) {
+                jumpSquat = false;
+                currentVerticalForce = slipSpeedVertical*(1-landingHorizontalDrag);
+            } else 
             if (currentVerticalForce > 0) {
                 float decay = jumpDecay;
                 if (halfJump) {
@@ -361,8 +359,8 @@ namespace SpaceBoat {
                     currentVerticalForce = 0;
                     currentWalkingSpeed = currentWalkingSpeed * landingHorizontalDrag;
                 } else if (!wasGrounded) {
-                    Debug.Log("Player landed from falling after " + (Time.frameCount - jumpStartTime) + " frames");
-                    JumpStomp();
+                    Debug.Log("Player landed from falling after " + (Time.frameCount - frameLeftGround) + " frames");
+                    if (Time.frameCount - frameLeftGround > 3) JumpStomp();
                     isJumping = false;
                     halfJump = false;
                     justLanded = true;
@@ -374,6 +372,7 @@ namespace SpaceBoat {
                 }
                 if (wasGrounded) {
                     Debug.Log("Player left ground at " + Time.frameCount);
+                    frameLeftGround = Time.frameCount;
                 } else {
                     RaycastHit2D hitRight = Physics2D.Raycast(rightSlipCollider.position, new Vector3(0, -1, 0), slipCheckDistance, LayerMask.GetMask("Ground"));
                     RaycastHit2D hitLeft = Physics2D.Raycast(leftSlipCollider.position, new Vector3(0, -1, 0), slipCheckDistance, LayerMask.GetMask("Ground"));
@@ -401,19 +400,38 @@ namespace SpaceBoat {
             }
         }
 
-        private void CheckHeadBump() {
+        private bool CheckHeadBump() {
             RaycastHit2D hit = Physics2D.Raycast(headCollider.position, Vector3.up, ceilingCheckDistance, LayerMask.GetMask("Ground"));
             Debug.DrawRay(footCollider.position, transform.TransformDirection(new Vector3(0, ceilingCheckDistance, 0)), Color.yellow, 0.1f);
             if (hit.collider != null) {
                 if (hit.collider.gameObject.GetComponent<PlatformEffector2D>() != null) {
                     PlatformEffector2D platform = hit.collider.gameObject.GetComponent<PlatformEffector2D>();
                     if (platform.useOneWay) {
-                        return;
+                        return false;
                     }
                 }
                 Debug.Log("Ouch! My fucking head!");
-                currentVerticalForce = Mathf.Min(0, currentVerticalForce);
+                return true;
             }
+            return false;
+        }
+
+        bool CheckWallBump(float castDirection) {
+            List<RaycastHit2D> hits = new List<RaycastHit2D>();
+            ContactFilter2D filter = new ContactFilter2D();
+            filter.SetLayerMask(LayerMask.GetMask("Ground"));
+            float numHits = bodyCollider.gameObject.GetComponent<Collider2D>().Cast(Vector2.right * castDirection, filter, hits, wallCheckDistance, true);
+            if (numHits > 0) {
+                Debug.Log("Walking into a wall");
+                return true;
+            }
+            return false;
+        }
+
+
+        bool CheckWallBump() {
+            float castDirection = (currentWalkingSpeed*lastHorizontalInput > 0 ? 1 : -1);
+           return CheckWallBump(castDirection);
         }
 
         // end of movement functions
@@ -491,72 +509,12 @@ namespace SpaceBoat {
             */
         }
 
-        // Item usage functions
-
-        void BeginUseItem(GameObject target) {
-            itemUsageTarget = target;
-            itemUsageSound = itemInHand.itemUsageSound;
-            if (itemInHand.usageAnimation != "") {
-                animator.SetBool(itemInHand.usageAnimation, true);
-            }
-            ChangeState(PlayerStateName.working);
-        }
-
-        public void CompleteItemUsage() {
-            if (itemInHand.usageAnimation != "") {
-                animator.SetBool(itemInHand.usageAnimation, false);
-            }
-            itemInHand.ItemUsed(this, itemUsageTarget);
-            if (itemInHand.isConsumed) {
-                DropItems(true);
-            }
-            itemUsageTarget = null;
-        }
-
-        public void CancelItemUsage() {
-            if (itemInHand != null) { 
-                if (itemInHand.usageAnimation != "") {
-                    animator.SetBool(itemInHand.usageAnimation, false);
-                }
-                if (itemInHand.itemUsageSound != "" && game.sound.IsPlaying(itemInHand.itemUsageSound)) {
-                    game.sound.Stop(itemInHand.itemUsageSound);
-                }
-            }
-            itemUsageTarget = null;
-        }
-
-
-        (bool, GameObject) canUseItem(IHeldItems item) {
-            Collider2D[] colliders = new Collider2D[10];
-            playerLocationTrigger.GetContacts(colliders);
-            foreach (Collider2D coll in colliders) {
-                if (coll != null && coll.CompareTag(item.itemUsageValidTrigger)) {
-                    Debug.Log("Can use held item on " + coll.name);
-                    return (item.itemUsageCondition(this, coll.gameObject), coll.gameObject);
-                }
-            }
-            return (false, null);
-        }
 
 
 
-        public bool ItemUsageInput(bool keyDown) {
-            return false; 
-            /*
-            if (keyDown && currentPlayerStateName == PlayerStateName.ready) {
-                if (itemInHand != null) {
-                    (bool canUse, GameObject target) = canUseItem(itemInHand);
-                    if (canUse) {
-                        BeginUseItem(target);
-                        return true;
-                    }
-                }
-            } else if (keyDown && currentPlayerStateName == PlayerStateName.working) {
-                ChangeState(PlayerStateName.ready);
-            }
-            return false; 
-            */
-        }
+
+
+
 
         // activatables 
 
@@ -700,11 +658,6 @@ namespace SpaceBoat {
                 game.sound.Stop("Walk");
             }
 
-            // play the working sound when working;
-            if (currentPlayerStateName == PlayerStateName.working && itemUsageSound != "" && !game.sound.IsPlaying(itemUsageSound)) {
-                game.sound.Play(itemUsageSound);
-            }
-
             if (health == 1 && !game.sound.IsPlaying("LowHP")) {
                 game.sound.Play("LowHP"); 
             }
@@ -717,15 +670,25 @@ namespace SpaceBoat {
             }
             UpdateGrounded();
             MomentumUpdate();
-            if (isJumping) {
-                CheckHeadBump();
-            }
-            updateJump();
+            bool headBump = CheckHeadBump();
+            updateJump(headBump);
             float totalHorizontalVelocity = (currentWalkingSpeed*lastHorizontalInput) + currentHazardMomentum;
             float totalVerticalVelocity = currentVerticalForce;
+
             if (groundedOnObject != null) {
                 totalHorizontalVelocity += groundedOnObject.GetComponent<Rigidbody2D>().velocity.x;
                 totalVerticalVelocity += groundedOnObject.GetComponent<Rigidbody2D>().velocity.y;
+                if (groundedOnObject.GetComponent<Environment.RotatingPlatformMovementHelper>() != null) {
+                    Vector3 positionalChange = groundedOnObject.GetComponent<Environment.RotatingPlatformMovementHelper>().lastPositionChange;
+                    totalHorizontalVelocity = totalHorizontalVelocity + (positionalChange.x / Time.deltaTime);
+                    totalVerticalVelocity = totalVerticalVelocity + (positionalChange.y /Time.deltaTime);
+                }
+            }
+            if (CheckWallBump(Mathf.Sign(totalHorizontalVelocity))) {
+                totalHorizontalVelocity = 0;
+            }
+            if (headBump) {
+                totalVerticalVelocity = Mathf.Min(totalVerticalVelocity, -slipSpeedVertical);
             }
 
             Vector2 movement = new Vector2(totalHorizontalVelocity, totalVerticalVelocity);

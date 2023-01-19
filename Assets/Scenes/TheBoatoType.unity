@@ -147,7 +147,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2587115}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -324.34, y: -5.63, z: 0}
+  m_LocalPosition: {x: -324.33, y: -5.63, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1986,7 +1986,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 343288695}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.92, y: 19.5, z: 0}
+  m_LocalPosition: {x: 3.92, y: 19.15, z: 0}
   m_LocalScale: {x: 2.2386136, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2058,10 +2058,6 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 17865563603677026, guid: 19d1b8fc8a639ad4485351aa38842945, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 49.8
-      objectReference: {fileID: 0}
     - target: {fileID: 3670898647483130851, guid: 19d1b8fc8a639ad4485351aa38842945, type: 3}
       propertyPath: m_RootOrder
       value: 7
@@ -2109,18 +2105,6 @@ PrefabInstance:
     - target: {fileID: 3819972910884401993, guid: 19d1b8fc8a639ad4485351aa38842945, type: 3}
       propertyPath: m_Name
       value: MeteorShower
-      objectReference: {fileID: 0}
-    - target: {fileID: 4381994691075171376, guid: 19d1b8fc8a639ad4485351aa38842945, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 49.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 5815784251928571201, guid: 19d1b8fc8a639ad4485351aa38842945, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 49.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 7283248847181200330, guid: 19d1b8fc8a639ad4485351aa38842945, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 49.8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
@@ -3255,7 +3239,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 721949163}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.33000004, y: 26.34, z: 0}
+  m_LocalPosition: {x: -0.33000004, y: 25.94, z: 0}
   m_LocalScale: {x: 1.3158953, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4436,7 +4420,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 904344876}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.5099999, y: 27.82, z: 0}
+  m_LocalPosition: {x: -0.5099999, y: 28.52, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6254,8 +6238,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1241600132}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.38410008, y: 13.4917, z: 0}
-  m_LocalScale: {x: 1, y: 2.9453404, z: 1}
+  m_LocalPosition: {x: -0.38410008, y: 13.95, z: 0}
+  m_LocalScale: {x: 1, y: 3.0248644, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 248030592}
@@ -6520,7 +6504,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1319409230}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: PositionerDummy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6534,7 +6518,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1319409229}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -17.49, y: 8.11, z: 0}
+  m_LocalPosition: {x: 4.8, y: 63.2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7692,10 +7676,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2652018774195889313, guid: 63d98d3d85ef08f48b61f125cc5c237f, type: 3}
-      propertyPath: sounds.Array.data[24].clip
-      value: 
-      objectReference: {fileID: 8300000, guid: 1e2e2be988f01ec4a8ed673ee7bcc16c, type: 3}
     - target: {fileID: 2652018774195889315, guid: 63d98d3d85ef08f48b61f125cc5c237f, type: 3}
       propertyPath: m_Name
       value: SoundManager
@@ -9641,18 +9621,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: playSoundtrack
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: environmentTesting
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: shipSails.Array.size
-      value: 11
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
       propertyPath: shipSails.Array.data[0]
       value: 
       objectReference: {fileID: 1788339013}
@@ -9930,9 +9898,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shipViewTarget: {fileID: 1642008841}
   shipViewSize: 34
-  cameraSizeShiftTime: 1
-  cameraXYShiftTime: 1
-  shipViewShiftTime: 1.5
+  cameraShiftTime: 1
+  shiftTimeReductionProportion: 0.7
   cameraXMax: 100
   cameraXMin: -100
   shipViewCameraXMax: -12
@@ -9946,32 +9913,8 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
-      propertyPath: jumpPower
-      value: 26
-      objectReference: {fileID: 0}
-    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
-      propertyPath: deceleration
-      value: 25
-      objectReference: {fileID: 0}
-    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
-      propertyPath: maxWalkSpeed
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
-      propertyPath: accelerationMidMult
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
-      propertyPath: gravityAcceleration
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
-      propertyPath: accelerationStartMult
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
-      propertyPath: jumpHorizontalMultiplier
-      value: 1.5
+      propertyPath: groundCheckDistance
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 7691977599830055013, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
       propertyPath: m_Name
@@ -10711,6 +10654,10 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 521614029}
     m_Modifications:
+    - target: {fileID: 7837276630178798448, guid: 9e1ecdf655223c041a11e61b32df22a7, type: 3}
+      propertyPath: rotationSpeed
+      value: 24
+      objectReference: {fileID: 0}
     - target: {fileID: 7837276630178798449, guid: 9e1ecdf655223c041a11e61b32df22a7, type: 3}
       propertyPath: m_RootOrder
       value: -1
