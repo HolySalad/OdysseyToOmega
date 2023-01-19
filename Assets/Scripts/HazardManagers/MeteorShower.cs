@@ -5,6 +5,7 @@ namespace SpaceBoat.HazardManagers {
     public class MeteorShower : MonoBehaviour, IHazardManager
     {
         [Header("General Hazard Settings")]
+        [SerializeField] private bool testMode = false; 
         [SerializeField] private float baseDuration = 120f; //how many seconds into the game does the last meteor spawn.
 
         [Header("Meteor Settings")]
@@ -12,8 +13,6 @@ namespace SpaceBoat.HazardManagers {
 
         [Header("Meteor Spawn Rate")]
         [SerializeField] private float firstMeteorSpawnTimer = 10f; //how many seconds into the game does the first meteor spawn.
-
-
         [SerializeField] private float meteorInterval = 32f; // how often does a meteor spawn to break a sail by default.
         [SerializeField] private float meteorIntervalVariance = 0.2f; //% variance in meteor base interval.
         [SerializeField] private float meteorIntervalRampTime = 40f; //begins decreasing the time between spawns this many seconds after the first meteor spawns.
@@ -32,28 +31,30 @@ namespace SpaceBoat.HazardManagers {
 
         [Header("Space Rock Settings")]
         [SerializeField] private GameObject rockPrefab;
+        [SerializeField] private List<GameObject> rockEmiters;
 
         [Header("Space Rock Spawn Rate")]
         [SerializeField] private float firstRockSpawnTimer = 30f; //how many seconds into the game does the first rock spawn.
 
-        [SerializeField] private float rockVolleyLength = 8f; // how long does a volley of rocks last.
+        [SerializeField] private float rockVolleyBaseInterval = 8f; // how long does a volley of rocks last.
+        [SerializeField] private float rockVolleyIntervalVariance = 0.2f; //% variance in rock volley base interval.
         [SerializeField] private float peakRockPaceSwell = 2f; // how many more rocks should be thrown during a swell.
         [SerializeField] private float firstSwellTimer = 70f; // how many seconds into the game does the first swell begin
         [SerializeField] private float swellCycleTime = 60f; // how often does the pace of rocks swell.
         [SerializeField] private float swellCycleRampTime = 10f; // Time between swells get shorter each tiime by this many seconds
         [SerializeField] private float swellCycleMinTime = 30f; // how short can the time between swells get.
-        [SerializeField] private float numRocksPerVolley = 3f; // how many base rocks are thrown at the player at once.
+        [SerializeField] private float baseRockRate = 3f; // how many base rocks are thrown at the player at once.
         [SerializeField] private float firstExtraRockAddedTime = 150f; // how many seconds into the game does an additional base rock get added
         [SerializeField] private float secondExtraRockAddedTime = 210f; // how often does an additional base rock get added
         [Header("Rock Projectile Settings")]
         [SerializeField] private float rockSpeed = 1f; //how many units per second do rocks travel
         [SerializeField] private float rockSpeedVariance = 0.25f; //how much variance is there in the speed of rocks
-        [SerializeField] private float baseRockSpawnHeight = 5f; //what Y pos do rocks spawn at
         [SerializeField] private float rockSpawnHeightVariance = 2f; //units of variance up or down for rock spawn positions
         [SerializeField] private float rockAngleOffset = 5f; // upwards tilt for spawned rocks.
         [SerializeField] private float rockAngleVariance = 5f; //degrees of variance in the angle of rocks from the default 270 degrees
         [SerializeField] private float rockBaseSize = 1f; //base size of rocks
         [SerializeField] private float rockSizeIncreaseVariance = 1.5f; //how much bigger can rocks be?
+        [SerializeField] private int rockSoundChance = 50; //% chance that a rock will play a sound when it spawns.
         public bool hasEnded {get; private set;} = false;
         public float hazardDuration {get; private set;} = 0f;
         public float hazardBeganTime {get; private set;} = -1;
@@ -65,12 +66,12 @@ namespace SpaceBoat.HazardManagers {
         private float meteorSoundDuration;
         private int lastSailIndex = -1; //the index of the last sail that was broken by a meteor.
 
+        private bool rocksStarted = false; //have rocks started spawning yet?
         private float rockVolleyStartTime; //when did the last volley begin?
         private float rockSwellStartTime; //when did the last swell begin?
         private float nextSwellTime; //when is the next swell?
         private bool rockSwellActive = false; //is the swell ramping up or down?
         private float currentSwellStrength = 1f; // between 1 and 1+peakRockPaceSwell
-        private float horizontalSpawnCoordinate = 65f; //where do rocks spawn horizontally?
 
         void handleMeteorSpawning(float timeSinceGameBegan, float deltaTime)
         {
@@ -130,37 +131,44 @@ namespace SpaceBoat.HazardManagers {
             isNextMeteorSpawnTimeSet = true;
         }
 
-        void handleRockSpawning(float timeSinceGameBegan, float deltaTime) {
-            float numRocks = numRocksPerVolley;
+        IEnumerator RockSpawner(GameObject emiter, float timeSinceGameBegan, float deltaTime) {
+            float nextRockSpawn = timeSinceGameBegan + Random.Range(0, rockVolleyBaseInterval);
+            while (!hasEnded) {
+                if (Time.time >= nextRockSpawn) {
+                    float height = emiter.transform.position.y + Random.Range(-rockSpawnHeightVariance, rockSpawnHeightVariance);
+                    GameObject rockObject = Instantiate(rockPrefab, new Vector2(emiter.transform.position.x, height), Quaternion.identity);
+                    SpaceRock rock = rockObject.GetComponent<SpaceRock>();
+                    float speed = rockSpeed* (1- Random.Range(-rockSpeedVariance, rockSpeedVariance));
+                    float angle = rockAngleOffset + Random.Range(-rockAngleVariance, rockAngleVariance);
+                    float scale = rockBaseSize * (1 + Random.Range(0, rockSizeIncreaseVariance));
+                    bool sound = Random.Range(0, 100) < rockSoundChance;
+                    rock.SetupRock(speed, angle, scale, sound);
+                    nextRockSpawn = Time.time + rockVolleyBaseInterval / (GetCurrentRockRate(hazardBeganTime - Time.time) * (1 - Random.Range(-rockVolleyIntervalVariance, rockVolleyIntervalVariance)));
+                }
+                yield return null;
+            }
+        }
+
+        float GetCurrentRockRate(float timeSinceGameBegan) {
+            float currentRockRate = baseRockRate;
             if (rockSwellActive) {
-                numRocks = Mathf.Floor(currentSwellStrength*numRocks);
+                currentRockRate = Mathf.Floor(currentSwellStrength*currentRockRate);
             }
             if (timeSinceGameBegan > firstExtraRockAddedTime)
             {
-                numRocks += 1;
+                currentRockRate += 1;
             }
 
             if (timeSinceGameBegan > secondExtraRockAddedTime)
             {
-                numRocks += 1;
+                currentRockRate += 1;
             }
-            rockVolleyStartTime = timeSinceGameBegan;
-            float baseRockInterval = rockVolleyLength / numRocks;
-            for (int i = 0; i < numRocks; i++) {
-                GameObject rockObject = Instantiate(rockPrefab, new Vector2(horizontalSpawnCoordinate, baseRockSpawnHeight), Quaternion.identity);
-                SpaceRock rock = rockObject.GetComponent<SpaceRock>();
-                float speed = rockSpeed* (1- Random.Range(-rockSpeedVariance, rockSpeedVariance));
-                float angle = rockAngleOffset + Random.Range(-rockAngleVariance, rockAngleVariance);
-                float scale = rockBaseSize * (1 + Random.Range(0, rockSizeIncreaseVariance));
-                float height = baseRockSpawnHeight + Random.Range(-rockSpawnHeightVariance, rockSpawnHeightVariance);
-                float launchTime = Mathf.Min(rockVolleyStartTime + (Random.Range(0.75f, 1.25f) * baseRockInterval * i), rockVolleyStartTime + rockVolleyLength);
-                rock.SetupRock(speed, angle, scale, height, launchTime);
-            }
-            
+            return currentRockRate;
         }
-
         void FixedUpdate() {
             if (hazardBeganTime < 0) {
+                return;
+            } else if (hasEnded) {
                 return;
             }
             float deltaTime = Time.fixedDeltaTime;
@@ -200,9 +208,13 @@ namespace SpaceBoat.HazardManagers {
                 rockSwellStartTime = timeSinceStart;
                 Debug.Log("Starting rock swell at " + timeSinceStart);
             }
-            if (timeSinceStart > firstRockSpawnTimer && timeSinceStart < hazardDuration && (rockVolleyStartTime + rockVolleyLength < timeSinceStart)) {
-                Debug.Log("Starting Rock Volley. Time since game began: " + timeSinceStart + " Rock volley start time: " + rockVolleyStartTime + " Rock volley length: " + rockVolleyLength);
-                handleRockSpawning (timeSinceStart, deltaTime);
+
+            if (timeSinceStart > firstRockSpawnTimer && !rocksStarted) {
+                Debug.Log("Starting Rock Volley. Time since game began: " + timeSinceStart + " Rock volley start time: " + rockVolleyStartTime + " Rock volley length: " + rockVolleyBaseInterval);
+                foreach (GameObject emiter in rockEmiters) {
+                    StartCoroutine(RockSpawner(emiter, timeSinceStart, deltaTime));
+                }
+                rocksStarted = true;
             } 
         }
 
@@ -212,6 +224,12 @@ namespace SpaceBoat.HazardManagers {
             hazardBeganTime = Time.time;
             meteorSoundDuration = SoundManager.Instance.Length("MeteorWhoosh_0");
             nextSwellTime = hazardBeganTime + firstSwellTimer;
+        }
+
+        void Start() {
+            if (testMode) {
+                StartHazard();
+            }
         }
     }
 }
