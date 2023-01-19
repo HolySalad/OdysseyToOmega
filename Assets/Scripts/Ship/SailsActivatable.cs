@@ -29,6 +29,15 @@ namespace SpaceBoat.Ship {
 
         private Player player;
 
+        private List<UsageCallback> usageCallbacks = new List<UsageCallback>();
+        private List<UsageCallback> deactivationCallbacks = new List<UsageCallback>();
+        public void AddActivationCallback(UsageCallback callback) {
+            usageCallbacks.Add(callback);
+        }
+        public void AddDeactivationCallback(UsageCallback callback) {
+            deactivationCallbacks.Add(callback);
+        }
+
         void Awake() {
             spriteRenderer = GetComponent<SpriteRenderer>();
             if (repairedSprite == null) {
@@ -60,6 +69,9 @@ namespace SpaceBoat.Ship {
             this.player = player;
             isInUse = true;
             timeBeganRepairing = Time.time;
+            foreach (UsageCallback callback in usageCallbacks) {
+                callback();
+            }
         }
 
         public bool IsOnCooldown() {
@@ -73,6 +85,9 @@ namespace SpaceBoat.Ship {
 
         public void Deactivate(Player player) {
             isInUse = false;
+            foreach (UsageCallback callback in deactivationCallbacks) {
+                callback();
+            }
         }
 
         public bool ActivationCondition(Player player) {

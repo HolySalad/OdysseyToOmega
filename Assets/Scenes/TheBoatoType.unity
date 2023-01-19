@@ -166,6 +166,7 @@ GameObject:
   - component: {fileID: 8088733}
   - component: {fileID: 8088732}
   - component: {fileID: 8088731}
+  - component: {fileID: 8088734}
   m_Layer: 9
   m_Name: main_top_right
   m_TagString: Activatable
@@ -286,6 +287,26 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &8088734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8088729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb6d406bc9b331140aa8a914b8731efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  helpPrompt:
+    promptLabel: repairSail
+    priority: 2
+    duration: 0
+    text: Press F to repair the sails.
+    color: {r: 1, g: 0.88550174, b: 0, a: 0}
+    TriggerOnlyOnce: 0
+  requireUsableActivatable: 1
 --- !u!1 &46526371
 GameObject:
   m_ObjectHideFlags: 0
@@ -1584,9 +1605,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 601514397847145179, guid: 1867d33c320fca94a9e5fee0301a56d1, type: 3}
-      propertyPath: m_Enabled
-      value: 0
+    - target: {fileID: 601514397847145177, guid: 1867d33c320fca94a9e5fee0301a56d1, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 248
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
@@ -3211,6 +3232,26 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8591714344208283582, guid: 9e1ecdf655223c041a11e61b32df22a7, type: 3}
   m_PrefabInstance: {fileID: 1971791212}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &679951944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 679951939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb6d406bc9b331140aa8a914b8731efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  helpPrompt:
+    promptLabel: repairSail
+    priority: 2
+    duration: 0
+    text: Press F to repair the sails.
+    color: {r: 1, g: 0.88550174, b: 0, a: 0}
+    TriggerOnlyOnce: 0
+  requireUsableActivatable: 1
 --- !u!1 &721949163
 GameObject:
   m_ObjectHideFlags: 0
@@ -3497,7 +3538,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 1
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.6922027}
+  m_Offset: {x: 0, y: -0.83700013}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -3508,7 +3549,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 77.14893, y: 1.9873445}
+  m_Size: {x: 77.14893, y: 1.6977496}
   m_EdgeRadius: 0
 --- !u!1 &768430753
 GameObject:
@@ -3834,6 +3875,7 @@ GameObject:
   - component: {fileID: 869351015}
   - component: {fileID: 869351014}
   - component: {fileID: 869351016}
+  - component: {fileID: 869351017}
   m_Layer: 9
   m_Name: BackSail
   m_TagString: Activatable
@@ -3954,6 +3996,26 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 11.771428, y: 8.073502}
   m_EdgeRadius: 0
+--- !u!114 &869351017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 869351012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb6d406bc9b331140aa8a914b8731efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  helpPrompt:
+    promptLabel: repairSail
+    priority: 2
+    duration: 0
+    text: Press F to repair the sails.
+    color: {r: 1, g: 0.88550174, b: 0, a: 0}
+    TriggerOnlyOnce: 0
+  requireUsableActivatable: 1
 --- !u!1 &876923519
 GameObject:
   m_ObjectHideFlags: 0
@@ -4102,6 +4164,26 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8479361921048703374, guid: 9e1ecdf655223c041a11e61b32df22a7, type: 3}
   m_PrefabInstance: {fileID: 1971791212}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &878225555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 878225550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb6d406bc9b331140aa8a914b8731efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  helpPrompt:
+    promptLabel: repairSail
+    priority: 2
+    duration: 0
+    text: Press F to repair the sails.
+    color: {r: 1, g: 0.88550174, b: 0, a: 0}
+    TriggerOnlyOnce: 0
+  requireUsableActivatable: 1
 --- !u!1 &890358375
 GameObject:
   m_ObjectHideFlags: 0
@@ -4405,6 +4487,7 @@ GameObject:
   - component: {fileID: 904344880}
   - component: {fileID: 904344879}
   - component: {fileID: 904344878}
+  - component: {fileID: 904344881}
   m_Layer: 9
   m_Name: BackSail (1)
   m_TagString: Activatable
@@ -4525,6 +4608,26 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &904344881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 904344876}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb6d406bc9b331140aa8a914b8731efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  helpPrompt:
+    promptLabel: repairSail
+    priority: 2
+    duration: 0
+    text: Press F to repair the sails.
+    color: {r: 1, g: 0.88550174, b: 0, a: 0}
+    TriggerOnlyOnce: 0
+  requireUsableActivatable: 1
 --- !u!1 &975712314
 GameObject:
   m_ObjectHideFlags: 0
@@ -4909,7 +5012,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 1
   m_UsedByComposite: 0
-  m_Offset: {x: -0.23571587, y: -0.37040997}
+  m_Offset: {x: -0.23571587, y: -0.5173448}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -4920,7 +5023,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 12.337078, y: 5.2804565}
+  m_Size: {x: 12.337078, y: 4.986587}
   m_EdgeRadius: 0
 --- !u!50 &1028896845
 Rigidbody2D:
@@ -5560,6 +5663,7 @@ GameObject:
   - component: {fileID: 1124481455}
   - component: {fileID: 1124481458}
   - component: {fileID: 1124481457}
+  - component: {fileID: 1124481459}
   m_Layer: 9
   m_Name: FrontSail
   m_TagString: Activatable
@@ -5680,6 +5784,26 @@ MonoBehaviour:
   targettingCooldown: 30
   targetFlagTimeout: 10
   breakOnStart: 0
+--- !u!114 &1124481459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1124481454}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb6d406bc9b331140aa8a914b8731efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  helpPrompt:
+    promptLabel: repairSail
+    priority: 2
+    duration: 0
+    text: Press F to repair the sails.
+    color: {r: 1, g: 0.88550174, b: 0, a: 0}
+    TriggerOnlyOnce: 0
+  requireUsableActivatable: 1
 --- !u!1 &1137045895
 GameObject:
   m_ObjectHideFlags: 0
@@ -5957,6 +6081,8 @@ Transform:
   - {fileID: 1642008841}
   - {fileID: 1479802219}
   - {fileID: 799961840}
+  - {fileID: 1262542354}
+  - {fileID: 1619471320}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6246,6 +6372,110 @@ Transform:
   m_Father: {fileID: 1137045896}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1250439862 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2928727377157875319, guid: 3a99b2bde1ce4ff429d268a3887f11a9, type: 3}
+  m_PrefabInstance: {fileID: 1374165532}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1250439866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1250439862}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb6d406bc9b331140aa8a914b8731efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  helpPrompt:
+    promptLabel: harpoonLauncher
+    priority: 1
+    duration: 0
+    text: Press F to use the Harpoon Launcher
+    color: {r: 1, g: 0.8820387, b: 0, a: 0}
+    TriggerOnlyOnce: 0
+  requireUsableActivatable: 1
+--- !u!1 &1262542353
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1262542354}
+  - component: {fileID: 1262542356}
+  - component: {fileID: 1262542355}
+  m_Layer: 0
+  m_Name: WalkTutorial
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1262542354
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1262542353}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -52.81, y: -0.21, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1229047327}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1262542355
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1262542353}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb6d406bc9b331140aa8a914b8731efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  helpPrompt:
+    promptLabel: MovementTutorial
+    priority: 1
+    duration: 0
+    text: Use A and D to Move.
+    color: {r: 1, g: 0.8926479, b: 0, a: 0}
+    TriggerOnlyOnce: 1
+  requireUsableActivatable: 0
+--- !u!61 &1262542356
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1262542353}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -3.2210827, y: 1.7344303}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 16.07893, y: 10.840237}
+  m_EdgeRadius: 0
 --- !u!1 &1264056769 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7632757826552635357, guid: 9e1ecdf655223c041a11e61b32df22a7, type: 3}
@@ -6652,6 +6882,7 @@ GameObject:
   - component: {fileID: 1361564858}
   - component: {fileID: 1361564861}
   - component: {fileID: 1361564860}
+  - component: {fileID: 1361564862}
   m_Layer: 14
   m_Name: kitchen
   m_TagString: Activatable
@@ -6765,6 +6996,26 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 10.851064, y: 6.12766}
   m_EdgeRadius: 0
+--- !u!114 &1361564862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1361564857}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb6d406bc9b331140aa8a914b8731efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  helpPrompt:
+    promptLabel: kitchenHelp;
+    priority: 4
+    duration: 0
+    text: Press F to eat and restore health.
+    color: {r: 1, g: 0.930903, b: 0, a: 0}
+    TriggerOnlyOnce: 0
+  requireUsableActivatable: 1
 --- !u!1 &1362138320 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4046304174430004083, guid: 9e1ecdf655223c041a11e61b32df22a7, type: 3}
@@ -6791,6 +7042,26 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3021673151280228200, guid: 9e1ecdf655223c041a11e61b32df22a7, type: 3}
   m_PrefabInstance: {fileID: 1971791212}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1362177572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1362177567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb6d406bc9b331140aa8a914b8731efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  helpPrompt:
+    promptLabel: repairSail
+    priority: 2
+    duration: 0
+    text: Press F to repair the sails.
+    color: {r: 1, g: 0.88550174, b: 0, a: 0}
+    TriggerOnlyOnce: 0
+  requireUsableActivatable: 1
 --- !u!1001 &1374165532
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6862,6 +7133,7 @@ GameObject:
   - component: {fileID: 1385699948}
   - component: {fileID: 1385699947}
   - component: {fileID: 1385699946}
+  - component: {fileID: 1385699949}
   m_Layer: 9
   m_Name: main_top_left
   m_TagString: Activatable
@@ -6982,6 +7254,26 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1385699949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1385699944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb6d406bc9b331140aa8a914b8731efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  helpPrompt:
+    promptLabel: repairSail
+    priority: 2
+    duration: 0
+    text: Press F to repair the sails.
+    color: {r: 1, g: 0.88550174, b: 0, a: 0}
+    TriggerOnlyOnce: 0
+  requireUsableActivatable: 1
 --- !u!1 &1415179311
 GameObject:
   m_ObjectHideFlags: 0
@@ -7223,6 +7515,7 @@ GameObject:
   - component: {fileID: 1418640283}
   - component: {fileID: 1418640282}
   - component: {fileID: 1418640281}
+  - component: {fileID: 1418640284}
   m_Layer: 9
   m_Name: main_bottom_right
   m_TagString: Activatable
@@ -7343,6 +7636,26 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1418640284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1418640279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb6d406bc9b331140aa8a914b8731efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  helpPrompt:
+    promptLabel: repairSail
+    priority: 2
+    duration: 0
+    text: Press F to repair the sails.
+    color: {r: 1, g: 0.88550174, b: 0, a: 0}
+    TriggerOnlyOnce: 0
+  requireUsableActivatable: 1
 --- !u!1 &1428258506
 GameObject:
   m_ObjectHideFlags: 0
@@ -7756,6 +8069,85 @@ BoxCollider2D:
   m_AutoTiling: 0
   serializedVersion: 2
   m_Size: {x: 15.711052, y: 6.2797008}
+  m_EdgeRadius: 0
+--- !u!1 &1619471319
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1619471320}
+  - component: {fileID: 1619471322}
+  - component: {fileID: 1619471321}
+  m_Layer: 0
+  m_Name: JumpTutorial
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1619471320
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1619471319}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -24.19, y: -4.62, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1229047327}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1619471321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1619471319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb6d406bc9b331140aa8a914b8731efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  helpPrompt:
+    promptLabel: JumpTutorial
+    priority: 1
+    duration: 0
+    text: Press W or Space to Jump
+    color: {r: 1, g: 0.8926479, b: 0, a: 0}
+    TriggerOnlyOnce: 1
+  requireUsableActivatable: 0
+--- !u!61 &1619471322
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1619471319}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 5.4661293, y: 1.995697}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 35.80475, y: 5.614855}
   m_EdgeRadius: 0
 --- !u!1 &1622292362
 GameObject:
@@ -9316,6 +9708,26 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4173104412043908607, guid: 9e1ecdf655223c041a11e61b32df22a7, type: 3}
   m_PrefabInstance: {fileID: 1971791212}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1788339018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1788339013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb6d406bc9b331140aa8a914b8731efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  helpPrompt:
+    promptLabel: repairSail
+    priority: 2
+    duration: 0
+    text: Press F to repair the sails.
+    color: {r: 1, g: 0.88550174, b: 0, a: 0}
+    TriggerOnlyOnce: 0
+  requireUsableActivatable: 1
 --- !u!1 &1789294961
 GameObject:
   m_ObjectHideFlags: 0
@@ -9679,6 +10091,7 @@ GameObject:
   - component: {fileID: 1828708153}
   - component: {fileID: 1828708152}
   - component: {fileID: 1828708151}
+  - component: {fileID: 1828708154}
   m_Layer: 9
   m_Name: main_bottom_left
   m_TagString: Activatable
@@ -9799,6 +10212,26 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1828708154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1828708149}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb6d406bc9b331140aa8a914b8731efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  helpPrompt:
+    promptLabel: repairSail
+    priority: 2
+    duration: 0
+    text: Press F to repair the sails.
+    color: {r: 1, g: 0.88550174, b: 0, a: 0}
+    TriggerOnlyOnce: 0
+  requireUsableActivatable: 1
 --- !u!1 &1834934425
 GameObject:
   m_ObjectHideFlags: 0
@@ -9912,9 +10345,69 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 172426300997684343, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.23810431
+      objectReference: {fileID: 0}
+    - target: {fileID: 172426300997684343, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.9712396
+      objectReference: {fileID: 0}
+    - target: {fileID: 1378641586103522212, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.16904813
+      objectReference: {fileID: 0}
+    - target: {fileID: 1378641586103522212, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.98560786
+      objectReference: {fileID: 0}
+    - target: {fileID: 1581833263608698499, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.52
+      objectReference: {fileID: 0}
     - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
       propertyPath: groundCheckDistance
-      value: 0.15
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: criticalHealthPrompt.text
+      value: Health critical! Restore your health in the Kitchen.
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: criticalHealthPrompt.color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: criticalHealthPrompt.color.g
+      value: 0.063871056
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: criticalHealthPrompt.color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: criticalHealthPrompt.priority
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: criticalHealthPrompt.promptLabel
+      value: criticalHealth
+      objectReference: {fileID: 0}
+    - target: {fileID: 2876327340956515682, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.99363095
+      objectReference: {fileID: 0}
+    - target: {fileID: 2876327340956515682, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.11268322
+      objectReference: {fileID: 0}
+    - target: {fileID: 3969122509364859327, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.99893063
+      objectReference: {fileID: 0}
+    - target: {fileID: 3969122509364859327, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.046234235
       objectReference: {fileID: 0}
     - target: {fileID: 7691977599830055013, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
       propertyPath: m_Name
@@ -9926,11 +10419,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8824659482642120710, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -59.32
       objectReference: {fileID: 0}
     - target: {fileID: 8824659482642120710, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 1.11
       objectReference: {fileID: 0}
     - target: {fileID: 8824659482642120710, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
       propertyPath: m_LocalPosition.z

@@ -4,6 +4,7 @@ using UnityEngine;
 using SpaceBoat.Items;
 using SpaceBoat.HazardManagers;
 using SpaceBoat.Ship;
+using SpaceBoat.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Playables;
 
@@ -42,11 +43,14 @@ namespace SpaceBoat {
         [Header("Enemy Prefabs")] 
         [SerializeField] public GameObject hydraPrefab;
 
+        [Header("Help Prompts")]
+        [SerializeField] public HelpPrompt criticalShipPrompt;
+
 
         public Player player {get; private set;}
         public SoundManager sound {get; private set;}
 
-        public UI.HelpPrompts helpPrompts {get; private set;}
+        public UI.HelpPromptsManager helpPrompts {get; private set;}
 
         public float GameBeganTime {get; private set;}
         public int lastSurvivingSailCount {get; private set;}
@@ -178,7 +182,7 @@ namespace SpaceBoat {
 
             // Find the playerCharacter 
             player = FindObjectOfType<Player>();
-            helpPrompts = FindObjectOfType<UI.HelpPrompts>();
+            helpPrompts = FindObjectOfType<UI.HelpPromptsManager>();
 
             GameBeganTime = Time.time;
             lastSurvivingSailCount = shipSails.Count;
@@ -278,7 +282,8 @@ namespace SpaceBoat {
                 if (!sound.IsPlaying("ShipLowHP")) {
                     sound.Play("ShipLowHP");
                 }
-                helpPrompts.DisplayPromptWithDeactivationCondition(helpPrompts.criticalShipPrompt, () => {
+                helpPrompts.AddPrompt(criticalShipPrompt);
+                /*() => {
                      int num_surviving_sails = 0;
                     foreach (GameObject sail in shipSails) {
                         if (sail.GetComponent<Ship.SailsActivatable>().isBroken == false) {
@@ -287,6 +292,7 @@ namespace SpaceBoat {
                     }
                     return (num_surviving_sails > 1);
                 });
+                */
             } else if (num_surviving_sails > 1) {
                 if (sound.IsPlaying("ShipLowHP")) {
                     sound.Stop("ShipLowHP");

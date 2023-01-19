@@ -4,6 +4,7 @@ using UnityEngine;
 using SpaceBoat.Items;
 using SpaceBoat.Ship;
 using SpaceBoat.PlayerStates;
+using SpaceBoat.UI;
 
 namespace SpaceBoat {
     public enum PlayerStateName {ready, working, hitstun, aiming, ladder, nullState};
@@ -13,6 +14,9 @@ namespace SpaceBoat {
         [SerializeField] private GameObject playerCamera;
         [SerializeField] private int invincibilityFrames = 50;
         [SerializeField] public int maxHealth = 3;
+
+        [Header("Help Prompts")]
+        [SerializeField] private HelpPrompt criticalHealthPrompt;
 
         [Header("Collision Detection Settings")]
         [SerializeField] private float groundCheckDistance = 0.1f;
@@ -526,7 +530,7 @@ namespace SpaceBoat {
             if (activatable.usageAnimation != "") {
                 animator.SetBool(activatable.usageAnimation, true);
             }
-            if (activatable.usageSound != "") {
+            if (activatable.usageSound != null && activatable.usageSound != "") {
                 game.sound.Play(activatable.usageSound);
             }
             ChangeState(activatable.playerState);
@@ -609,7 +613,8 @@ namespace SpaceBoat {
                 DetatchFromActivatable();
             }
             if (health == 1) {
-                game.helpPrompts.DisplayPromptWithDeactivationCondition(game.helpPrompts.criticalPlayerPrompt, () => { return health > 1; });
+                game.helpPrompts.AddPrompt(criticalHealthPrompt);
+                //() => { return health > 1; });
             }
             
         }

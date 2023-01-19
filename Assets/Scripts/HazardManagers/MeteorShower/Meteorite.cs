@@ -11,9 +11,11 @@ namespace SpaceBoat.HazardManagers {
 
         private GameObject target;
         private Destructable destructable;
+        private Rigidbody2D rb;
 
         public void Awake() {
             destructable = GetComponent<Destructable>();
+            rb = GetComponent<Rigidbody2D>();
         }
 
         public void SetupMeteor(float speed, Vector3 startingPosition, GameObject targetSail, float soundTime) {
@@ -30,12 +32,21 @@ namespace SpaceBoat.HazardManagers {
             StartCoroutine(FireMeteor(launchDelay));
         }
 
+        IEnumerator UpdateVelocity() {
+            while (true) {
+                Vector3 targetVector = target.transform.position - transform.position;
+                if (targetVector.magnitude < 0.3f) yield break;
+                velocity = new Vector2(targetVector.normalized.x, targetVector.normalized.y);
+                rb.velocity = velocity;
+                yield return null;
+            }
+        }
+
         public IEnumerator FireMeteor(float timeToTarget) {
             Debug.Log("Meteor launch in "+timeToTarget);
             yield return new WaitForSeconds(timeToTarget);
             Debug.Log("Meteor launched");
-            Rigidbody2D rb = GetComponent<Rigidbody2D>();
-            rb.velocity = velocity;
+            StartCoroutine(UpdateVelocity());
         }
 
         void OnTriggerEnter2D(Collider2D other) {
