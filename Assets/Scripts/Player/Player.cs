@@ -537,8 +537,8 @@ namespace SpaceBoat {
                 DetatchFromActivatable();
             }
             if (health == 1) {
-                game.helpPrompts.AddPrompt(criticalHealthPrompt);
-                //() => { return health > 1; });
+                game.helpPrompts.AddPrompt(criticalHealthPrompt,
+                () => { return health > 1; });
             }
             
         }
