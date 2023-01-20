@@ -10331,8 +10331,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shipViewTarget: {fileID: 1642008841}
   shipViewSize: 34
-  cameraShiftTime: 1
-  shiftTimeReductionProportion: 0.7
+  cameraShiftTime: 0.8
+  shipViewShiftTimeMultiplier: 2
+  shiftTimeReductionProportion: 0.35
+  pauseFramesOnMovementChange: 1
   cameraXMax: 100
   cameraXMin: -100
   shipViewCameraXMax: -12
