@@ -40,10 +40,10 @@ namespace SpaceBoat.Ship {
             }
         }
         public void Deactivate(Player player) {
+            isInUse = false;
             foreach (UsageCallback callback in deactivationCallbacks) {
                 callback();
             }
-            isInUse = false;
         }
 
         public void Deactivate(Player player, bool internalDeactivation) {

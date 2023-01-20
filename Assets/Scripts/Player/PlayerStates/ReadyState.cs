@@ -56,8 +56,6 @@ namespace SpaceBoat.PlayerStates {
                 jumpLockOut = false;
             }
             player.JumpInput(jumpKeyHeld && !jumpLockOut, jumpKeyDown);
-            player.ItemInput(pickItemDown);
-
             // Camera Toggles
             if (CthulkInput.CameraToggleDown()) {
                 player.cameraControls?.ToggleShipView();

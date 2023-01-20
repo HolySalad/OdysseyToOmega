@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using SpaceBoat.Items;
 using SpaceBoat.Ship;
 using SpaceBoat.PlayerStates;
 using SpaceBoat.UI;
@@ -131,12 +130,6 @@ namespace SpaceBoat {
         private float lastMomentumAppliedTime = 0f;
         //private Dictionary<Environment.MomentumImpartingEffectKind, momentumEntry> momentumEntries = new Dictionary<Environment.MomentumImpartingEffectKind, momentumEntry>();
 
-
-        //item vars
-        public IHeldItems itemInHand {get; private set;}
-        private ItemTypes heldItemType;
-        private bool canPickItems;
-        public GameObject itemUsageTarget;
 
         //activatables
 
@@ -450,75 +443,6 @@ namespace SpaceBoat {
            
         }
 
-        // item functions
-
-
-
-        void PickupItems(GameObject itemObject) {
-            SpriteRenderer render = itemObject.GetComponent<SpriteRenderer>();
-            itemPlace.GetComponent<SpriteRenderer>().sprite = render.sprite;    //make the item a child so it follows the player
-            itemPlace.GetComponent<SpriteRenderer>().transform.localScale = new Vector3(1, 1, 1);
-
-            heldItemType = game.GetItemType(itemObject);
-            Destroy(itemObject);
-            itemInHand = game.CreateItemComponent(this.gameObject, heldItemType);
-            itemInHand.currentlyHeld = true;
-            game.sound.Play("PickItemUp");
-
-            Debug.Log("Picked up " + heldItemType);
-            Debug.Log("Item in hand: " + itemInHand);
-        }
-
-
-        private void CheckForItems(){
-            Collider2D[] colliders = new Collider2D[10];
-            int contacts = playerLocationTrigger.GetContacts(colliders);
-            if (contacts == 0) {return;}
-            foreach(Collider2D collider in colliders){
-                if (collider == null) {continue;}
-                Debug.Log(collider.name);
-                if(collider.gameObject.CompareTag("Collectable")){
-                    PickupItems(collider.gameObject);
-                    return;
-                }
-            }
-        }
-
-        void DropItems(bool destroy) {
-            itemPlace.GetComponent<SpriteRenderer>().sprite = null;
-
-            if (!destroy) {
-                GameObject droppedItem = Instantiate(game.PrefabForItemType(heldItemType), originOverride.position, Quaternion.identity);
-                game.CreateItemComponent(droppedItem, heldItemType);
-            }
-            heldItemType = ItemTypes.None;
-            itemInHand = null;
-            game.sound.Play("DropItem");
-        }
-
-        void DropItems() {
-            DropItems(false);
-        }
-
-        public void ItemInput(bool keyDown) {
-            return;
-            /*
-            if (keyDown) {
-                if (itemInHand != null) {
-                    DropItems();
-                } else if (itemInHand == null) {
-                    CheckForItems();
-                }
-            }
-            */
-        }
-
-
-
-
-
-
-
 
         // activatables 
 
@@ -613,8 +537,8 @@ namespace SpaceBoat {
                 DetatchFromActivatable();
             }
             if (health == 1) {
-                game.helpPrompts.AddPrompt(criticalHealthPrompt);
-                //() => { return health > 1; });
+                game.helpPrompts.AddPrompt(criticalHealthPrompt,
+                () => { return health > 1; });
             }
             
         }
@@ -704,7 +628,6 @@ namespace SpaceBoat {
         void animatorUpdate() {
             if (currentPlayerStateName == PlayerStateName.ready) {
                 animator.SetFloat("Speed", Mathf.Abs(currentWalkingSpeed));
-                animator.SetBool("HoldingObject", (itemInHand != null));
             } else {
                 animator.SetFloat("Speed", 0);
                 animator.SetBool("HoldingObject", false);

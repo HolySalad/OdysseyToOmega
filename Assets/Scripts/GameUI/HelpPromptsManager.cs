@@ -12,19 +12,16 @@ namespace SpaceBoat.UI {
         public string text;
         public Color color;
         public bool TriggerOnlyOnce;
-        CustomPromptEndCondition endCondition;
+        public CustomPromptEndCondition endCondition;
     }
 
     public class HelpPromptsManager : MonoBehaviour
     {
         [SerializeField] private float promptFadeTime = 0.25f;
-        public delegate bool CustomPromptEndCondition();
 
         private float currentDuration = 0;
-        private bool isFadingOut = false;
-        private bool isFadingIn = false;
-        private bool isBlank = false;
-        private string currentPrompt = "";
+        public string currentDisplayedPrompt = "";
+        public string currentTargetPrompt = "";
         private List<HelpPrompt> prompts = new List<HelpPrompt>();
         private Dictionary<string, bool> triggeredPrompts = new Dictionary<string, bool>();
         
@@ -32,87 +29,94 @@ namespace SpaceBoat.UI {
 
         void Start() {
             textElement = GetComponent<TextMeshPro>();
+            textElement.color = new Color(textElement.color.r, textElement.color.g, textElement.color.b, 0);
+            StartCoroutine(transitionRoutine());
         }
 
         IEnumerator transitionRoutine() {
-            isFadingOut = true;
-            float opacityIncrement = 1 / promptFadeTime;
-            while (textElement.color.a > 0) {
-                float newOpacity = Mathf.Min(1, textElement.color.a - (opacityIncrement * Time.deltaTime));
-                textElement.color = new Color(textElement.color.r, textElement.color.g, textElement.color.b, newOpacity);
+            while (true) {    
+                float opacityIncrement = 1 / promptFadeTime;
+                bool isBlank = currentTargetPrompt == "";
+                bool isDifferent = currentDisplayedPrompt != currentTargetPrompt;
+                if ((isBlank || isDifferent) && textElement.color.a > 0) {
+                    Debug.Log("Current displayed prompt "+ currentDisplayedPrompt + " is different from target " + (isBlank ? "Blank" : currentTargetPrompt) + ". Fading out.");
+                    while (textElement.color.a > 0) {
+                        float newOpacity = Mathf.Min(1, textElement.color.a - (opacityIncrement * Time.deltaTime));
+                        textElement.color = new Color(textElement.color.r, textElement.color.g, textElement.color.b, newOpacity);
+                        yield return null;
+                    }
+                }
+                if (!isBlank && isDifferent) {
+                    HelpPrompt targetPrompt = prompts.Find(p => p.promptLabel == currentTargetPrompt);
+                    if (targetPrompt == null) {
+                        Debug.LogError("Prompt transition coroutine could not find prompt with label " + currentTargetPrompt + ".");
+                        yield break;
+                    }
+                    Debug.Log("Current target prompt " + currentTargetPrompt + " is different from displayed " + (currentDisplayedPrompt == "" ? "Blank" : currentDisplayedPrompt)  + ". Fading in.");
+                    currentDisplayedPrompt = currentTargetPrompt;
+                    textElement.text = targetPrompt.text;
+                    currentDuration = targetPrompt.duration;
+                    textElement.color = new Color(targetPrompt.color.r, targetPrompt.color.g, targetPrompt.color.b, textElement.color.a);
+                    if (targetPrompt.TriggerOnlyOnce) {
+                        triggeredPrompts[targetPrompt.promptLabel] = true;
+                    }
+                    bool PromptHasChanged = false;
+                    while (textElement.color.a < 1 && !PromptHasChanged) {
+                        float newOpacity = Mathf.Min(1, textElement.color.a + (opacityIncrement * Time.deltaTime));
+                        textElement.color = new Color(textElement.color.r, textElement.color.g, textElement.color.b, newOpacity);
+                        yield return null;
+                        PromptHasChanged = currentDisplayedPrompt != currentTargetPrompt;
+                    }
+                } 
                 yield return null;
-            }
-            isFadingOut = false;
-            if (!isBlank) {
-                isFadingIn = true;
-                HelpPrompt targetPrompt = prompts.Find(p => p.promptLabel == currentPrompt);
-                if (targetPrompt == null) {
-                    Debug.LogWarning("Prompt transition coroutine could not find prompt with label " + currentPrompt + ".");
-                    isFadingOut = false;
-                    yield break;
-                }
-                textElement.text = targetPrompt.text;
-                currentDuration = targetPrompt.duration;
-                textElement.color = new Color(targetPrompt.color.r, targetPrompt.color.g, targetPrompt.color.b, 0);
-                if (targetPrompt.TriggerOnlyOnce) {
-                    triggeredPrompts[targetPrompt.promptLabel] = true;
-                }
-                while (textElement.color.a < 1) {
-                    float newOpacity = Mathf.Min(1, textElement.color.a + (opacityIncrement * Time.deltaTime));
-                    textElement.color = new Color(textElement.color.r, textElement.color.g, textElement.color.b, newOpacity);
-                    yield return null;
-                }
-                isFadingIn = false;
             }
         }
 
-        void StopTransition() {
-            isFadingIn = false;
-            isFadingOut = false;
-            StopCoroutine(transitionRoutine());
-        }
 
         void CheckPromptTargetting() {
             if (prompts.Count == 0) {
-                currentPrompt = "";
-                isBlank = true;
-                if (isFadingIn) StopTransition();
-                if (textElement.color.a > 0 && !isFadingOut) StartCoroutine(transitionRoutine());
+                if (currentTargetPrompt != "") {
+                    Debug.Log("No prompts left. Clearing.");
+                    currentTargetPrompt = "";
+                }
                 return;
             }
-            HelpPrompt originalTargetPrompt = prompts.Find(p => p.promptLabel == currentPrompt);
+            HelpPrompt originalTargetPrompt = prompts.Find(p => p.promptLabel == currentTargetPrompt);
+            if (originalTargetPrompt != null && originalTargetPrompt.endCondition != null && originalTargetPrompt.endCondition() == true) {
+                Debug.Log("Prompt " + originalTargetPrompt.promptLabel + " has ended by delegate condition.");
+                RemovePrompt(originalTargetPrompt);
+                originalTargetPrompt = null;
+            }
             int currentPromptPriority = originalTargetPrompt == null ? -1 : originalTargetPrompt.priority;
-            string existingPromptLabel = currentPrompt;
+            string newTargetPrompt = currentTargetPrompt;
             foreach (HelpPrompt prompt in prompts) {
                 bool higherPriority = prompt.priority > currentPromptPriority;
                 bool canTrigger = !prompt.TriggerOnlyOnce || (triggeredPrompts[prompt.promptLabel] == false);
                 if (higherPriority && canTrigger) {
-                    currentPrompt = prompt.promptLabel;
+                    newTargetPrompt = prompt.promptLabel;
                     currentPromptPriority = prompt.priority;
                 }
             }
-            if (currentPromptPriority == -1 && !isBlank) {
-                currentPrompt = "";
-                isBlank = true;
-                if (isFadingIn) StopTransition();
-                if (!isFadingOut) StartCoroutine(transitionRoutine());
+            if (currentPromptPriority == -1 && currentTargetPrompt != "") {
+                Debug.Log("No prompts left. Clearing.");
+                currentTargetPrompt = "";
+                return;
             }
-            if (currentPrompt != existingPromptLabel) {
-                isBlank = false;
-                if (!isFadingOut) {
-                    if (isFadingIn) StopTransition();
-                    StartCoroutine(transitionRoutine());
-                }
+            if (currentTargetPrompt != newTargetPrompt) {
+                Debug.Log("Prompt changed from " + currentTargetPrompt + " to " + newTargetPrompt + ".");
+                currentTargetPrompt = newTargetPrompt;
+                return;
             }
         }
 
 
         void OnGUI() {
-            if (currentPrompt != "" && !isFadingIn && currentDuration > 0) {
+            if (currentDisplayedPrompt != "" && currentDuration > 0) {
                 currentDuration -= Time.deltaTime;
                 if (currentDuration <= 0) {
                     currentDuration = 0;
-                    RemovePrompt(prompts.Find(p => p.promptLabel == currentPrompt));
+                    Debug.Log("Prompt " + currentDisplayedPrompt + " has ended by duration.");
+                    RemovePrompt(prompts.Find(p => p.promptLabel == currentDisplayedPrompt));
                 }
             }
             CheckPromptTargetting();
@@ -141,16 +145,20 @@ namespace SpaceBoat.UI {
             CheckPromptTargetting();
         }
 
+        public void AddPrompt(HelpPrompt prompt, CustomPromptEndCondition endCondition) {
+            prompt.endCondition = endCondition;
+            AddPrompt(prompt);
+        }
+
         public void RemovePrompt(HelpPrompt prompt) {
             if (!prompts.Contains(prompt)) {
                 Debug.LogWarning("Prompt with label " + prompt.promptLabel + " does not exist. Ignoring.");
                 return;
             }
             prompts.Remove(prompt);
-            if (currentPrompt == prompt.promptLabel) {
-                currentPrompt = "";
+            if (currentTargetPrompt == prompt.promptLabel) {
+                currentTargetPrompt = "";
                 CheckPromptTargetting();
-                StartCoroutine(transitionRoutine());
             }
         }
     }

@@ -30,6 +30,7 @@ namespace SpaceBoat {
         private float currentCameraMovementOriginX = 0f;
 
         private float cameraMovementTargetEndTime = 0f;
+        private float currentTargetTransitionDuration = 0f;
         private bool inShipViewTransition = false;
 
         void Start() {
@@ -113,6 +114,7 @@ namespace SpaceBoat {
                 changeProportion = (requiredChangeY/diffY >= requiredChangeSize/diffSize) ? requiredChangeY/diffY : requiredChangeSize/diffSize;
 
             float cameraMovementDuration = (cameraShiftTime*(1-shiftTimeReductionProportion)) + (changeProportion * cameraShiftTime * shiftTimeReductionProportion);
+            currentTargetTransitionDuration = cameraMovementDuration;
             cameraMovementTargetEndTime = Time.time + cameraMovementDuration;
             Debug.Log("Camera movement duration " + cameraMovementDuration + " target end time: " + cameraMovementTargetEndTime);
             //set movement origins and targets
@@ -136,7 +138,7 @@ namespace SpaceBoat {
         void MoveAndResizeCamera() {
 
 
-            float percentageMovementComplete = 1 - Mathf.Max((cameraMovementTargetEndTime - Time.time) / cameraShiftTime, 0);
+            float percentageMovementComplete = 1 - Mathf.Max((cameraMovementTargetEndTime - Time.time) / currentTargetTransitionDuration, 0);
             if (percentageMovementComplete == 1) {
                 inShipViewTransition = false;
                 transform.position = new Vector3(cameraTargetX, cameraTargetY, transform.position.z);

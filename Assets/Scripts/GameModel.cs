@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using SpaceBoat.Items;
 using SpaceBoat.HazardManagers;
 using SpaceBoat.Ship;
 using SpaceBoat.UI;
@@ -11,10 +10,7 @@ using UnityEngine.Playables;
 
 namespace SpaceBoat {
 
-    public enum ItemTypes {ClothItem, FoodItem, HarpoonItem, None};
     public enum ActivatablesNames {HarpoonGun, Kitchen, Ladder, Sails, None};
-
-    public enum HazardProjectiles {Meteor, SpacRock, None}
 
     public class GameModel : MonoBehaviour
     {
@@ -88,44 +84,6 @@ namespace SpaceBoat {
         }
 
     
-        //item management
-
-        public ItemTypes GetItemType(GameObject item) {
-            if (item.GetComponent<ClothItem>() != null) {
-                return ItemTypes.ClothItem;
-            } else if (item.GetComponent<FoodItem>() != null) {
-                return ItemTypes.FoodItem;
-            } else if (item.GetComponent<HarpoonItem>() != null) {
-                return ItemTypes.HarpoonItem;
-            } else {
-                return ItemTypes.None;
-            }
-        }
-
-        public IHeldItems CreateItemComponent(GameObject target, ItemTypes itemType) {
-            if (itemType == ItemTypes.ClothItem) {
-                return target.AddComponent<ClothItem>();
-            } else if (itemType == ItemTypes.HarpoonItem) {
-                return target.AddComponent<HarpoonItem>();
-            } else if (itemType == ItemTypes.FoodItem) {
-                return target.AddComponent<FoodItem>();
-            }
-            Debug.Log("Unreigstered item type "+ itemType.ToString());
-            return null;
-        }
-
-
-        public GameObject PrefabForItemType(ItemTypes itemType) {
-            if (itemType == ItemTypes.ClothItem) {
-                return clothPrefab;
-            } else if (itemType == ItemTypes.HarpoonItem) {
-                return harpoonPrefab;
-            } else if (itemType == ItemTypes.FoodItem) {
-                return foodPrefab;
-            }
-            Debug.Log("Unregistered item type " + itemType.ToString());
-            return null;
-        }
 
         //hazard management
         public IHazardManager CreateHazardManager(string hazardManagerType) {
@@ -231,8 +189,7 @@ namespace SpaceBoat {
             StartCoroutine(GameOver());
         }
 
-        private bool hydraRanOnce = false;
-        public bool demoSceneReadyExit = false;
+
 
         void CheckHazardProgress() {
             if (currentHazardManager == null || currentHazardManager.hasEnded) {
@@ -241,29 +198,8 @@ namespace SpaceBoat {
                     currentHazardManager = null;
                 }
                 //new hazard or enemy.
-                                //TODO replace this, for now it is the demo hydra
-                if (!hydraRanOnce) {
-                    hydraRanOnce = true;
-                    GameObject hydra = Instantiate(hydraPrefab, new Vector3(70, 5, 0), Quaternion.identity);
-                    StartCoroutine(MoveHydra(hydra));
-                }
-            }
-        }
 
-        IEnumerator MoveHydra(GameObject hydra) {
-            //float movePerSecond = 5f;
-            //while (hydra.transform.position.x > 47) {
-                //hydra.transform.position = hydra.transform.position + (Vector3.left * Time.deltaTime * movePerSecond);
-                //yield return new WaitForEndOfFrame();
-            //}
-            yield return new WaitForSeconds(15f);
-
-            Animator hydraAnimator = hydra.GetComponent<Animator>();
-            hydraAnimator.SetTrigger("Appear");
-            while (!demoSceneReadyExit) {
-                yield return null;
             }
-            AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("ToBeContinued");
         }
 
         // check if any sails remain unbroken
@@ -282,8 +218,7 @@ namespace SpaceBoat {
                 if (!sound.IsPlaying("ShipLowHP")) {
                     sound.Play("ShipLowHP");
                 }
-                helpPrompts.AddPrompt(criticalShipPrompt);
-                /*() => {
+                helpPrompts.AddPrompt(criticalShipPrompt, () => {
                      int num_surviving_sails = 0;
                     foreach (GameObject sail in shipSails) {
                         if (sail.GetComponent<Ship.SailsActivatable>().isBroken == false) {
@@ -292,7 +227,6 @@ namespace SpaceBoat {
                     }
                     return (num_surviving_sails > 1);
                 });
-                */
             } else if (num_surviving_sails > 1) {
                 if (sound.IsPlaying("ShipLowHP")) {
                     sound.Stop("ShipLowHP");
