@@ -92,7 +92,7 @@ namespace SpaceBoat {
             }
             Debug.Log("Player camera target changes from " + previousY + " to " + newY + " Y and from " + previousSize + " to " + newSize + " Size");
             // don't change the camera to a higher level until the player is grounded.
-            if (newY > previousY && !player.GetIsGrounded(false) && !inShipViewTransition) {
+            if (newY > previousY && !player.GetIsGrounded(false, true) && !inShipViewTransition) {
                 Debug.Log("Player is not grounded, not adjusting camera.");
                 return;
             }

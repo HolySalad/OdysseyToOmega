@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SpaceBoat.HazardManagers.MeteorShowerSubclasses;
+
 namespace SpaceBoat.HazardManagers {
     public class MeteorShower : MonoBehaviour, IHazardManager
     {

@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SpaceBoat.HazardManagers {
+namespace SpaceBoat.HazardManagers.MeteorShowerSubclasses {
     public class Meteorite : MonoBehaviour
     {
-         [SerializeField] private Sprite[] meteorSprites;
+        [SerializeField] private Sprite[] meteorSprites;
 
-        private Vector2 velocity;
+        private float speed;
 
         private GameObject target;
         private Destructable destructable;
@@ -27,7 +27,7 @@ namespace SpaceBoat.HazardManagers {
             float launchDelay = soundTime - timeToTarget - 0.1f;
             SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
             spriteRenderer.sprite = meteorSprites[Random.Range(0, meteorSprites.Length)];
-            velocity = new Vector2(targetVector.normalized.x*speed, targetVector.normalized.y*speed);
+            this.speed = speed;
             SoundManager.Instance.Oneshot("MeteorWhoosh_0"); 
             StartCoroutine(FireMeteor(launchDelay));
         }
@@ -36,8 +36,7 @@ namespace SpaceBoat.HazardManagers {
             while (true) {
                 Vector3 targetVector = target.transform.position - transform.position;
                 if (targetVector.magnitude < 0.3f) yield break;
-                velocity = new Vector2(targetVector.normalized.x, targetVector.normalized.y);
-                rb.velocity = velocity;
+                rb.velocity = new Vector2(targetVector.normalized.x*speed, targetVector.normalized.y*speed);
                 yield return null;
             }
         }
@@ -69,7 +68,8 @@ namespace SpaceBoat.HazardManagers {
                 GameModel.Instance.player.PlayerTakesDamage();
                 destructable.Destruct();
                 Destroy(this.gameObject);
-            } else if (collision.gameObject.layer == LayerMask.NameToLayer("Ground") && !collision.gameObject.tag.Equals("Platforms")) {
+            } else if (collision.gameObject.layer == LayerMask.NameToLayer("Ground") && !collision.gameObject.tag.Equals("Platforms")
+                && !collision.gameObject.tag.Equals("SpaceRocks")) {
                 destructable.Destruct();
             }
         }
