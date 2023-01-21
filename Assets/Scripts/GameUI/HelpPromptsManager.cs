@@ -20,8 +20,8 @@ namespace SpaceBoat.UI {
         [SerializeField] private float promptFadeTime = 0.25f;
 
         private float currentDuration = 0;
-        public string currentDisplayedPrompt = "";
-        public string currentTargetPrompt = "";
+        private string currentDisplayedPrompt = "";
+        private string currentTargetPrompt = "";
         private List<HelpPrompt> prompts = new List<HelpPrompt>();
         private Dictionary<string, bool> triggeredPrompts = new Dictionary<string, bool>();
         
@@ -148,6 +148,13 @@ namespace SpaceBoat.UI {
         public void AddPrompt(HelpPrompt prompt, CustomPromptEndCondition endCondition) {
             prompt.endCondition = endCondition;
             AddPrompt(prompt);
+        }
+
+        public bool wasPromptDisplayed(string promptLabel, bool isNoLongerDisplayed = false) {
+            if (!triggeredPrompts.ContainsKey(promptLabel)) {
+                return false;
+            }
+            return triggeredPrompts[promptLabel] && (!isNoLongerDisplayed || currentTargetPrompt != promptLabel);
         }
 
         public void RemovePrompt(HelpPrompt prompt) {

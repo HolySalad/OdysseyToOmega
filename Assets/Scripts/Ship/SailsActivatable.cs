@@ -25,7 +25,7 @@ namespace SpaceBoat.Ship {
 
 
         private float timeBeganRepairing = 0;
-        private float lastTargettedTime = 0;
+        private float lastTargettedTime = -99f;
 
         private Player player;
 
@@ -75,7 +75,7 @@ namespace SpaceBoat.Ship {
         }
 
         public bool IsOnCooldown() {
-            return Time.time - lastTargettedTime < targettingCooldown;
+            return Time.time -lastTargettedTime < targettingCooldown;
         }
 
         public void TargetSail() {

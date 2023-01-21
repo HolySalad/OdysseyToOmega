@@ -65,7 +65,7 @@ Transform:
   - {fileID: 7283248847181200330}
   - {fileID: 5815784251928571201}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &-5974397870093916663
 MonoBehaviour:
@@ -80,21 +80,58 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   testMode: 1
-  baseDuration: 120
+  baseDuration: 132
+  meteorPrompts:
+  - promptLabel: MeteorShower1
+    priority: 10
+    duration: 4
+    text: Meteor Shower Incoming!
+    color: {r: 1, g: 0, b: 0, a: 0}
+    TriggerOnlyOnce: 0
+  - promptLabel: MeteorShower2
+    priority: 9
+    duration: 4
+    text: Avoid Hazards and Repair your ship to survive.
+    color: {r: 1, g: 0, b: 0, a: 0}
+    TriggerOnlyOnce: 0
+  earliestAppearence: 0
+  latestAppearence: 10
+  priority: 1
+  escalationLevels:
+  - timeIntoHazard: 0
+    baseNumMeteors: 3
+    meteorIntervalMultiplier: 1
+    rockRateIncrease: 0
+    rockSpeedIncrease: 0
+  - timeIntoHazard: 48
+    baseNumMeteors: 3
+    meteorIntervalMultiplier: 0.8
+    rockRateIncrease: 0
+    rockSpeedIncrease: 0.5
+  - timeIntoHazard: 72
+    baseNumMeteors: 3
+    meteorIntervalMultiplier: 0.66
+    rockRateIncrease: 1
+    rockSpeedIncrease: 1.25
+  - timeIntoHazard: 96
+    baseNumMeteors: 4
+    meteorIntervalMultiplier: 0.5
+    rockRateIncrease: 2
+    rockSpeedIncrease: 1.5
+  - timeIntoHazard: 5
+    baseNumMeteors: 2
+    meteorIntervalMultiplier: 1
+    rockRateIncrease: 0
+    rockSpeedIncrease: 0
   meteorPrefab: {fileID: 189507748417666162, guid: 8ad86b7f340c2764ea7cf973e28b644b, type: 3}
-  firstMeteorSpawnTimer: 8
-  meteorInterval: 24
+  firstMeteorSpawnTimer: 1
+  meteorInterval: 30
   meteorIntervalVariance: 0.2
-  meteorIntervalRampTime: 40
-  meteorIntervalRampRate: 3
-  meteorIntervalNumRamps: 5
-  meteorEaseOffIntervalSails: 3
-  meteorEaseOfIntervalRamp: 10
   fullyRepairedTimerReduction: 0.7
-  meteorSpawnXPos: 15
-  meteorSpawnYPos: 64
+  meteorSpawnXPos: 70
+  meteorSpawnYPos: 55
   meteorSpawnXVariance: 5
-  meteorSpawnYVariance: 3
+  meteorSpawnYVariance: 5
   meteorSpeed: 22
   rockPrefab: {fileID: 189507748417666162, guid: a4f67d1775a9a984e950a805568f14db, type: 3}
   rockEmiters:
@@ -102,17 +139,10 @@ MonoBehaviour:
   - {fileID: 6243599343133029079}
   - {fileID: 1347728577421383755}
   - {fileID: 5279424593327033233}
-  firstRockSpawnTimer: 16
+  firstRockSpawnTimer: 12
   rockVolleyBaseInterval: 8
   rockVolleyIntervalVariance: 0.2
-  peakRockPaceSwell: 2
-  firstSwellTimer: 70
-  swellCycleTime: 60
-  swellCycleRampTime: 40
-  swellCycleMinTime: 30
   baseRockRate: 1
-  firstExtraRockAddedTime: 55
-  secondExtraRockAddedTime: 85
   rockSpeed: 8
   rockSpeedVariance: 0.25
   rockSpawnHeightVariance: 1.5
@@ -120,6 +150,7 @@ MonoBehaviour:
   rockAngleVariance: 3
   rockBaseSize: 2
   rockSizeIncreaseVariance: 1
+  rockSoundChance: 50
 --- !u!1 &5279424593327033233
 GameObject:
   m_ObjectHideFlags: 0

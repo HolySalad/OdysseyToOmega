@@ -10,7 +10,6 @@ namespace SpaceBoat {
     public class Player : MonoBehaviour
     {
         [Header("General Player Settings")]
-        [SerializeField] private GameObject playerCamera;
         [SerializeField] private int invincibilityFrames = 50;
         [SerializeField] public int maxHealth = 3;
 
@@ -131,8 +130,6 @@ namespace SpaceBoat {
         //activatables
 
         public IActivatables activatableInUse {get; private set;}
-
-        public UI.CameraControls cameraControls;
         public float playerCameraXFocusOffset;
 
         void Awake() {
@@ -147,10 +144,6 @@ namespace SpaceBoat {
             //set default values
             health = maxHealth;
 
-            if (playerCamera == null) {
-                playerCamera = GameObject.Find("MainCamera");
-            }
-            cameraControls = playerCamera?.GetComponent<UI.CameraControls>();
 
             //set up player states
             playerStates.Add(PlayerStateName.ready, GetComponent<ReadyState>() ?? gameObject.AddComponent<ReadyState>());
