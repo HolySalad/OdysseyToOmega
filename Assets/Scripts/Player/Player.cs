@@ -37,6 +37,7 @@ namespace SpaceBoat {
         [SerializeField] private int jumpDecayStartFrame = 4;
         [SerializeField] private float halfJumpEarliestFrame = 6;
         [SerializeField] private float gravityAcceleration = 30f;
+        [SerializeField] private float fastfallMultiplier = 2f;
         [SerializeField] private float slipSpeedVertical = 10f;
         [SerializeField] private float gravityTerminalVelocity = 45f;
         [SerializeField] private float jumpHorizontalMultiplier = 1.2f;
@@ -102,6 +103,7 @@ namespace SpaceBoat {
         private int frameLeftGround = 0;
         private bool  jumpSquat = false;
         private bool isJumping = false;
+        private bool fastFall = false;
         private bool halfJump = false;
         private int jumpStartTime = 0;
         private float currentVerticalForce  = 0f;
@@ -234,27 +236,36 @@ namespace SpaceBoat {
         }
 
         void updateJump(bool headBumped) {
-            if (headBumped) {
-                jumpSquat = false;
-                currentVerticalForce = slipSpeedVertical*(1-landingHorizontalDrag);
-            } else 
-            if (currentVerticalForce > 0) {
-                float decay = 0;
-                if ((halfJump && Time.frameCount > jumpStartTime + halfJumpEarliestFrame) || (Time.frameCount > jumpStartTime + jumpDecayStartFrame)) {
-                    decay = jumpDecay;
-                }
-                currentVerticalForce = Mathf.Max(0, currentVerticalForce - decay * Time.deltaTime);
-            } else if (jumpSquat && Time.frameCount > jumpStartTime ) {
+            // start the jump
+            if (jumpSquat && Time.frameCount > jumpStartTime ) {
                 SoundManager sm = FindObjectOfType<SoundManager>();
                 sm.Play("Jump"); 
                 Debug.Log("JumpSquat > Jump");
                 jumpSquat = false;
+                if (headBumped) {
+                    justLanded = true;
+                    return;
+                }
                 isJumping = true;
                 isGrounded = false;
                 hitApex = false;
                 currentVerticalForce = jumpPower;
                 if (currentWalkingSpeed > maxWalkSpeed * jumpHorizontalSpeedWindow) {
                     currentWalkingSpeed = currentWalkingSpeed * jumpHorizontalMultiplier;
+                }
+                return;
+            }   
+
+            if (headBumped) {
+                currentVerticalForce = slipSpeedVertical*(1-landingHorizontalDrag);
+            } else if (currentVerticalForce > 0) {
+                float decay = 0;
+                if ((halfJump && Time.frameCount > jumpStartTime + halfJumpEarliestFrame) || (Time.frameCount > jumpStartTime + jumpDecayStartFrame)) {
+                    decay = jumpDecay;
+                }
+                currentVerticalForce = Mathf.Max(0, currentVerticalForce - decay * Time.deltaTime);
+                if (isCrouched) {
+                    fastFall = true;
                 }
             } else if (!isGrounded) {
                 if (!hitApex) {
@@ -265,7 +276,11 @@ namespace SpaceBoat {
                 if (isSlipping) {
                     currentVerticalForce = -slipSpeedVertical;
                 } else {
-                    currentVerticalForce = Mathf.Max(-gravityTerminalVelocity, currentVerticalForce - gravityAcceleration * Time.deltaTime);
+                    float currentGravity = gravityAcceleration * Time.deltaTime;
+                    if (fastFall) {
+                        currentGravity = currentGravity * fastfallMultiplier;
+                    }
+                    currentVerticalForce = Mathf.Max(-gravityTerminalVelocity, currentVerticalForce - currentGravity);
                 }
             }
         }
@@ -360,6 +375,7 @@ namespace SpaceBoat {
                 }
                 jumpGrace = Time.frameCount + jumpGraceWindow;
                 currentVerticalForce = rb.velocity.y;
+                fastFall = false;
                 if (isJumping) {
                     Debug.Log("Player landed from jumping after " + (Time.frameCount - jumpStartTime) + " frames");
                     JumpStomp();
