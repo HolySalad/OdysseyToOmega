@@ -21,6 +21,7 @@ namespace SpaceBoat {
         private bool cameraInitialized = false;
         private bool inShipView = false;
         private bool shipViewForced = false;
+        private bool cameraBehaviourForced = false;
         private float cameraTargetY = 0f;
         private float cameraTargetX = 0f;
         private float cameraTargetSize = 0f;
@@ -92,7 +93,7 @@ namespace SpaceBoat {
             }
             Debug.Log("Player camera target changes from " + previousY + " to " + newY + " Y and from " + previousSize + " to " + newSize + " Size");
             // don't change the camera to a higher level until the player is grounded.
-            if (newY > previousY && !player.GetIsGrounded(false) && !inShipViewTransition) {
+            if (newY > previousY && !player.GetIsGrounded(false, true) && !inShipViewTransition) {
                 Debug.Log("Player is not grounded, not adjusting camera.");
                 return;
             }
@@ -146,7 +147,7 @@ namespace SpaceBoat {
                 return;
             }
             Vector3 newCameraPosition = transform.position;
-            Debug.Log("Camera is moving, percentage complete: " + percentageMovementComplete);
+            //Debug.Log("Camera is moving, percentage complete: " + percentageMovementComplete);
             if (inShipViewTransition) {
                 newCameraPosition.x = currentCameraMovementOriginX + ((cameraTargetX - currentCameraMovementOriginX) * percentageMovementComplete);
             } else {
@@ -158,6 +159,10 @@ namespace SpaceBoat {
         }
 
         void Update() {
+            if (cameraBehaviourForced) {
+                MoveAndResizeCamera();
+                return;
+            }
             bool shipViewHeld = Input.GetKey(KeyCode.C);
             bool wasInShipView = inShipView;
             inShipView = shipViewHeld || shipViewForced;
@@ -172,5 +177,23 @@ namespace SpaceBoat {
             SetCameraTargetSizeAndY();
             MoveAndResizeCamera();
         }
+
+        public void ForceCameraBehaviour(bool force, float x, float y, float size) {
+            cameraBehaviourForced = force;
+            currentCameraMovementOriginSize = cameraComponent.orthographicSize;
+            currentCameraMovementOriginY = transform.position.y;
+            currentCameraMovementOriginX = transform.position.x;
+
+            cameraTargetX = x;
+            cameraTargetY = y;
+            cameraTargetSize = size;
+            currentTargetTransitionDuration = cameraShiftTime;
+            cameraMovementTargetEndTime = Time.time + cameraShiftTime;
+        }
+
+        public void ForceShipView(bool force) {
+            shipViewForced = force;
+        }
+
     }
 }

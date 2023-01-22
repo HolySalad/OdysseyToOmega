@@ -9,7 +9,9 @@ namespace SpaceBoat.HazardManagers {
         // constant spawns wind prefabs from the emitters; 
         // at an interval, strike sails with lightning;
 
-
+        [SerializeField] private int earliestAppearence;
+        [SerializeField] private int latestAppearence;
+        [SerializeField] private int priority;
         [SerializeField] private GameObject[] windEmitters;
         [SerializeField] private GameObject cloudEmitter;
         [SerializeField] private GameObject cloudBorder;
@@ -35,6 +37,16 @@ namespace SpaceBoat.HazardManagers {
         [SerializeField] private int numStrikesAllSailsRepaired = 1;
         [SerializeField] private int numStrikesCriticalSailsRepaired = -1;
         [SerializeField] private float lightningFirstStrikeTime = 5f;
+
+        public int GetPriority() {
+            return priority;
+        }
+        public int GetEarliestAppearence() {
+            return earliestAppearence;
+        }
+        public int GetLatestAppearence() {
+            return latestAppearence;
+        }
 
 
 

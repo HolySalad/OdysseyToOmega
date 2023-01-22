@@ -10,7 +10,6 @@ namespace SpaceBoat {
     public class Player : MonoBehaviour
     {
         [Header("General Player Settings")]
-        [SerializeField] private GameObject playerCamera;
         [SerializeField] private int invincibilityFrames = 50;
         [SerializeField] public int maxHealth = 3;
 
@@ -91,17 +90,14 @@ namespace SpaceBoat {
         private bool isGrounded = false;
         private bool isCrouched = false;
         private GameObject groundedOnObject;
-        public bool GetIsGrounded() {
-            return GetIsGrounded(true);
+        public bool GetIsGrounded(bool includeJumpGrace = true, bool platformsAndShipOnly = false) {
+            if (platformsAndShipOnly) {
+                return (isGrounded || (includeJumpGrace && jumpGrace > 0)) &&
+                (groundedOnObject != null && (groundedOnObject.tag == "Platforms" || groundedOnObject.tag == "Ship"));
+            }
+            return isGrounded || (includeJumpGrace && jumpGrace > 0);
         }
 
-        public  bool GetIsGrounded(bool includeJumpGrace) {
-            if (includeJumpGrace) {
-                return isGrounded || jumpGrace > 0;
-            } else {
-                return isGrounded;
-            }
-        }
 
         private int jumpGrace = 0;
         private int frameLeftGround = 0;
@@ -134,8 +130,6 @@ namespace SpaceBoat {
         //activatables
 
         public IActivatables activatableInUse {get; private set;}
-
-        public UI.CameraControls cameraControls;
         public float playerCameraXFocusOffset;
 
         void Awake() {
@@ -150,10 +144,6 @@ namespace SpaceBoat {
             //set default values
             health = maxHealth;
 
-            if (playerCamera == null) {
-                playerCamera = GameObject.Find("MainCamera");
-            }
-            cameraControls = playerCamera?.GetComponent<UI.CameraControls>();
 
             //set up player states
             playerStates.Add(PlayerStateName.ready, GetComponent<ReadyState>() ?? gameObject.AddComponent<ReadyState>());
@@ -230,7 +220,7 @@ namespace SpaceBoat {
         private void StartJump(bool forceJump = false) {
             if (CanJump() || forceJump) {
                 isJumping = true;
-                jumpStartTime = Time.frameCount;
+                jumpStartTime = Time.frameCount + jumpSquatFrames;
                 jumpSquat = true;
                 animator.SetTrigger("Jump");
             }
@@ -250,11 +240,11 @@ namespace SpaceBoat {
                 if (halfJump) {
                     decay *= halfJumpDecayMultiplier;
                 }
-                if (Time.frameCount > jumpStartTime + jumpSquatFrames + jumpDecayDoublingFrames) {
+                if (Time.frameCount > jumpStartTime + jumpDecayDoublingFrames) {
                     decay *= 2;
                 }
                 currentVerticalForce = Mathf.Max(0, currentVerticalForce - decay * Time.deltaTime);
-            } else if (jumpSquat && Time.frameCount > jumpStartTime + jumpSquatFrames) {
+            } else if (jumpSquat && Time.frameCount > jumpStartTime ) {
                 SoundManager sm = FindObjectOfType<SoundManager>();
                 sm.Play("Jump"); 
                 Debug.Log("JumpSquat > Jump");
@@ -290,8 +280,14 @@ namespace SpaceBoat {
             justLanded = false;
         }
 
-        public void ForceJump(bool lockOutReadyState = false) {
+        public void ForceJump(bool lockOutReadyState = false, bool halfJump = false, bool skipJumpSquat = false) {
             StartJump(true);
+            if (skipJumpSquat) {
+                jumpStartTime = Time.frameCount;
+            }
+            if (halfJump) {
+                this.halfJump = true;
+            }
             if (lockOutReadyState) {
                 IPlayerState ready = playerStates[PlayerStateName.ready];
                 if (ready is ReadyState) {
@@ -321,7 +317,7 @@ namespace SpaceBoat {
         private (bool, bool, List<RaycastHit2D>) CheckGrounded() {
             bool wasGrounded = isGrounded;
             ContactFilter2D filter = new ContactFilter2D();
-            filter.SetLayerMask(LayerMask.GetMask("Ground", "PhysicalHazards"));
+            filter.SetLayerMask(LayerMask.GetMask("Ground"));
             List<RaycastHit2D> hits = new List<RaycastHit2D>();
             //RaycastHit2D hit = Physics2D.CircleCast(footCollider.position, footCollider.gameObject.GetComponent<Collider2D>().bounds.extents.x, new Vector3(0, -1, 0), groundCheckDistance, LayerMask.GetMask("Ground"));
             int hitCount = footCollider.gameObject.GetComponent<Collider2D>().Cast(new Vector3(0, -1, 0), filter, hits, groundCheckDistance, true);
@@ -341,19 +337,24 @@ namespace SpaceBoat {
             (bool isGrounded, bool wasGrounded, List<RaycastHit2D> hits) = CheckGrounded();
             this.isGrounded = isGrounded;
             if (isGrounded) {
+                hits.Sort((a, b) => a.distance.CompareTo(b.distance));
                 groundedOnObject = hits[0].collider.gameObject;
                 if (groundedOnObject.GetComponent<Rigidbody2D>() == null) {
                     Debug.LogWarning("Grounded on object without rigidbody2d: " + groundedOnObject.name);
                     groundedOnObject = null;
+                } else {
+                    if (groundedOnObject.GetComponent<Environment.IBouncable>() != null) {
+                        groundedOnObject.GetComponent<Environment.IBouncable>().Bounce(this);
+                    }
                 }
                 jumpGrace = Time.frameCount + jumpGraceWindow;
+                currentVerticalForce = rb.velocity.y;
                 if (isJumping) {
                     Debug.Log("Player landed from jumping after " + (Time.frameCount - jumpStartTime) + " frames");
                     JumpStomp();
                     isJumping = false;
                     halfJump = false;
                     justLanded = true;
-                    currentVerticalForce = 0;
                     currentWalkingSpeed = currentWalkingSpeed * landingHorizontalDrag;
                 } else if (!wasGrounded) {
                     Debug.Log("Player landed from falling after " + (Time.frameCount - frameLeftGround) + " frames");
@@ -361,7 +362,6 @@ namespace SpaceBoat {
                     isJumping = false;
                     halfJump = false;
                     justLanded = true;
-                    currentVerticalForce = 0;
                 }
             } else {
                 if (Time.frameCount > jumpGrace) {
