@@ -180,6 +180,10 @@ namespace SpaceBoat {
             }
         }
 
+        public void Footfall() {
+
+        }
+
         public void WalkInput(float horizontalInput) {
             float deltaTime = Time.deltaTime;
             if (horizontalInput != 0) {lastHorizontalInput = horizontalInput;}
