@@ -10130,6 +10130,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1834934432}
     - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: criticalShipPrompt.text
+      value: Your ship is kinda fucked mate.
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
       propertyPath: shipSails.Array.data[0]
       value: 
       objectReference: {fileID: 1788339013}
@@ -10173,6 +10177,26 @@ PrefabInstance:
       propertyPath: shipSails.Array.data[10]
       value: 
       objectReference: {fileID: 904344876}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: criticalShipPrompt.color.b
+      value: 0.05345905
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: criticalShipPrompt.color.g
+      value: 0.05345905
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: criticalShipPrompt.color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: criticalShipPrompt.priority
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: criticalShipPrompt.promptLabel
+      value: criticalShip
+      objectReference: {fileID: 0}
     - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
       propertyPath: hazardManagerPrefabs.Array.size
       value: 2
@@ -10515,6 +10539,10 @@ PrefabInstance:
     - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
       propertyPath: accelerationMidRange
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: crouchedMovementMult
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
       propertyPath: halfJumpEarliestFrame
