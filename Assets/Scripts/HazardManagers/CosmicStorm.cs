@@ -56,6 +56,7 @@ namespace SpaceBoat.HazardManagers {
         
         public bool hasEnded { get; private set; }
         public float hazardDuration { get; private set; }
+        public string hazardSoundtrack { get; private set; } = "";
 
         private float lastCloudSpawnedTime = 0f;
         private float lastLightningPendedTime = 0f;

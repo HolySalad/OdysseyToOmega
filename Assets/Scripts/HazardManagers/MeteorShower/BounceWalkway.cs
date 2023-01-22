@@ -23,15 +23,16 @@ namespace SpaceBoat.HazardManagers.MeteorShowerSubclasses {
             originalVerticalVelocity = rb.velocity.y;
         }
 
-        public void Bounce(Player player) {
+        public bool Bounce(Player player) {
             if (bounceTimer > 0 || player.currentPlayerStateName != PlayerStateName.ready) {
-                return;
+                return false;
             }
             lastBounceForce = player.gameObject.GetComponent<Rigidbody2D>().velocity.y* bounceForceMult;
             originalVerticalVelocity = rb.velocity.y;
             rb.velocity = new Vector2(rb.velocity.x, originalVerticalVelocity + lastBounceForce);
             player.ForceJump(false, true, true);
             bounceTimer = bounceCooldown;
+            return true;
         }
 
         // Update is called once per frame

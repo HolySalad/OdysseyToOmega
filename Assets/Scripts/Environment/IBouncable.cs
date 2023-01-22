@@ -5,6 +5,6 @@ using UnityEngine;
 namespace SpaceBoat.Environment {    
     public interface IBouncable 
     {
-        public void Bounce(Player player);
+        public bool Bounce(Player player);
     }
 }

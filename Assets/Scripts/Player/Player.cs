@@ -31,12 +31,11 @@ namespace SpaceBoat {
 
         [Header("Jump Settings")]
         [SerializeField] private int jumpGraceWindow = 2;
-        [SerializeField] private int halfJumpFrameWindow = 6;
         [SerializeField] private int jumpSquatFrames = 3;
-        [SerializeField] private float halfJumpDecayMultiplier = 1.7f;
         [SerializeField] private float jumpPower = 22f;
         [SerializeField] private float jumpDecay = 28f;
-        [SerializeField] private int jumpDecayDoublingFrames = 4;
+        [SerializeField] private int jumpDecayStartFrame = 4;
+        [SerializeField] private float halfJumpEarliestFrame = 6;
         [SerializeField] private float gravityAcceleration = 30f;
         [SerializeField] private float slipSpeedVertical = 10f;
         [SerializeField] private float gravityTerminalVelocity = 45f;
@@ -240,12 +239,9 @@ namespace SpaceBoat {
                 currentVerticalForce = slipSpeedVertical*(1-landingHorizontalDrag);
             } else 
             if (currentVerticalForce > 0) {
-                float decay = jumpDecay;
-                if (halfJump) {
-                    decay *= halfJumpDecayMultiplier;
-                }
-                if (Time.frameCount > jumpStartTime + jumpDecayDoublingFrames) {
-                    decay *= 2;
+                float decay = 0;
+                if ((halfJump && Time.frameCount > jumpStartTime + halfJumpEarliestFrame) || (Time.frameCount > jumpStartTime + jumpDecayStartFrame)) {
+                    decay = jumpDecay;
                 }
                 currentVerticalForce = Mathf.Max(0, currentVerticalForce - decay * Time.deltaTime);
             } else if (jumpSquat && Time.frameCount > jumpStartTime ) {
@@ -275,13 +271,19 @@ namespace SpaceBoat {
         }
 
         public void JumpInput(bool keyHeld, bool keyDown) {
-            if ((keyDown || (justLanded && keyHeld)) && !isJumping) {
+            //skip one frame of input after landing.
+            if (justLanded) {
+                justLanded = false;
+                return;
+            }
+            if ((keyHeld 
+            //|| (justLanded && keyHeld)
+            ) && !isJumping) {
                 StartJump();
-            } else if (!keyHeld && isJumping && Time.frameCount < jumpStartTime + halfJumpFrameWindow) {
+            } else if (!keyHeld && isJumping) {
                 Debug.Log("Half Jump");
                 halfJump = true;
             }
-            justLanded = false;
         }
 
         public void ForceJump(bool lockOutReadyState = false, bool halfJump = false, bool skipJumpSquat = false) {
@@ -348,7 +350,9 @@ namespace SpaceBoat {
                     groundedOnObject = null;
                 } else {
                     if (groundedOnObject.GetComponent<Environment.IBouncable>() != null) {
-                        groundedOnObject.GetComponent<Environment.IBouncable>().Bounce(this);
+                        if (groundedOnObject.GetComponent<Environment.IBouncable>().Bounce(this)) {
+                            return;
+                        }
                     }
                 }
                 jumpGrace = Time.frameCount + jumpGraceWindow;

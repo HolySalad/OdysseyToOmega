@@ -235,6 +235,8 @@ MonoBehaviour:
   targettingCooldown: 30
   targetFlagTimeout: 10
   breakOnStart: 0
+  sailGrouping: 1
+  lastTargettedTime: -99
 --- !u!212 &8088733
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -447,7 +449,7 @@ CapsuleCollider2D:
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_UsedByEffector: 0
+  m_UsedByEffector: 1
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 3.96, y: 0.75}
@@ -591,7 +593,7 @@ CapsuleCollider2D:
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_UsedByEffector: 0
+  m_UsedByEffector: 1
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 3.9599998, y: 0.75}
@@ -1521,6 +1523,22 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1834934428}
+    - target: {fileID: 601514396458854647, guid: 1867d33c320fca94a9e5fee0301a56d1, type: 3}
+      propertyPath: m_UiScaleMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 601514396458854647, guid: 1867d33c320fca94a9e5fee0301a56d1, type: 3}
+      propertyPath: m_ScreenMatchMode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 601514396458854647, guid: 1867d33c320fca94a9e5fee0301a56d1, type: 3}
+      propertyPath: m_ReferenceResolution.x
+      value: 1920
+      objectReference: {fileID: 0}
+    - target: {fileID: 601514396458854647, guid: 1867d33c320fca94a9e5fee0301a56d1, type: 3}
+      propertyPath: m_ReferenceResolution.y
+      value: 1080
+      objectReference: {fileID: 0}
     - target: {fileID: 601514396458854649, guid: 1867d33c320fca94a9e5fee0301a56d1, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -1674,7 +1692,7 @@ CapsuleCollider2D:
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_UsedByEffector: 0
+  m_UsedByEffector: 1
   m_UsedByComposite: 0
   m_Offset: {x: 0.0000076293945, y: -0.0000009536743}
   m_Size: {x: 3.9599998, y: 0.75}
@@ -2077,7 +2095,7 @@ CapsuleCollider2D:
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_UsedByEffector: 0
+  m_UsedByEffector: 1
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 3.96, y: 0.75}
@@ -3031,7 +3049,7 @@ CapsuleCollider2D:
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_UsedByEffector: 0
+  m_UsedByEffector: 1
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 3.96, y: 0.75}
@@ -3344,7 +3362,7 @@ CapsuleCollider2D:
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_UsedByEffector: 0
+  m_UsedByEffector: 1
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 3.9599998, y: 0.75}
@@ -3870,6 +3888,8 @@ MonoBehaviour:
   targettingCooldown: 30
   targetFlagTimeout: 10
   breakOnStart: 0
+  sailGrouping: 2
+  lastTargettedTime: -99
 --- !u!212 &869351015
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4508,6 +4528,8 @@ MonoBehaviour:
   targettingCooldown: 30
   targetFlagTimeout: 10
   breakOnStart: 0
+  sailGrouping: 2
+  lastTargettedTime: -99
 --- !u!212 &904344880
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4840,7 +4862,7 @@ CapsuleCollider2D:
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_UsedByEffector: 0
+  m_UsedByEffector: 1
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 3.9599998, y: 0.75}
@@ -5371,7 +5393,7 @@ CapsuleCollider2D:
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_UsedByEffector: 0
+  m_UsedByEffector: 1
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 3.96, y: 0.75}
@@ -5736,6 +5758,8 @@ MonoBehaviour:
   targettingCooldown: 30
   targetFlagTimeout: 10
   breakOnStart: 0
+  sailGrouping: 2
+  lastTargettedTime: -99
 --- !u!114 &1124481459
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5966,7 +5990,7 @@ CapsuleCollider2D:
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_UsedByEffector: 0
+  m_UsedByEffector: 1
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 3.9599998, y: 0.75}
@@ -6466,7 +6490,7 @@ CapsuleCollider2D:
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_UsedByEffector: 0
+  m_UsedByEffector: 1
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 3.9599998, y: 0.75}
@@ -7006,7 +7030,7 @@ CapsuleCollider2D:
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_UsedByEffector: 0
+  m_UsedByEffector: 1
   m_UsedByComposite: 0
   m_Offset: {x: 0.0000076293945, y: 0}
   m_Size: {x: 3.9599998, y: 0.75}
@@ -7176,6 +7200,8 @@ MonoBehaviour:
   targettingCooldown: 30
   targetFlagTimeout: 10
   breakOnStart: 0
+  sailGrouping: 1
+  lastTargettedTime: -99
 --- !u!212 &1385699948
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -7388,7 +7414,7 @@ CapsuleCollider2D:
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_UsedByEffector: 0
+  m_UsedByEffector: 1
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 3.96, y: 0.75}
@@ -7558,6 +7584,8 @@ MonoBehaviour:
   targettingCooldown: 30
   targetFlagTimeout: 10
   breakOnStart: 0
+  sailGrouping: 1
+  lastTargettedTime: -99
 --- !u!212 &1418640283
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -7963,6 +7991,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2652018774195889313, guid: 63d98d3d85ef08f48b61f125cc5c237f, type: 3}
+      propertyPath: sounds.Array.data[24].name
+      value: FirstGalaxy
+      objectReference: {fileID: 0}
     - target: {fileID: 2652018774195889315, guid: 63d98d3d85ef08f48b61f125cc5c237f, type: 3}
       propertyPath: m_Name
       value: SoundManager
@@ -8273,7 +8305,7 @@ CapsuleCollider2D:
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_UsedByEffector: 0
+  m_UsedByEffector: 1
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 3.96, y: 0.75}
@@ -8418,7 +8450,7 @@ CapsuleCollider2D:
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_UsedByEffector: 0
+  m_UsedByEffector: 1
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 3.96, y: 0.75}
@@ -8439,7 +8471,7 @@ CapsuleCollider2D:
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_UsedByEffector: 0
+  m_UsedByEffector: 1
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: -0.0000009536743}
   m_Size: {x: 3.9599998, y: 0.75}
@@ -10078,11 +10110,19 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1229047326}
     - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: DoNotUpdate
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
       propertyPath: helpPrompts
       value: 
       objectReference: {fileID: 312070738}
     - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
       propertyPath: utilityCheats
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: playSoundtrack
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
@@ -10229,6 +10269,8 @@ MonoBehaviour:
   targettingCooldown: 30
   targetFlagTimeout: 10
   breakOnStart: 0
+  sailGrouping: 1
+  lastTargettedTime: -99
 --- !u!212 &1828708153
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -10435,8 +10477,56 @@ PrefabInstance:
       value: 0.52
       objectReference: {fileID: 0}
     - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: jumpDecay
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: jumpPower
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: acceleration
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: jumpSquatFrames
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: turningSpeedMult
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: JumpDecayStartFrame
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: accelerationMidMult
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
       propertyPath: groundCheckDistance
       value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: jumpDecayStartFrame
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: accelerationMidRange
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: halfJumpEarliestFrame
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: accelerationStartRange
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: gravityTerminalVelocity
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
       propertyPath: criticalHealthPrompt.text
@@ -10970,7 +11060,7 @@ CapsuleCollider2D:
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_UsedByEffector: 0
+  m_UsedByEffector: 1
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 3.96, y: 0.75}
@@ -11231,6 +11321,18 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 521614029}
     m_Modifications:
+    - target: {fileID: 497870173191873602, guid: 9e1ecdf655223c041a11e61b32df22a7, type: 3}
+      propertyPath: sailGrouping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1518854777123062831, guid: 9e1ecdf655223c041a11e61b32df22a7, type: 3}
+      propertyPath: sailGrouping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2245465626373928836, guid: 9e1ecdf655223c041a11e61b32df22a7, type: 3}
+      propertyPath: sailGrouping
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7837276630178798448, guid: 9e1ecdf655223c041a11e61b32df22a7, type: 3}
       propertyPath: rotationSpeed
       value: 24
@@ -11282,6 +11384,10 @@ PrefabInstance:
     - target: {fileID: 7837276630178798450, guid: 9e1ecdf655223c041a11e61b32df22a7, type: 3}
       propertyPath: m_Name
       value: SpinnyBoi
+      objectReference: {fileID: 0}
+    - target: {fileID: 8619999351821139223, guid: 9e1ecdf655223c041a11e61b32df22a7, type: 3}
+      propertyPath: sailGrouping
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 97516614, guid: 9e1ecdf655223c041a11e61b32df22a7, type: 3}

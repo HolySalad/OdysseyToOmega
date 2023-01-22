@@ -8,7 +8,7 @@ namespace SpaceBoat.HazardManagers.MeteorShowerSubclasses {
         public float timeIntoHazard = 0f;
         public int baseNumMeteors = 0;
         public float meteorIntervalMultiplier = 1f;
-        public int rockRateIncrease = 0;
+        public float rockRateIncrease = 0f;
         public float rockSpeedIncrease = 0f;
     }
 }
@@ -63,6 +63,9 @@ namespace SpaceBoat.HazardManagers {
         [SerializeField] private float rockSizeIncreaseVariance = 1.5f; //how much bigger can rocks be?
         [SerializeField] private int rockSoundChance = 50; //% chance that a rock will play a sound when it spawns.
 
+        public string hazardSoundtrack { get; private set; } = "FirstGalaxy";
+
+
         public bool hasEnded {get; private set;} = false;
         public float hazardDuration {get; private set;} = 0f;
         public float hazardBeganTime {get; private set;} = -1;
@@ -96,6 +99,7 @@ namespace SpaceBoat.HazardManagers {
             return Time.time - hazardBeganTime;
         }
 
+        /* replaced with GameModel.Instance.SelectSailsForTargetting
         List<GameObject> GetTargetSails(int maxNumSelect = 1) {
             List<GameObject> targetSails = new List<GameObject>();
             List<GameObject> sails = GameModel.Instance.shipSails;
@@ -118,6 +122,7 @@ namespace SpaceBoat.HazardManagers {
             Debug.Log("Selected " + targetSails.Count + " sails to break.");
             return targetSails;
         }
+        */
 
         IEnumerator StartupSequence(float delay) {
             yield return new WaitForSeconds(delay-2f);
@@ -141,9 +146,10 @@ namespace SpaceBoat.HazardManagers {
                 if (timeSinceGameBegan > nextMeteorSpawn) {
                     meteorsOut = calcNextNumMeteors();
                     Debug.Log("Emitting " + meteorsOut + " meteors.");
-                    List<GameObject> targetSails = GetTargetSails(meteorsOut);
+                    List<GameObject> targetSails = GameModel.Instance.SelectSailsForTargetting(meteorsOut);
                     bool playSound = true;
                     foreach (GameObject randomSail in targetSails) {
+                        randomSail.GetComponent<Ship.SailsActivatable>().TargetSail();
                         handleMeteorSpawning(randomSail, playSound);
                         playSound = false;
                     }
@@ -186,7 +192,7 @@ namespace SpaceBoat.HazardManagers {
                 return 1;
             } else {
                 int numMeteors = currentEscalationLevel.baseNumMeteors;
-                if (numMeteors >= survivingSails) {
+                if (survivingSails > 2 && numMeteors >= survivingSails) {
                     numMeteors = survivingSails -1;
                 }
                 return numMeteors;
@@ -225,7 +231,7 @@ namespace SpaceBoat.HazardManagers {
             float deltaTime = Time.fixedDeltaTime;
             float timeSinceStart = HazardTime();
 
-            if (timeSinceStart > escalationLevels[nextEscalationIndex].timeIntoHazard) {
+            if (nextEscalationIndex < escalationLevels.Count && timeSinceStart > escalationLevels[nextEscalationIndex].timeIntoHazard) {
                 Debug.Log("Escalating hazard " + this.gameObject.name + " to level " + nextEscalationIndex);
                 currentEscalationLevel = escalationLevels[nextEscalationIndex];
                 nextEscalationIndex++;
