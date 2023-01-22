@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SpaceBoat.PlayerStates {
+namespace SpaceBoat.PlayerSubclasses.PlayerStates {
     public class AimingState : MonoBehaviour, IPlayerState
     {
         public bool stealVelocityControl {get;} = false;
