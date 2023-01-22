@@ -187,9 +187,9 @@ namespace SpaceBoat {
             float deltaTime = Time.deltaTime;
             if (horizontalInput != 0) {lastHorizontalInput = horizontalInput;}
             float maxSpeed = maxWalkSpeed;
-            if (isCrouched) {maxSpeed *= crouchedMovementMult;}
+            if (isCrouched && isGrounded) {maxSpeed *= crouchedMovementMult;}
             // if we aren't pressing an input or if our speed is in excess of max walk speed while on the ground, we decelerate.
-            if (horizontalInput == 0 || (Mathf.Abs(currentWalkingSpeed) > maxWalkSpeed && isGrounded)) {
+            if (horizontalInput == 0 || (Mathf.Abs(currentWalkingSpeed) > maxSpeed && isGrounded)) {
                 if (currentWalkingSpeed > 0) {
                     currentWalkingSpeed = Mathf.Max(currentWalkingSpeed - deceleration*deltaTime, 0);
                 } else if (currentWalkingSpeed < 0) {
@@ -203,7 +203,7 @@ namespace SpaceBoat {
                     accel *= accelerationMidMult;
                 }
                 //return speed after acceleration if it is higher than current speed.
-                currentWalkingSpeed = Mathf.Max(Mathf.Min(currentWalkingSpeed + accel*deltaTime, maxWalkSpeed), currentWalkingSpeed);
+                currentWalkingSpeed = Mathf.Max(Mathf.Min(currentWalkingSpeed + accel*deltaTime, maxSpeed), currentWalkingSpeed);
             }
 
             //collisions
@@ -280,7 +280,7 @@ namespace SpaceBoat {
             //|| (justLanded && keyHeld)
             ) && !isJumping) {
                 StartJump();
-            } else if (!keyHeld && isJumping) {
+            } else if (!keyHeld && isJumping && !halfJump) {
                 Debug.Log("Half Jump");
                 halfJump = true;
             }
@@ -315,6 +315,9 @@ namespace SpaceBoat {
             if (crouchHeld) {
                 isCrouched = true;
                 animator.SetBool("Crouching", true);
+            } else {
+                isCrouched = false;
+                animator.SetBool("Crouching", false);
             }
         }
 
