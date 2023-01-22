@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using SpaceBoat.Ship;
-using SpaceBoat.PlayerStates;
+using SpaceBoat.PlayerSubclasses.PlayerStates;
+using SpaceBoat.PlayerSubclasses.Equipment;
+
 using SpaceBoat.UI;
 
 namespace SpaceBoat {
@@ -12,6 +14,7 @@ namespace SpaceBoat {
         [Header("General Player Settings")]
         [SerializeField] private int invincibilityFrames = 50;
         [SerializeField] public int maxHealth = 3;
+        [SerializeField] public EquipmentType startingEquipment = EquipmentType.None;
 
         [Header("Help Prompts")]
         [SerializeField] private HelpPrompt criticalHealthPrompt;
@@ -80,6 +83,12 @@ namespace SpaceBoat {
         public PlayerStateName currentPlayerStateName = PlayerStateName.ready;
         private IPlayerState currentPlayerState;
         private Dictionary<PlayerStateName, IPlayerState> playerStates = new Dictionary<PlayerStateName, IPlayerState>();
+
+        //player equipment
+        private IPlayerEquipment currentEquipment;
+        private EquipmentType currentEquipmentType = EquipmentType.None;
+        private Dictionary<EquipmentType, IPlayerEquipment> equipment = new Dictionary<EquipmentType, IPlayerEquipment>();
+
 
 
         // internal gameplay vars
@@ -154,6 +163,20 @@ namespace SpaceBoat {
             playerStates.Add(PlayerStateName.ladder, GetComponent<LadderState>() ?? gameObject.AddComponent<LadderState>());
 
             currentPlayerState = playerStates[currentPlayerStateName];
+
+            //set up equipment
+            equipment.Add(EquipmentType.None, GetComponent<NoneEquipment>());
+            equipment.Add(EquipmentType.Dash, GetComponent<DashEquipment>());
+            equipment.Add(EquipmentType.HealthPack, GetComponent<HealthPackEquipment>());
+            equipment.Add(EquipmentType.HarpoonLauncher, GetComponent<HarpoonLauncherEquipment>());
+            equipment.Add(EquipmentType.Shield, GetComponent<ShieldEquipment>());
+
+            currentEquipment = equipment[currentEquipmentType];
+            currentEquipment.Equip(this);
+            if (startingEquipment != currentEquipmentType) {
+                ChangeEquipment(startingEquipment);
+            }
+
         }
         
         public void ChangeState(PlayerStateName newStateName) {
@@ -459,17 +482,50 @@ namespace SpaceBoat {
         }
 
         // end of movement functions
-        // momentum 
 
-        public void AddMomentum(Vector2 momentum) {
-            
+        // player equipment
+        public void ChangeEquipment(EquipmentType type) {
+            if (!equipment.ContainsKey(type)) {
+                Debug.LogError("Player does not have equipment of type " + type + " registered in the player equipment dictionary");
+                return;
+            } 
+            if (currentEquipment.isActive) {
+                currentEquipment.CancelActivation(this);
+            }
+            currentEquipment.Unequip(this);
+
+            currentEquipment = equipment[type];
+            currentEquipmentType = type;
+            currentEquipment.Equip(this);
         }
 
-
-        void UpdateMomentum() {
-           
+        public void EquipmentUsageInput(bool keyDown, bool keyHeld) {
+            switch (currentEquipment.activationBehaviour) {
+                case EquipmentActivationBehaviour.Hold:
+                    if (keyDown && !currentEquipment.isActive) {
+                        if (currentEquipment.ActivationCondition(this)) currentEquipment.Activate(this);
+                    } else if (!keyHeld && currentEquipment.isActive) {
+                        currentEquipment.CancelActivation(this);
+                    }
+                    break;
+                case EquipmentActivationBehaviour.Toggle:
+                    if (keyDown) {
+                        if (currentEquipment.isActive) {
+                            currentEquipment.CancelActivation(this);
+                        } else {
+                            if (currentEquipment.ActivationCondition(this)) currentEquipment.Activate(this);
+                        }
+                    }
+                    break;
+                case EquipmentActivationBehaviour.Press:
+                    if (keyDown && !currentEquipment.isActive) {
+                        if (currentEquipment.ActivationCondition(this)) currentEquipment.Activate(this);
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
-
 
         // activatables 
 
@@ -720,6 +776,13 @@ namespace SpaceBoat {
 
 
     public class CthulkInput {
+
+        public static bool EquipmentUsageKeyDown() {
+            return Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.LeftShift);
+        }
+        public static bool EquipmentUsageKeyHeld() {
+            return Input.GetKey(KeyCode.Q) || Input.GetKey(KeyCode.LeftShift);
+        }
 
         public static bool JumpKeyDown() {
             return Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W);
