@@ -41,7 +41,7 @@ namespace SpaceBoat {
 
         }
 
-        (float, float) GetCurrentCameraZoneValues() {
+        (float, float, bool) GetCurrentCameraZoneValues() {
             Collider2D playerCollider = player.GetComponent<Collider2D>();
             List<Collider2D> cameraZones = new List<Collider2D>();
             ContactFilter2D filter = new ContactFilter2D();
@@ -52,6 +52,7 @@ namespace SpaceBoat {
             float newSize = cameraTargetSize;
             float newY = cameraTargetY;
             float priority = -1f;
+            bool supressFastFallingCameraShift = false;
             foreach (Collider2D cameraZone in cameraZones) {
                 CameraZoneController cameraZoneController = cameraZone.GetComponent<CameraZoneController>();
                 if (cameraZoneController != null) {
@@ -59,10 +60,11 @@ namespace SpaceBoat {
                         priority = cameraZoneController.priority;
                         newSize = cameraZoneController.orthographicSize;
                         newY = cameraZoneController.camHeight;
+                        supressFastFallingCameraShift = cameraZoneController.supressFastFallingCameraShift;
                     }
                 }
             }
-            return (newSize, newY);
+            return (newSize, newY, supressFastFallingCameraShift);
         }
 
         void SetCameraTargetSizeAndY() {
@@ -72,12 +74,13 @@ namespace SpaceBoat {
             float previousY = cameraTargetY;
             float newSize = 0f;
             float newY = 0f;
+            bool supressFastFallingCameraShift = false;
 
             if (inShipView) {
                 newSize = shipViewSize;
                 newY = shipViewTarget.position.y;
             } else {
-                (newSize, newY) = GetCurrentCameraZoneValues();
+                (newSize, newY, supressFastFallingCameraShift) = GetCurrentCameraZoneValues();
             }
 
             if (!cameraInitialized) {
@@ -117,7 +120,7 @@ namespace SpaceBoat {
                 changeProportion = (requiredChangeY/diffY >= requiredChangeSize/diffSize) ? requiredChangeY/diffY : requiredChangeSize/diffSize;
 
             float cameraMovementDuration = (cameraShiftTime*(1-shiftTimeReductionProportion)) + (changeProportion * cameraShiftTime * shiftTimeReductionProportion);
-            if (newY < previousY && !grounded && !inShipViewTransition && diffY > newSize/2.2) {
+            if (!supressFastFallingCameraShift && newY < previousY && !grounded && !inShipViewTransition && diffY > newSize/2.2) {
                 (bool isJumping, bool fastFall, bool halfJump, bool hitApex) = player.GetJumpStatus();
                 Debug.Log("Player is falling, adjusting camera downwards at gravity terminal velocity.");
                 if (!isJumping || (isJumping && hitApex)) {

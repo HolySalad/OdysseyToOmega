@@ -357,6 +357,7 @@ MonoBehaviour:
   camHeight: 10
   orthographicSize: 14
   priority: 1.5
+  supressFastFallingCameraShift: 0
 --- !u!61 &23174789
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -431,6 +432,7 @@ MonoBehaviour:
   camHeight: 20
   orthographicSize: 14
   priority: 3
+  supressFastFallingCameraShift: 0
 --- !u!61 &43948448
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1164,6 +1166,7 @@ MonoBehaviour:
   camHeight: 25
   orthographicSize: 14
   priority: 2
+  supressFastFallingCameraShift: 0
 --- !u!61 &198849442
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1887,6 +1890,7 @@ Transform:
   - {fileID: 23174787}
   - {fileID: 43948446}
   - {fileID: 2020603228}
+  - {fileID: 1398818899}
   m_Father: {fileID: 553232611}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1938,6 +1942,7 @@ MonoBehaviour:
   camHeight: 19
   orthographicSize: 14
   priority: 1
+  supressFastFallingCameraShift: 0
 --- !u!61 &333413237
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1951,7 +1956,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 7.2824163, y: -4.4380617}
+  m_Offset: {x: 8.052547, y: -4.4380617}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1962,7 +1967,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 26.752466, y: 28.163935}
+  m_Size: {x: 25.212204, y: 28.163935}
   m_EdgeRadius: 0
 --- !u!1 &342968748
 GameObject:
@@ -2105,7 +2110,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 1
   m_UsedByComposite: 0
   m_Offset: {x: -0.00000047683716, y: 0}
-  m_Size: {x: 0.92999995, y: 0.75}
+  m_Size: {x: 0.72, y: 0.66}
   m_Direction: 1
 --- !u!1 &343288695
 GameObject:
@@ -2473,6 +2478,7 @@ MonoBehaviour:
   camHeight: -9.5
   orthographicSize: 14
   priority: 5
+  supressFastFallingCameraShift: 0
 --- !u!61 &395762552
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3949,6 +3955,7 @@ MonoBehaviour:
   camHeight: 15
   orthographicSize: 14
   priority: 1
+  supressFastFallingCameraShift: 0
 --- !u!61 &807633524
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4499,6 +4506,7 @@ MonoBehaviour:
   camHeight: 2
   orthographicSize: 7
   priority: 3
+  supressFastFallingCameraShift: 0
 --- !u!61 &890358378
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4573,6 +4581,7 @@ MonoBehaviour:
   camHeight: 2
   orthographicSize: 7
   priority: 3
+  supressFastFallingCameraShift: 0
 --- !u!61 &891948097
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5363,6 +5372,7 @@ MonoBehaviour:
   camHeight: 28
   orthographicSize: 14
   priority: 3
+  supressFastFallingCameraShift: 0
 --- !u!61 &1063357831
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5376,7 +5386,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 9.647091, y: 3.788745}
+  m_Offset: {x: 9.647091, y: 3.5962124}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -5387,7 +5397,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 56.009758, y: 26.568796}
+  m_Size: {x: 56.009758, y: 26.953861}
   m_EdgeRadius: 0
 --- !u!1 &1069623004
 GameObject:
@@ -5522,6 +5532,7 @@ MonoBehaviour:
   camHeight: 8
   orthographicSize: 14
   priority: 0
+  supressFastFallingCameraShift: 0
 --- !u!61 &1079377049
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5535,7 +5546,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 9.279873, y: -0.1568346}
+  m_Offset: {x: 9.279873, y: -0.3508997}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -5546,7 +5557,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 59.421196, y: 21.52633}
+  m_Size: {x: 59.421196, y: 21.1382}
   m_EdgeRadius: 0
 --- !u!1 &1087135985
 GameObject:
@@ -7569,6 +7580,81 @@ MonoBehaviour:
     color: {r: 1, g: 0.88550174, b: 0, a: 0}
     TriggerOnlyOnce: 0
   requireUsableActivatable: 1
+--- !u!1 &1398818898
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1398818899}
+  - component: {fileID: 1398818901}
+  - component: {fileID: 1398818900}
+  m_Layer: 20
+  m_Name: MiddleSail2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1398818899
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1398818898}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -34.76, y: 33.49, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 323426980}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1398818900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1398818898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8855e802787d15046b462b03a0df0da5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  camHeight: 23
+  orthographicSize: 14
+  priority: 2
+  supressFastFallingCameraShift: 0
+--- !u!61 &1398818901
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1398818898}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 10.199766, y: -11.877546}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 16.686398, y: 9.998211}
+  m_EdgeRadius: 0
 --- !u!1 &1415179311
 GameObject:
   m_ObjectHideFlags: 0
@@ -8117,7 +8203,7 @@ GameObject:
   - component: {fileID: 1523527970}
   - component: {fileID: 1523527969}
   m_Layer: 20
-  m_Name: MiddleSail2
+  m_Name: MiddleSail1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8150,9 +8236,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8855e802787d15046b462b03a0df0da5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camHeight: 19
+  camHeight: 18
   orthographicSize: 14
-  priority: 2
+  priority: 1
+  supressFastFallingCameraShift: 0
 --- !u!61 &1523527970
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -8166,7 +8253,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 14.458845, y: -14.923104}
+  m_Offset: {x: 15.001095, y: -16.215933}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -8177,7 +8264,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 25.204556, y: 16.089327}
+  m_Size: {x: 26.289055, y: 13.503666}
   m_EdgeRadius: 0
 --- !u!4 &1530665333 stripped
 Transform:
@@ -8356,6 +8443,7 @@ MonoBehaviour:
   camHeight: 3.5
   orthographicSize: 7
   priority: 4
+  supressFastFallingCameraShift: 0
 --- !u!61 &1568484948
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -10261,29 +10349,13 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1229047326}
     - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: DoNotUpdate
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
       propertyPath: helpPrompts
       value: 
       objectReference: {fileID: 312070738}
     - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: utilityCheats
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: playSoundtrack
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
       propertyPath: cameraController
       value: 
       objectReference: {fileID: 1834934432}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: criticalShipPrompt.text
-      value: Your ship is kinda fucked mate.
-      objectReference: {fileID: 0}
     - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
       propertyPath: shipSails.Array.data[0]
       value: 
@@ -10328,38 +10400,6 @@ PrefabInstance:
       propertyPath: shipSails.Array.data[10]
       value: 
       objectReference: {fileID: 904344876}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: criticalShipPrompt.color.b
-      value: 0.05345905
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: criticalShipPrompt.color.g
-      value: 0.05345905
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: criticalShipPrompt.color.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: criticalShipPrompt.priority
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: criticalShipPrompt.promptLabel
-      value: criticalShip
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: hazardManagerPrefabs.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: hazardManagerPrefabs.Array.data[0]
-      value: 
-      objectReference: {fileID: 3819972910884401993, guid: 19d1b8fc8a639ad4485351aa38842945, type: 3}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: hazardManagerPrefabs.Array.data[1]
-      value: 
-      objectReference: {fileID: 4632434320095983342, guid: 6e1ebaf3cf80b5b4d8b4b42c90b6c429, type: 3}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
@@ -11351,6 +11391,7 @@ MonoBehaviour:
   camHeight: -9.5
   orthographicSize: 14
   priority: 5
+  supressFastFallingCameraShift: 0
 --- !u!61 &1969654902
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -11923,6 +11964,7 @@ MonoBehaviour:
   camHeight: 13.5
   orthographicSize: 14
   priority: 2
+  supressFastFallingCameraShift: 0
 --- !u!61 &2020603230
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -44,9 +44,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 064406c1e13f1654ab93f0f0db328c25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  environmentTesting: 1
-  playSoundtrack: 0
+  DoNotUpdate: 0
+  playSoundtrack: 1
   slowMo: 0
+  utilityCheats: 1
+  player: {fileID: 0}
+  sound: {fileID: 0}
+  helpPrompts: {fileID: 0}
+  cameraController: {fileID: 0}
+  theBoat: {fileID: 0}
   shipSails:
   - {fileID: 0}
   - {fileID: 0}
@@ -64,6 +70,15 @@ MonoBehaviour:
   clothPrefab: {fileID: 8273169938340841911, guid: 29dda14d70372bf4e8cd5a00e0f352c5, type: 3}
   harpoonPrefab: {fileID: 8273169938340841911, guid: f873f9b434d22334ab22d1e353b73f5e, type: 3}
   foodPrefab: {fileID: 8273169938340841911, guid: a8b181ba638d05b47a6fd7f95355f2e7, type: 3}
-  meteorManagerPrefab: {fileID: 3819972910884401993, guid: 19d1b8fc8a639ad4485351aa38842945, type: 3}
+  hazardManagerPrefabs:
+  - {fileID: 3819972910884401993, guid: 19d1b8fc8a639ad4485351aa38842945, type: 3}
+  - {fileID: 4632434320095983342, guid: 6e1ebaf3cf80b5b4d8b4b42c90b6c429, type: 3}
+  hazardWindDownTime: 15
   hydraPrefab: {fileID: 0}
-  demoSceneReadyExit: 0
+  criticalShipPrompt:
+    promptLabel: criticalShip
+    priority: 5
+    duration: 0
+    text: Your ship is kinda fucked mate.
+    color: {r: 1, g: 0.05345905, b: 0.05345905, a: 0}
+    TriggerOnlyOnce: 0
