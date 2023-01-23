@@ -42,7 +42,7 @@ namespace SpaceBoat {
         [SerializeField] private float gravityAcceleration = 30f;
         [SerializeField] private float fastfallMultiplier = 2f;
         [SerializeField] private float slipSpeedVertical = 10f;
-        [SerializeField] private float gravityTerminalVelocity = 45f;
+        [SerializeField] public float gravityTerminalVelocity = 45f;
         [SerializeField] private float jumpHorizontalMultiplier = 1.2f;
         [SerializeField] private float jumpHorizontalSpeedWindow = 0.5f;
         [SerializeField] private float landingHorizontalDrag = 0.7f;
@@ -117,6 +117,9 @@ namespace SpaceBoat {
         private int jumpStartTime = 0;
         private float currentVerticalForce  = 0f;
         private bool hitApex = false;
+        public (bool, bool, bool, bool) GetJumpStatus() {
+            return (isJumping, fastFall, halfJump, hitApex);
+        }
 
         private int lastJumpStompFrame = 0;
         private int jumpStompCooldown = 18;

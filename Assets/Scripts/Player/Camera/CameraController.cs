@@ -11,6 +11,7 @@ namespace SpaceBoat {
         [SerializeField] private Transform shipViewTarget;
         [SerializeField] private float shipViewSize = 34f;
         [SerializeField] private float cameraShiftTime = 1f;
+        [SerializeField] private float playerFallingShiftTimeMultiplier = 0.5f;
         [SerializeField] private float shiftTimeReductionProportion = 0.7f;
 
         [SerializeField] private float cameraXMax = 100f;
@@ -93,8 +94,9 @@ namespace SpaceBoat {
             }
             Debug.Log("Player camera target changes from " + previousY + " to " + newY + " Y and from " + previousSize + " to " + newSize + " Size");
             // don't change the camera to a higher level until the player is grounded.
-            if (newY > previousY && !player.GetIsGrounded(false, true) && !inShipViewTransition) {
-                Debug.Log("Player is not grounded, not adjusting camera.");
+            bool grounded = player.GetIsGrounded(false, true);
+            if (newY > previousY && !grounded && !inShipViewTransition) {
+                Debug.Log("Player is not grounded, not adjusting camera upwards.");
                 return;
             }
 
@@ -115,6 +117,13 @@ namespace SpaceBoat {
                 changeProportion = (requiredChangeY/diffY >= requiredChangeSize/diffSize) ? requiredChangeY/diffY : requiredChangeSize/diffSize;
 
             float cameraMovementDuration = (cameraShiftTime*(1-shiftTimeReductionProportion)) + (changeProportion * cameraShiftTime * shiftTimeReductionProportion);
+            if (newY < previousY && !grounded && !inShipViewTransition && diffY > newSize/2.2) {
+                (bool isJumping, bool fastFall, bool halfJump, bool hitApex) = player.GetJumpStatus();
+                Debug.Log("Player is falling, adjusting camera downwards at gravity terminal velocity.");
+                if (!isJumping || (isJumping && hitApex)) {
+                    cameraMovementDuration = diffY / player.gravityTerminalVelocity;
+                }
+            }
             currentTargetTransitionDuration = cameraMovementDuration;
             cameraMovementTargetEndTime = Time.time + cameraMovementDuration;
             Debug.Log("Camera movement duration " + cameraMovementDuration + " target end time: " + cameraMovementTargetEndTime);
@@ -194,6 +203,5 @@ namespace SpaceBoat {
         public void ForceShipView(bool force) {
             shipViewForced = force;
         }
-
     }
 }
