@@ -102,6 +102,7 @@ GameObject:
   - component: {fileID: 3796976138626872230}
   - component: {fileID: 8500351002491032019}
   - component: {fileID: 5001280831201649490}
+  - component: {fileID: 7836264813006153459}
   m_Layer: 8
   m_Name: BounceWalkway
   m_TagString: SpaceRocks
@@ -174,11 +175,30 @@ CapsuleCollider2D:
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_UsedByEffector: 0
+  m_UsedByEffector: 1
   m_UsedByComposite: 0
   m_Offset: {x: -0.15212344, y: 0.017117893}
-  m_Size: {x: 0.91419715, y: 0.28889862}
+  m_Size: {x: 1, y: 0.28889862}
   m_Direction: 1
+--- !u!251 &7836264813006153459
+PlatformEffector2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1012032859657183514}
+  m_Enabled: 1
+  m_UseColliderMask: 1
+  m_ColliderMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RotationalOffset: 0
+  m_UseOneWay: 1
+  m_UseOneWayGrouping: 0
+  m_SurfaceArc: 180
+  m_UseSideFriction: 0
+  m_UseSideBounce: 0
+  m_SideArc: 1
 --- !u!1 &7308684426909341545
 GameObject:
   m_ObjectHideFlags: 0

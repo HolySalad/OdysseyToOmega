@@ -17,6 +17,7 @@ namespace SpaceBoat.HazardManagers.MeteorShowerSubclasses {
         private Rigidbody2D rb;
         private float originalVerticalVelocity;
         private float lastBounceForce = 0f;
+        private float lastReboundForce = 0f;
 
         void Start() {
             rb = parentRock.GetComponent<Rigidbody2D>();
@@ -24,11 +25,11 @@ namespace SpaceBoat.HazardManagers.MeteorShowerSubclasses {
         }
 
         public bool Bounce(Player player) {
-            if (bounceTimer > 0 || player.currentPlayerStateName != PlayerStateName.ready) {
+            if (bounceTimer > 0 || player.currentPlayerStateName != PlayerStateName.ready || player.gameObject.GetComponent<Rigidbody2D>().velocity.y > 0) {
                 return false;
             }
             lastBounceForce = player.gameObject.GetComponent<Rigidbody2D>().velocity.y* bounceForceMult;
-            originalVerticalVelocity = rb.velocity.y;
+            originalVerticalVelocity = rb.velocity.y-lastReboundForce;
             rb.velocity = new Vector2(rb.velocity.x, originalVerticalVelocity + lastBounceForce);
             player.ForceJump(false, true, true);
             bounceTimer = bounceCooldown;
@@ -44,7 +45,8 @@ namespace SpaceBoat.HazardManagers.MeteorShowerSubclasses {
             if (rb.velocity.y < originalVerticalVelocity) {
                 float newVelocity = Mathf.Min(originalVerticalVelocity, rb.velocity.y + (bounceForceDecay * Time.deltaTime));
                 if (newVelocity == originalVerticalVelocity) {
-                    newVelocity = originalVerticalVelocity + (-lastBounceForce * reboundForceMult);
+                    lastReboundForce = -lastBounceForce * reboundForceMult;
+                    newVelocity = originalVerticalVelocity + (lastReboundForce);
                 }
                 rb.velocity = new Vector2(rb.velocity.x, newVelocity);
             } else if (rb.velocity.y > originalVerticalVelocity) {
