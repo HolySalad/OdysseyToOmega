@@ -20,7 +20,7 @@ namespace SpaceBoat.Ship {
 
         public bool isInUse {get; private set;} = false;
         public bool canManuallyDeactivate {get;} = true;
-        public PlayerStateName playerState {get;} = PlayerStateName.aiming;
+        public PlayerStateName playerState {get;} = PlayerStateName.turret;
         public string usageAnimation {get;} = "Repairing";
         public string usageSound {get;}
 

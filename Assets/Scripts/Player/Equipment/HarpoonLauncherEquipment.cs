@@ -9,6 +9,7 @@ namespace SpaceBoat.PlayerSubclasses.Equipment {
         [SerializeField] private SpriteRenderer activeSprite;
 
         public EquipmentType equipmentType {get;} = EquipmentType.HarpoonLauncher;
+        public PlayerStateName usageState {get;} = PlayerStateName.weaponEquipment;
         public bool isActive {get;} = false;
         public EquipmentActivationBehaviour activationBehaviour {get;} = EquipmentActivationBehaviour.Toggle;
 
@@ -26,6 +27,10 @@ namespace SpaceBoat.PlayerSubclasses.Equipment {
         }
         public void Unequip(Player player) {
             offSprite.enabled = false;
+        }
+
+        public void UpdateEquipment(Player player) {
+
         }
     }
 }

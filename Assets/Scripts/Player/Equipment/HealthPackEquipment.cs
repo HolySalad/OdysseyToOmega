@@ -5,6 +5,7 @@ namespace SpaceBoat.PlayerSubclasses.Equipment {
     public class HealthPackEquipment : MonoBehaviour, IPlayerEquipment {
         [SerializeField] private SpriteRenderer sprite;
         public EquipmentType equipmentType {get;} = EquipmentType.HealthPack;
+        public PlayerStateName usageState {get;} = PlayerStateName.staticEquipment;
         public bool isActive {get;} = false;
         public EquipmentActivationBehaviour activationBehaviour {get;} = EquipmentActivationBehaviour.Toggle;
         public bool ActivationCondition(Player player) {
@@ -21,6 +22,10 @@ namespace SpaceBoat.PlayerSubclasses.Equipment {
         }
         public void Unequip(Player player) {
             sprite.enabled = false;
+        }
+
+        public void UpdateEquipment(Player player) {
+
         }
     }
 }
