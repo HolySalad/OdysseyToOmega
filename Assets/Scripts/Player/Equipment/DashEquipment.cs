@@ -8,19 +8,35 @@ namespace SpaceBoat.PlayerSubclasses.Equipment {
         [SerializeField] private SpriteRenderer offSprite;
         [SerializeField] private SpriteRenderer activeSprite;
 
+        [SerializeField] private float dashCooldown = 2.5f;
+        [SerializeField] private float dashDuration = 0.5f;
+        [SerializeField] public float dashSpeed = 20f;
+        [SerializeField] public float dashAcceleration = 50f;
+        [SerializeField] public float dashDeceleration = 50f;
+        [SerializeField] public float maintainedMomentumMultiplier = 0.5f;
+
         public EquipmentType equipmentType {get;} = EquipmentType.Dash;
         public PlayerStateName usageState {get;} = PlayerStateName.dash;
-        public bool isActive {get;} = false;
+        public bool isActive {get; private set;} = false;
         public EquipmentActivationBehaviour activationBehaviour {get;} = EquipmentActivationBehaviour.Press;
 
+        private float cooldown = 0f;
+        private float dashTimer = 0f;
+
         public bool ActivationCondition(Player player) {
-            return false;
+            return cooldown <= 0f;
         }
         public void Activate(Player player) {
-            
+            isActive = true;
+            cooldown = dashCooldown;
+            dashTimer = dashDuration;
+            offSprite.enabled = false;
+            activeSprite.enabled = true;
         }
         public void CancelActivation(Player player) {
-            
+            isActive = false;
+            offSprite.enabled = true;
+            activeSprite.enabled = false;
         }
         public void Equip(Player player) {
             offSprite.enabled = true;
@@ -30,7 +46,15 @@ namespace SpaceBoat.PlayerSubclasses.Equipment {
         }
 
         public void UpdateEquipment(Player player) {
-
+            if (cooldown > 0f) {
+                cooldown = Mathf.Max(0f, cooldown - Time.deltaTime);
+            }
+            if (isActive) {
+                dashTimer = Mathf.Max(0f, dashTimer - Time.deltaTime);
+                if (dashTimer <= 0f) {
+                    player.DeactivateEquipment();
+                }
+            }
         }
     }
 

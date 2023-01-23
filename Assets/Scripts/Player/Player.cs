@@ -122,6 +122,10 @@ namespace SpaceBoat {
         private int jumpStompCooldown = 18;
 
         private bool isFacingRight = true;
+        public float GetFacingDirection() {
+            return isFacingRight ? 1f : -1f;
+        }
+
         private float lastHorizontalInput;
         private float currentWalkingSpeed;
         private bool justLanded = false;
@@ -210,6 +214,10 @@ namespace SpaceBoat {
 
         public void Footfall() {
 
+        }
+
+        public void OverrideWalkSpeed(float speed) {
+            currentWalkingSpeed = speed;
         }
 
         public void WalkInput(float horizontalInput) {
@@ -633,7 +641,7 @@ namespace SpaceBoat {
             if (IsPlayerInvulnerable()) {
                 return;
             }
-            if (currentEquipment is ShieldEquipment) {
+            if (currentEquipment is ShieldEquipment && currentEquipment.isActive) {
                 ((ShieldEquipment)currentEquipment).TakeDamage(this);
                 return;
             }

@@ -6910,7 +6910,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1347467870
 Transform:
   m_ObjectHideFlags: 0
@@ -10625,7 +10625,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
       propertyPath: startingEquipment
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2836575043464728628, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
       propertyPath: m_IsActive
@@ -10896,6 +10896,7 @@ MonoBehaviour:
   shieldBreakCooldown: 10
   shieldMinStrengthToUse: 1
   shieldTogglePenalty: 0.1
+  shieldDamagePenalty: 0.1
 --- !u!114 &1877163397
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10950,6 +10951,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   offSprite: {fileID: 1984508870}
   activeSprite: {fileID: 817410426}
+  dashCooldown: 1
+  dashDuration: 0.25
+  dashSpeed: 40
+  dashAcceleration: 400
+  dashDeceleration: 200
 --- !u!1 &1921124064
 GameObject:
   m_ObjectHideFlags: 0

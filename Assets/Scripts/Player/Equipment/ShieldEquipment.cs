@@ -12,6 +12,7 @@ namespace SpaceBoat.PlayerSubclasses.Equipment {
         [SerializeField] private float shieldBreakCooldown = 10f;
         [SerializeField] private float shieldMinStrengthToUse = 0.3f;
         [SerializeField] private float shieldTogglePenalty = 0.1f;
+        [SerializeField] private float shieldDamagePenalty = 0.1f;
 
         public EquipmentType equipmentType {get;} = EquipmentType.Shield;
         public PlayerStateName usageState {get;} = PlayerStateName.staticEquipment;
@@ -51,6 +52,19 @@ namespace SpaceBoat.PlayerSubclasses.Equipment {
             }
         }
 
+        IEnumerator FlashBackpack() {
+            while (true) {
+                offSprite.enabled = true;
+                activeSprite.enabled = false;
+                if (!isActive) yield break;
+                yield return new WaitForSeconds(0.1f);
+                if (!isActive) yield break;
+                offSprite.enabled = false;
+                activeSprite.enabled = true;
+                yield return new WaitForSeconds(0.1f);
+            }
+        }
+
         public void UpdateEquipment(Player player) {
             if (!isActive) {
                 float sheildRecoveryPerSecond = shieldMaxDuration / shieldRecoveryTime;
@@ -67,8 +81,10 @@ namespace SpaceBoat.PlayerSubclasses.Equipment {
                 shieldStrength = Mathf.Max(0, shieldStrength - Time.deltaTime);
                 if (shieldStrength <= 0) {
                     player.DeactivateEquipment();
+                } else if (shieldStrength <= shieldMaxDuration/4) {
+                    StartCoroutine(FlashBackpack());
                 }
-            }
+             }
         }
     }
 }
