@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using SpaceBoat.Ship;
 
-namespace SpaceBoat.PlayerSubclasses.PlayerStates {    
+namespace SpaceBoat.PlayerStates {    
     public class LadderState : MonoBehaviour,  IPlayerState
     {
 
