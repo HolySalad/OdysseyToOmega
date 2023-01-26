@@ -46,6 +46,7 @@ namespace SpaceBoat {
         [SerializeField] private float jumpHorizontalMultiplier = 1.2f;
         [SerializeField] private float jumpHorizontalSpeedWindow = 0.5f;
         [SerializeField] private float landingHorizontalDrag = 0.7f;
+        [SerializeField] private int landingJumpKeyHoldBuffer = 4;
 
 
         [Header("Walk Movement Settings")]
@@ -331,7 +332,7 @@ namespace SpaceBoat {
         }
 
         public void JumpInput(bool keyHeld, bool keyDown) {
-            bool jumpPress = keyDown || (keyHeld && Time.frameCount - landedAtFrame > 4);
+            bool jumpPress = keyDown || (keyHeld && Time.frameCount - landedAtFrame > landingJumpKeyHoldBuffer);
             if (jumpPress && !isJumping) {
                 StartJump();
             } else if (!keyHeld && isJumping && !halfJump) {
