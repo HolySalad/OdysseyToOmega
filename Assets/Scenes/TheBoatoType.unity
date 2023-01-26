@@ -10660,6 +10660,7 @@ MonoBehaviour:
   cameraShiftTime: 0.8
   playerFallingShiftTimeMultiplier: 0.5
   shiftTimeReductionProportion: 0.35
+  cameraXOffset: 3.5
   cameraXMax: 100
   cameraXMin: -100
   shipViewCameraXMax: -12
@@ -10674,7 +10675,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
       propertyPath: startingEquipment
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7691977599830055013, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
       propertyPath: m_Name

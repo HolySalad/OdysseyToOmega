@@ -6,7 +6,7 @@ namespace SpaceBoat.PlayerSubclasses.Equipment {
     public class ShieldEquipment : MonoBehaviour, IPlayerEquipment {
         [SerializeField] private SpriteRenderer offSprite;
         [SerializeField] private SpriteRenderer activeSprite;
-        [SerializeField] private GameObject shieldObject;
+        [SerializeField] public GameObject shieldObject;
         [SerializeField] private float shieldMaxDuration = 3f;
         [SerializeField] private float shieldRecoveryTime = 6f;
         [SerializeField] private float shieldBreakCooldown = 10f;

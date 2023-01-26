@@ -49,9 +49,6 @@ namespace SpaceBoat.PlayerSubclasses.PlayerStates {
 
             player.CrouchInput(crouchHeld);
 
-            //Item pick up
-            bool pickItemDown = CthulkInput.PickItemDown();
-
             player.WalkInput(horizontal);
             if (jumpLockOut && (jumpKeyDown || (Time.time > timeEnteredState + jumpLockOutTime))) {
                 jumpLockOut = false;

@@ -8,7 +8,7 @@ using SpaceBoat.PlayerSubclasses.Equipment;
 using SpaceBoat.UI;
 
 namespace SpaceBoat {
-    public enum PlayerStateName {ready, working, hitstun, turret, weaponEquipment, ladder, dash, staticEquipment, nullState};
+    public enum PlayerStateName {ready, working, hitstun, turret, weaponEquipment, ladder, dash, ball, staticEquipment, nullState};
     public class Player : MonoBehaviour
     {
         [Header("General Player Settings")]
@@ -39,7 +39,7 @@ namespace SpaceBoat {
         [SerializeField] private float jumpDecay = 28f;
         [SerializeField] private int jumpDecayStartFrame = 4;
         [SerializeField] private float halfJumpEarliestFrame = 6;
-        [SerializeField] private float gravityAcceleration = 30f;
+        [SerializeField] public float gravityAcceleration = 30f;
         [SerializeField] private float fastfallMultiplier = 2f;
         [SerializeField] private float slipSpeedVertical = 10f;
         [SerializeField] public float gravityTerminalVelocity = 45f;
@@ -188,6 +188,10 @@ namespace SpaceBoat {
                 ChangeEquipment(startingEquipment);
             }
 
+            string[] joysticknames = Input.GetJoystickNames();
+            for (int i = 0; i < joysticknames.Length; i++) {
+                Debug.Log(joysticknames[i]);
+            }
         }
         
         public void ChangeState(PlayerStateName newStateName) {
@@ -196,6 +200,8 @@ namespace SpaceBoat {
                 currentPlayerStateName = newStateName;
                 currentPlayerState = playerStates[newStateName];
                 playerStates[oldStateName].ExitState(newStateName);
+                //if the exit state function redirected to another state
+                if (currentPlayerStateName != newStateName) return;
                 currentPlayerState.EnterState(oldStateName);
             }
         }
@@ -655,7 +661,6 @@ namespace SpaceBoat {
                 PlayerDies(false);
                 return;
             }  
-            animator.SetTrigger("Hit");
             SoundManager.Instance.Play("Hit"); 
             if (activatableInUse != null) {
                 activatableInUse.Deactivate(this);
@@ -719,12 +724,12 @@ namespace SpaceBoat {
         }
 
         void MovementUpdate() {
-            if (currentPlayerState.stealVelocityControl) {
-                return;
-            }
             UpdateGrounded();
             MomentumUpdate();
             bool headBump = CheckHeadBump();
+            if (currentPlayerState.stealVelocityControl) {
+                return;
+            }
             updateJump(headBump);
             float totalHorizontalVelocity = (currentWalkingSpeed*lastHorizontalInput) + currentHazardMomentum;
             float totalVerticalVelocity = currentVerticalForce;
@@ -817,46 +822,4 @@ namespace SpaceBoat {
 
     }
 
-
-    public class CthulkInput {
-
-        public static bool EquipmentUsageKeyDown() {
-            return Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.LeftShift);
-        }
-        public static bool EquipmentUsageKeyHeld() {
-            return Input.GetKey(KeyCode.Q) || Input.GetKey(KeyCode.LeftShift);
-        }
-
-        public static bool JumpKeyDown() {
-            return Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W);
-        }
-
-        public static bool JumpKeyHeld() {
-            return Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W);
-        }
-
-        public static bool CrouchHeld() {
-            return Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftControl);
-        }
-
-        public static bool ActivateKeyDown() {
-            return Input.GetKeyDown(KeyCode.F);
-        }
-
-        public static bool PickItemDown() {
-            return Input.GetKeyDown(KeyCode.E);
-        }
-
-        public static bool UseItemDown() {
-            return Input.GetKeyDown(KeyCode.F);
-        }
-
-        public static float HorizontalInput() {
-            return Input.GetAxisRaw("Horizontal");
-        }
-
-        public static bool CameraToggleDown() {
-            return Input.GetKeyDown(KeyCode.C);
-        }
-    }
 }

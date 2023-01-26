@@ -103,6 +103,11 @@ MonoBehaviour:
     meteorIntervalMultiplier: 1
     rockRateIncrease: 0
     rockSpeedIncrease: 0
+  - timeIntoHazard: 5
+    baseNumMeteors: 2
+    meteorIntervalMultiplier: 1
+    rockRateIncrease: 0
+    rockSpeedIncrease: 0
   - timeIntoHazard: 48
     baseNumMeteors: 3
     meteorIntervalMultiplier: 0.8
@@ -118,11 +123,6 @@ MonoBehaviour:
     meteorIntervalMultiplier: 0.5
     rockRateIncrease: 0.75
     rockSpeedIncrease: 1.5
-  - timeIntoHazard: 5
-    baseNumMeteors: 2
-    meteorIntervalMultiplier: 1
-    rockRateIncrease: 0
-    rockSpeedIncrease: 0
   meteorPrefab: {fileID: 189507748417666162, guid: 8ad86b7f340c2764ea7cf973e28b644b, type: 3}
   firstMeteorSpawnTimer: 1
   meteorInterval: 30

@@ -20,6 +20,7 @@ namespace SpaceBoat.PlayerSubclasses.PlayerStates {
         }
         public void UpdateState() {
             player.WalkInput(0f); // input 0 for walk movement to decelerate the player naturally.
+            player.CrouchInput(false);
             player.EquipmentUsageInput(CthulkInput.EquipmentUsageKeyDown(), CthulkInput.EquipmentUsageKeyHeld());
         }
     }

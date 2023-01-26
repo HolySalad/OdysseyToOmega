@@ -13,6 +13,10 @@ namespace SpaceBoat {
         [SerializeField] private float cameraShiftTime = 1f;
         [SerializeField] private float playerFallingShiftTimeMultiplier = 0.5f;
         [SerializeField] private float shiftTimeReductionProportion = 0.7f;
+        [SerializeField] private float cameraLookTime = 0.5f;
+        [SerializeField] private float baseCameraXOffset = 3.5f;
+        [SerializeField] private float lookRightCameraXOffset = 5f;
+        [SerializeField] private float lookDownCameraYOffset = -4f;
 
         [SerializeField] private float cameraXMax = 100f;
         [SerializeField] private float cameraXMin = -100f;
@@ -21,11 +25,15 @@ namespace SpaceBoat {
 
         private bool cameraInitialized = false;
         private bool inShipView = false;
+        private bool shipViewHeld = false;
         private bool shipViewForced = false;
         private bool cameraBehaviourForced = false;
         private float cameraTargetY = 0f;
         private float cameraTargetX = 0f;
         private float cameraTargetSize = 0f;
+
+        private float currentLookOffsetRight = 0f;
+        private float currentLookOffsetDown = 0f;
 
         private float currentCameraMovementOriginY = 0f;
         private float currentCameraMovementOriginSize = 0f;
@@ -138,7 +146,8 @@ namespace SpaceBoat {
         }
 
         void SetCameraTargetX() {
-            float newXTarget = player.transform.position.x + player.playerCameraXFocusOffset;
+            float scaledXOffset = (baseCameraXOffset + currentLookOffsetRight) * (cameraComponent.orthographicSize / 10);
+            float newXTarget = player.transform.position.x + scaledXOffset + player.playerCameraXFocusOffset;
             if (inShipView) {
                 newXTarget = Mathf.Clamp(newXTarget, shipViewCameraXMin, shipViewCameraXMax);
             } else {
@@ -149,12 +158,10 @@ namespace SpaceBoat {
 
         
         void MoveAndResizeCamera() {
-
-
             float percentageMovementComplete = 1 - Mathf.Max((cameraMovementTargetEndTime - Time.time) / currentTargetTransitionDuration, 0);
             if (percentageMovementComplete == 1) {
                 inShipViewTransition = false;
-                transform.position = new Vector3(cameraTargetX, cameraTargetY, transform.position.z);
+                transform.position = new Vector3(cameraTargetX, cameraTargetY + currentLookOffsetDown, transform.position.z);
                 cameraComponent.orthographicSize = cameraTargetSize;
                 return;
             }
@@ -165,7 +172,7 @@ namespace SpaceBoat {
             } else {
                 newCameraPosition.x = cameraTargetX;
             }
-            newCameraPosition.y = currentCameraMovementOriginY + ((cameraTargetY - currentCameraMovementOriginY) * percentageMovementComplete);
+            newCameraPosition.y = currentCameraMovementOriginY + currentLookOffsetDown + ((cameraTargetY - currentCameraMovementOriginY) * percentageMovementComplete);
             transform.position = newCameraPosition;
             cameraComponent.orthographicSize = currentCameraMovementOriginSize + ((cameraTargetSize - currentCameraMovementOriginSize) * percentageMovementComplete);
         }
@@ -175,7 +182,33 @@ namespace SpaceBoat {
                 MoveAndResizeCamera();
                 return;
             }
-            bool shipViewHeld = Input.GetKey(KeyCode.C);
+            if (CthulkInput.CameraToggleDown()) {
+                shipViewHeld = !shipViewHeld;
+            }
+            if (CthulkInput.cameraLookDownHeld()) {
+                if (currentLookOffsetDown > lookDownCameraYOffset) {
+                    float changePerSecond = lookDownCameraYOffset / cameraLookTime;
+                    currentLookOffsetDown = Mathf.Max(currentLookOffsetDown + (changePerSecond * Time.deltaTime), lookDownCameraYOffset);
+                }
+            } else {
+                if (currentLookOffsetDown < 0) {
+                    float changePerSecond = lookDownCameraYOffset / cameraLookTime;
+                    currentLookOffsetDown = Mathf.Min(currentLookOffsetDown - (changePerSecond * Time.deltaTime), 0);
+                }
+            }
+
+            if (CthulkInput.CameraLookRightHeld()) {
+                if (currentLookOffsetRight < lookRightCameraXOffset) {
+                    float changePerSecond = lookRightCameraXOffset / cameraShiftTime;
+                    currentLookOffsetRight = Mathf.Min(currentLookOffsetRight + (changePerSecond * Time.deltaTime), lookRightCameraXOffset);
+                }
+            } else {
+                if (currentLookOffsetRight > 0) {
+                    float changePerSecond = lookRightCameraXOffset / cameraShiftTime;
+                    currentLookOffsetRight = Mathf.Max(currentLookOffsetRight - (changePerSecond * Time.deltaTime), 0);
+                }
+            }
+
             bool wasInShipView = inShipView;
             inShipView = shipViewHeld || shipViewForced;
 
