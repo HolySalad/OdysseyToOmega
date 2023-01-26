@@ -8,7 +8,7 @@ using SpaceBoat.PlayerSubclasses.Equipment;
 using SpaceBoat.UI;
 
 namespace SpaceBoat {
-    public enum PlayerStateName {ready, working, hitstun, turret, weaponEquipment, ladder, dash, ball, staticEquipment, nullState};
+    public enum PlayerStateName {ready, working, hitstun, turret, weaponEquipment, ladder, dash, ball, staticEquipment, captured, nullState};
     public class Player : MonoBehaviour
     {
         [Header("General Player Settings")]
@@ -171,6 +171,7 @@ namespace SpaceBoat {
             playerStates.Add(PlayerStateName.dash, GetComponent<DashState>() ?? gameObject.AddComponent<DashState>());
             playerStates.Add(PlayerStateName.weaponEquipment, GetComponent<WeaponEquipmentState>() ?? gameObject.AddComponent<WeaponEquipmentState>());
             playerStates.Add(PlayerStateName.staticEquipment, GetComponent<StaticEquipmentState>() ?? gameObject.AddComponent<StaticEquipmentState>());
+            playerStates.Add(PlayerStateName.captured, GetComponent<CapturedState>() ?? gameObject.AddComponent<CapturedState>());
 
 
             currentPlayerState = playerStates[currentPlayerStateName];
