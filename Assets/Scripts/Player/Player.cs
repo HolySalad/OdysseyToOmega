@@ -114,7 +114,7 @@ namespace SpaceBoat {
         private bool isJumping = false;
         private bool fastFall = false;
         private bool halfJump = false;
-        private int jumpStartTime = 0;
+        private int jumpStartFrame = 0;
         private float currentVerticalForce  = 0f;
         private bool hitApex = false;
         public (bool, bool, bool, bool) GetJumpStatus() {
@@ -131,7 +131,7 @@ namespace SpaceBoat {
 
         private float lastHorizontalInput;
         private float currentWalkingSpeed;
-        private bool justLanded = false;
+        private int landedAtFrame = 0;
 
         public bool isSlipping {get; private set;} = false;
         private bool isSlippingLeft = false;
@@ -270,7 +270,7 @@ namespace SpaceBoat {
         private void StartJump(bool forceJump = false) {
             if (CanJump() || forceJump) {
                 isJumping = true;
-                jumpStartTime = Time.frameCount + jumpSquatFrames;
+                jumpStartFrame = Time.frameCount + jumpSquatFrames;
                 jumpSquat = true;
                 animator.SetTrigger("Jump");
             }
@@ -282,13 +282,13 @@ namespace SpaceBoat {
 
         void updateJump(bool headBumped) {
             // start the jump
-            if (jumpSquat && Time.frameCount > jumpStartTime ) {
+            if (jumpSquat && Time.frameCount > jumpStartFrame ) {
                 SoundManager sm = FindObjectOfType<SoundManager>();
                 sm.Play("Jump"); 
                 Debug.Log("JumpSquat > Jump");
                 jumpSquat = false;
                 if (headBumped) {
-                    justLanded = true;
+                    landedAtFrame = Time.frameCount;
                     return;
                 }
                 isJumping = true;
@@ -305,7 +305,7 @@ namespace SpaceBoat {
                 currentVerticalForce = slipSpeedVertical*(1-landingHorizontalDrag);
             } else if (currentVerticalForce > 0) {
                 float decay = 0;
-                if ((halfJump && Time.frameCount > jumpStartTime + halfJumpEarliestFrame) || (Time.frameCount > jumpStartTime + jumpDecayStartFrame)) {
+                if ((halfJump && Time.frameCount > jumpStartFrame + halfJumpEarliestFrame) || (Time.frameCount > jumpStartFrame + jumpDecayStartFrame)) {
                     decay = jumpDecay;
                 }
                 currentVerticalForce = Mathf.Max(0, currentVerticalForce - decay * Time.deltaTime);
@@ -314,7 +314,7 @@ namespace SpaceBoat {
                 }
             } else if (!isGrounded) {
                 if (!hitApex) {
-                    Debug.Log("Hit Apex after " + (Time.frameCount - jumpStartTime) + " frames");
+                    Debug.Log("Hit Apex after " + (Time.frameCount - jumpStartFrame) + " frames");
                     hitApex = true;
                     //TODO jump animation > fall animation
                 }
@@ -331,14 +331,8 @@ namespace SpaceBoat {
         }
 
         public void JumpInput(bool keyHeld, bool keyDown) {
-            //skip one frame of input after landing.
-            if (justLanded) {
-                justLanded = false;
-                return;
-            }
-            if ((keyHeld 
-            //|| (justLanded && keyHeld)
-            ) && !isJumping) {
+            bool jumpPress = keyDown || (keyHeld && Time.frameCount - landedAtFrame > 4);
+            if (jumpPress && !isJumping) {
                 StartJump();
             } else if (!keyHeld && isJumping && !halfJump) {
                 Debug.Log("Half Jump");
@@ -349,7 +343,7 @@ namespace SpaceBoat {
         public void ForceJump(bool lockOutReadyState = false, bool halfJump = false, bool skipJumpSquat = false) {
             StartJump(true);
             if (skipJumpSquat) {
-                jumpStartTime = Time.frameCount;
+                jumpStartFrame = Time.frameCount;
             }
             if (halfJump) {
                 this.halfJump = true;
@@ -400,7 +394,7 @@ namespace SpaceBoat {
         private void UpdateGrounded() {
             // if we are within a margin of starting a jump, we are still grounded
             // but we don't want to reset vertical momentum.
-            if (Time.frameCount < jumpStartTime + groundCheckJumpMargin) {
+            if (Time.frameCount < jumpStartFrame + groundCheckJumpMargin) {
                 return;
             }
             (bool isGrounded, bool wasGrounded, List<RaycastHit2D> hits) = CheckGrounded();
@@ -422,18 +416,18 @@ namespace SpaceBoat {
                 currentVerticalForce = rb.velocity.y;
                 fastFall = false;
                 if (isJumping) {
-                    Debug.Log("Player landed from jumping after " + (Time.frameCount - jumpStartTime) + " frames");
+                    Debug.Log("Player landed from jumping after " + (Time.frameCount - jumpStartFrame) + " frames");
                     JumpStomp();
                     isJumping = false;
                     halfJump = false;
-                    justLanded = true;
+                    landedAtFrame = Time.frameCount;
                     currentWalkingSpeed = currentWalkingSpeed * landingHorizontalDrag;
                 } else if (!wasGrounded) {
                     Debug.Log("Player landed from falling after " + (Time.frameCount - frameLeftGround) + " frames");
                     if (Time.frameCount - frameLeftGround > 3) JumpStomp();
                     isJumping = false;
                     halfJump = false;
-                    justLanded = true;
+                    landedAtFrame = Time.frameCount;
                 }
             } else {
                 if (Time.frameCount > jumpGrace) {
@@ -806,8 +800,9 @@ namespace SpaceBoat {
             if (game.isPaused) {
                 lastJumpStompFrame += 1;
                 jumpGrace += 1;
-                jumpStartTime += 1;
+                jumpStartFrame += 1;
                 hitOnframe += 1;
+                landedAtFrame += 1;
                 return;
             }
             //InputUpdate(deltaTime);
