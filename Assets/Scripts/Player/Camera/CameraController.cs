@@ -17,6 +17,7 @@ namespace SpaceBoat {
         [SerializeField] private float baseCameraXOffset = 3.5f;
         [SerializeField] private float lookRightCameraXOffset = 5f;
         [SerializeField] private float lookDownCameraYOffset = -4f;
+        [SerializeField] private float lookUpCameraYOffset = 3f;
 
         [SerializeField] private float cameraXMax = 100f;
         [SerializeField] private float cameraXMin = -100f;
@@ -32,6 +33,7 @@ namespace SpaceBoat {
         private float cameraTargetX = 0f;
         private float cameraTargetSize = 0f;
 
+        private bool cameraLookRightToggled = false;
         private float currentLookOffsetRight = 0f;
         private float currentLookOffsetDown = 0f;
 
@@ -139,7 +141,7 @@ namespace SpaceBoat {
             cameraMovementTargetEndTime = Time.time + cameraMovementDuration;
             Debug.Log("Camera movement duration " + cameraMovementDuration + " target end time: " + cameraMovementTargetEndTime);
             //set movement origins and targets
-            currentCameraMovementOriginY = transform.position.y;
+            currentCameraMovementOriginY = transform.position.y - currentLookOffsetDown;
             currentCameraMovementOriginSize = cameraComponent.orthographicSize;
             cameraTargetY = newY;
             cameraTargetSize = newSize;
@@ -185,19 +187,30 @@ namespace SpaceBoat {
             if (CthulkInput.CameraToggleDown()) {
                 shipViewHeld = !shipViewHeld;
             }
-            if (CthulkInput.cameraLookDownHeld()) {
-                if (currentLookOffsetDown > lookDownCameraYOffset) {
+            float verticalLook = CthulkInput.cameraVerticalLook();
+            if (verticalLook != 0) {
+                if (verticalLook < 0 && currentLookOffsetDown > lookDownCameraYOffset) {
                     float changePerSecond = lookDownCameraYOffset / cameraLookTime;
                     currentLookOffsetDown = Mathf.Max(currentLookOffsetDown + (changePerSecond * Time.deltaTime), lookDownCameraYOffset);
+                } else if (verticalLook > 0 && currentLookOffsetDown < lookUpCameraYOffset) {
+                    float changePerSecond = lookUpCameraYOffset / cameraLookTime;
+                    currentLookOffsetDown = Mathf.Min(currentLookOffsetDown + (changePerSecond * Time.deltaTime), lookUpCameraYOffset);
                 }
             } else {
                 if (currentLookOffsetDown < 0) {
                     float changePerSecond = lookDownCameraYOffset / cameraLookTime;
                     currentLookOffsetDown = Mathf.Min(currentLookOffsetDown - (changePerSecond * Time.deltaTime), 0);
+                } else if (currentLookOffsetDown > 0) {
+                    float changePerSecond = lookUpCameraYOffset / cameraLookTime;
+                    currentLookOffsetDown = Mathf.Max(currentLookOffsetDown - (changePerSecond * Time.deltaTime), 0);
                 }
             }
 
-            if (CthulkInput.CameraLookRightHeld()) {
+            if (CthulkInput.CameraLookRightToggle(cameraLookRightToggled)) {
+                cameraLookRightToggled = !cameraLookRightToggled;
+            }
+
+            if (cameraLookRightToggled) {
                 if (currentLookOffsetRight < lookRightCameraXOffset) {
                     float changePerSecond = lookRightCameraXOffset / cameraShiftTime;
                     currentLookOffsetRight = Mathf.Min(currentLookOffsetRight + (changePerSecond * Time.deltaTime), lookRightCameraXOffset);
