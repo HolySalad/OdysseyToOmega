@@ -10,7 +10,7 @@ using UnityEngine.Playables;
 
 namespace SpaceBoat {
 
-    public enum ActivatablesNames {HarpoonGun, Kitchen, Ladder, Sails, None};
+    public enum ActivatablesNames {HarpoonGun, Kitchen, Ladder, Sails, Bedroom, None};
 
     public class GameModel : MonoBehaviour
     {
