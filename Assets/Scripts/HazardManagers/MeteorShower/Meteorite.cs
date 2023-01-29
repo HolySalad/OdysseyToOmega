@@ -32,10 +32,6 @@ namespace SpaceBoat.HazardManagers.MeteorShowerSubclasses {
             this.speed = speed;
             if (!supressSound) SoundManager.Instance.Oneshot("MeteorWhoosh_0"); 
             StartCoroutine(FireMeteor(launchDelay));
-            destructable.AddDestroyCallback(() => {
-                meteorShower.meteorHit();
-                Debug.Log("Meteorite Destroyed");
-            });
             return launchDelay;
         }
 
@@ -56,11 +52,11 @@ namespace SpaceBoat.HazardManagers.MeteorShowerSubclasses {
         }
 
         void Destruct(bool viaDestructable) {
+                meteorShower.meteorHit();
             if (viaDestructable) {
                 destructable.Destruct();
             } else {
                 Destroy(this.gameObject);
-                meteorShower.meteorHit();
             }
         }
 

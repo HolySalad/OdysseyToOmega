@@ -103,36 +103,36 @@ MonoBehaviour:
     meteorIntervalMultiplier: 1
     rockRateIncrease: 0
     rockSpeedIncrease: 0
-  - timeIntoHazard: 48
-    baseNumMeteors: 3
-    meteorIntervalMultiplier: 0.8
-    rockRateIncrease: 0
-    rockSpeedIncrease: 0.5
-  - timeIntoHazard: 72
-    baseNumMeteors: 3
-    meteorIntervalMultiplier: 0.66
-    rockRateIncrease: 1
-    rockSpeedIncrease: 1.25
-  - timeIntoHazard: 96
-    baseNumMeteors: 4
-    meteorIntervalMultiplier: 0.5
-    rockRateIncrease: 2
-    rockSpeedIncrease: 1.5
   - timeIntoHazard: 5
     baseNumMeteors: 2
     meteorIntervalMultiplier: 1
     rockRateIncrease: 0
     rockSpeedIncrease: 0
+  - timeIntoHazard: 48
+    baseNumMeteors: 3
+    meteorIntervalMultiplier: 0.8
+    rockRateIncrease: 0.25
+    rockSpeedIncrease: 0.5
+  - timeIntoHazard: 72
+    baseNumMeteors: 3
+    meteorIntervalMultiplier: 0.66
+    rockRateIncrease: 0.5
+    rockSpeedIncrease: 1.25
+  - timeIntoHazard: 96
+    baseNumMeteors: 4
+    meteorIntervalMultiplier: 0.5
+    rockRateIncrease: 0.75
+    rockSpeedIncrease: 1.5
   meteorPrefab: {fileID: 189507748417666162, guid: 8ad86b7f340c2764ea7cf973e28b644b, type: 3}
   firstMeteorSpawnTimer: 1
   meteorInterval: 30
   meteorIntervalVariance: 0.2
   fullyRepairedTimerReduction: 0.7
-  meteorSpawnXPos: 70
-  meteorSpawnYPos: 55
-  meteorSpawnXVariance: 5
-  meteorSpawnYVariance: 5
-  meteorSpeed: 22
+  meteorSpawnXPos: 105
+  meteorSpawnYPos: 32
+  meteorSpawnXVariance: 2
+  meteorSpawnYVariance: 2
+  meteorSpeed: 42
   rockPrefab: {fileID: 189507748417666162, guid: a4f67d1775a9a984e950a805568f14db, type: 3}
   rockEmiters:
   - {fileID: 7278928038957370028}
@@ -142,14 +142,14 @@ MonoBehaviour:
   firstRockSpawnTimer: 12
   rockVolleyBaseInterval: 8
   rockVolleyIntervalVariance: 0.2
-  baseRockRate: 1
+  baseRockRate: 1.1
   rockSpeed: 8
   rockSpeedVariance: 0.25
   rockSpawnHeightVariance: 1.5
   rockAngleOffset: 2
   rockAngleVariance: 3
   rockBaseSize: 2
-  rockSizeIncreaseVariance: 1
+  rockSizeIncreaseVariance: 0.5
   rockSoundChance: 50
 --- !u!1 &5279424593327033233
 GameObject:

@@ -7,6 +7,8 @@ namespace SpaceBoat.HazardManagers {
     {
         public GameObject gameObject {get;}
         public void StartHazard();
+
+        public string hazardSoundtrack {get;}
         
         public float hazardDuration {get;}
         public bool hasEnded {get;} 

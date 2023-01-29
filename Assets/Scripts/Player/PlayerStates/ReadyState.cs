@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SpaceBoat.PlayerStates {
+namespace SpaceBoat.PlayerSubclasses.PlayerStates {
     public class ReadyState : MonoBehaviour, IPlayerState
     {
         public bool stealVelocityControl {get;} = false;
@@ -25,7 +25,7 @@ namespace SpaceBoat.PlayerStates {
         public void EnterState(PlayerStateName previousState) {
            timeEnteredState = Time.time;
            // if we were previosuly aiming, we don't want the spacebar input 
-           if (previousState == PlayerStateName.aiming) {
+           if (previousState == PlayerStateName.turret) {
                 jumpLockOut = true;
            }
 
@@ -33,11 +33,12 @@ namespace SpaceBoat.PlayerStates {
         public void ExitState(PlayerStateName nextState) {
             
         }
+
         public void UpdateState() {
             // Handle Input
-            // Inputs which can change state go first.
 
-            //Item Usage
+            //Possibly state changing inputs.
+            if (player.EquipmentUsageInput(CthulkInput.EquipmentUsageKeyDown(), CthulkInput.EquipmentUsageKeyHeld())) return;
             if (player.ActivateInput(CthulkInput.ActivateKeyDown())) return;
 
 
@@ -47,9 +48,6 @@ namespace SpaceBoat.PlayerStates {
             bool crouchHeld = CthulkInput.CrouchHeld();
 
             player.CrouchInput(crouchHeld);
-
-            //Item pick up
-            bool pickItemDown = CthulkInput.PickItemDown();
 
             player.WalkInput(horizontal);
             if (jumpLockOut && (jumpKeyDown || (Time.time > timeEnteredState + jumpLockOutTime))) {

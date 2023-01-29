@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using SpaceBoat.Ship;
 
-namespace SpaceBoat.PlayerStates {    
+namespace SpaceBoat.PlayerSubclasses.PlayerStates {    
     public class LadderState : MonoBehaviour,  IPlayerState
     {
 
@@ -40,6 +40,7 @@ namespace SpaceBoat.PlayerStates {
             Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("PlayerChar"), LayerMask.NameToLayer("Ground"), false);
         }
 
+        //TODO sideways jump off ladder by holding directional keys
         public void UpdateState() {
             if (player.ActivateInput(CthulkInput.ActivateKeyDown())) return;
 
@@ -48,6 +49,7 @@ namespace SpaceBoat.PlayerStates {
             bool downHeld = CthulkInput.CrouchHeld();
 
             player.WalkInput(0);
+            player.CrouchInput(false);
 
             float centeringVelocity = 0f;
             if (Mathf.Abs(player.transform.position.x - ladder.transform.position.x) < 0.05f) {

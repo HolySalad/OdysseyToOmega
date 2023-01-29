@@ -10,7 +10,7 @@ using UnityEngine.Playables;
 
 namespace SpaceBoat {
 
-    public enum ActivatablesNames {HarpoonGun, Kitchen, Ladder, Sails, None};
+    public enum ActivatablesNames {HarpoonGun, Kitchen, Ladder, Sails, Bedroom, None};
 
     public class GameModel : MonoBehaviour
     {
@@ -42,6 +42,7 @@ namespace SpaceBoat {
 
         // hazard manager prefabs
         [SerializeField] public List<GameObject> hazardManagerPrefabs;
+        [SerializeField] private float hazardWindDownTime = 15f;
 
         [Header("Enemy Prefabs")] 
         [SerializeField] public GameObject hydraPrefab;
@@ -56,6 +57,8 @@ namespace SpaceBoat {
 
         private IHazardManager currentHazardManager;
         private int hazardsCompleted = 0;
+        private float hazardWindDownTimer = 0f;
+
 
         public bool isPaused {get; private set;}
         public delegate void PauseEvent();
@@ -126,7 +129,7 @@ namespace SpaceBoat {
 
         void Awake() {
             // This is a singleton, so if there is already a GameModel in the scene, destroy this one.
-            if (FindObjectsOfType<GameModel>().Length > 1) {
+            if (Instance != null && Instance != this) {
                 Destroy(gameObject);
             }
             Instance = this;
@@ -139,7 +142,13 @@ namespace SpaceBoat {
                 Debug.LogError("Player not set in GameModel!");
             }
             if (sound == null) {
-                Debug.LogError("SoundManager not set in GameModel!");
+                sound = SoundManager.Instance;
+                if (sound == null) {
+                    sound = FindObjectOfType<SoundManager>();
+                    if (sound == null) {
+                        Debug.LogError("SoundManager not set in GameModel!");
+                    }
+                }
             }
             if (helpPrompts == null) {
                 Debug.LogError("HelpPromptsManager not set in GameModel!");
@@ -163,13 +172,13 @@ namespace SpaceBoat {
             if (sound.IsPlaying("MenuSoundtrack")) {
                 sound.Stop("MenuSoundtrack");
             }
-            if (playSoundtrack) sound.Play("GameplaySoundtrack");
+            //if (playSoundtrack) sound.Play("GameplaySoundtrack");
             if (DoNotUpdate) return;
 
         }
 
         private IEnumerator ToBeContinued() {
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(3f);
             SceneManager.LoadScene("ToBeContinued");
         }
 
@@ -188,6 +197,47 @@ namespace SpaceBoat {
         public void TriggerGameOver(float delay = 2f) {
             StartCoroutine(GameOver(delay));
             gameOverTriggered = true;
+        }
+
+        public List<GameObject> SelectSailsForTargetting(int maxNumSelect) {
+            List<GameObject> targetSails = new List<GameObject>();
+            List<SailsActivatable> availableSails = new List<SailsActivatable>();
+            bool respectCooldown = GameModel.Instance.lastSurvivingSailCount > maxNumSelect;
+            Debug.Log("Selecting max " + maxNumSelect + " sails to break.");
+            foreach (GameObject sail in this.shipSails)
+            {
+                SailsActivatable sailScript = sail.GetComponent<SailsActivatable>();
+                if (!sailScript.isBroken)
+                {
+                    availableSails.Add(sailScript);
+                }
+            }
+            Debug.Log("Found " + availableSails.Count + " valid sails to break.");
+            // sort in order of last targetted time
+            availableSails.Sort((a, b) => a.lastTargettedTime.CompareTo(b.lastTargettedTime));
+            // add one sail from each grouping if available.
+            Dictionary<SailsActivatable.SailGrouping, bool> groupings = new Dictionary<SailsActivatable.SailGrouping, bool>();
+            foreach (SailsActivatable sail in availableSails) {
+                if (!groupings.ContainsKey(sail.sailGrouping)) {
+                    Debug.Log("Targetting sail " + sail.name + " from grouping " + sail.sailGrouping + ", last targetted at " + sail.lastTargettedTime + ".");
+                    groupings.Add(sail.sailGrouping, true);
+                    targetSails.Add(sail.gameObject);
+                    if (targetSails.Count >= maxNumSelect) {
+                        return targetSails;
+                    }
+                }
+            }
+            Debug.Log("Targetting " + (maxNumSelect - targetSails.Count) + " additional sails ignoring groupings.");
+            // add remaining sails if necessary;
+            foreach (SailsActivatable sail in availableSails) {
+                if (!targetSails.Contains(sail.gameObject)) {
+                    targetSails.Add(sail.gameObject);
+                    if (targetSails.Count >= maxNumSelect) {
+                        break;
+                    }
+                }
+            }
+            return targetSails;
         }
 
         void DestroyShip() {
@@ -245,12 +295,21 @@ namespace SpaceBoat {
 
 
         void CheckHazardProgress() {
-            if (currentHazardManager == null || currentHazardManager.hasEnded) {
-                if (currentHazardManager != null) {
+            if (hazardWindDownTimer > 0) {
+                hazardWindDownTimer = Mathf.Max(0, hazardWindDownTimer - Time.deltaTime);
+            }
+            if (currentHazardManager != null && currentHazardManager.hasEnded) {
+                if (hazardWindDownTimer == 0) {
+                    Debug.Log("Hazard has ended, starting winddown timer");
+                    hazardManagerPrefabs.Remove(currentHazardManager.gameObject);
                     Destroy(currentHazardManager.gameObject);
                     currentHazardManager = null;
                     hazardsCompleted++;
+                    hazardWindDownTimer = hazardWindDownTime;
+                    return;
                 }
+            }
+            if (currentHazardManager == null) {
                 //new hazard or enemy.
                 if (hazardsCompleted == 0) {
                     if (!isTutorialComplete()) return;
@@ -262,6 +321,9 @@ namespace SpaceBoat {
                 Debug.Log("New hazard: " + newHazard.name);
                 currentHazardManager = newHazard.GetComponent<IHazardManager>();
                 currentHazardManager.StartHazard();
+                if (playSoundtrack && currentHazardManager.hazardSoundtrack != "") {
+                    sound.Play(currentHazardManager.hazardSoundtrack);
+                }
             }
 
         }
@@ -294,7 +356,7 @@ namespace SpaceBoat {
             if (num_surviving_sails == 0 && !gameOverTriggered) {
                 DestroyShip();
                 TriggerGameOver(5);
-            } else if (num_surviving_sails == 1) {
+            } else if (num_surviving_sails <= 2) {
                 if (!sound.IsPlaying("ShipLowHP")) {
                     sound.Play("ShipLowHP");
                 }
@@ -305,7 +367,7 @@ namespace SpaceBoat {
                             num_surviving_sails++;
                         }
                     }
-                    return (num_surviving_sails > 1);
+                    return (num_surviving_sails > 2);
                 });
             } else if (num_surviving_sails > 1) {
                 if (sound.IsPlaying("ShipLowHP")) {
