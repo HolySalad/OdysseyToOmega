@@ -26,9 +26,11 @@ namespace SpaceBoat.Enemies.Siren {
         [Header("Siren Gameplay Variables")]
         [SerializeField] private int maxHealth = 3;
         [SerializeField] private float sirenIdleDowntime = 3f;
+        [SerializeField] private float sirenSongInterval = 3f;
+        [SerializeField] private float sirenBonusAttackInterval = 3f;
 
         [Header("Siren Teleport Variables")]
-        [SerializeField] private float sirenTeleportAfterNumAttacks = 2f;
+        [SerializeField] private int sirenTeleportInterval = 2;
         [SerializeField] private float sirenTeleportVanishTime = 0.1f;
         [SerializeField] private float sirenTeleportAppearTime = 0.5f;
         [SerializeField] private float sirenTeleportDowntime = 1f;
@@ -36,22 +38,30 @@ namespace SpaceBoat.Enemies.Siren {
         [Header("Siren Orb Variables")]
         [SerializeField] private float sirenProjectileSummonDistance = 5f;
         [SerializeField] private float sirenProjectileSummonSpeed = 1.5f;
+        [SerializeField] private float sirenMaxDowntimeAfterOrbAttack = 4f;
+
+        [Header("Siren Bubblesong Variables")]
+        [SerializeField] private float sirenBubbleSongSpawnTime = 0.4f;
+        [SerializeField] private int sirenBubbleSongBaseNumBubbles = 3;
+        [SerializeField] private int sirenBubbleSongChanceToSpawn = 75;
+        [SerializeField] private int sirenBubbleSongMaxNumBubblesPerWave = 6;
 
 
-        private enum SirenState {Idle, SlowSong, ObstacleSong, BubblesSong, OrbAttack, ShieldExplode, Hit, Death, Spawn};
+        private enum SirenState {Idle, SlowSong, ObstacleSong, BubblesSong, OrbAttack, BubbleAttack, ObstacleAttack, ShieldExplode, Hit, Death, Spawn};
 
         private enum SirenPositions {Left, Right, Centre, Top};
         private Dictionary<SirenPositions, Transform> sirenPositionDictionary = new Dictionary<SirenPositions, Transform>();
 
-        private SirenState sirenState = SirenState.Idle;
+        private SirenState sirenState = SirenState.Spawn;
         private SirenPositions sirenPosition = SirenPositions.Centre;
         private int sirenHp;
+        private int sirenTeleportAfterNumAttacks = 0;
         private int sirenAttacksSinceLastTeleport = 0;
-        private int sirenAttacksSinceShieldExplode = 0;
-        private int sirenAttacksSinceOrbAttack = 0;
+        private float sirenSheildDestroyedTime = 0f;
+        private int sirenAttacksSinceBonusAttack = 0;
         private int sirenAttacksSinceSong = 0;
         private SirenState lastSirenSong = SirenState.SlowSong;
-        private bool isEnraged = false;
+        private bool shieldIsDown = false;
 
         private Player player;
         private GameObject siren;
@@ -61,13 +71,17 @@ namespace SpaceBoat.Enemies.Siren {
         private GameObject sirenTPMarker;
         private SpriteRenderer sirenTPMarkerSprite;
 
+        void SirenLog(string text) {
+            Debug.Log("SirenController: " + text);
+        }
+
         public bool IsDefeated() {
             return false;
         }
 
         private void CheckEnraged() {
             if (sirenHp <= 0) {
-                isEnraged = true;
+                shieldIsDown = true;
             }
         }
 
@@ -95,7 +109,20 @@ namespace SpaceBoat.Enemies.Siren {
             sirenSprite.color = new Color(sirenSprite.color.r, sirenSprite.color.g, sirenSprite.color.b, 1);
             sirenPosition = position;
             sirenAttacksSinceLastTeleport = 0;
+            SirenLog("Completed teleport to " + position);
+            if (position == SirenPositions.Top) {
+                sirenTeleportAfterNumAttacks = 3;
+            } else {
+                sirenTeleportAfterNumAttacks = sirenTeleportInterval;
+            }
+            yield return new WaitForSeconds(sirenTeleportDowntime);
             ChangeSirenState(transitionState);
+        }
+
+        SirenState RandomSong() {
+            SirenState[] songs = {SirenState.SlowSong, SirenState.ObstacleSong, SirenState.BubblesSong};
+            return SirenState.BubblesSong;
+            //return songs[Random.Range(0, 2)];
         }
 
 
@@ -108,25 +135,54 @@ namespace SpaceBoat.Enemies.Siren {
         }
 
         IEnumerator SirenBubblesSong() {
+            int numBubbles = sirenBubbleSongBaseNumBubbles + (3-sirenHp);
+            sirenBubbleSongSpawnPoints.Sort((a, b) => Random.Range(-1, 1));
+            ChangeSirenState(SirenState.OrbAttack);
+            for (int i = 0; i < numBubbles; i++) {
+                int bubblesSpawned = 0;
+                foreach (Transform spawnPoint in sirenBubbleSongSpawnPoints) {
+                    if (bubblesSpawned < sirenBubbleSongMaxNumBubblesPerWave && Random.Range(0, 100) < sirenBubbleSongChanceToSpawn) {
+                        GameObject bubble = Instantiate(sirenBubblePrefab, spawnPoint.position, Quaternion.identity);
+                        SirenBubble bubbleScript = bubble.GetComponent<SirenBubble>();
+                        bubbleScript.setupBubble();
+                        yield return new WaitForSeconds(sirenBubbleSongSpawnTime);
+                        bubblesSpawned++;
+                    }
+                }
+            }
             yield break;
         }
 
         int getNumOrbs() {
             if (sirenHp == 3) {
-                return 2;
+                return Random.Range(2,3);
             } else if (sirenHp == 2) {
-                return 3;
+                return Random.Range(2,4);
             } else {
-                return 5;
+                return Random.Range(3,5);
             }
+        }
+
+        SirenState RandomBonusAttack() {
+            SirenState[] attacks = {SirenState.BubbleAttack, SirenState.ObstacleAttack};
+            return SirenState.OrbAttack;
+            //return attacks[Random.Range(0, 1)];
+        }   
+
+        IEnumerator SirenBubbleAttack() {
+            yield break;
+        }
+
+        IEnumerator SirenObstacleAttack() {
+            yield break;
         }
 
         IEnumerator SirenOrbAttack() {
             int numOrbs = getNumOrbs();
-            Debug.Log("Orb attack with " + numOrbs + " orbs");
+            SirenLog("Orb attack with " + numOrbs + " orbs");
             SirenOrb[] orbs = new SirenOrb[numOrbs];
             for (int i = 0; i < numOrbs; i++) {
-                Debug.Log("Creating orb " + i);
+                SirenLog("Creating orb " + i);
                 float offset = sirenProjectileSummonDistance;
                 if (Random.Range(0, 1) == 0) {
                     offset *= -1;
@@ -140,25 +196,29 @@ namespace SpaceBoat.Enemies.Siren {
                     orb.transform.localScale = new Vector3(orb.transform.localScale.x + scaleChangePerFrame, orb.transform.localScale.y + scaleChangePerFrame, 1);
                     yield return null;
                 }
-                Debug.Log("Orb " + i + " firing");
+                SirenLog("Orb " + i + " firing");
                 orbScript.SetupOrb(player);
                 orbs[i] = orbScript;
             }
+            float attackTimeoutTimer = 0;
             while (true) {
                 bool allOrbsDestroyed = true;
                 for (int i = 0; i < numOrbs; i++) {
                     if (orbs[i] != null && orbs[i].gameObject != null) {
-                        Debug.Log("Orb " + i + " is " + orbs[i].name);
                         allOrbsDestroyed = false;
                     }
                 }
                 if (allOrbsDestroyed) {
-                    Debug.Log("All orbs destroyed");
+                    SirenLog("All orbs destroyed");
                     break;
                 }
                 yield return null;
+                attackTimeoutTimer += Time.deltaTime;
+                if (attackTimeoutTimer > sirenMaxDowntimeAfterOrbAttack) {
+                    SirenLog("Orb attack timed out");
+                    break;
+                }
             }
-            sirenAttacksSinceOrbAttack = 0;
             ChangeSirenState(SirenState.Idle);
             yield break;
         }
@@ -180,16 +240,39 @@ namespace SpaceBoat.Enemies.Siren {
             yield return new WaitForSeconds(sirenIdleDowntime);
             //chose an attack
             SirenState attackToUse = SirenState.OrbAttack;
-            if (sirenAttacksSinceLastTeleport >= sirenTeleportAfterNumAttacks) {
-                if (attackToUse == SirenState.SlowSong || attackToUse == SirenState.ObstacleSong || attackToUse == SirenState.BubblesSong) {
-                    ChangeSirenState(attackToUse, true, SirenPositions.Top);
-                } else {
-                    ChangeSirenState(attackToUse, true, RandomPosition());
-                }
+            bool shouldTP = false;
+            SirenPositions tpPosition = RandomPosition();
+
+            //determine attack type.
+            if (sirenAttacksSinceSong >= sirenSongInterval) {
+                attackToUse = RandomSong();
             } else {
-                sirenAttacksSinceLastTeleport++;
-                ChangeSirenState(attackToUse);
+                attackToUse = SirenState.OrbAttack;
             }
+
+            SirenLog("Siren attack: " + attackToUse);
+
+            //determine tp locations and increment counters
+            if (attackToUse == SirenState.SlowSong || attackToUse == SirenState.ObstacleSong || attackToUse == SirenState.BubblesSong) {
+                shouldTP = true;
+                tpPosition = SirenPositions.Top;
+            } else {
+                sirenAttacksSinceSong++;   
+            }
+            if (attackToUse == SirenState.OrbAttack) {
+                if (sirenAttacksSinceBonusAttack >= sirenBonusAttackInterval) {
+                    sirenAttacksSinceBonusAttack = 0;
+                    attackToUse = RandomBonusAttack();
+                } else {
+                    sirenAttacksSinceBonusAttack++;
+                    if (sirenAttacksSinceLastTeleport >= sirenTeleportAfterNumAttacks) {
+                        shouldTP = true;
+                    } else {
+                        sirenAttacksSinceLastTeleport++;
+                    }
+                }
+            }
+            ChangeSirenState(attackToUse, shouldTP, tpPosition);
             yield break;
         }
 
@@ -198,15 +281,18 @@ namespace SpaceBoat.Enemies.Siren {
         }
 
         IEnumerator SirenSpawn() {
-            StartCoroutine(SirenIdle());
+            ChangeSirenState(SirenState.Idle);
             yield break;
         }
 
         void ChangeSirenState(SirenState newState, bool teleportFirst = false, SirenPositions teleportPosition = SirenPositions.Centre) {
             if (teleportFirst) {
+                SirenLog("Teleporting to " + teleportPosition + " before changing state");
                 StartCoroutine(TeleportSiren(teleportPosition, newState));
                 return;
             }
+            
+            SirenLog("Changing siren state from " + sirenState+ " to " + newState);
             switch (newState) {
                 case SirenState.Idle:
                     sirenState = SirenState.Idle;
@@ -215,6 +301,14 @@ namespace SpaceBoat.Enemies.Siren {
                 case SirenState.OrbAttack:
                     sirenState = SirenState.OrbAttack;
                     StartCoroutine(SirenOrbAttack());
+                    break;
+                case SirenState.BubbleAttack:
+                    sirenState = SirenState.BubbleAttack;
+                    StartCoroutine(SirenBubbleAttack());
+                    break;
+                case SirenState.ObstacleAttack:
+                    sirenState = SirenState.ObstacleAttack;
+                    StartCoroutine(SirenObstacleAttack());
                     break;
                 case SirenState.SlowSong:
                     sirenState = SirenState.SlowSong;
@@ -249,7 +343,8 @@ namespace SpaceBoat.Enemies.Siren {
 
         private void Awake() {
 
-            sirenHp = maxHealth;            
+            sirenHp = maxHealth;
+            sirenTeleportAfterNumAttacks = sirenTeleportInterval;            
 
             sirenPositionDictionary.Add(SirenPositions.Left, sirenLocationLeft);
             sirenPositionDictionary.Add(SirenPositions.Right, sirenLocationRight);
@@ -266,7 +361,7 @@ namespace SpaceBoat.Enemies.Siren {
             sirenTPMarkerSprite = sirenTPMarker.GetComponent<SpriteRenderer>();
             sirenTPMarkerSprite.enabled = false;
 
-            ChangeSirenState(SirenState.Spawn);
+            StartCoroutine(SirenSpawn());
         }
 
     }

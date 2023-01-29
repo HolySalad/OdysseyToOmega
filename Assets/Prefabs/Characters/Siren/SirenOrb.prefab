@@ -136,8 +136,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b5ee658db02b0e468eda13c8a103369, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
-  timeToLive: 10
+  speed: 9
+  timeToLive: 11
   disappearTime: 1
-  trackingInterval: 0.15
-  maxVectorChangePercent: 0.25
+  trackingInterval: 0.25
+  maxVectorChangePercent: 0.2

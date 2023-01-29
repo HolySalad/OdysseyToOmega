@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1551714342638803656}
   - component: {fileID: 2830635244607665848}
   - component: {fileID: -1649154895052156803}
-  m_Layer: 6
+  m_Layer: 22
   m_Name: SirenBubble
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 6904446166761934527}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -33.71, y: 11.32, z: 0}
-  m_LocalScale: {x: 5, y: 5, z: 1}
+  m_LocalScale: {x: 6, y: 6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -97,7 +97,7 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -136,3 +136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65623098b711ecd49a3ed830503a5fd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 5
+  lifeTime: 20
+  playerCaptureTime: 2.5
+  playerMaxMoveIncrement: 0.1
