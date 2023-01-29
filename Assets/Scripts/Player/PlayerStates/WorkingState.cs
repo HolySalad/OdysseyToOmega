@@ -22,6 +22,10 @@ namespace SpaceBoat.PlayerSubclasses.PlayerStates {
         public void UpdateState() {
             player.WalkInput(0f); // input 0 for walk movement to decelerate the player naturally.
             player.CrouchInput(false);
+            bool cancelActivation = CthulkInput.ActivateKeyDown() || (!CthulkInput.ActivateKeyHeld() && CthulkInput.JumpKeyHeld());
+            if (cancelActivation) {
+                player.JumpInput(CthulkInput.JumpKeyHeld(), CthulkInput.JumpKeyDown());
+            }
             player.ActivateInput(CthulkInput.ActivateKeyDown()); 
             // note, if we add more logic here, we should return if the above function returns true.
         }
