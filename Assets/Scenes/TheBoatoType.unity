@@ -10343,7 +10343,7 @@ PrefabInstance:
     - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
       propertyPath: player
       value: 
-      objectReference: {fileID: 1840913049}
+      objectReference: {fileID: 1676066119262282641}
     - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
       propertyPath: theBoat
       value: 
@@ -10660,7 +10660,10 @@ MonoBehaviour:
   cameraShiftTime: 0.8
   playerFallingShiftTimeMultiplier: 0.5
   shiftTimeReductionProportion: 0.35
-  cameraXOffset: 3.5
+  cameraLookTime: 0.5
+  baseCameraXOffset: 3.5
+  lookRightCameraXOffset: 5
+  lookDownCameraYOffset: -4
   cameraXMax: 100
   cameraXMin: -100
   shipViewCameraXMax: -12
@@ -10673,13 +10676,41 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
-      propertyPath: startingEquipment
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 7691977599830055013, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
       propertyPath: m_Name
       value: Cthulk3.0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8034070911063481805, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: defaultHead
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8034070911063481805, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: totemAvatarHeads.Array.data[0].head
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8034070911063481805, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: totemAvatarHeads.Array.data[1].head
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8034070911063481805, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: totemAvatarHeads.Array.data[2].head
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8034070911063481805, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: totemAvatarHeads.Array.data[3].head
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8034070911063481805, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: totemAvatarHeads.Array.data[4].head
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8034070911063481805, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: totemAvatarHeads.Array.data[5].head
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8034070911063481805, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: totemAvatarHeads.Array.data[6].head
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8824659482642120710, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
       propertyPath: m_RootOrder
@@ -10728,17 +10759,6 @@ PrefabInstance:
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
---- !u!114 &1840913049 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
-  m_PrefabInstance: {fileID: 1840913048}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40045d4af4a979f409f4aa2d3ef23e0f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1849007902
 GameObject:
   m_ObjectHideFlags: 0
@@ -12792,3 +12812,14 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &1676066119262282641 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+  m_PrefabInstance: {fileID: 1840913048}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40045d4af4a979f409f4aa2d3ef23e0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
