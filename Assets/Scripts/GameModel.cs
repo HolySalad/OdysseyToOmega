@@ -6,7 +6,7 @@ using SpaceBoat.Ship;
 using SpaceBoat.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Playables;
-
+using TotemEntities.DNA;
 
 namespace SpaceBoat {
 
@@ -50,7 +50,7 @@ namespace SpaceBoat {
         [Header("Help Prompts")]
         [SerializeField] public HelpPrompt criticalShipPrompt;
 
-
+        public TotemDNADefaultAvatar playerAvatar { get; private set; }
         public float GameBeganTime {get; private set;}
         public bool gameOverTriggered {get; private set;}
         public int lastSurvivingSailCount {get; private set;}
@@ -64,6 +64,11 @@ namespace SpaceBoat {
         public delegate void PauseEvent();
         private List<PauseEvent> pauseEvents = new List<PauseEvent>();
         private List<PauseEvent> unpauseEvents = new List<PauseEvent>();
+
+        public void SetAvatar(TotemDNADefaultAvatar avatar)
+        {
+            playerAvatar = avatar;
+        }
 
         // Pause
         public void PauseGame() {
