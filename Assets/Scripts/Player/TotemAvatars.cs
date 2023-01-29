@@ -16,6 +16,10 @@ namespace SpaceBoat {
         private SpriteRenderer CthulkObject;
         private bool isScriptInUI = false;
 
+        public TotemAvatarHead GetAvatarHead() {
+            return totemAvatarHeads[0];
+        }
+
         void Awake() {
             currentHead = defaultHead;
             CthulkObject = GetComponent<SpriteRenderer>();
