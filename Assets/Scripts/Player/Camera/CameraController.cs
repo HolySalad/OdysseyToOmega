@@ -23,6 +23,8 @@ namespace SpaceBoat {
         [SerializeField] private float cameraXMin = -100f;
         [SerializeField] private float shipViewCameraXMax = 100f;
         [SerializeField] private float shipViewCameraXMin = -100f;
+        [SerializeField] private float headlampRotation = 30f;
+        [SerializeField] private float headlampRotationSpeed = 20f;
 
         private bool cameraInitialized = false;
         private bool inShipView = false;
@@ -44,6 +46,7 @@ namespace SpaceBoat {
         private float cameraMovementTargetEndTime = 0f;
         private float currentTargetTransitionDuration = 0f;
         private bool inShipViewTransition = false;
+        private float currentHeadLampTarget = 0;
 
         void Start() {
             player = GameModel.Instance.player;
@@ -179,6 +182,33 @@ namespace SpaceBoat {
             cameraComponent.orthographicSize = currentCameraMovementOriginSize + ((cameraTargetSize - currentCameraMovementOriginSize) * percentageMovementComplete);
         }
 
+        void SetHeadlampState(float verticalInput) {
+            GameObject headlamp = player.headCollider.gameObject;
+            float existingXRotation = headlamp.transform.rotation.eulerAngles.x;
+            if (verticalInput < 0) {
+                currentHeadLampTarget = -headlampRotation;
+            } else if (verticalInput > 0) {
+                currentHeadLampTarget = headlampRotation;
+            } else {
+                currentHeadLampTarget = 0;
+            } 
+            float existingZRotation = headlamp.transform.rotation.eulerAngles.z;
+            if ((int)existingZRotation > 30) {
+                existingZRotation -= 360;
+            }
+            if ((int)existingZRotation != (int)currentHeadLampTarget) {
+
+                Debug.Log("Headlamp rotation is " + existingZRotation + " and target is " + currentHeadLampTarget);
+                float neededChange = currentHeadLampTarget - existingZRotation;
+                float changeThisFrame = Mathf.Min(headlampRotationSpeed * Time.deltaTime, Mathf.Abs(neededChange));
+                Debug.Log("Needed change " + neededChange +  " Headlamp rotation change this frame: " + changeThisFrame);
+                float newRotation = Mathf.Clamp(existingZRotation + (changeThisFrame*Mathf.Sign(neededChange)), -headlampRotation, headlampRotation);
+                Debug.Log("New headlamp rotation: " + newRotation);
+                headlamp.transform.rotation = Quaternion.Euler(existingXRotation, 0, newRotation);
+            }
+        }
+
+
         void Update() {
             if (cameraBehaviourForced) {
                 MoveAndResizeCamera();
@@ -188,6 +218,7 @@ namespace SpaceBoat {
                 shipViewHeld = !shipViewHeld;
             }
             float verticalLook = CthulkInput.cameraVerticalLook();
+            SetHeadlampState(verticalLook);
             if (verticalLook != 0) {
                 if (verticalLook < 0 && currentLookOffsetDown > lookDownCameraYOffset) {
                     float changePerSecond = lookDownCameraYOffset / cameraLookTime;
