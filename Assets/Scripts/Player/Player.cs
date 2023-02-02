@@ -68,6 +68,22 @@ namespace SpaceBoat {
         [SerializeField] private float momentumDecayStartTime = 0.5f;
         [SerializeField] private float momentumDecayTime = 2f;
         [SerializeField] private float groundedMomentumDecayDivisor = 2f;
+
+        [Header("Attack Settings")]
+        [SerializeField] private GameObject weapon;
+        [SerializeField] private bool attackEnabled = true;
+        [SerializeField] private float attackHitboxLingerTime = 0.1f;
+        [SerializeField] private float attackSpeed = 0.15f;
+        [SerializeField] private float attackRetractionSpeed = 0.15f;
+        [SerializeField] private float idleHarpoonRotation = 62f;
+        [SerializeField] private float horizontalAttackHarpoonRotation = 11f;
+        [SerializeField] private Vector2 horizontalHarpoonAttackOffset = new Vector2(0.4f, -0.5f);
+        [SerializeField] private float upwardsVerticalAttackHarpoonRotation = 85f;
+        [SerializeField] private Vector2 upwardsVerticalHarpoonAttackOffset = new Vector2(-0.1f, 0.7f);
+        [SerializeField] private float downwardsVerticalAttackHarpoonRotation = -85f;
+        [SerializeField] private Vector2 downwardsVerticalHarpoonAttackOffset = new Vector2(-0.1f, -1.7f);
+
+
         //[SerializeField] private float momentumDecayHorizontal = 10f;
         //[SerializeField] private float momentumDecayVertical = 15f;
         //[SerializeField] private int momentumAccelerationTime = 12; //frames to reach max momentum
@@ -77,7 +93,7 @@ namespace SpaceBoat {
         public Animator animator;
         private Rigidbody2D rb;
         private Collider2D playerLocationTrigger;
-        public Transform itemPlace;
+
         private Transform originOverride;
 
         // player states
@@ -157,7 +173,6 @@ namespace SpaceBoat {
             game = FindObjectOfType<GameModel>();
             animator = GetComponent<Animator>();
             rb = GetComponent<Rigidbody2D>();
-            itemPlace = transform.Find("ItemPlace").transform;
             originOverride = transform.Find("OriginOverride").transform;
             playerLocationTrigger = GetComponent<Collider2D>();
 
@@ -573,6 +588,66 @@ namespace SpaceBoat {
             return false;
         }
 
+        //weapon
+        private enum AttackDirection {
+            Horizontal, UpwardsVertical, DownwardsVertical
+        }
+
+        IEnumerator Attack(AttackDirection direction) {
+            switch (direction) {
+                /*
+                case AttackDirection.Horizontal:
+                    animator.SetTrigger("AttackHorizontal");
+                    break;
+                case AttackDirection.UpwardsVertical:
+                    animator.SetTrigger("AttackUpwards");
+                    break;
+                case AttackDirection.DownwardsVertical:
+                    animator.SetTrigger("AttackDownwards");
+                    break;
+                */
+                case AttackDirection.Horizontal:
+                    Vector2 weaponOffset = isFacingRight ? horizontalHarpoonAttackOffset : horizontalHarpoonAttackOffset * -1;
+                    float attackTimer = 0;
+                    Vector2 weaponOffsetChange = Time.deltaTime * weaponOffset / attackSpeed;
+                    float weaponRotationChange = Time.deltaTime * horizontalAttackHarpoonRotation / attackSpeed;
+                    if (!isFacingRight) {
+                        weaponRotationChange = -weaponRotationChange;
+                    }
+                    while (attackTimer < attackSpeed) {
+                        attackTimer += Time.deltaTime;
+                        weapon.transform.position = transform.position + (Vector3)weaponOffsetChange;
+                        weapon.transform.Rotate(0, 0, weapon.transform.rotation.eulerAngles.z + weaponRotationChange);
+                        yield return null;
+                    }
+                    break;
+            }
+            weapon.GetComponent<Collider2D>().enabled = true;
+            yield return new WaitForSeconds(attackHitboxLingerTime);
+            weapon.GetComponent<Collider2D>().enabled = false;
+            switch (direction) {
+                case AttackDirection.Horizontal:
+                    Vector2 weaponOffset = isFacingRight ? horizontalHarpoonAttackOffset : horizontalHarpoonAttackOffset * -1;
+                    float attackTimer = 0;
+                    Vector2 weaponOffsetChange = Time.deltaTime * weaponOffset / attackSpeed;
+                    float weaponRotationChange = Time.deltaTime * horizontalAttackHarpoonRotation / attackSpeed;
+                    while (attackTimer < attackSpeed) {
+                        attackTimer += Time.deltaTime;
+                        weapon.transform.position = transform.position - (Vector3)weaponOffsetChange;
+                        weapon.transform.Rotate(0, 0, weapon.transform.rotation.eulerAngles.z - weaponRotationChange);
+                        yield return null;
+                    }
+                    break;
+            }
+
+        }
+
+
+        public void WeaponInput(bool keyDown) {
+            if (keyDown) {
+                StartCoroutine(Attack(AttackDirection.Horizontal));
+            }
+        }
         // activatables 
 
         void UseActivatable(IActivatables activatable, GameObject obj) {
@@ -818,6 +893,7 @@ namespace SpaceBoat {
             animatorUpdate();
             SoundUpdate();
             currentPlayerState.UpdateState();
+            //WeaponInput(CthulkInput.AttackKeyDown());
         }
 
         //input functions
