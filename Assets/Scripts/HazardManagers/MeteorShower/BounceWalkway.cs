@@ -25,13 +25,14 @@ namespace SpaceBoat.HazardManagers.MeteorShowerSubclasses {
         }
 
         public bool Bounce(Player player) {
-            if (bounceTimer > 0 || player.currentPlayerStateName != PlayerStateName.ready || player.gameObject.GetComponent<Rigidbody2D>().velocity.y > 0) {
+            float playerVelocity = player.gameObject.GetComponent<Rigidbody2D>().velocity.y;
+            if (bounceTimer > 0 || player.currentPlayerStateName != PlayerStateName.ready || playerVelocity > 0) {
                 return false;
             }
-            lastBounceForce = player.gameObject.GetComponent<Rigidbody2D>().velocity.y* bounceForceMult;
+            lastBounceForce = playerVelocity* bounceForceMult;
             originalVerticalVelocity = rb.velocity.y-lastReboundForce;
             rb.velocity = new Vector2(rb.velocity.x, originalVerticalVelocity + lastBounceForce);
-            player.ForceJump(false, true, true);
+            if (playerVelocity < 0) player.ForceJump(false, true, true);
             bounceTimer = bounceCooldown;
             return true;
         }
