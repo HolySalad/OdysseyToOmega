@@ -198,12 +198,12 @@ namespace SpaceBoat {
             }
             if ((int)existingZRotation != (int)currentHeadLampTarget) {
 
-                Debug.Log("Headlamp rotation is " + existingZRotation + " and target is " + currentHeadLampTarget);
+                //Debug.Log("Headlamp rotation is " + existingZRotation + " and target is " + currentHeadLampTarget);
                 float neededChange = currentHeadLampTarget - existingZRotation;
                 float changeThisFrame = Mathf.Min(headlampRotationSpeed * Time.deltaTime, Mathf.Abs(neededChange));
-                Debug.Log("Needed change " + neededChange +  " Headlamp rotation change this frame: " + changeThisFrame);
+                //Debug.Log("Needed change " + neededChange +  " Headlamp rotation change this frame: " + changeThisFrame);
                 float newRotation = Mathf.Clamp(existingZRotation + (changeThisFrame*Mathf.Sign(neededChange)), -headlampRotation, headlampRotation);
-                Debug.Log("New headlamp rotation: " + newRotation);
+                //Debug.Log("New headlamp rotation: " + newRotation);
                 headlamp.transform.rotation = Quaternion.Euler(existingXRotation, 0, newRotation);
             }
         }
