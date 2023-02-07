@@ -898,7 +898,12 @@ namespace SpaceBoat {
 
         //input functions
 
-
+        public void PlaySpiderSquish() {
+            GetComponent<AudioSource>().Play();
+        }
     }
+
+
+
 
 }
