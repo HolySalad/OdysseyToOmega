@@ -20,7 +20,7 @@ public class ShootPlayer : SetupChydra
     {
 
          DOVirtual.DelayedCall(prepareShotTime, Shoot);
-        // animator.SetTrigger(animationTriggerName);
+         animator.SetTrigger(animationTriggerName);
     }
     public void Shoot()
     {

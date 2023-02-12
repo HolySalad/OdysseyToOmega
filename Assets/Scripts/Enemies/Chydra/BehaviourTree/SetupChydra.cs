@@ -6,7 +6,7 @@ using SpaceBoat;
 public class SetupChydra : Action
 {
     protected Rigidbody2D rigidbody;
-    protected Animator animator;
+    public Animator animator;
     // protected Destructable destructable;
     protected GameObject playerController;
     public Transform mouthPosition;
