@@ -22,9 +22,10 @@ namespace SpaceBoat.PlayerSubclasses.PlayerStates {
         public void EnterState(PlayerStateName previousState) {
             player = GetComponent<Player>();
             player.GetComponent<Rigidbody2D>().velocity = capturedVelocity;
+            Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("PlayerChar"), LayerMask.NameToLayer("Ground"), true);
         }
         public void ExitState(PlayerStateName nextState) {
-            
+            Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("PlayerChar"), LayerMask.NameToLayer("Ground"), false);
         }
 
         public void UpdateState() {
@@ -34,6 +35,7 @@ namespace SpaceBoat.PlayerSubclasses.PlayerStates {
             if (releaseTimer <= 0) {
                 player.ChangeState(PlayerStateName.ready);
             }
+
         }
     }
 }
