@@ -113,6 +113,8 @@ namespace SpaceBoat {
         public int health {get; private set;}
         private int hitOnframe;
 
+        public int money {get; private set;}
+
         //internal movement vars
         private bool isGrounded = false;
         private bool isCrouched = false;
@@ -754,6 +756,21 @@ namespace SpaceBoat {
             health = maxHealth;
         }
 
+        //currency
+        public void PlayerGainsMoney(int amount) {
+            money += amount;
+        }
+
+        public void PlayerSpendsMoney(int amount) {
+            money -= amount;
+        }
+
+        public bool PlayerHasMoney(int amount) {
+            return money >= amount;
+        }
+
+
+
         // Update functions
          
         void MomentumUpdate() {
@@ -896,11 +913,6 @@ namespace SpaceBoat {
             //WeaponInput(CthulkInput.AttackKeyDown());
         }
 
-        //input functions
-
-        public void PlaySpiderSquish() {
-            GetComponent<AudioSource>().Play();
-        }
     }
 
 

@@ -4,12 +4,12 @@ using UnityEngine;
 using SpaceBoat.HazardManagers;
 using SpaceBoat.Ship;
 using SpaceBoat.UI;
+using SpaceBoat.Rewards;
 using UnityEngine.SceneManagement;
 using UnityEngine.Playables;
 using TotemEntities.DNA;
 
 namespace SpaceBoat {
-
     public enum ActivatablesNames {HarpoonGun, Kitchen, Ladder, Sails, Bedroom, None};
 
     public class GameModel : MonoBehaviour
@@ -28,6 +28,7 @@ namespace SpaceBoat {
         [SerializeField] public UI.HelpPromptsManager helpPrompts;
         [SerializeField] public CameraController cameraController;
         [SerializeField] public GameObject theBoat;
+        [SerializeField] public CometManager cometManager;
 
         [Header("Ship")]
         [SerializeField] public List<GameObject> shipSails;
@@ -50,6 +51,13 @@ namespace SpaceBoat {
         [Header("Help Prompts")]
         [SerializeField] public HelpPrompt criticalShipPrompt;
 
+        //TODO save and load these
+        public bool movementTutorialPlayed {get; private set;}
+        public bool cometTutorialPlayed {get; private set;}
+        public bool craftingTutorialPlayed {get; private set;}
+
+
+
         public TotemDNADefaultAvatar playerAvatar { get; private set; }
         public float GameBeganTime {get; private set;}
         public bool gameOverTriggered {get; private set;}
@@ -58,6 +66,7 @@ namespace SpaceBoat {
         private IHazardManager currentHazardManager;
         private int hazardsCompleted = 0;
         private float hazardWindDownTimer = 0f;
+        public bool hazardWindDown {get; private set;}
 
 
         public bool isPaused {get; private set;}
@@ -276,7 +285,7 @@ namespace SpaceBoat {
             Debug.Log("Selecting one of " + hazardManagerPrefabs.Count + " hazards for the next hazard");
             foreach (GameObject hazard in hazardManagerPrefabs) {
                 IHazardManager hazardManager = hazard.GetComponent<IHazardManager>();
-                if (hazardsCompleted >= hazardManager.GetEarliestAppearence() && hazardsCompleted < hazardManager.GetLatestAppearence()) {
+                if (!hazardManager.wasCompleted && hazardsCompleted >= hazardManager.GetEarliestAppearence() && hazardsCompleted < hazardManager.GetLatestAppearence()) {
                     availableHazards.Add(hazard);
                     if (hazardManager.GetPriority() > highestPriority) {
                         highestPriority = hazardManager.GetPriority();
@@ -302,15 +311,21 @@ namespace SpaceBoat {
         void CheckHazardProgress() {
             if (hazardWindDownTimer > 0) {
                 hazardWindDownTimer = Mathf.Max(0, hazardWindDownTimer - Time.deltaTime);
+                return;
+            } else if (hazardWindDown) {
+                Debug.Log("Hazard wind-down complete, starting new hazard");
+                hazardWindDown = false;
             }
             if (currentHazardManager != null && currentHazardManager.hasEnded) {
                 if (hazardWindDownTimer == 0) {
-                    Debug.Log("Hazard has ended, starting winddown timer");
+                    Debug.Log("Hazard has ended, starting wind-down timer");
                     hazardManagerPrefabs.Remove(currentHazardManager.gameObject);
                     Destroy(currentHazardManager.gameObject);
                     currentHazardManager = null;
                     hazardsCompleted++;
                     hazardWindDownTimer = hazardWindDownTime;
+                    hazardWindDown = true;
+                    cometManager.StartCometBurst();
                     return;
                 }
             }
@@ -318,7 +333,10 @@ namespace SpaceBoat {
                 //new hazard or enemy.
                 if (hazardsCompleted == 0) {
                     if (!isTutorialComplete()) return;
-                    else Debug.Log("Tutorial complete, starting first Hazard");
+                    else {
+                        Debug.Log("Tutorial complete, starting first Hazard");
+                        cometManager.StartCometSpawner();
+                    }
                 }
                 GameObject nextHazard = PickNextHazard();
                 if (nextHazard == null) return;

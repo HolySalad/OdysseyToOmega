@@ -55,6 +55,7 @@ namespace SpaceBoat.HazardManagers {
         private bool hasStartedWind = false;
         
         public bool hasEnded { get; private set; }
+        public bool wasCompleted { get; private set; } = false;
         public float hazardDuration { get; private set; }
         public string hazardSoundtrack { get; private set; } = "";
 

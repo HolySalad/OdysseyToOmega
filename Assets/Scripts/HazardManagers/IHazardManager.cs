@@ -12,6 +12,7 @@ namespace SpaceBoat.HazardManagers {
         
         public float hazardDuration {get;}
         public bool hasEnded {get;} 
+        public bool wasCompleted {get;}
 
         public int GetPriority();
         public int GetEarliestAppearence();

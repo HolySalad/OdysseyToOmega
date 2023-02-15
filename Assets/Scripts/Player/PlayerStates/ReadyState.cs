@@ -56,20 +56,5 @@ namespace SpaceBoat.PlayerSubclasses.PlayerStates {
             player.JumpInput(jumpKeyHeld && !jumpLockOut, jumpKeyDown);
 
         }
-
-
-        IEnumerator DestroyAfterSquishSound() {
-            AudioSource audioSource = GetComponent<AudioSource>();
-            audioSource.Play();
-            yield return new WaitForSeconds(audioSource.clip.length);
-        }
-
-        void OnMouseDown() {
-            //Destroy(gameObject);
-            GetComponent<SpriteRenderer>().enabled = false;
-            GetComponent<Collider2D>().enabled = false;
-            GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-            StartCoroutine(DestroyAfterSquishSound());
-        }
     }
 }

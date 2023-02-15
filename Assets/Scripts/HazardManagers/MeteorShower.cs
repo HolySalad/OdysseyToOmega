@@ -67,6 +67,7 @@ namespace SpaceBoat.HazardManagers {
 
 
         public bool hasEnded {get; private set;} = false;
+        public bool wasCompleted {get; private set;} = false;
         public float hazardDuration {get; private set;} = 0f;
         public float hazardBeganTime {get; private set;} = -1;
 
@@ -241,6 +242,7 @@ namespace SpaceBoat.HazardManagers {
                 Debug.Log("Hazard " + this.gameObject.name + " has ended");
                 hazardBeganTime = -1;
                 hasEnded = true;
+                wasCompleted = true;
                 return;
             }
 
