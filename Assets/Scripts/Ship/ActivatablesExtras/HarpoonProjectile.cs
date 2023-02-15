@@ -15,6 +15,8 @@ namespace SpaceBoat.Ship
         private Rigidbody2D rbHit;
         private Rigidbody2D rbHarpoon;
 
+        public HarpoonGunActivatable harpoonGun;
+
         private Vector3 RespawnLocation = new Vector3(-2.12f, -8.40f, 0f);
 
         public void Awake() {
@@ -28,16 +30,6 @@ namespace SpaceBoat.Ship
             directionFired = direction;
         }
 
-        public void TransformBackIntoItem(Vector3 position) {
-                GameObject item = Instantiate(GameModel.Instance.PrefabForItemType(ItemTypes.HarpoonItem), position, Quaternion.identity);
-                GameModel.Instance.CreateItemComponent(item, ItemTypes.HarpoonItem);
-                item.transform.rotation = Quaternion.Euler(0, 0, -90);
-                Destroy(gameObject);
-        }
-
-        public void TransformBackIntoItem() {
-            TransformBackIntoItem(transform.position);
-        }
 
 
         // reel the harpoon in towards the ship.
@@ -68,14 +60,16 @@ namespace SpaceBoat.Ship
                             
             Debug.Log("Harpoon detatching!");
             Vector3 pullVector = Vector3.Cross(reelLocation - transform.position, GameModel.Instance.cometDeckTarget.transform.position - transform.position);
-            rbHarpoon.velocity = pullVector.normalized * speed;
+            harpoonGun.LoadHarpoon();
+            ///rbHarpoon.velocity = pullVector.normalized * speed;
             //Destroy(gameObject); 
-            TransformBackIntoItem();
+            //TransformBackIntoItem();
+            
         }
 
         IEnumerator RespawnHarpoon() {
             yield return new WaitForSeconds(5f);
-            TransformBackIntoItem(RespawnLocation);
+            harpoonGun.LoadHarpoon();
         }
 
         public void OnCollisionEnter2D(Collision2D collision) {

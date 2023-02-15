@@ -60,6 +60,7 @@ sysinfo.txt
 *.aab
 *.unitypackage
 *.app
+*.zip
 
 # Crashlytics generated file
 crashlytics-build.properties
@@ -78,3 +79,12 @@ crashlytics-build.properties
 **/thiccSprites
 
 **/Builds
+**/Builds.meta
+**/Builds.zip
+**/Builds.zip.meta
+
+
+**/Plugins
+**/Plugins.meta
+**/Plugins.zip
+**/Plugins.zip.meta

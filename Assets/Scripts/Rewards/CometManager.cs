@@ -1,8 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using SpaceBoat.Items;
-
+/*
 namespace SpaceBoat.Rewards {    
     public class CometManager : MonoBehaviour
     {
@@ -53,7 +52,7 @@ namespace SpaceBoat.Rewards {
             if (isFirstComet) {
                 isFirstComet = false;
                 Debug.Log("First comet: displaying help text");
-                GameModel.Instance.helpPrompts.DisplayPrompt(GameModel.Instance.helpPrompts.cometPrompt);
+                //GameModel.Instance.helpPrompts.DisplayPrompt(GameModel.Instance.helpPrompts.cometPrompt);
             }
         }
 
@@ -95,3 +94,4 @@ namespace SpaceBoat.Rewards {
         }
     }
 }
+*/

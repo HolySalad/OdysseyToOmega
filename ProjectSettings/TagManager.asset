@@ -34,7 +34,7 @@ TagManager:
   - Water
   - UI
   - PhysicalHazards
-  - IntangibleHazards
+  - MomentumHazards
   - Ground
   - Sails
   - Ladders
@@ -47,10 +47,10 @@ TagManager:
   - CometPityTarget
   - Harpoonables
   - PlayerProjectiles
-  - 
-  - 
-  - 
-  - 
+  - CameraZones
+  - Shields
+  - TrapHazards
+  - PostProcessor
   - 
   - 
   - 
@@ -63,17 +63,20 @@ TagManager:
   - name: Background
     uniqueID: 3453712825
     locked: 0
-  - name: Default
-    uniqueID: 0
-    locked: 0
   - name: Foreground1
     uniqueID: 3735844731
+    locked: 0
+  - name: Foreground2
+    uniqueID: 2555070193
     locked: 0
   - name: ShipBackLayer
     uniqueID: 2245820371
     locked: 0
   - name: ShipBody
     uniqueID: 3178845289
+    locked: 0
+  - name: Default
+    uniqueID: 0
     locked: 0
   - name: Sail
     uniqueID: 475942731
@@ -95,9 +98,6 @@ TagManager:
     locked: 0
   - name: SpaceRocks
     uniqueID: 3773064109
-    locked: 0
-  - name: Foreground2
-    uniqueID: 2555070193
     locked: 0
   - name: New Layer 3
     uniqueID: 345971511

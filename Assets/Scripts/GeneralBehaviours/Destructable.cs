@@ -6,11 +6,16 @@ using UnityEngine;
 // just use Destroy() method to destroy objects silently when aniamtion or sound is unncessary.
 
 namespace SpaceBoat {
+
     public class Destructable : MonoBehaviour
     {
         [SerializeField] private int health = 1;
         [SerializeField] private AnimationClip destructionAnimation;
         [SerializeField] private string destructionSound;
+        
+        public delegate void DestructionCallback();        
+
+        private List<DestructionCallback> destructionCallbacks = new List<DestructionCallback>();
 
         public void Destruct() {
             Debug.Log("Destructing " + gameObject.name);
@@ -22,8 +27,33 @@ namespace SpaceBoat {
             if (destructionSound != null && destructionSound != "") {
                 SoundManager.Instance.Play(destructionSound);
             }
+            MonoBehaviour[] behaviours;
+            behaviours = GetComponents<MonoBehaviour>();
+            foreach (MonoBehaviour behaviour in behaviours) {
+                behaviour.StopAllCoroutines();
+            }
             Destroy(this.gameObject, delay);
-            
+        }
+
+        public void Destruct(GameObject parent) {
+            Debug.Log("Destructing " + gameObject.name);
+            float delay = 0f;
+            if (destructionAnimation != null) {
+                delay += destructionAnimation.length;
+                GameModel.Instance.PlayAnimation(destructionAnimation, this.gameObject);
+            }
+            if (destructionSound != null && destructionSound != "") {
+                SoundManager.Instance.Play(destructionSound);
+            }
+            MonoBehaviour[] behaviours;
+            behaviours = parent.GetComponents<MonoBehaviour>();
+            foreach (MonoBehaviour behaviour in behaviours) {
+                behaviour.StopAllCoroutines();
+            }
+            foreach (DestructionCallback callback in destructionCallbacks) {
+                callback();
+            }
+            Destroy(parent, delay);
         }
 
         private int hp;
@@ -37,6 +67,10 @@ namespace SpaceBoat {
             if (hp <= 0) {
                 Destruct();
             }
+        }
+
+        public void AddDestroyCallback(DestructionCallback callback) {
+            destructionCallbacks.Add(callback);
         }
     }
 }
