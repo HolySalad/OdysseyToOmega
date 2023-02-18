@@ -1,13 +1,16 @@
 using System.Collections;
+using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
 using SpaceBoat.HazardManagers;
 using SpaceBoat.Ship;
 using SpaceBoat.UI;
 using SpaceBoat.Rewards;
+using SpaceBoat.PlayerSubclasses.Equipment;
 using UnityEngine.SceneManagement;
 using UnityEngine.Playables;
 using TotemEntities.DNA;
+
 
 namespace SpaceBoat {
     public enum ActivatablesNames {HarpoonGun, Kitchen, Ladder, Sails, Bedroom, None};
@@ -48,13 +51,25 @@ namespace SpaceBoat {
         [Header("Enemy Prefabs")] 
         [SerializeField] public GameObject hydraPrefab;
 
-        [Header("Help Prompts")]
+        [Header("Help Prompts && Tutorial")]
+        [SerializeField] public Environment.HelpPromptTrigger[] movementTutorialTrigger;
         [SerializeField] public HelpPrompt criticalShipPrompt;
 
-        //TODO save and load these
-        public bool movementTutorialPlayed {get; private set;}
-        public bool cometTutorialPlayed {get; private set;}
-        public bool craftingTutorialPlayed {get; private set;}
+        public SaveData saveGame;
+        public SaveDataManager saveGameManager;
+
+        public bool movementTutorialPlayed {
+            get {return saveGame.movementTutorialPlayed;} 
+            private set {saveGame.movementTutorialPlayed = value; saveGameManager.Save();}
+        }
+        public bool cometTutorialPlayed {
+            get {return saveGame.cometTutorialPlayed;} 
+            private set {saveGame.cometTutorialPlayed = value; saveGameManager.Save();}
+        }
+        public bool craftingTutorialPlayed  {
+            get {return saveGame.craftingTutorialPlayed;} 
+            private set {saveGame.craftingTutorialPlayed = value; saveGameManager.Save();}
+        }
 
 
 
@@ -170,6 +185,9 @@ namespace SpaceBoat {
             if (cameraController == null) {
                 Debug.LogError("CameraController not set in GameModel!");
             }
+            saveGameManager = new SaveDataManager();
+            saveGameManager.Load();
+            saveGame = saveGameManager.saveData;
 
             GameBeganTime = Time.time;
             lastSurvivingSailCount = shipSails.Count;
@@ -187,6 +205,13 @@ namespace SpaceBoat {
                 sound.Stop("MenuSoundtrack");
             }
             //if (playSoundtrack) sound.Play("GameplaySoundtrack");
+            if (movementTutorialPlayed) {
+                foreach (Environment.HelpPromptTrigger trigger in movementTutorialTrigger) {
+                    trigger.gameObject.SetActive(false);
+                }
+            }
+
+
             if (DoNotUpdate) return;
 
         }
@@ -332,7 +357,7 @@ namespace SpaceBoat {
             if (currentHazardManager == null) {
                 //new hazard or enemy.
                 if (hazardsCompleted == 0) {
-                    if (!isTutorialComplete()) return;
+                    if (!CheckMoveTutorialComplete()) return;
                     else {
                         Debug.Log("Tutorial complete, starting first Hazard");
                         cometManager.StartCometSpawner();
@@ -351,8 +376,13 @@ namespace SpaceBoat {
 
         }
 
-        bool isTutorialComplete() {
-            return (helpPrompts.wasPromptDisplayed("MovementTutorial", true) && helpPrompts.wasPromptDisplayed("JumpTutorial", true));
+        bool CheckMoveTutorialComplete() {
+            if (movementTutorialPlayed) return true;
+            if (helpPrompts.wasPromptDisplayed("MovementTutorial", true) && helpPrompts.wasPromptDisplayed("JumpTutorial", true)) {
+                movementTutorialPlayed = true;
+                return true;
+            }
+            return false;
         }
 
         // check if any sails remain unbroken
@@ -400,6 +430,67 @@ namespace SpaceBoat {
             lastSurvivingSailCount = num_surviving_sails;
 
             CheckHazardProgress();
+        }
+
+
+        // subclasses for saving and loading
+        [System.Serializable] public class SaveData {
+            public int money = 0;
+            public Dictionary<RewardType, bool> rewardsUnlocked = new Dictionary<Rewards.RewardType, bool>() {
+                {RewardType.DashEquipmentBlueprint, false},
+                {RewardType.HarpoonGunActivatableBlueprint, false},
+                {RewardType.HarpoonLauncherEquipmentBlueprint, false},
+                {RewardType.ShieldEquipmentBlueprint, false},
+                {RewardType.HealthPackEquipmentBlueprint, false},
+                {RewardType.TrampolineActivatableBlueprint, false},
+                {RewardType.ShipShieldActivatableBlueprint, false}
+            };
+
+            public Dictionary<EquipmentType, bool> equipmentBuilt = new Dictionary<EquipmentType, bool>() {
+                {EquipmentType.Dash, false},
+                {EquipmentType.HarpoonLauncher, false},
+                {EquipmentType.Shield, false},
+                {EquipmentType.HealthPack, false}
+            };
+
+            public bool movementTutorialPlayed;
+            public bool cometTutorialPlayed;
+            public bool craftingTutorialPlayed;
+        }
+
+        public class SaveDataManager {
+
+            public SaveData saveData { get; private set; }
+            private static string saveDataPath = Application.persistentDataPath + "/SpaceBoatSave.json";
+            
+            public SaveDataManager() {
+                saveData = new SaveData();
+            }
+
+            public void Reset() {
+                saveData = new SaveData();
+                Save();
+            }
+
+            public void ResetBetweenRuns() {
+                saveData.equipmentBuilt.Clear();
+                saveData.money = 0;
+                Save();
+            }
+
+            public void Save() {
+                using (StreamWriter writer = new StreamWriter(saveDataPath)) {
+                    writer.Write(JsonUtility.ToJson(saveData));
+                }
+            }
+
+            public void Load() {
+                if (File.Exists(saveDataPath)) {
+                    using (StreamReader reader = new StreamReader(saveDataPath)) {
+                        saveData = JsonUtility.FromJson<SaveData>(reader.ReadToEnd());
+                    }
+                }
+            }
         }
     }
 }

@@ -8,6 +8,22 @@ namespace SpaceBoat {
         private Player player; 
         private Camera cameraComponent;
 
+        public struct ForcedCamera {
+            public string name;
+            public Transform target;
+            public int priority;
+            public bool hasXPositionOverride;
+
+            public ForcedCamera(string name, Transform target, int priority, bool hasXPositionOverride) {
+                this.name = name;
+                this.target = target;
+                this.priority = priority;
+                this.hasXPositionOverride = hasXPositionOverride;
+            }
+        }
+
+        private List<ForcedCamera> shipViewOverrides = new List<ForcedCamera>();
+
         [SerializeField] private Transform shipViewTarget;
         [SerializeField] private float shipViewSize = 34f;
         [SerializeField] private float cameraShiftTime = 1f;
@@ -30,6 +46,11 @@ namespace SpaceBoat {
         private bool inShipView = false;
         private bool shipViewHeld = false;
         private bool shipViewForced = false;
+        private Transform originalShipViewTarget = null;
+
+        private bool hasXPositionOverride = false;
+        private float xPositionOverride = 0f;
+
         private bool cameraBehaviourForced = false;
         private float cameraTargetY = 0f;
         private float cameraTargetX = 0f;
@@ -51,7 +72,7 @@ namespace SpaceBoat {
         void Start() {
             player = GameModel.Instance.player;
             cameraComponent = GetComponent<Camera>();
-
+            originalShipViewTarget = shipViewTarget;
         }
 
         (float, float, bool) GetCurrentCameraZoneValues() {
@@ -153,7 +174,9 @@ namespace SpaceBoat {
         void SetCameraTargetX() {
             float scaledXOffset = (baseCameraXOffset + currentLookOffsetRight) * (cameraComponent.orthographicSize / 10);
             float newXTarget = player.transform.position.x + scaledXOffset + player.playerCameraXFocusOffset;
-            if (inShipView) {
+            if (hasXPositionOverride) {
+                newXTarget = xPositionOverride;
+            } else if (inShipView) {
                 newXTarget = Mathf.Clamp(newXTarget, shipViewCameraXMin, shipViewCameraXMax);
             } else {
                 newXTarget = Mathf.Clamp(newXTarget, cameraXMin, cameraXMax);
@@ -219,7 +242,7 @@ namespace SpaceBoat {
             }
             float verticalLook = CthulkInput.cameraVerticalLook();
             SetHeadlampState(verticalLook);
-            if (verticalLook != 0) {
+            if (verticalLook != 0 && !inShipView) {
                 if (verticalLook < 0 && currentLookOffsetDown > lookDownCameraYOffset) {
                     float changePerSecond = lookDownCameraYOffset / cameraLookTime;
                     currentLookOffsetDown = Mathf.Max(currentLookOffsetDown + (changePerSecond * Time.deltaTime), lookDownCameraYOffset);
@@ -241,7 +264,7 @@ namespace SpaceBoat {
                 cameraLookRightToggled = !cameraLookRightToggled;
             }
 
-            if (cameraLookRightToggled) {
+            if (cameraLookRightToggled && !inShipView) {
                 if (currentLookOffsetRight < lookRightCameraXOffset) {
                     float changePerSecond = lookRightCameraXOffset / cameraShiftTime;
                     currentLookOffsetRight = Mathf.Min(currentLookOffsetRight + (changePerSecond * Time.deltaTime), lookRightCameraXOffset);
@@ -280,8 +303,46 @@ namespace SpaceBoat {
             cameraMovementTargetEndTime = Time.time + cameraShiftTime;
         }
 
-        public void ForceShipView(bool force) {
-            shipViewForced = force;
+        void UpdateShipViewOverride() {
+            if (shipViewOverrides.Count == 0) {
+                Debug.Log("Removing ship view override -- no overrides remaining");
+                shipViewForced = false;
+                shipViewTarget = originalShipViewTarget;
+                hasXPositionOverride = false;
+            } else {
+                Debug.Log("Updating ship view override -- " + shipViewOverrides.Count + " overrides");
+                shipViewOverrides.Sort((x, y) => y.priority.CompareTo(x.priority));
+                ForcedCamera highestPriorityOverride = shipViewOverrides[0];
+                Debug.Log("Highest priority override is " + highestPriorityOverride.name);
+                shipViewTarget = highestPriorityOverride.target;
+                shipViewForced = true;
+                hasXPositionOverride = highestPriorityOverride.hasXPositionOverride;
+                xPositionOverride = highestPriorityOverride.target.position.x;
+            }
+            if ((!inShipView && shipViewForced) || (inShipView && !shipViewForced)) {
+                currentCameraMovementOriginX = transform.position.x;
+                inShipViewTransition = true;
+            }
+            inShipView = shipViewForced;
         }
+
+        public void AddShipViewOverride(string overrideName, int priority) {
+            ForcedCamera cameraOverride = new ForcedCamera(overrideName, originalShipViewTarget, priority, false);
+            shipViewOverrides.Add(cameraOverride);
+            UpdateShipViewOverride();
+        }
+
+        public void AddShipViewOverride(string overrideName, int priority, Transform targetOverride, bool overrideXPosition = false) {
+            ForcedCamera cameraOverride = new ForcedCamera(overrideName, targetOverride, priority, overrideXPosition);
+            shipViewOverrides.Add(cameraOverride);
+            UpdateShipViewOverride();
+        }
+
+        public void RemoveShipViewOverride(string overrideName) {
+            shipViewOverrides.RemoveAll(x => x.name == overrideName);
+            UpdateShipViewOverride();
+        }
+
+       
     }
 }

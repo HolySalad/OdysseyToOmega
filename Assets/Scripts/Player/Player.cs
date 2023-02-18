@@ -4,6 +4,7 @@ using UnityEngine;
 using SpaceBoat.Ship;
 using SpaceBoat.PlayerSubclasses.PlayerStates;
 using SpaceBoat.PlayerSubclasses.Equipment;
+using SpaceBoat.Rewards;
 
 using SpaceBoat.UI;
 
@@ -768,8 +769,6 @@ namespace SpaceBoat {
         public bool PlayerHasMoney(int amount) {
             return money >= amount;
         }
-
-
 
         // Update functions
          

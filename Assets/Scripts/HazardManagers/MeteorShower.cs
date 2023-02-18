@@ -127,7 +127,7 @@ namespace SpaceBoat.HazardManagers {
 
         IEnumerator StartupSequence(float delay) {
             yield return new WaitForSeconds(delay-2f);
-            GameModel.Instance.cameraController.ForceShipView(true);
+            GameModel.Instance.cameraController.AddShipViewOverride("HazardStartup", 1);   
             meteorPrompts.Sort((a, b) => a.priority.CompareTo(b.priority));
             foreach (UI.HelpPrompt meteorPrompt in meteorPrompts) {
                 GameModel.Instance.helpPrompts.AddPrompt(meteorPrompt);
@@ -136,7 +136,7 @@ namespace SpaceBoat.HazardManagers {
                 yield return null;
             }
             yield return new WaitForSeconds(1.5f);
-            GameModel.Instance.cameraController.ForceShipView(false);
+             GameModel.Instance.cameraController.RemoveShipViewOverride("HazardStartup");   
         }
 
         IEnumerator EmitMeteors() {
