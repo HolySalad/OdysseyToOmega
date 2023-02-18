@@ -142,7 +142,7 @@ namespace SpaceBoat {
             return (isJumping, fastFall, halfJump, hitApex);
         }
 
-        private int lastJumpStompFrame = 0;
+        private float currentJumpStompCooldown = 0;
         private int jumpStompCooldown = 18;
 
         private bool isFacingRight = true;
@@ -381,8 +381,8 @@ namespace SpaceBoat {
         }
 
         private void JumpStomp() {
-            if (Time.frameCount > lastJumpStompFrame + jumpStompCooldown) {
-                lastJumpStompFrame = Time.frameCount;
+            if (jumpStompCooldown <= 0) {
+                currentJumpStompCooldown = jumpStompCooldown;
                 float jumpStompVolume = 0.2f + (Mathf.Abs(currentVerticalForce/gravityTerminalVelocity) * 0.8f);
                 Debug.Log("Jumpstomp with volume " + jumpStompVolume);
                 SoundManager.Instance.Play("JumpStomp", jumpStompVolume);
@@ -897,13 +897,17 @@ namespace SpaceBoat {
 
         void Update() {
             if (game.isPaused) {
-                lastJumpStompFrame += 1;
+                
                 jumpGrace += 1;
                 jumpStartFrame += 1;
                 hitOnframe += 1;
                 landedAtFrame += 1;
                 return;
             }
+            //update timers 
+            currentJumpStompCooldown -= Time.deltaTime;
+
+
             //InputUpdate(deltaTime);
             currentEquipment.UpdateEquipment(this);
             MovementUpdate();
