@@ -30,11 +30,7 @@ namespace BehaviorDesigner.Runtime.Tasks.Unity.UnityAnimator
                 return TaskStatus.Failure;
             }
 
-            for (int i = 0; i < 20; i++)
-            {
             animator.SetTrigger(paramaterName.Value);
-
-            }
 
             return TaskStatus.Success;
         }

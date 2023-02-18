@@ -3,7 +3,7 @@ using UnityEngine;
 namespace BehaviorDesigner.Runtime.Tasks.Unity.UnityAnimator
 {
     [TaskCategory("Unity/Animator")]
-    [TaskDescription("Returns Running if the specified name matches the name of the active state. Success otherwise")]
+    [TaskDescription("Returns success if the specified name matches the name of the active state.")]
     public class IsName : Conditional
     {
         [Tooltip("The GameObject that the task operates on. If null the task GameObject is used.")]
@@ -32,7 +32,7 @@ namespace BehaviorDesigner.Runtime.Tasks.Unity.UnityAnimator
                 return TaskStatus.Failure;
             }
 
-            return animator.GetCurrentAnimatorStateInfo(index.Value).IsName(name.Value) ? TaskStatus.Running : TaskStatus.Success;
+            return animator.GetCurrentAnimatorStateInfo(index.Value).IsName(name.Value) ? TaskStatus.Success : TaskStatus.Failure;
         }
 
         public override void OnReset()
