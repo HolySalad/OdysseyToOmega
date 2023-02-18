@@ -88,7 +88,10 @@ namespace SpaceBoat.Ship
             } else if (collision.gameObject.layer == LayerMask.NameToLayer("Harpoonables")) {
                 Debug.Log("Harpoon hit a harpoonable");
                 rbHit = collision.gameObject.GetComponent<Rigidbody2D>();
-                StartCoroutine(ReelInHarpoon());
+                Rewards.RewardComet comet = collision.gameObject.GetComponent<Rewards.RewardComet>();
+                if (comet != null) {
+                    comet.ShatterComet();
+                }
             }
         }
 

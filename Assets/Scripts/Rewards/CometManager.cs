@@ -3,6 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace SpaceBoat.Rewards {    
+
+    public enum RewardType {
+        Money,
+        HealthPackEquipmentBlueprint,
+        HarpoonLauncherEquipmentBlueprint,
+        DashEquipmentBlueprint,
+        ShieldEquipmentBlueprint,
+        TrampolineActivatableBlueprint,
+        HarpoonGunActivatableBlueprint, 
+        ShipShieldActivatableBlueprint,
+    }
+
     public class CometManager : MonoBehaviour
     {
         [SerializeField] private GameObject cometPrefabDefault;
@@ -19,6 +31,15 @@ namespace SpaceBoat.Rewards {
         [SerializeField] private float cometBurstInterval = 3.5f;
         [SerializeField] private float cometBurstIntervalVariationPercentage = 0.4f;
 
+        [SerializeField] private GameObject moneyPrefab;
+        [SerializeField] private GameObject healthPackEquipmentBlueprintPrefab;
+        [SerializeField] private GameObject harpoonLauncherEquipmentBlueprintPrefab;
+        [SerializeField] private GameObject dashEquipmentBlueprintPrefab;
+        [SerializeField] private GameObject shieldEquipmentBlueprintPrefab;
+        [SerializeField] private GameObject trampolineActivatableBlueprintPrefab;
+        [SerializeField] private GameObject harpoonGunActivatableBlueprintPrefab;
+        [SerializeField] private GameObject shipShieldActivatableBlueprintPrefab;
+
 
         private GameModel gameModel;
         private bool hasStarted = false;
@@ -29,12 +50,9 @@ namespace SpaceBoat.Rewards {
 
         void SpawnComet() {
             GameObject cometPrefab = cometPrefabDefault;
-            Transform cometEmitter = cometEmitterHigh;
-            if (Random.value < 0.5f) {
-                cometEmitter = cometEmitterLow;
-            }
-            GameObject comet = Instantiate(cometPrefab, cometEmitter.position, Quaternion.identity);
-            comet.GetComponent<RewardComet>().SetupComet(cometSpeed, cometTarget.position);
+            float yPos = Random.Range(cometEmitterLow.position.y, cometEmitterHigh.position.y);
+            GameObject comet = Instantiate(cometPrefab, new Vector3(cometEmitterHigh.position.x, yPos, 0), Quaternion.identity);
+            comet.GetComponent<RewardComet>().SetupComet(cometSpeed, cometTarget.position, moneyPrefab);
         }
 
         IEnumerator CometBurst() {

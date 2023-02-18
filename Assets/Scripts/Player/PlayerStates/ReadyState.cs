@@ -12,7 +12,7 @@ namespace SpaceBoat.PlayerSubclasses.PlayerStates {
         private Player player;
 
         [SerializeField] private float jumpLockOutTime = 0.4f;
-        
+        [SerializeField] private float activatableLockoutTime = 0.4f;
 
         void Awake() {
             player = GetComponent<Player>();
@@ -35,11 +35,15 @@ namespace SpaceBoat.PlayerSubclasses.PlayerStates {
         }
 
         public void UpdateState() {
+            bool isInActivtableLockout = Time.time < timeEnteredState + activatableLockoutTime;
+
             // Handle Input
 
             //Possibly state changing inputs.
-            if (player.EquipmentUsageInput(CthulkInput.EquipmentUsageKeyDown(), CthulkInput.EquipmentUsageKeyHeld())) return;
-            if (player.ActivateInput(CthulkInput.ActivateKeyHeld())) return;
+            bool equipmentKeyHeld = isInActivtableLockout ? CthulkInput.EquipmentUsageKeyDown() : CthulkInput.EquipmentUsageKeyHeld();
+            if (player.EquipmentUsageInput(CthulkInput.EquipmentUsageKeyDown(), equipmentKeyHeld)) return;
+            bool activateInputHeld = isInActivtableLockout ? CthulkInput.ActivateKeyDown() : CthulkInput.ActivateKeyHeld();
+            if (player.ActivateInput(activateInputHeld)) return;
 
 
             bool jumpKeyDown = CthulkInput.JumpKeyDown();

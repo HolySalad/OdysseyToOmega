@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace SpaceBoat.Ship {
-
     public delegate void UsageCallback();
     public interface IActivatables
     {
