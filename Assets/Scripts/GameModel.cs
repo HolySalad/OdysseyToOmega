@@ -10,6 +10,7 @@ using SpaceBoat.PlayerSubclasses.Equipment;
 using UnityEngine.SceneManagement;
 using UnityEngine.Playables;
 using TotemEntities.DNA;
+using Newtonsoft.Json;
 
 
 namespace SpaceBoat {
@@ -507,14 +508,16 @@ namespace SpaceBoat {
 
             public void Save() {
                 using (StreamWriter writer = new StreamWriter(saveDataPath)) {
-                    writer.Write(JsonUtility.ToJson(saveData));
+                    string data = JsonConvert.SerializeObject(saveData);
+                    writer.Write(data);
                 }
             }
 
             public void Load() {
                 if (File.Exists(saveDataPath)) {
                     using (StreamReader reader = new StreamReader(saveDataPath)) {
-                        saveData = JsonUtility.FromJson<SaveData>(reader.ReadToEnd());
+                        string data = reader.ReadToEnd();
+                        saveData = JsonConvert.DeserializeObject<SaveData>(data);
                     }
                 }
             }
