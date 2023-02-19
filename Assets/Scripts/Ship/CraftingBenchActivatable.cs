@@ -1,24 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-namespace SpaceBoat.Ship {
-    public class BedroomActivatable : MonoBehaviour, IActivatables
-    {
 
-        public ActivatablesNames kind {get;} = ActivatablesNames.Bedroom;
+namespace SpaceBoat.Ship {
+    public class CraftingBenchActivatable : MonoBehaviour, IActivatables
+    {
+        public ActivatablesNames kind {get;} = ActivatablesNames.CraftingBench;
         public bool isInUse {get; private set;} = false;
         public bool canManuallyDeactivate {get;} = true;
-        public PlayerStateName playerState {get;} = PlayerStateName.working;
+        public PlayerStateName playerState {get;} = PlayerStateName.uiPauseState;
         public string usageAnimation {get;} = "";
         public string usageSound {get;} = "";
 
         public void Activate(Player player) {
-            Debug.Log("Player activated bedroom equipment station");
+            Debug.Log("Player activated crafting bench");
             isInUse = true;
             foreach (UsageCallback callback in usageCallbacks) {
                 callback();
             }
-            GameModel.Instance.saveGameManager.Save();
+            UI.UIManager.Instance.OpenCraftingMenu();
         }
 
         public void Deactivate(Player player) {
@@ -26,6 +26,7 @@ namespace SpaceBoat.Ship {
             foreach (UsageCallback callback in deactivationCallbacks) {
                 callback();
             }
+            UI.UIManager.Instance.CloseCraftingMenu();
         }
 
         public bool ActivationCondition(Player player) {
@@ -40,6 +41,5 @@ namespace SpaceBoat.Ship {
         public void AddDeactivationCallback(UsageCallback callback) {
             deactivationCallbacks.Add(callback);
         }
-
     }
 }

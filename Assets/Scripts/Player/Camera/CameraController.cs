@@ -319,7 +319,7 @@ namespace SpaceBoat {
                 hasXPositionOverride = highestPriorityOverride.hasXPositionOverride;
                 xPositionOverride = highestPriorityOverride.target.position.x;
             }
-            if ((!inShipView && shipViewForced) || (inShipView && !shipViewForced)) {
+            if ((!inShipView && shipViewForced) || (inShipView && !shipViewForced) || (hasXPositionOverride)) {
                 currentCameraMovementOriginX = transform.position.x;
                 inShipViewTransition = true;
             }

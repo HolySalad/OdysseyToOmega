@@ -13,7 +13,7 @@ using TotemEntities.DNA;
 
 
 namespace SpaceBoat {
-    public enum ActivatablesNames {HarpoonGun, Kitchen, Ladder, Sails, Bedroom, None};
+    public enum ActivatablesNames {HarpoonGun, Kitchen, Ladder, Sails, Bedroom, CraftingBench, None};
 
     public class GameModel : MonoBehaviour
     {
@@ -24,6 +24,7 @@ namespace SpaceBoat {
         [SerializeField] private bool playSoundtrack = true;
         [SerializeField] private bool slowMo = false;
         [SerializeField] private bool utilityCheats = false;
+        [SerializeField] private bool resetSaveFileOnStart = false;
 
         [Header("Object References")]
         [SerializeField] public Player player;
@@ -88,6 +89,7 @@ namespace SpaceBoat {
         public delegate void PauseEvent();
         private List<PauseEvent> pauseEvents = new List<PauseEvent>();
         private List<PauseEvent> unpauseEvents = new List<PauseEvent>();
+        private List<PauseEvent> whilePausedEvents = new List<PauseEvent>();
 
         public void SetAvatar(TotemDNADefaultAvatar avatar)
         {
@@ -117,6 +119,10 @@ namespace SpaceBoat {
 
         public void AddUnpauseEvent(PauseEvent unpauseEvent) {
             unpauseEvents.Add(unpauseEvent);
+        }
+
+        public void AddWhilePausedEvent(PauseEvent whilePausedEvent) {
+            whilePausedEvents.Add(whilePausedEvent);
         }
 
 
@@ -186,7 +192,11 @@ namespace SpaceBoat {
                 Debug.LogError("CameraController not set in GameModel!");
             }
             saveGameManager = new SaveDataManager();
-            saveGameManager.Load();
+            if (resetSaveFileOnStart) {
+                saveGameManager.Reset();
+            } else {
+                saveGameManager.Load();
+            }
             saveGame = saveGameManager.saveData;
 
             GameBeganTime = Time.time;
@@ -399,6 +409,13 @@ namespace SpaceBoat {
                     }
                 }
             }
+            if (isPaused) {
+                foreach (PauseEvent pauseEvent in whilePausedEvents) {
+                    pauseEvent();
+                }
+            }
+
+
             if (DoNotUpdate) return;
             int num_surviving_sails = 0;
             foreach (GameObject sail in shipSails) {
@@ -432,15 +449,24 @@ namespace SpaceBoat {
             CheckHazardProgress();
         }
 
+        // save player progress
+        public void SaveForQuit() {
+            SavePersistantInfo();
+        }
+
+        public void SavePersistantInfo() {
+
+        }
+
 
         // subclasses for saving and loading
         [System.Serializable] public class SaveData {
-            public int money = 0;
+            public int money = 1000;
             public Dictionary<RewardType, bool> rewardsUnlocked = new Dictionary<Rewards.RewardType, bool>() {
-                {RewardType.DashEquipmentBlueprint, false},
+                {RewardType.DashEquipmentBlueprint, true},
                 {RewardType.HarpoonGunActivatableBlueprint, false},
                 {RewardType.HarpoonLauncherEquipmentBlueprint, false},
-                {RewardType.ShieldEquipmentBlueprint, false},
+                {RewardType.ShieldEquipmentBlueprint, true},
                 {RewardType.HealthPackEquipmentBlueprint, false},
                 {RewardType.TrampolineActivatableBlueprint, false},
                 {RewardType.ShipShieldActivatableBlueprint, false}
@@ -469,6 +495,7 @@ namespace SpaceBoat {
 
             public void Reset() {
                 saveData = new SaveData();
+                Debug.Log("Reset save data - " + saveDataPath);
                 Save();
             }
 

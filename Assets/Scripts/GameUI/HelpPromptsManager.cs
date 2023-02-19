@@ -25,10 +25,10 @@ namespace SpaceBoat.UI {
         private List<HelpPrompt> prompts = new List<HelpPrompt>();
         private Dictionary<string, bool> triggeredPrompts = new Dictionary<string, bool>();
         
-        private TextMeshPro textElement;
+        private TextMeshProUGUI textElement;
 
         void Start() {
-            textElement = GetComponent<TextMeshPro>();
+            textElement = GetComponent<TextMeshProUGUI>();
             textElement.color = new Color(textElement.color.r, textElement.color.g, textElement.color.b, 0);
             StartCoroutine(transitionRoutine());
         }
@@ -41,7 +41,7 @@ namespace SpaceBoat.UI {
                 if ((isBlank || isDifferent) && textElement.color.a > 0) {
                     Debug.Log("Current displayed prompt "+ currentDisplayedPrompt + " is different from target " + (isBlank ? "Blank" : currentTargetPrompt) + ". Fading out.");
                     while (textElement.color.a > 0) {
-                        float newOpacity = Mathf.Min(1, textElement.color.a - (opacityIncrement * Time.deltaTime));
+                        float newOpacity = Mathf.Max(0, textElement.color.a - (opacityIncrement * Time.deltaTime));
                         textElement.color = new Color(textElement.color.r, textElement.color.g, textElement.color.b, newOpacity);
                         yield return null;
                     }

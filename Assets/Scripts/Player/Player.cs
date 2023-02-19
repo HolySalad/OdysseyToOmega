@@ -9,7 +9,7 @@ using SpaceBoat.Rewards;
 using SpaceBoat.UI;
 
 namespace SpaceBoat {
-    public enum PlayerStateName {ready, working, hitstun, turret, weaponEquipment, ladder, dash, ball, staticEquipment, captured, nullState};
+    public enum PlayerStateName {ready, working, hitstun, turret, weaponEquipment, ladder, dash, ball, staticEquipment, captured, uiPauseState, nullState};
     public class Player : MonoBehaviour
     {
         [Header("General Player Settings")]
@@ -106,15 +106,21 @@ namespace SpaceBoat {
         //player equipment
         private IPlayerEquipment currentEquipment;
         public EquipmentType currentEquipmentType = EquipmentType.None;
-        private Dictionary<EquipmentType, IPlayerEquipment> equipment = new Dictionary<EquipmentType, IPlayerEquipment>();
-
+        private Dictionary<EquipmentType, IPlayerEquipment> equipmentScripts = new Dictionary<EquipmentType, IPlayerEquipment>();
 
 
         // internal gameplay vars
         public int health {get; private set;}
         private int hitOnframe;
 
-        public int money {get; private set;}
+        public int money {
+            get {
+                return game.saveGame.money;
+            }
+            private set {
+                game.saveGame.money = value;
+            }
+        }
 
         //internal movement vars
         private bool isGrounded = false;
@@ -192,19 +198,20 @@ namespace SpaceBoat {
             playerStates.Add(PlayerStateName.dash, GetComponent<DashState>() ?? gameObject.AddComponent<DashState>());
             playerStates.Add(PlayerStateName.weaponEquipment, GetComponent<WeaponEquipmentState>() ?? gameObject.AddComponent<WeaponEquipmentState>());
             playerStates.Add(PlayerStateName.staticEquipment, GetComponent<StaticEquipmentState>() ?? gameObject.AddComponent<StaticEquipmentState>());
+            playerStates.Add(PlayerStateName.uiPauseState, GetComponent<UIPauseState>() ?? gameObject.AddComponent<UIPauseState>());
             playerStates.Add(PlayerStateName.captured, GetComponent<CapturedState>() ?? gameObject.AddComponent<CapturedState>());
 
 
             currentPlayerState = playerStates[currentPlayerStateName];
 
             //set up equipment
-            equipment.Add(EquipmentType.None, GetComponent<NoneEquipment>());
-            equipment.Add(EquipmentType.Dash, GetComponent<DashEquipment>());
-            equipment.Add(EquipmentType.HealthPack, GetComponent<HealthPackEquipment>());
-            equipment.Add(EquipmentType.HarpoonLauncher, GetComponent<HarpoonLauncherEquipment>());
-            equipment.Add(EquipmentType.Shield, GetComponent<ShieldEquipment>());
+            equipmentScripts.Add(EquipmentType.None, GetComponent<NoneEquipment>());
+            equipmentScripts.Add(EquipmentType.Dash, GetComponent<DashEquipment>());
+            equipmentScripts.Add(EquipmentType.HealthPack, GetComponent<HealthPackEquipment>());
+            equipmentScripts.Add(EquipmentType.HarpoonLauncher, GetComponent<HarpoonLauncherEquipment>());
+            equipmentScripts.Add(EquipmentType.Shield, GetComponent<ShieldEquipment>());
 
-            currentEquipment = equipment[currentEquipmentType];
+            currentEquipment = equipmentScripts[currentEquipmentType];
             currentEquipment.Equip(this);
             if (startingEquipment != currentEquipmentType) {
                 ChangeEquipment(startingEquipment);
@@ -525,8 +532,18 @@ namespace SpaceBoat {
         // end of movement functions
 
         // player equipment
+
+        public void CraftEquipment(EquipmentType type, int cost) {
+            game.saveGame.equipmentBuilt[type] = true;
+            PlayerSpendsMoney(cost);
+        }
+
+        public bool HasEquipment(EquipmentType type) {
+            return game.saveGame.equipmentBuilt[type];
+        }
+
         public void ChangeEquipment(EquipmentType type) {
-            if (!equipment.ContainsKey(type)) {
+            if (!equipmentScripts.ContainsKey(type)) {
                 Debug.LogError("Player does not have equipment of type " + type + " registered in the player equipment dictionary");
                 return;
             } 
@@ -535,7 +552,7 @@ namespace SpaceBoat {
             }
             currentEquipment.Unequip(this);
 
-            currentEquipment = equipment[type];
+            currentEquipment = equipmentScripts[type];
             currentEquipmentType = type;
             currentEquipment.Equip(this);
         }

@@ -10,35 +10,13 @@ namespace SpaceBoat.Rewards {
 
         void Collect(Player player) {
             if (player == null) return;
-            switch (rewardType) {
+            switch (rewardType) { 
                 case RewardType.Money:
                     player.PlayerGainsMoney(value);
                     break;
-                /*
-                case RewardType.HealthPackEquipmentBlueprint:
-                    FindObjectOfType<GameModel>().AddHealthPackEquipmentBlueprint();
-                    break;
-                case RewardType.HarpoonLauncherEquipmentBlueprint:
-                    FindObjectOfType<GameModel>().AddHarpoonLauncherEquipmentBlueprint();
-                    break;
-                case RewardType.DashEquipmentBlueprint:
-                    FindObjectOfType<GameModel>().AddDashEquipmentBlueprint();
-                    break;
-                case RewardType.ShieldEquipmentBlueprint:
-                    FindObjectOfType<GameModel>().AddShieldEquipmentBlueprint();
-                    break;
-                case RewardType.TrampolineActivatableBlueprint:
-                    FindObjectOfType<GameModel>().AddTrampolineActivatableBlueprint();
-                    break;
-                case RewardType.HarpoonGunActivatableBlueprint:
-                    FindObjectOfType<GameModel>().AddHarpoonGunActivatableBlueprint();
-                    break;
-                case RewardType.ShipShieldActivatableBlueprint:
-                    FindObjectOfType<GameModel>().AddShipShieldActivatableBlueprint();
-                    break;
-                */
                 default:
-                    Debug.LogWarning("Collectable.cs: Collect() switch statement reached default case.");
+                    GameModel.Instance.saveGame.rewardsUnlocked[rewardType] = true;
+                    //TODO trigger unlock UI.
                     break;
             }
             Destroy(gameObject);
