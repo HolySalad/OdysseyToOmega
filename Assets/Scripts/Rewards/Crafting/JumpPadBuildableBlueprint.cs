@@ -3,17 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using SpaceBoat.PlayerSubclasses.Equipment;
 namespace SpaceBoat.Rewards {
-    public class ShieldEquipmentBlueprint : MonoBehaviour, ICraftBlueprint
+    public class JumpPadBuildableBlueprint : MonoBehaviour, ICraftBlueprint
     {
+        [SerializeField] private GameObject buildablePrefab;
+
+
         [SerializeField] private int cost = 100;
-        [SerializeField] private RewardType rewardType = RewardType.ShieldEquipmentBlueprint;
-        [SerializeField] private string title = "Shield";
-        [SerializeField] private string subtitle = "Shield";
-        [SerializeField] private string description = "Shield";
+        [SerializeField] private RewardType rewardType = RewardType.JumpPadBuildableBlueprint;
+        [SerializeField] private string title = "Jump Pad";
+        [SerializeField] private string subtitle = "Ship Upgrade";
+        [SerializeField] private string description = "Place a jump pad on the ship to quickly reach the sails.";
         [SerializeField] private Sprite iconSmall;
         [SerializeField] private Sprite iconLarge;
         
-        public BlueprintType BlueprintType { get; } = BlueprintType.Equipment;
+        public BlueprintType BlueprintType { get; } = BlueprintType.Buildable;
 
         public int Cost { get { return cost; } }
         public RewardType RewardType { get { return rewardType; } }
@@ -26,7 +29,7 @@ namespace SpaceBoat.Rewards {
         public bool isUnlocked { get; set; } = false;
 
         public void Craft(Player player) {
-            player.CraftEquipment(EquipmentType.Shield, cost);
+            UI.UIManager.Instance.EnterBuildMode(buildablePrefab);
         }
 
         public bool AlreadyOwns(Player player) {

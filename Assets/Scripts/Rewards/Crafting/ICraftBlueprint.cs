@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace SpaceBoat.Rewards {    
+    public enum BlueprintType {Buildable, Equipment}
     public interface ICraftBlueprint
     {
         public int Cost { get; }
         public RewardType RewardType { get; }
         public bool isUnlocked { get; set; }
-        //TODO buildable activatables.
+        public BlueprintType BlueprintType { get; }
 
         public void Craft(Player player);
         public bool AlreadyOwns(Player player);

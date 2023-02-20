@@ -8,7 +8,7 @@ namespace SpaceBoat.Ship.Activatables {
         public ActivatablesNames kind {get;} = ActivatablesNames.Bedroom;
         public bool isInUse {get; private set;} = false;
         public bool canManuallyDeactivate {get;} = true;
-        public PlayerStateName playerState {get;} = PlayerStateName.working;
+        public PlayerStateName playerState {get;} = PlayerStateName.ready;
         public string usageAnimation {get;} = "";
         public string usageSound {get;} = "";
 
