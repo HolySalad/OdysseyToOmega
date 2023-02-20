@@ -105,12 +105,12 @@ MonoBehaviour:
     rockSpeedIncrease: 0
   - timeIntoHazard: 5
     baseNumMeteors: 2
-    meteorIntervalMultiplier: 1
+    meteorIntervalMultiplier: 0.9
     rockRateIncrease: 0
     rockSpeedIncrease: 0
   - timeIntoHazard: 48
     baseNumMeteors: 3
-    meteorIntervalMultiplier: 0.8
+    meteorIntervalMultiplier: 0.75
     rockRateIncrease: 0.25
     rockSpeedIncrease: 0.5
   - timeIntoHazard: 72

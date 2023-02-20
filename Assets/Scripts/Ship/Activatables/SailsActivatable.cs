@@ -14,7 +14,7 @@ namespace SpaceBoat.Ship.Activatables {
         [SerializeField] private Sprite repairedSprite;
         [SerializeField] private Sprite brokenSprite;
         [SerializeField] public Transform hazardTarget;
-        [SerializeField] private float repairTime = 3;
+        [SerializeField] private float repairTime = 2.2f;
         [SerializeField] private float targettingCooldown = 30f;
         [SerializeField] private float targetFlagTimeout = 10f;
         [SerializeField] private bool breakOnStart = false;
