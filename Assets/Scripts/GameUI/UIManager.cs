@@ -15,6 +15,8 @@ namespace SpaceBoat.UI {
 
         public static UIManager Instance { get; private set; }
 
+        private GameObject buildmodeObject;
+
         void Awake() {
             if (Instance == null) {
                 Instance = this;
@@ -44,6 +46,20 @@ namespace SpaceBoat.UI {
             hudParent.SetActive(true);
             craftMenuParent.SetActive(false);
             GameModel.Instance.UnpauseGame();
+        }
+
+        public void EnterBuildMode(GameObject buildablePrefab) {
+            buildmodeObject = Instantiate(buildablePrefab, new Vector3(0,0,0), Quaternion.identity);
+            craftMenuParent.SetActive(false);
+            Transform buildmodeTransform = buildmodeObject.GetComponentInChildren<Ship.Buildables.BuildableExtras.BuildSystemPlacementMarker>().transform;
+            GameModel.Instance.cameraController.AddShipViewOverride("UIManager", 100, buildmodeTransform, true, false);
+        }
+
+        public void ExitBuildMode() {
+            Destroy(buildmodeObject);
+            buildmodeObject = null;
+            craftMenuParent.SetActive(true);
+            GameModel.Instance.cameraController.RemoveShipViewOverride("UIManager");
         }
     }
 }

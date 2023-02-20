@@ -13,7 +13,8 @@ namespace SpaceBoat.Rewards {
         [SerializeField] private string description = "Healthpack";
         [SerializeField] private Sprite iconSmall;
         [SerializeField] private Sprite iconLarge;
-
+        
+        public BlueprintType BlueprintType { get; } = BlueprintType.Equipment;
         public int Cost { get { return cost; } }
         public RewardType RewardType { get { return rewardType; } }
 

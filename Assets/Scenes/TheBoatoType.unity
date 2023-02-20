@@ -10384,7 +10384,6 @@ MonoBehaviour:
   cometPrefabDefault: {fileID: 189507748417666162, guid: 3517fb1fe69371e42b5faac4ffa7ce4b, type: 3}
   cometEmitterHigh: {fileID: 462699083}
   cometEmitterLow: {fileID: 748119979}
-  cometSpawnYVariation: 3
   cometTarget: {fileID: 1603409863}
   cometSpeed: 7
   cometSpawnInterval: 30
@@ -11865,7 +11864,7 @@ PrefabInstance:
       objectReference: {fileID: 702206720}
     - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
       propertyPath: resetSaveFileOnStart
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
       propertyPath: shipSails.Array.data[0]

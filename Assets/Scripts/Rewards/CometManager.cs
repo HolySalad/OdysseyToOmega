@@ -10,9 +10,9 @@ namespace SpaceBoat.Rewards {
         HarpoonLauncherEquipmentBlueprint,
         DashEquipmentBlueprint,
         ShieldEquipmentBlueprint,
-        TrampolineActivatableBlueprint,
-        HarpoonGunActivatableBlueprint, 
-        ShipShieldActivatableBlueprint,
+        JumpPadBuildableBlueprint,
+        HarpoonGunBuildableBlueprint, 
+        ShipShieldBuildableBlueprint,
     }
 
     public class CometManager : MonoBehaviour

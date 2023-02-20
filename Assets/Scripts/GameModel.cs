@@ -465,12 +465,12 @@ namespace SpaceBoat {
             public int money = 1000;
             public Dictionary<RewardType, bool> rewardsUnlocked = new Dictionary<Rewards.RewardType, bool>() {
                 {RewardType.DashEquipmentBlueprint, true},
-                {RewardType.HarpoonGunActivatableBlueprint, false},
+                {RewardType.HarpoonGunBuildableBlueprint, false},
                 {RewardType.HarpoonLauncherEquipmentBlueprint, false},
                 {RewardType.ShieldEquipmentBlueprint, true},
                 {RewardType.HealthPackEquipmentBlueprint, false},
-                {RewardType.TrampolineActivatableBlueprint, false},
-                {RewardType.ShipShieldActivatableBlueprint, false}
+                {RewardType.JumpPadBuildableBlueprint, true},
+                {RewardType.ShipShieldBuildableBlueprint, false}
             };
 
             public Dictionary<EquipmentType, bool> equipmentBuilt = new Dictionary<EquipmentType, bool>() {

@@ -57,6 +57,7 @@ namespace SpaceBoat.UI {
             blueprints[RewardType.DashEquipmentBlueprint] = GetComponent<DashEquipmentBlueprint>();
             blueprints[RewardType.HealthPackEquipmentBlueprint] = GetComponent<HealthPackEquipmentBlueprint>();
             blueprints[RewardType.ShieldEquipmentBlueprint] = GetComponent<ShieldEquipmentBlueprint>();
+            blueprints[RewardType.JumpPadBuildableBlueprint] = GetComponent<JumpPadBuildableBlueprint>();
 
             equipmentBlueprints[EquipmentType.Dash] = GetComponent<DashEquipmentBlueprint>();
             equipmentBlueprints[EquipmentType.HealthPack] = GetComponent<HealthPackEquipmentBlueprint>();
@@ -122,17 +123,26 @@ namespace SpaceBoat.UI {
         public void StoreCraftingButtonPressed() {
             if (selectedBlueprint != null) {
                 selectedBlueprint.Craft(GameModel.Instance.player);
-                if (numEquipmentOwned == 0) {
-                     foreach (EquipmentType type in equipmentTypes) {
-                        if (GameModel.Instance.player.HasEquipment(type)) {
-                            GameModel.Instance.player.ChangeEquipment(type);
-                            break;
+                switch (selectedBlueprint.BlueprintType) {
+                    case BlueprintType.Equipment:
+                        if (numEquipmentOwned == 0) {
+                            foreach (EquipmentType type in equipmentTypes) {
+                                if (GameModel.Instance.player.HasEquipment(type)) {
+                                    GameModel.Instance.player.ChangeEquipment(type);
+                                    break;
+                                }
+                            }
+                            UIManager.Instance.CloseCraftingMenu();
+                        } else {
+                            currentPanelIndex = (int)CraftUIState.EquipmentPanel;
+                            ChangePanel(panels[currentPanelIndex]);
                         }
-                    }
-                    UIManager.Instance.CloseCraftingMenu();
-                } else {
-                    currentPanelIndex = (int)CraftUIState.EquipmentPanel;
-                    ChangePanel(panels[currentPanelIndex]);
+                        break;
+                    case BlueprintType.Buildable:
+                        break;
+                    default:
+                        Debug.LogWarning("CraftingUI.cs: StoreCraftingButtonPressed() switch statement reached default case.");
+                        break;
                 }
             } else {
                 Debug.LogWarning("CraftingUI.cs: StoreCraftingButtonPressed() selectedBlueprint is null.");
@@ -147,14 +157,16 @@ namespace SpaceBoat.UI {
             }
             int numButtons = 0;
             foreach (ICraftBlueprint blueprint in blueprints.Values) {
-                GameObject storeItem = Instantiate(TemplateStoreItem, StoreContentBox.transform);
-                RectTransform rect = storeItem.GetComponent<RectTransform>();
-                rect.anchoredPosition = new Vector2(rect.anchoredPosition.x, rect.anchoredPosition.y - (numButtons * 120));
-                numButtons++;
-                storeItem.GetComponent<Button>().onClick.AddListener(() => SetStorePanelDetails(blueprint.RewardType));
-                storeItem.transform.Find("Image").gameObject.GetComponent<Image>().sprite = blueprint.IconSmall;
-                storeItem.transform.Find("Cost").gameObject.GetComponent<TextMeshProUGUI>().text = blueprint.Cost.ToString();
-                storeItem.SetActive(true);
+                if (!blueprint.AlreadyOwns(GameModel.Instance.player) && GameModel.Instance.saveGame.rewardsUnlocked[blueprint.RewardType]) {
+                    GameObject storeItem = Instantiate(TemplateStoreItem, StoreContentBox.transform);
+                    RectTransform rect = storeItem.GetComponent<RectTransform>();
+                    rect.anchoredPosition = new Vector2(rect.anchoredPosition.x, rect.anchoredPosition.y - (numButtons * 120));
+                    numButtons++;
+                    storeItem.GetComponent<Button>().onClick.AddListener(() => SetStorePanelDetails(blueprint.RewardType));
+                    storeItem.transform.Find("Image").gameObject.GetComponent<Image>().sprite = blueprint.IconSmall;
+                    storeItem.transform.Find("Cost").gameObject.GetComponent<TextMeshProUGUI>().text = blueprint.Cost.ToString();
+                    storeItem.SetActive(true);
+                }
             }
             TemplateStoreItem.SetActive(false);
         }
