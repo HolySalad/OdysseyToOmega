@@ -20,7 +20,6 @@ namespace SpaceBoat.Rewards {
         [SerializeField] private GameObject cometPrefabDefault;
         [SerializeField] private Transform cometEmitterHigh;
         [SerializeField] private Transform cometEmitterLow;
-        [SerializeField] private float cometSpawnYVariation = 3f;
         [SerializeField] private Transform cometTarget;
         [SerializeField] private float cometSpeed = 7f;
         [SerializeField] private float cometSpawnInterval = 30f;
@@ -82,6 +81,9 @@ namespace SpaceBoat.Rewards {
         }
 
         public void StartCometSpawner() {
+            if (hasStarted) {
+                return;
+            }
             hasStarted = true;
             StartCoroutine(IntermittentCometSpawn());
         }
