@@ -181,6 +181,27 @@ namespace SpaceBoat {
         public IActivatables activatableInUse {get; private set;}
         public float playerCameraXFocusOffset;
 
+        // Callbacks
+        public delegate void PlayerCallback(Player player);
+        private List<PlayerCallback> onPlayerLandedCallbacks = new List<PlayerCallback>();
+        public void AddOnPlayerLandedCallback(PlayerCallback callback) {
+            onPlayerLandedCallbacks.Add(callback);
+        }
+        private void CallOnPlayerLandedCallbacks() {
+            foreach (PlayerCallback callback in onPlayerLandedCallbacks) {
+                callback(this);
+            }
+        }
+        private List<PlayerCallback> onPlayerHeadbumpCallbacks = new List<PlayerCallback>();
+        public void AddOnPlayerHeadbumpCallback(PlayerCallback callback) {
+            onPlayerHeadbumpCallbacks.Add(callback);
+        }
+        private void CallOnPlayerHeadbumpCallbacks() {
+            foreach (PlayerCallback callback in onPlayerHeadbumpCallbacks) {
+                callback(this);
+            }
+        }
+
         void Awake() {
             //fill references
             game = FindObjectOfType<GameModel>();
@@ -419,6 +440,10 @@ namespace SpaceBoat {
             }
         }
 
+        public void OverrideVerticalForce(float force) {
+            currentVerticalForce = force;
+        }
+
         //collision functions
 
         private (bool, bool, List<RaycastHit2D>) CheckGrounded() {
@@ -465,6 +490,7 @@ namespace SpaceBoat {
                     isJumping = false;
                     halfJump = false;
                     landedAtFrame = Time.frameCount;
+                    CallOnPlayerLandedCallbacks();
                     currentWalkingSpeed = currentWalkingSpeed * landingHorizontalDrag;
                 } else if (!wasGrounded) {
                     Debug.Log("Player landed from falling after " + (Time.frameCount - frameLeftGround) + " frames");
@@ -472,6 +498,7 @@ namespace SpaceBoat {
                     isJumping = false;
                     halfJump = false;
                     landedAtFrame = Time.frameCount;
+                    CallOnPlayerLandedCallbacks();
                 }
             } else {
                 if (Time.frameCount > jumpGrace) {
@@ -523,7 +550,7 @@ namespace SpaceBoat {
             return false;
         }
 
-        bool CheckWallBump(float castDirection) {
+        public bool CheckWallBump(float castDirection) {
             List<RaycastHit2D> hits = new List<RaycastHit2D>();
             ContactFilter2D filter = new ContactFilter2D();
             filter.SetLayerMask(LayerMask.GetMask("Ground"));
@@ -536,7 +563,7 @@ namespace SpaceBoat {
         }
 
 
-        bool CheckWallBump() {
+        public bool CheckWallBump() {
             float castDirection = (currentWalkingSpeed*lastHorizontalInput > 0 ? 1 : -1);
            return CheckWallBump(castDirection);
         }
@@ -839,6 +866,7 @@ namespace SpaceBoat {
             UpdateGrounded();
             MomentumUpdate();
             bool headBump = CheckHeadBump();
+            if (headBump) {CallOnPlayerHeadbumpCallbacks();}
             if (currentPlayerState.stealVelocityControl) {
                 return;
             }

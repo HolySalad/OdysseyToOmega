@@ -8,23 +8,21 @@ namespace SpaceBoat.PlayerSubclasses.Equipment {
         [SerializeField] private SpriteRenderer offSprite;
         [SerializeField] private SpriteRenderer activeSprite;
 
-        [SerializeField] private float dashCooldown = 2.5f;
+        [SerializeField] private float dashCooldown = 2f;
         [SerializeField] private float dashDuration = 0.5f;
         [SerializeField] public float dashSpeed = 20f;
-        [SerializeField] public float dashAcceleration = 50f;
-        [SerializeField] public float dashDeceleration = 50f;
         [SerializeField] public float maintainedMomentumMultiplier = 0.5f;
 
         public EquipmentType equipmentType {get;} = EquipmentType.Dash;
         public PlayerStateName usageState {get;} = PlayerStateName.dash;
         public bool isActive {get; private set;} = false;
         public EquipmentActivationBehaviour activationBehaviour {get;} = EquipmentActivationBehaviour.Press;
-
         private float cooldown = 0f;
         private float dashTimer = 0f;
+        public bool hasLandedSinceLastDash = true;
 
         public bool ActivationCondition(Player player) {
-            return cooldown <= 0f;
+            return (cooldown <= 0f && hasLandedSinceLastDash);
         }
         public void Activate(Player player) {
             isActive = true;
