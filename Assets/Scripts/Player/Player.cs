@@ -275,8 +275,14 @@ namespace SpaceBoat {
             }
         }
 
+        private bool isStepFirst = true;
         public void Footfall() {
-
+            if (isStepFirst) {
+                game.sound.Play("Footstep1", 0.6f);
+            } else {
+                game.sound.Play("Footstep2", 0.4f);
+            }
+            isStepFirst = !isStepFirst;
         }
 
         public void OverrideWalkSpeed(float speed) {
@@ -849,13 +855,6 @@ namespace SpaceBoat {
         }
 
         void SoundUpdate() {
-            // play walking sound when moving in the ready state on the ground
-            if (!game.sound.IsPlaying("Walk") && currentPlayerStateName == PlayerStateName.ready && currentWalkingSpeed != 0 && isGrounded) {
-                game.sound.Play("Walk"); 
-            } else if (game.sound.IsPlaying("Walk") && (currentPlayerStateName != PlayerStateName.ready || currentWalkingSpeed == 0 || !isGrounded)) {
-                game.sound.Stop("Walk");
-            }
-
             if (health == 1 && !game.sound.IsPlaying("LowHP")) {
                 game.sound.Play("LowHP"); 
             }
