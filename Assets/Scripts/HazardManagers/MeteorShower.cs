@@ -150,7 +150,7 @@ namespace SpaceBoat.HazardManagers {
                     List<GameObject> targetSails = GameModel.Instance.SelectSailsForTargetting(meteorsOut);
                     bool playSound = true;
                     foreach (GameObject randomSail in targetSails) {
-                        randomSail.GetComponent<Ship.SailsActivatable>().TargetSail();
+                        randomSail.GetComponent<Ship.Activatables.SailsActivatable>().TargetSail();
                         handleMeteorSpawning(randomSail, playSound);
                         playSound = false;
                     }

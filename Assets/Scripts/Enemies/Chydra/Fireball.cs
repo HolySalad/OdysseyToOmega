@@ -57,7 +57,7 @@ namespace SpaceBoat.HazardManagers
             Debug.Log("Fireball OnTriggerEnter2D");
             if (other.gameObject == target)
             {
-                Ship.SailsActivatable sail = other.gameObject.GetComponent<Ship.SailsActivatable>();
+                Ship.Activatables.SailsActivatable sail = other.gameObject.GetComponent<Ship.Activatables.SailsActivatable>();
                 if (!sail.isBroken)
                 {
                     sail.Break();

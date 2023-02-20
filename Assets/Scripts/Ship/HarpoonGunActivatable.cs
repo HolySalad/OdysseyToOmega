@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SpaceBoat.Ship {
+namespace SpaceBoat.Ship.Activatables {
         public class HarpoonGunActivatable : MonoBehaviour, IActivatables
     {
         [SerializeField] private GameObject harpoonPrefab;
@@ -79,7 +79,7 @@ namespace SpaceBoat.Ship {
             GameObject harpoon = Instantiate(harpoonPrefab, harpoonLocation.transform.position, harpoonLocation.transform.rotation);
             //Vector3 gunAxis = backBarrel.transform.position - frontBarrel.transform.position;
             Vector3 direction = harpoonLocation.transform.TransformDirection(Vector3.right);
-            HarpoonProjectile harpoonProjectile = harpoon.GetComponent<Ship.HarpoonProjectile>();
+            HarpoonProjectile harpoonProjectile = harpoon.GetComponent<Ship.Activatables.HarpoonProjectile>();
             harpoonProjectile.Fire(direction);
             harpoonProjectile.harpoonGun = this;
             SoundManager.Instance.Play("HarpoonWhoosh");

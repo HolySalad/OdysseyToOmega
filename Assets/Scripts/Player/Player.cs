@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using SpaceBoat.Ship;
+using SpaceBoat.Ship.Activatables;
 using SpaceBoat.PlayerSubclasses.PlayerStates;
 using SpaceBoat.PlayerSubclasses.Equipment;
 using SpaceBoat.Rewards;
@@ -151,6 +151,9 @@ namespace SpaceBoat {
 
         private float currentJumpStompCooldown = 0;
         private int jumpStompCooldown = 18;
+
+        private bool hasJumpPowerOverride = false;
+        private float jumpPowerOverride = 0f;
 
         private bool isFacingRight = true;
         public float GetFacingDirection() {
@@ -323,6 +326,10 @@ namespace SpaceBoat {
                 isGrounded = false;
                 hitApex = false;
                 currentVerticalForce = jumpPower;
+                if (hasJumpPowerOverride) {
+                    currentVerticalForce = jumpPowerOverride;
+                    hasJumpPowerOverride = false;
+                }
                 if (currentWalkingSpeed > maxWalkSpeed * jumpHorizontalSpeedWindow) {
                     currentWalkingSpeed = currentWalkingSpeed * jumpHorizontalMultiplier;
                 }
@@ -372,13 +379,17 @@ namespace SpaceBoat {
             }
         }
 
-        public void ForceJump(bool lockOutReadyState = false, bool halfJump = false, bool skipJumpSquat = false) {
+        public void ForceJump(bool lockOutReadyState = false, bool halfJump = false, bool skipJumpSquat = false, float jumpPowerMult = -1) {
             StartJump(true);
             if (skipJumpSquat) {
                 jumpStartFrame = Time.frameCount;
             }
             if (halfJump) {
                 this.halfJump = true;
+            }
+            if (jumpPowerMult > 0) {
+                hasJumpPowerOverride = true;
+                jumpPowerOverride = jumpPowerMult*jumpPower;
             }
             if (lockOutReadyState) {
                 IPlayerState ready = playerStates[PlayerStateName.ready];

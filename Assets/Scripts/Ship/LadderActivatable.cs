@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SpaceBoat.Ship {    
+namespace SpaceBoat.Ship.Activatables {    
     public class LadderActivatable : MonoBehaviour, IActivatables
     {
         [SerializeField] private GameObject ladderTop;

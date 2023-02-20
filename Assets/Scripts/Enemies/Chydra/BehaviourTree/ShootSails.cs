@@ -2,7 +2,7 @@ using BehaviorDesigner.Runtime.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using SpaceBoat.Ship;
+using SpaceBoat.Ship.Activatables;
 using SpaceBoat;
 using SpaceBoat.HazardManagers;
 using DG.Tweening;

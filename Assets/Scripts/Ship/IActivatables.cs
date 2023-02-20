@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SpaceBoat.Ship {
+namespace SpaceBoat.Ship.Activatables {
     public delegate void UsageCallback();
     public interface IActivatables
     {

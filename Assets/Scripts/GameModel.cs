@@ -3,7 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
 using SpaceBoat.HazardManagers;
-using SpaceBoat.Ship;
+using SpaceBoat.Ship.Activatables;
 using SpaceBoat.UI;
 using SpaceBoat.Rewards;
 using SpaceBoat.PlayerSubclasses.Equipment;
@@ -403,8 +403,8 @@ namespace SpaceBoat {
             if (utilityCheats) {
                 if (Input.GetKeyDown(KeyCode.P)) {
                     foreach (GameObject sail in shipSails) {
-                        if (sail.GetComponent<Ship.SailsActivatable>().isBroken == false) {
-                            sail.GetComponent<Ship.SailsActivatable>().Break();
+                        if (sail.GetComponent<Ship.Activatables.SailsActivatable>().isBroken == false) {
+                            sail.GetComponent<Ship.Activatables.SailsActivatable>().Break();
                             break;
                         }
                     }
@@ -420,7 +420,7 @@ namespace SpaceBoat {
             if (DoNotUpdate) return;
             int num_surviving_sails = 0;
             foreach (GameObject sail in shipSails) {
-                 if (sail.GetComponent<Ship.SailsActivatable>().isBroken == false) {
+                 if (sail.GetComponent<Ship.Activatables.SailsActivatable>().isBroken == false) {
                     num_surviving_sails++;
                 }
             }
@@ -434,7 +434,7 @@ namespace SpaceBoat {
                 helpPrompts.AddPrompt(criticalShipPrompt, () => {
                      int num_surviving_sails = 0;
                     foreach (GameObject sail in shipSails) {
-                        if (sail.GetComponent<Ship.SailsActivatable>().isBroken == false) {
+                        if (sail.GetComponent<Ship.Activatables.SailsActivatable>().isBroken == false) {
                             num_surviving_sails++;
                         }
                     }

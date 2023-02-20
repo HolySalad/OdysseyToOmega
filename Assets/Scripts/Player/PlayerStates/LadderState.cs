@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using SpaceBoat.Ship;
+using SpaceBoat.Ship.Activatables;
 
 namespace SpaceBoat.PlayerSubclasses.PlayerStates {    
     public class LadderState : MonoBehaviour,  IPlayerState
