@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using BehaviorDesigner.Runtime.Tasks;
+using UnityEngine.Scripting.APIUpdating;
 using SpaceBoat;
+
 public class SetupChydra : Action
 {
     protected Rigidbody2D rigidbody;
@@ -13,9 +15,6 @@ public class SetupChydra : Action
     public GameObject fireballPrefab;
     public override void OnAwake()
     {
-        rigidbody = GetComponent<Rigidbody2D>();
-        animator = gameObject.GetComponentInChildren<Animator>();
-
         playerController = GameObject.FindGameObjectWithTag("Player");
-    }
+}
 }

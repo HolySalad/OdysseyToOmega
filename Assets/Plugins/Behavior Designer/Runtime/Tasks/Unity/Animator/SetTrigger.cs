@@ -30,11 +30,17 @@ namespace BehaviorDesigner.Runtime.Tasks.Unity.UnityAnimator
                 return TaskStatus.Failure;
             }
 
-            for (int i = 0; i < 20; i++)
+            if (animator.GetCurrentAnimatorStateInfo(0).IsName("Hooked"))
+            {
+                animator.SetTrigger("BreakHook");
+            }
+            else
             {
             animator.SetTrigger(paramaterName.Value);
 
             }
+
+            
 
             return TaskStatus.Success;
         }
