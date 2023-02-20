@@ -5679,6 +5679,7 @@ GameObject:
   - component: {fileID: 1928353304565209448}
   - component: {fileID: 7320814435177385495}
   - component: {fileID: 1016440676411102170}
+  - component: {fileID: 7778290033462366346}
   m_Layer: 5
   m_Name: ShipDamage
   m_TagString: Untagged
@@ -5744,6 +5745,33 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &7778290033462366346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8115971864829460852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38e6e5a515d63e9448f3c4c1bea67148, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shipHealthSprites:
+  - {fileID: 21300000, guid: 01cb2eb25ac47f547851c73b33d01287, type: 3}
+  - {fileID: 21300000, guid: 38c0681389b0a8947a844e740ea6d8de, type: 3}
+  - {fileID: 21300000, guid: f2b42d2adbfac6a4383fc272357d7297, type: 3}
+  - {fileID: 21300000, guid: cc9fb21f0c08a114e97d49ad858d7e87, type: 3}
+  - {fileID: 21300000, guid: 0b1dc475f86c95f459fd352e39161b6c, type: 3}
+  - {fileID: 21300000, guid: de6c8f7a2edac3d44b2ee806e45af0dd, type: 3}
+  - {fileID: 21300000, guid: 2065fd6c686421f42979e42f8fd96071, type: 3}
+  - {fileID: 21300000, guid: 7e9ec663e55cf094195a4d480e2561d5, type: 3}
+  - {fileID: 21300000, guid: 9ba253829795ef549b51f03a7cb46e6e, type: 3}
+  - {fileID: 21300000, guid: 6c472c228adaac04e8e7bae99aaf5977, type: 3}
+  - {fileID: 21300000, guid: 7e4db78f1ae328048a951582951b0c33, type: 3}
+  - {fileID: 21300000, guid: 0b5b1d653fb105d498cfcdcd6adbb82b, type: 3}
+  flickeringTime: 1
+  flickeringSpeed: 0.1
 --- !u!1 &8577335343784151119
 GameObject:
   m_ObjectHideFlags: 0
