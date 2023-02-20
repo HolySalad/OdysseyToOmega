@@ -70,6 +70,7 @@ namespace SpaceBoat {
         [SerializeField] private float momentumDecayTime = 2f;
         [SerializeField] private float groundedMomentumDecayDivisor = 2f;
 
+    /*
         [Header("Attack Settings")]
         [SerializeField] private GameObject weapon;
         [SerializeField] private bool attackEnabled = true;
@@ -83,7 +84,7 @@ namespace SpaceBoat {
         [SerializeField] private Vector2 upwardsVerticalHarpoonAttackOffset = new Vector2(-0.1f, 0.7f);
         [SerializeField] private float downwardsVerticalAttackHarpoonRotation = -85f;
         [SerializeField] private Vector2 downwardsVerticalHarpoonAttackOffset = new Vector2(-0.1f, -1.7f);
-
+        */
 
         //[SerializeField] private float momentumDecayHorizontal = 10f;
         //[SerializeField] private float momentumDecayVertical = 15f;
@@ -619,24 +620,14 @@ namespace SpaceBoat {
             return false;
         }
 
-        //weapon
+        //weapon 
+        /*
         private enum AttackDirection {
             Horizontal, UpwardsVertical, DownwardsVertical
         }
 
         IEnumerator Attack(AttackDirection direction) {
             switch (direction) {
-                /*
-                case AttackDirection.Horizontal:
-                    animator.SetTrigger("AttackHorizontal");
-                    break;
-                case AttackDirection.UpwardsVertical:
-                    animator.SetTrigger("AttackUpwards");
-                    break;
-                case AttackDirection.DownwardsVertical:
-                    animator.SetTrigger("AttackDownwards");
-                    break;
-                */
                 case AttackDirection.Horizontal:
                     Vector2 weaponOffset = isFacingRight ? horizontalHarpoonAttackOffset : horizontalHarpoonAttackOffset * -1;
                     float attackTimer = 0;
@@ -678,7 +669,7 @@ namespace SpaceBoat {
             if (keyDown) {
                 StartCoroutine(Attack(AttackDirection.Horizontal));
             }
-        }
+        */
         // activatables 
 
         void UseActivatable(IActivatables activatable, GameObject obj) {
