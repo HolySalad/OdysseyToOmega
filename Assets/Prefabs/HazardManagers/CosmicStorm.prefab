@@ -216,9 +216,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b442ac774e3369745b3ac27ade80ec1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  earliestAppearence: 1
-  latestAppearence: 10
-  priority: 0
+  testMode: 0
   windEmitters:
   - {fileID: 3311819142627891230}
   - {fileID: 8129445716360535458}
@@ -228,23 +226,53 @@ MonoBehaviour:
   cloudBorder: {fileID: 1109025126}
   windPrefab: {fileID: 561960579184092580, guid: ac67b957b9b2b2b478165af0e3ac1414, type: 3}
   cloudPrefab: {fileID: 3897943484110260864, guid: 005d112f2260f8b49bfe1eec4995c0b5, type: 3}
-  cloudSpeed: 1.2
-  cloudSpeedVariationPercentage: 0.3
-  cloudSpawnInterval: 3.5
-  cloudSpawnYVariation: 2.5
+  baseHazardDuration: 150
+  escalationSettings:
+    escalationLevelsEasy:
+    - timeIntoHazard: 0
+      baseNumStrikes: 3
+      lightningStrikeIntervalMultiplier: 1
+      windSpawnIntervalMultiplier: 1
+      windSpeedIncrease: 0
+    - timeIntoHazard: 25
+      baseNumStrikes: 2
+      lightningStrikeIntervalMultiplier: 1
+      windSpawnIntervalMultiplier: 0.95
+      windSpeedIncrease: 0
+    - timeIntoHazard: 55
+      baseNumStrikes: 3
+      lightningStrikeIntervalMultiplier: 1
+      windSpawnIntervalMultiplier: 0.9
+      windSpeedIncrease: 0.35
+    - timeIntoHazard: 80
+      baseNumStrikes: 3
+      lightningStrikeIntervalMultiplier: 0.8
+      windSpawnIntervalMultiplier: 0.85
+      windSpeedIncrease: 0.7
+    - timeIntoHazard: 105
+      baseNumStrikes: 4
+      lightningStrikeIntervalMultiplier: 0.8
+      windSpawnIntervalMultiplier: 0.8
+      windSpeedIncrease: 1
+    escalationLevelsMedium: []
+    escalationLevelsHard: []
+  cloudSpeed: 1.4
+  cloudSpeedVariationPercentage: 0.2
+  cloudSpawnInterval: 3.3
+  cloudSpawnYVariation: 2.8
   cloudSizeVariationPercentage: 0.3
-  windStartupDelay: 10
+  windStartupDelay: 14
   windSpeed: 7.2
   windSpeedVariationPercentage: 0.3
   windFirstSpawnVariationAbsolute: 4
-  windSpawnInterval: 7
-  windSpawnIntervalVariationAbsolute: 2
+  windSpawnInterval: 7.5
+  windSpawnIntervalVariationAbsolute: 1.5
   windSpawnYVariationAbsolute: 1
   lightningStrikeInterval: 30
-  baseNumStrikes: 2
   numStrikesAllSailsRepaired: 1
   numStrikesCriticalSailsRepaired: -1
-  lightningFirstStrikeTime: 5
+  lightningFirstStrikeTime: 20
+  lightningBetweenStrikesBufferTime: 3
 --- !u!1 &6313531324637527190
 GameObject:
   m_ObjectHideFlags: 0
@@ -331,7 +359,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8222761111845570108}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 45.4, y: 46.8, z: 0}
+  m_LocalPosition: {x: 45.4, y: 45.3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

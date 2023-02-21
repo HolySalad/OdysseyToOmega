@@ -343,7 +343,7 @@ namespace SpaceBoat {
             // start the jump
             if (jumpSquat && Time.frameCount > jumpStartFrame ) {
                 SoundManager sm = FindObjectOfType<SoundManager>();
-                sm.Play("Jump"); 
+                sm.Play("Jump", 0.5f); 
                 Debug.Log("JumpSquat > Jump");
                 jumpSquat = false;
                 if (headBumped) {
@@ -824,7 +824,7 @@ namespace SpaceBoat {
 
         // Update functions
          
-        void MomentumUpdate() {
+        public float MomentumUpdate() {
             List<Collider2D> momentumImpartingColliders = new List<Collider2D>();
             ContactFilter2D filter = new ContactFilter2D();
             filter.SetLayerMask(LayerMask.GetMask("MomentumHazards"));
@@ -850,8 +850,9 @@ namespace SpaceBoat {
                 if (decay > 1) {
                     decay = 1;
                 }
-                currentHazardMomentum = lastAppliedHazardMomentum * (1 - decay);
+                currentHazardMomentum = Mathf.Max(0, lastAppliedHazardMomentum * (1 - decay));
             }
+            return currentHazardMomentum;
         }
 
         void SoundUpdate() {
