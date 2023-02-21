@@ -48,11 +48,13 @@ MonoBehaviour:
   playSoundtrack: 1
   slowMo: 0
   utilityCheats: 1
+  resetSaveFileOnStart: 0
   player: {fileID: 0}
   sound: {fileID: 0}
   helpPrompts: {fileID: 0}
   cameraController: {fileID: 0}
   theBoat: {fileID: 0}
+  cometManager: {fileID: 0}
   shipSails:
   - {fileID: 0}
   - {fileID: 0}
@@ -75,6 +77,9 @@ MonoBehaviour:
   - {fileID: 4632434320095983342, guid: 6e1ebaf3cf80b5b4d8b4b42c90b6c429, type: 3}
   hazardWindDownTime: 15
   hydraPrefab: {fileID: 0}
+  movementTutorialTrigger:
+  - {fileID: 0}
+  - {fileID: 0}
   criticalShipPrompt:
     promptLabel: criticalShip
     priority: 5
@@ -82,3 +87,8 @@ MonoBehaviour:
     text: Your ship is kinda fucked mate.
     color: {r: 1, g: 0.05345905, b: 0.05345905, a: 0}
     TriggerOnlyOnce: 0
+  saveGame:
+    money: 0
+    movementTutorialPlayed: 0
+    cometTutorialPlayed: 0
+    craftingTutorialPlayed: 0
