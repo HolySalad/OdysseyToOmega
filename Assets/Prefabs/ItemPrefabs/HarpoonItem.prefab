@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 682498775723590289}
   - component: {fileID: -5805164748617844762}
   - component: {fileID: -2510800171901932503}
-  - component: {fileID: 8248176592567097065}
   m_Layer: 14
   m_Name: HarpoonItem
   m_TagString: Collectable
@@ -34,7 +33,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &-6608673861770336558
 SpriteRenderer:
@@ -75,7 +74,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 418170571
-  m_SortingLayer: 8
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 2712dac7167dc0543a35f2133a3dd2b0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -135,17 +134,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ba194012e3e2dcb4c8077ebf933a4526, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &8248176592567097065
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8273169938340841911}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e776a61e08970e4fb279b1dc679d61d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &8972804687107310085
+--- !u!1 &8832816730292029956
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,48 +8,40 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8972804687107310084}
+  - component: {fileID: 8832816730292029957}
   m_Layer: 0
-  m_Name: Chydra 2.0
+  m_Name: Chydra 2.0 Old
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8972804687107310084
+--- !u!4 &8832816730292029957
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8972804687107310085}
+  m_GameObject: {fileID: 8832816730292029956}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 23.83, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5327485650424655689}
-  - {fileID: 4001252082048759403}
-  - {fileID: 5262488580868147079}
+  - {fileID: 5764239939086559048}
+  - {fileID: 3573320188992175722}
+  - {fileID: 5699775016328023942}
   m_Father: {fileID: 0}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &5538104025385307367
+--- !u!1001 &5389394863086257382
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 2
-    m_TransformParent: {fileID: 8972804687107310084}
+    m_TransformParent: {fileID: 8832816730292029957}
     m_Modifications:
-    - target: {fileID: 6013285035358486015, guid: 49546009892541f4182eb0d03a6df9e8, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -8.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 6013285035358486015, guid: 49546009892541f4182eb0d03a6df9e8, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 15.1
-      objectReference: {fileID: 0}
     - target: {fileID: 7751847253895357167, guid: 49546009892541f4182eb0d03a6df9e8, type: 3}
       propertyPath: m_Name
       value: ChydraH2
@@ -101,18 +93,18 @@ PrefabInstance:
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 49546009892541f4182eb0d03a6df9e8, type: 3}
---- !u!4 &4001252082048759403 stripped
+--- !u!4 &3573320188992175722 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8888981780826061452, guid: 49546009892541f4182eb0d03a6df9e8, type: 3}
-  m_PrefabInstance: {fileID: 5538104025385307367}
+  m_PrefabInstance: {fileID: 5389394863086257382}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &6358076236236967238
+--- !u!1001 &6786320938935977287
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 2
-    m_TransformParent: {fileID: 8972804687107310084}
+    m_TransformParent: {fileID: 8832816730292029957}
     m_Modifications:
     - target: {fileID: 143103676812661410, guid: 95750d13a58a25542a34843da572a0ad, type: 3}
       propertyPath: m_Name
@@ -165,27 +157,19 @@ PrefabInstance:
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 95750d13a58a25542a34843da572a0ad, type: 3}
---- !u!4 &5262488580868147079 stripped
+--- !u!4 &5699775016328023942 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1239740995645721281, guid: 95750d13a58a25542a34843da572a0ad, type: 3}
-  m_PrefabInstance: {fileID: 6358076236236967238}
+  m_PrefabInstance: {fileID: 6786320938935977287}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &8020821070307134228
+--- !u!1001 &7592532488798520085
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 2
-    m_TransformParent: {fileID: 8972804687107310084}
+    m_TransformParent: {fileID: 8832816730292029957}
     m_Modifications:
-    - target: {fileID: 1930728330154439599, guid: f413eff8546a6f342862c97bc1d75861, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -9.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 1930728330154439599, guid: f413eff8546a6f342862c97bc1d75861, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 21.6
-      objectReference: {fileID: 0}
     - target: {fileID: 2783411200626353245, guid: f413eff8546a6f342862c97bc1d75861, type: 3}
       propertyPath: m_RootOrder
       value: -1
@@ -237,8 +221,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: f413eff8546a6f342862c97bc1d75861, type: 3}
---- !u!4 &5327485650424655689 stripped
+--- !u!4 &5764239939086559048 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2783411200626353245, guid: f413eff8546a6f342862c97bc1d75861, type: 3}
-  m_PrefabInstance: {fileID: 8020821070307134228}
+  m_PrefabInstance: {fileID: 7592532488798520085}
   m_PrefabAsset: {fileID: 0}
