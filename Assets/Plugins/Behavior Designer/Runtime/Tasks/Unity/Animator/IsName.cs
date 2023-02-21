@@ -32,7 +32,7 @@ namespace BehaviorDesigner.Runtime.Tasks.Unity.UnityAnimator
                 return TaskStatus.Failure;
             }
 
-            return animator.GetCurrentAnimatorStateInfo(index.Value).IsName(name.Value) ? TaskStatus.Success : TaskStatus.Failure;
+            return animator.GetCurrentAnimatorStateInfo(index.Value).IsName(name.Value) ? TaskStatus.Running : TaskStatus.Success;
         }
 
         public override void OnReset()

@@ -30,7 +30,7 @@ public class ShootSails : SetupChydra
 
     private void Shoot()
     {
-        List<GameObject> sails = GameModel.Instance.shipSails;
+        List<GameObject> sails = GameModel.Instance.SelectSailsForTargetting(4);
         /* shoot only unharmed sails
         List<GameObject> nonbrokenSails = new List<GameObject>();
         foreach (GameObject sail in sails)
