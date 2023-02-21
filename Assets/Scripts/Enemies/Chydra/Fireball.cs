@@ -11,13 +11,7 @@ namespace SpaceBoat.HazardManagers
         private Vector2 velocity;
 
         private GameObject target;
-        private Destructable destructable;
-
-        public void Awake()
-        {
-            destructable = GetComponent<Destructable>();
-        
-        }
+     
 
         public void SetupMeteor(float speed, Vector3 startingPosition, GameObject targetSail, float soundTime)
         {
@@ -40,6 +34,7 @@ namespace SpaceBoat.HazardManagers
             Debug.Log(angle);
             Quaternion rotation = Quaternion.Euler(0, 0, angle);
             gameObject.transform.rotation = rotation;
+          
             StartCoroutine(FireMeteor(launchDelay));
         }
 
@@ -50,6 +45,7 @@ namespace SpaceBoat.HazardManagers
             Debug.Log("Fireball launched");
             Rigidbody2D rb = GetComponent<Rigidbody2D>();
             rb.velocity = velocity;
+            GetComponent<SpriteRenderer>().enabled = true;
         }
 
         void OnTriggerEnter2D(Collider2D other)
@@ -80,11 +76,6 @@ namespace SpaceBoat.HazardManagers
                 Debug.Log("Meteor hit player");
                 GameModel.Instance.player.PlayerTakesDamage();
                 Destroy(this.gameObject);
-                destructable.Destruct();
-            }
-            else if (collision.gameObject.layer == LayerMask.NameToLayer("Ground") && !collision.gameObject.tag.Equals("Platforms"))
-            {
-                destructable.Destruct();
             }
         }
     }
