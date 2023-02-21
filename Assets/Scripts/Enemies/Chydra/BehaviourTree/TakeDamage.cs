@@ -27,6 +27,7 @@ namespace BehaviorDesigner.Runtime.Tasks.Unity.UnityAnimator
             {
                 health.Value -= healthLoss;
                 headObject.Value.GetComponent<Animator>().SetTrigger(animationTriggerName);
+                headObject.Value.GetComponent<Animator>().SetTrigger("BreakHook");
                 triggered.triggered = false;
                 return TaskStatus.Success;
             }
