@@ -72,8 +72,6 @@ namespace SpaceBoat.HazardManagers.CosmicStormSubclasses {
             chargeupAnimation.SetActive(false);
             isCharging = false;
             Destroy(lightning);
-            yield return new WaitForSeconds(5f);
-            isStriking = false;
         }
 
         public GameObject CheckLightningStrike(Dictionary<GameObject, bool> targets) {
