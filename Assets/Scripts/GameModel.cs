@@ -14,7 +14,7 @@ using Newtonsoft.Json;
 
 
 namespace SpaceBoat {
-    public enum ActivatablesNames {HarpoonGun, Kitchen, Ladder, Sails, Bedroom, CraftingBench, None};
+    public enum ActivatablesNames {HarpoonGun, Kitchen, Ladder, Sails, Bedroom, CraftingBench, ShipShield, None};
 
     public class GameModel : MonoBehaviour
     {
@@ -34,6 +34,7 @@ namespace SpaceBoat {
         [SerializeField] public CameraController cameraController;
         [SerializeField] public GameObject theBoat;
         [SerializeField] public CometManager cometManager;
+        [SerializeField] public GameObject shipShield;
 
         [Header("Ship")]
         [SerializeField] public List<GameObject> shipSails;
@@ -482,7 +483,7 @@ namespace SpaceBoat {
                 {RewardType.ShieldEquipmentBlueprint, true},
                 {RewardType.HealthPackEquipmentBlueprint, false},
                 {RewardType.JumpPadBuildableBlueprint, true},
-                {RewardType.ShipShieldBuildableBlueprint, false}
+                {RewardType.ShipShieldBuildableBlueprint, true}
             };
 
             public Dictionary<EquipmentType, bool> equipmentBuilt = new Dictionary<EquipmentType, bool>() {

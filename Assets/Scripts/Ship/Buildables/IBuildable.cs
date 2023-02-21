@@ -8,7 +8,7 @@ namespace SpaceBoat.Ship.Buildables {
         public Vector3 position;
     }
 
-    public enum BuildableType {JumpPad}
+    public enum BuildableType {JumpPad, ShipShield}
     public interface IBuildable
     {
         public BuildableType BuildableType {get;}

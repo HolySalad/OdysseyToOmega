@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using SpaceBoat.PlayerSubclasses.Equipment;
 namespace SpaceBoat.Rewards {
-    public class JumpPadBuildableBlueprint : MonoBehaviour, ICraftBlueprint
+    public class ShipShieldBuildableBlueprint : MonoBehaviour, ICraftBlueprint
     {
         [SerializeField] private GameObject buildablePrefab;
 
 
         [SerializeField] private int cost = 100;
-        [SerializeField] private RewardType rewardType = RewardType.JumpPadBuildableBlueprint;
-        [SerializeField] private string title = "Jump Pad";
+        [SerializeField] private RewardType rewardType = RewardType.ShipShieldBuildableBlueprint;
+        [SerializeField] private string title = "Ship Shield";
         [SerializeField] private string subtitle = "Ship Upgrade";
-        [SerializeField] private string description = "Place a jump pad on the ship to quickly reach the sails.";
+        [SerializeField] private string description = "Place an activatable shield that can protect your ship for a short.";
         [SerializeField] private Sprite iconSmall;
         [SerializeField] private Sprite iconLarge;
         

@@ -58,6 +58,7 @@ namespace SpaceBoat.UI {
             blueprints[RewardType.HealthPackEquipmentBlueprint] = GetComponent<HealthPackEquipmentBlueprint>();
             blueprints[RewardType.ShieldEquipmentBlueprint] = GetComponent<ShieldEquipmentBlueprint>();
             blueprints[RewardType.JumpPadBuildableBlueprint] = GetComponent<JumpPadBuildableBlueprint>();
+            blueprints[RewardType.ShipShieldBuildableBlueprint] = GetComponent<ShipShieldBuildableBlueprint>();
 
             equipmentBlueprints[EquipmentType.Dash] = GetComponent<DashEquipmentBlueprint>();
             equipmentBlueprints[EquipmentType.HealthPack] = GetComponent<HealthPackEquipmentBlueprint>();

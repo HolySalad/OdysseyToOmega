@@ -596,6 +596,7 @@ GameObject:
   - component: {fileID: 1988229419991046723}
   - component: {fileID: 1908489675348491443}
   - component: {fileID: 3995697086778934341}
+  - component: {fileID: 4068064822785686377}
   m_Layer: 5
   m_Name: CraftingPanel
   m_TagString: Untagged
@@ -778,6 +779,26 @@ MonoBehaviour:
   description: Place a jump pad on the ship to quickly reach the sails.
   iconSmall: {fileID: 21300000, guid: f122d634aa48b654686b5b16eb65d751, type: 3}
   iconLarge: {fileID: 21300000, guid: f122d634aa48b654686b5b16eb65d751, type: 3}
+--- !u!114 &4068064822785686377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1895798144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92fee68588a2ac048a28ef7ead513c11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildablePrefab: {fileID: 8539809948509534502, guid: 2979234b9a8ab8a45bfc8c73fff6b892, type: 3}
+  cost: 100
+  rewardType: 7
+  title: Ship Shield
+  subtitle: Ship Upgrade
+  description: Place an activatable shield that can protect your ship for a short.
+  iconSmall: {fileID: 21300000, guid: 1538b883cf8cd224b97301b3eed3c29d, type: 3}
+  iconLarge: {fileID: 21300000, guid: 1538b883cf8cd224b97301b3eed3c29d, type: 3}
 --- !u!1 &2004623318
 GameObject:
   m_ObjectHideFlags: 0

@@ -47,8 +47,9 @@ namespace SpaceBoat.UI {
             craftMenuParent.SetActive(false);
             GameModel.Instance.UnpauseGame();
         }
-
-        public void EnterBuildMode(GameObject buildablePrefab) {
+        private int pendingBuildCost = 0;
+        public void EnterBuildMode(GameObject buildablePrefab, int cost) {
+            pendingBuildCost = cost;
             buildmodeObject = Instantiate(buildablePrefab, new Vector3(0,0,0), Quaternion.identity);
             craftMenuParent.SetActive(false);
             Transform buildmodeTransform = buildmodeObject.GetComponentInChildren<Ship.Buildables.BuildableExtras.BuildSystemPlacementMarker>().transform;
@@ -60,6 +61,7 @@ namespace SpaceBoat.UI {
             buildmodeObject = null;
             craftMenuParent.SetActive(true);
             GameModel.Instance.cameraController.RemoveShipViewOverride("UIManager");
+            GameModel.Instance.player.PlayerSpendsMoney(pendingBuildCost);
         }
     }
 }
