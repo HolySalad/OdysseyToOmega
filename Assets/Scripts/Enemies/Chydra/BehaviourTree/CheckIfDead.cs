@@ -31,6 +31,7 @@ namespace BehaviorDesigner.Runtime.Tasks.Unity
                 if (healths[i].Value <= 0 && heads[i].Value.activeInHierarchy)
                 {
                     heads[i].Value.GetComponent<Animator>().SetBool("Dead",true);
+                    heads[i].Value.GetComponent<Animator>().SetTrigger("Die");
                     survivingheads.Value--;
                 }
               
@@ -45,10 +46,10 @@ namespace BehaviorDesigner.Runtime.Tasks.Unity
 
 
                             healths[0].Value = 50;
-                            heads[0].Value.GetComponent<Animator>().SetBool("Dead", false);
                             heads[0].Value.SetActive(true);
                             heads[1].Value.SetActive(true);
                             survivingheads.Value = 2;
+                            heads[0].Value.GetComponent<Animator>().SetBool("Dead", false);
                             break;
                         case var value when value.Value == 2:
                             headsActive = 3;

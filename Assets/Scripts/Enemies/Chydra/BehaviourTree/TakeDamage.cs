@@ -31,6 +31,11 @@ namespace BehaviorDesigner.Runtime.Tasks.Unity.UnityAnimator
                 {
                     headObject.Value.GetComponent<Animator>().SetBool("BreakHookBool", true);
                 }
+                else
+                {
+
+                headObject.Value.GetComponent<Animator>().SetBool("BreakHookBool", false);
+                }
                 triggered.triggered = false;
                 return TaskStatus.Success;
             }
