@@ -46,6 +46,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77d4bfd3d36f2b3468e7ec7982499ac3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buildPrompt:
+    promptLabel: BuildPrompt
+    priority: 10
+    duration: 0
+    text: Press F to Confirm\nPress Escape to Cancel
+    color: {r: 1, g: 1, b: 1, a: 0}
+    TriggerOnlyOnce: 0
   movementDistancePerSecond: 4
   verticalMovementCooldown: 0.3
 --- !u!212 &8756934332895922714

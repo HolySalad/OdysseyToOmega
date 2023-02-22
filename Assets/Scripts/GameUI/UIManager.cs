@@ -17,6 +17,12 @@ namespace SpaceBoat.UI {
 
         private GameObject buildmodeObject;
 
+        public delegate void OnNextBuildModeExit(bool isCancelled);
+        private List<OnNextBuildModeExit> onNextBuildModeExitCallbacks = new List<OnNextBuildModeExit>();
+        public void AddOnNextBuildModeExitCallback(OnNextBuildModeExit callback) {
+            onNextBuildModeExitCallbacks.Add(callback);
+        }
+
         void Awake() {
             if (Instance == null) {
                 Instance = this;
@@ -29,6 +35,10 @@ namespace SpaceBoat.UI {
             CurrentState = UIState.HUD;
             hudParent.SetActive(true);
             craftMenuParent.SetActive(false);
+        }
+
+        public string FixedUIText(string text) {
+            return text.Replace("\\n", "\n");
         }
 
         public UIState CurrentState { get; private set; }
@@ -56,12 +66,19 @@ namespace SpaceBoat.UI {
             GameModel.Instance.cameraController.AddShipViewOverride("UIManager", 100, buildmodeTransform, true, false);
         }
 
-        public void ExitBuildMode() {
+        public void ExitBuildMode(bool isCancelled = false) {
             Destroy(buildmodeObject);
             buildmodeObject = null;
             craftMenuParent.SetActive(true);
             GameModel.Instance.cameraController.RemoveShipViewOverride("UIManager");
-            GameModel.Instance.player.PlayerSpendsMoney(pendingBuildCost);
+            if (!isCancelled) GameModel.Instance.player.PlayerSpendsMoney(pendingBuildCost);
+            Debug.Log("UIManager.ExitBuildMode: isCancelled = " + isCancelled);
+            Debug.Log("UIManager.ExitBuildMode: onNextBuildModeExitCallbacks.Count = " + onNextBuildModeExitCallbacks.Count);
+            foreach (OnNextBuildModeExit callback in onNextBuildModeExitCallbacks) {
+                callback(isCancelled);
+            }
+            onNextBuildModeExitCallbacks.Clear();
+            craftMenuParent.GetComponent<CraftingUI>().OpenCraftingUI();
         }
     }
 }

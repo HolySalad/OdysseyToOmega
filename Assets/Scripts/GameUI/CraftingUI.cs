@@ -21,14 +21,20 @@ namespace SpaceBoat.UI {
         [Header("Store Panel")]
         [SerializeField] private GameObject MakeASelectionText;
         [SerializeField] private GameObject TemplateStoreItem;
+        [SerializeField] private GameObject StoreContentPanel;
         [SerializeField] private GameObject StoreContentBox;
         [SerializeField] private GameObject StoreDetailsPanel;
+        [SerializeField] private GameObject StoreDetailsPanelParent;
+        [SerializeField] private GameObject StoreNoAvailableItemsPanel;
+        [SerializeField] private GameObject StoreNoAvailableItemsText;
         [SerializeField] private TextMeshProUGUI StoreDetailsTitle;
         [SerializeField] private TextMeshProUGUI StoreDetailsSubtitle;
         [SerializeField] private TextMeshProUGUI StoreDetailsDescription;
         [SerializeField] private TextMeshProUGUI StoreDetailsCost;
         [SerializeField] private Image StoreDetailsImage;
         [SerializeField] private Button StoreCraftButton;
+        [SerializeField] private string StoreNothingUnlockedText = "You haven't found any blueprints. Destroy Comets with the Harpoon Launcher to find new blueprints.";
+        [SerializeField] private string StoreNothingNotYetBuiltText = "You have crafted all of the available blueprints. Destroy Comets with the Harpoon Launcher to find more blueprints.";
 
         [Header("Equipment Panel")]
         [SerializeField] private TextMeshProUGUI equipmentTitleText;
@@ -98,10 +104,10 @@ namespace SpaceBoat.UI {
             if (blueprints.ContainsKey(rewardType)) {
                 selectedBlueprint = blueprints[rewardType];
                 MakeASelectionText.SetActive(false);
-                StoreDetailsTitle.text = selectedBlueprint.Title;
-                StoreDetailsSubtitle.text = selectedBlueprint.Subtitle;
-                StoreDetailsDescription.text = selectedBlueprint.Description;
-                StoreDetailsCost.text = selectedBlueprint.Cost.ToString();
+                StoreDetailsTitle.text = UIManager.Instance.FixedUIText(selectedBlueprint.Title);
+                StoreDetailsSubtitle.text = UIManager.Instance.FixedUIText(selectedBlueprint.Subtitle);
+                StoreDetailsDescription.text = UIManager.Instance.FixedUIText(selectedBlueprint.Description);
+                StoreDetailsCost.text = UIManager.Instance.FixedUIText(selectedBlueprint.Cost.ToString());
                 StoreDetailsImage.sprite = selectedBlueprint.IconLarge;
 
                 StoreCraftButton.interactable = !selectedBlueprint.AlreadyOwns(GameModel.Instance.player) && GameModel.Instance.player.PlayerHasMoney(selectedBlueprint.Cost);
@@ -112,13 +118,14 @@ namespace SpaceBoat.UI {
         void ClearStorePanelDetails() {
             selectedBlueprint = null;
             MakeASelectionText.SetActive(true);
-            StoreDetailsTitle.text = "";
-            StoreDetailsSubtitle.text = "";
-            StoreDetailsDescription.text = "";
-            StoreDetailsCost.text = "";
+            StoreDetailsTitle.text = UIManager.Instance.FixedUIText("");
+            StoreDetailsSubtitle.text = UIManager.Instance.FixedUIText("");
+            StoreDetailsDescription.text = UIManager.Instance.FixedUIText("");
+            StoreDetailsCost.text = UIManager.Instance.FixedUIText("");
             StoreDetailsImage.sprite = null;
             StoreCraftButton.interactable = false;
             StoreDetailsPanel.SetActive(false);
+            StoreNoAvailableItemsPanel.SetActive(false);
         }
 
         public void StoreCraftingButtonPressed() {
@@ -157,27 +164,48 @@ namespace SpaceBoat.UI {
                 }
             }
             int numButtons = 0;
+            int numBlueprintsOwned = 0;
+            bool ownsAtLeastOne = false;
             foreach (ICraftBlueprint blueprint in blueprints.Values) {
-                if (!blueprint.AlreadyOwns(GameModel.Instance.player) && GameModel.Instance.saveGame.rewardsUnlocked[blueprint.RewardType]) {
+                bool alreadyOwns = blueprint.AlreadyOwns(GameModel.Instance.player);
+                bool rewardUnlocked = GameModel.Instance.saveGame.rewardsUnlocked[blueprint.RewardType];
+                if (!alreadyOwns && rewardUnlocked) {
+                    numBlueprintsOwned++;
                     GameObject storeItem = Instantiate(TemplateStoreItem, StoreContentBox.transform);
                     RectTransform rect = storeItem.GetComponent<RectTransform>();
                     rect.anchoredPosition = new Vector2(rect.anchoredPosition.x, rect.anchoredPosition.y - (numButtons * 120));
                     numButtons++;
                     storeItem.GetComponent<Button>().onClick.AddListener(() => SetStorePanelDetails(blueprint.RewardType));
                     storeItem.transform.Find("Image").gameObject.GetComponent<Image>().sprite = blueprint.IconSmall;
-                    storeItem.transform.Find("Cost").gameObject.GetComponent<TextMeshProUGUI>().text = blueprint.Cost.ToString();
+                    storeItem.transform.Find("Cost").gameObject.GetComponent<TextMeshProUGUI>().text = UIManager.Instance.FixedUIText(blueprint.Cost.ToString());
                     storeItem.SetActive(true);
+                } else if (alreadyOwns) {
+                    ownsAtLeastOne = true;
                 }
             }
             TemplateStoreItem.SetActive(false);
+            if (numBlueprintsOwned == 0) {
+                StoreDetailsPanelParent.SetActive(false);
+                StoreContentPanel.SetActive(false);
+                StoreNoAvailableItemsPanel.SetActive(true);
+                if (ownsAtLeastOne) {
+                    StoreNoAvailableItemsText.GetComponent<TextMeshProUGUI>().text = UIManager.Instance.FixedUIText(StoreNothingNotYetBuiltText);
+                } else {
+                    StoreNoAvailableItemsText.GetComponent<TextMeshProUGUI>().text = UIManager.Instance.FixedUIText(StoreNothingUnlockedText);
+                }
+            } else {
+                StoreDetailsPanelParent.SetActive(true);
+                StoreContentPanel.SetActive(true);
+                StoreNoAvailableItemsPanel.SetActive(false);
+            }
         }
 
         //equipment panel
 
         
         void SetEquipmentPanelDetails(EquipmentType type) {
-            equipmentTitleText.text = equipmentBlueprints[type].Title;
-            equipmentDescriptionText.text = equipmentBlueprints[type].Description;
+            equipmentTitleText.text = UIManager.Instance.FixedUIText(equipmentBlueprints[type].Title);
+            equipmentDescriptionText.text = UIManager.Instance.FixedUIText(equipmentBlueprints[type].Description);
         }
         public void SelectDash() {
             SetEquipmentPanelDetails(EquipmentType.Dash);
@@ -265,7 +293,7 @@ namespace SpaceBoat.UI {
             if (numEquipmentOwned > 0) {
                 SetEquipmentPanelDetails(GameModel.Instance.player.currentEquipmentType);
             } else {
-                equipmentDescriptionText.text = NoEquipmentText;
+                equipmentDescriptionText.text = UIManager.Instance.FixedUIText(NoEquipmentText);
                 equipmentTitleText.text = "";
             }
             SetupEquipmentButtons();
@@ -303,7 +331,7 @@ namespace SpaceBoat.UI {
         }
 
         void Update() {
-            if (CthulkInput.ActivateKeyDown()) {
+            if (CthulkInput.ActivateKeyDown() || CthulkInput.EscapeKeyDown()) {
                 UIManager.Instance.CloseCraftingMenu();
             }
         }

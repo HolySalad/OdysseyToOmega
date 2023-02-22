@@ -28,12 +28,20 @@ namespace SpaceBoat.Rewards {
         public Sprite IconLarge { get { return iconLarge; } }
         public bool isUnlocked { get; set; } = false;
 
+        private int numBuilt = 0;
+
         public void Craft(Player player) {
-            UI.UIManager.Instance.EnterBuildMode(buildablePrefab, Cost);
+            UI.UIManager uim = UI.UIManager.Instance;
+            uim.EnterBuildMode(buildablePrefab, Cost);
+            uim.AddOnNextBuildModeExitCallback((bool isCancelled) => {
+                if (isCancelled) return;
+                Debug.Log("JumpPadBuildableBlueprint.Craft: numBuilt++");
+                numBuilt++;
+            });
         }
 
         public bool AlreadyOwns(Player player) {
-            return player.HasEquipment(EquipmentType.Shield);
+            return numBuilt > 2;
         }
     }
     

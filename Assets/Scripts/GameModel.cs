@@ -31,6 +31,7 @@ namespace SpaceBoat {
         [SerializeField] public Player player;
         [SerializeField] public SoundManager sound;
         [SerializeField] public UI.HelpPromptsManager helpPrompts;
+        [SerializeField] public UI.HelpPromptsManager controlsPrompts;
         [SerializeField] public CameraController cameraController;
         [SerializeField] public GameObject theBoat;
         [SerializeField] public CometManager cometManager;
