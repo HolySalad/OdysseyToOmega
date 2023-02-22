@@ -94,7 +94,7 @@ namespace SpaceBoat.Ship.Buildables.BuildableExtras {
             }
             
             float moveDist = movement * movementDistancePerSecond * Time.unscaledDeltaTime;
-            Debug.Log("Buildable moving" + moveDist + " units");
+            //Debug.Log("Buildable moving" + moveDist + " units");
             Vector2 moveDest = new Vector2(transform.position.x + moveDist, transform.position.y);
             //raycast and check collision with BuildableSystem layer.
             ContactFilter2D filter = new ContactFilter2D();
@@ -135,7 +135,7 @@ namespace SpaceBoat.Ship.Buildables.BuildableExtras {
                     //otherwise, do nothing.
                     BuildSystemTrack trackCollider = collider.GetComponent<BuildSystemTrack>();
                     if (trackCollider != null) {
-                        Debug.Log("Buildable hit BuildSystemTrack");
+                        //Debug.Log("Buildable hit BuildSystemTrack");
                         transform.position = moveDest;
                         currentTrack = trackCollider;
                         return;

@@ -729,7 +729,7 @@ namespace SpaceBoat {
             playerLocationTrigger.GetContacts(colliders);
             foreach (Collider2D coll in colliders) {
                 if (coll != null && coll.gameObject != null && coll.CompareTag("Activatable")) {
-                    Debug.Log("Can activate " + coll.name);
+                    //Debug.Log("Can activate " + coll.name);
                     IActivatables activatable = game.GetActivatableComponent(coll.gameObject);
                     if (activatable.ActivationCondition(this) ) {
                         if (coll.gameObject != activatableInRange) {
