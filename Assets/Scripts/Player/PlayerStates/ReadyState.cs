@@ -12,7 +12,7 @@ namespace SpaceBoat.PlayerSubclasses.PlayerStates {
         private Player player;
 
         [SerializeField] private float jumpLockOutTime = 0.4f;
-        
+        [SerializeField] private float activatableLockoutTime = 0.4f;
 
         void Awake() {
             player = GetComponent<Player>();
@@ -35,11 +35,15 @@ namespace SpaceBoat.PlayerSubclasses.PlayerStates {
         }
 
         public void UpdateState() {
+            bool isInActivtableLockout = Time.time < timeEnteredState + activatableLockoutTime;
+
             // Handle Input
 
             //Possibly state changing inputs.
-            if (player.EquipmentUsageInput(CthulkInput.EquipmentUsageKeyDown(), CthulkInput.EquipmentUsageKeyHeld())) return;
-            if (player.ActivateInput(CthulkInput.ActivateKeyHeld())) return;
+            bool equipmentKeyHeld = isInActivtableLockout ? CthulkInput.EquipmentUsageKeyDown() : CthulkInput.EquipmentUsageKeyHeld();
+            if (player.EquipmentUsageInput(CthulkInput.EquipmentUsageKeyDown(), equipmentKeyHeld)) return;
+            bool activateInputHeld = isInActivtableLockout ? CthulkInput.ActivateKeyDown() : CthulkInput.ActivateKeyHeld();
+            if (player.ActivateInput(activateInputHeld)) return;
 
 
             bool jumpKeyDown = CthulkInput.JumpKeyDown();
@@ -55,21 +59,6 @@ namespace SpaceBoat.PlayerSubclasses.PlayerStates {
             }
             player.JumpInput(jumpKeyHeld && !jumpLockOut, jumpKeyDown);
 
-        }
-
-
-        IEnumerator DestroyAfterSquishSound() {
-            AudioSource audioSource = GetComponent<AudioSource>();
-            audioSource.Play();
-            yield return new WaitForSeconds(audioSource.clip.length);
-        }
-
-        void OnMouseDown() {
-            //Destroy(gameObject);
-            GetComponent<SpriteRenderer>().enabled = false;
-            GetComponent<Collider2D>().enabled = false;
-            GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-            StartCoroutine(DestroyAfterSquishSound());
         }
     }
 }

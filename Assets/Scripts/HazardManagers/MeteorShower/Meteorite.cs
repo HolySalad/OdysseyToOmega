@@ -37,8 +37,8 @@ namespace SpaceBoat.HazardManagers.MeteorShowerSubclasses {
 
         IEnumerator UpdateVelocity() {
             while (true) {
-                Vector3 targetVector = target.transform.position - transform.position;
-                if (targetVector.magnitude < 0.3f) yield break;
+                Vector3 targetVector = target.transform.position - gameObject.transform.position;
+                if (targetVector.magnitude < 0.2f) yield break;
                 rb.velocity = new Vector2(targetVector.normalized.x*speed, targetVector.normalized.y*speed);
                 yield return null;
             }
@@ -63,7 +63,7 @@ namespace SpaceBoat.HazardManagers.MeteorShowerSubclasses {
         void OnTriggerEnter2D(Collider2D other) {
             Debug.Log("Meteorite OnTriggerEnter2D");
             if (other.gameObject == target) {
-                Ship.SailsActivatable sail = other.gameObject.GetComponent<Ship.SailsActivatable>();
+                Ship.Activatables.SailsActivatable sail = other.gameObject.GetComponent<Ship.Activatables.SailsActivatable>();
                 if (!sail.isBroken) sail.Break();
                 Destruct(false);
                 SoundManager.Instance.Play("MeteorImpact"); 

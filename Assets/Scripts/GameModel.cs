@@ -1,16 +1,20 @@
 using System.Collections;
+using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
 using SpaceBoat.HazardManagers;
-using SpaceBoat.Ship;
+using SpaceBoat.Ship.Activatables;
 using SpaceBoat.UI;
+using SpaceBoat.Rewards;
+using SpaceBoat.PlayerSubclasses.Equipment;
 using UnityEngine.SceneManagement;
 using UnityEngine.Playables;
 using TotemEntities.DNA;
+using Newtonsoft.Json;
+
 
 namespace SpaceBoat {
-
-    public enum ActivatablesNames {HarpoonGun, Kitchen, Ladder, Sails, Bedroom, None};
+    public enum ActivatablesNames {HarpoonGun, Kitchen, Ladder, Sails, Bedroom, CraftingBench, ShipShield, None};
 
     public class GameModel : MonoBehaviour
     {
@@ -21,13 +25,17 @@ namespace SpaceBoat {
         [SerializeField] private bool playSoundtrack = true;
         [SerializeField] private bool slowMo = false;
         [SerializeField] private bool utilityCheats = false;
+        [SerializeField] private bool resetSaveFileOnStart = false;
 
         [Header("Object References")]
         [SerializeField] public Player player;
         [SerializeField] public SoundManager sound;
         [SerializeField] public UI.HelpPromptsManager helpPrompts;
+        [SerializeField] public UI.HelpPromptsManager controlsPrompts;
         [SerializeField] public CameraController cameraController;
         [SerializeField] public GameObject theBoat;
+        [SerializeField] public CometManager cometManager;
+        [SerializeField] public GameObject shipShield;
 
         [Header("Ship")]
         [SerializeField] public List<GameObject> shipSails;
@@ -41,14 +49,32 @@ namespace SpaceBoat {
         [SerializeField] public GameObject foodPrefab;
 
         // hazard manager prefabs
-        [SerializeField] public List<GameObject> hazardManagerPrefabs;
+        [Header("Hazard Prefabs")] 
+        [SerializeField] public List<HazardDefinition> hazardDefinitions;
+        [SerializeField] private HazardPlanner hazardPlanner;
         [SerializeField] private float hazardWindDownTime = 15f;
 
-        [Header("Enemy Prefabs")] 
-        [SerializeField] public GameObject hydraPrefab;
-
-        [Header("Help Prompts")]
+        [Header("Help Prompts && Tutorial")]
+        [SerializeField] public Environment.HelpPromptTrigger[] movementTutorialTrigger;
         [SerializeField] public HelpPrompt criticalShipPrompt;
+
+        public SaveData saveGame;
+        public SaveDataManager saveGameManager;
+
+        public bool movementTutorialPlayed {
+            get {return saveGame.movementTutorialPlayed;} 
+            private set {saveGame.movementTutorialPlayed = value; saveGameManager.Save();}
+        }
+        public bool cometTutorialPlayed {
+            get {return saveGame.cometTutorialPlayed;} 
+            private set {saveGame.cometTutorialPlayed = value; saveGameManager.Save();}
+        }
+        public bool craftingTutorialPlayed  {
+            get {return saveGame.craftingTutorialPlayed;} 
+            private set {saveGame.craftingTutorialPlayed = value; saveGameManager.Save();}
+        }
+
+
 
         public TotemDNADefaultAvatar playerAvatar { get; private set; }
         public float GameBeganTime {get; private set;}
@@ -56,14 +82,19 @@ namespace SpaceBoat {
         public int lastSurvivingSailCount {get; private set;}
 
         private IHazardManager currentHazardManager;
-        private int hazardsCompleted = 0;
+        private Dictionary<HazardTypes, GameObject> hazardManagerPrefabsDict = new Dictionary<HazardTypes, GameObject>();
+        private int numHazardsCompleted = 0;
         private float hazardWindDownTimer = 0f;
+        public bool hazardWindDown {get; private set;}
+
+        private bool hasRebuiltBuildablesAfterLoad = false;
 
 
         public bool isPaused {get; private set;}
         public delegate void PauseEvent();
         private List<PauseEvent> pauseEvents = new List<PauseEvent>();
         private List<PauseEvent> unpauseEvents = new List<PauseEvent>();
+        private List<PauseEvent> whilePausedEvents = new List<PauseEvent>();
 
         public void SetAvatar(TotemDNADefaultAvatar avatar)
         {
@@ -93,6 +124,10 @@ namespace SpaceBoat {
 
         public void AddUnpauseEvent(PauseEvent unpauseEvent) {
             unpauseEvents.Add(unpauseEvent);
+        }
+
+        public void AddWhilePausedEvent(PauseEvent whilePausedEvent) {
+            whilePausedEvents.Add(whilePausedEvent);
         }
 
 
@@ -161,6 +196,30 @@ namespace SpaceBoat {
             if (cameraController == null) {
                 Debug.LogError("CameraController not set in GameModel!");
             }
+            saveGameManager = new SaveDataManager();
+            if (resetSaveFileOnStart) {
+                saveGameManager.Reset();
+            } else {
+                saveGameManager.Load();
+            }
+            saveGame = saveGameManager.saveData;
+
+            //hazard dictionary
+            foreach (HazardDefinition hazardManagerPrefab in hazardDefinitions) {
+                hazardManagerPrefabsDict.Add(hazardManagerPrefab.hazardType, hazardManagerPrefab.hazardManagerPrefab);
+                if (!saveGame.hazardsCompleted.ContainsKey(hazardManagerPrefab.hazardType)) {
+                    saveGame.hazardsCompleted.Add(hazardManagerPrefab.hazardType, false);
+                }
+            }
+            //veryify hazard plans
+            foreach (HazardOptions hazardOptions in hazardPlanner.hazardPlan) {
+                foreach (HazardTypes hazardType in hazardOptions.hazardOptions) {
+                    if (!hazardManagerPrefabsDict.ContainsKey(hazardType)) {
+                        Debug.LogError("Hazard type " + hazardType + " not found in hazard manager dictionary, but is used in a hazard plan!");
+                    }
+                }
+            }
+
 
             GameBeganTime = Time.time;
             lastSurvivingSailCount = shipSails.Count;
@@ -178,6 +237,13 @@ namespace SpaceBoat {
                 sound.Stop("MenuSoundtrack");
             }
             //if (playSoundtrack) sound.Play("GameplaySoundtrack");
+            if (movementTutorialPlayed) {
+                foreach (Environment.HelpPromptTrigger trigger in movementTutorialTrigger) {
+                    trigger.gameObject.SetActive(false);
+                }
+            }
+
+
             if (DoNotUpdate) return;
 
         }
@@ -270,62 +336,64 @@ namespace SpaceBoat {
 
         }
 
-        GameObject PickNextHazard() {
-            List<GameObject> availableHazards = new List<GameObject>();
-            int highestPriority = -1;
-            Debug.Log("Selecting one of " + hazardManagerPrefabs.Count + " hazards for the next hazard");
-            foreach (GameObject hazard in hazardManagerPrefabs) {
-                IHazardManager hazardManager = hazard.GetComponent<IHazardManager>();
-                if (hazardsCompleted >= hazardManager.GetEarliestAppearence() && hazardsCompleted < hazardManager.GetLatestAppearence()) {
-                    availableHazards.Add(hazard);
-                    if (hazardManager.GetPriority() > highestPriority) {
-                        highestPriority = hazardManager.GetPriority();
-                    }
-                }
-            }
-            if (availableHazards.Count == 0) {
-                Debug.Log("No hazards available, game has ended.");
+        (GameObject, HazardDifficulty) PickNextHazard() {
+            if (numHazardsCompleted >= hazardPlanner.hazardPlan.Count) {
+                Debug.Log("No more hazards to spawn, game over!");
                 TriggerToBeContinued();
-                return null;
+                return (null, HazardDifficulty.Easy);;
             }
-            List<GameObject> highestPriorityHazards = new List<GameObject>();
-            foreach (GameObject hazard in availableHazards) {
-                IHazardManager hazardManager = hazard.GetComponent<IHazardManager>();
-                if (hazardManager.GetPriority() == highestPriority) {
-                    highestPriorityHazards.Add(hazard);
+            HazardOptions hazardOptions = hazardPlanner.hazardPlan[numHazardsCompleted];
+            List<HazardTypes> validHazards = new List<HazardTypes>();
+            foreach (HazardTypes hazardType in hazardOptions.hazardOptions) {
+                if (!saveGame.hazardsCompleted[hazardType]) {
+                    validHazards.Add(hazardType);
                 }
             }
-            return highestPriorityHazards[Random.Range(0, highestPriorityHazards.Count)];
+            if (validHazards.Count == 0) {
+                Debug.LogError("All of the hazards registered in Hazard Plan " + numHazardsCompleted + " are already complete! Mistake in setup in the Game Model?");
+                TriggerToBeContinued();
+                return (null, HazardDifficulty.Easy);
+            }
+            HazardTypes hazardTypeToSpawn = validHazards[Random.Range(0, validHazards.Count)];
+            Debug.Log("Spawning hazard " + hazardTypeToSpawn + " with difficulty " + hazardOptions.difficulty + ".");
+            return (hazardManagerPrefabsDict[hazardTypeToSpawn], hazardOptions.difficulty);
         }
 
 
         void CheckHazardProgress() {
             if (hazardWindDownTimer > 0) {
                 hazardWindDownTimer = Mathf.Max(0, hazardWindDownTimer - Time.deltaTime);
+                return;
+            } else if (hazardWindDown) {
+                Debug.Log("Hazard wind-down complete, starting new hazard");
+                hazardWindDown = false;
             }
             if (currentHazardManager != null && currentHazardManager.hasEnded) {
-                if (hazardWindDownTimer == 0) {
-                    Debug.Log("Hazard has ended, starting winddown timer");
-                    hazardManagerPrefabs.Remove(currentHazardManager.gameObject);
-                    Destroy(currentHazardManager.gameObject);
-                    currentHazardManager = null;
-                    hazardsCompleted++;
-                    hazardWindDownTimer = hazardWindDownTime;
-                    return;
-                }
+                Debug.Log("Hazard has ended, starting wind-down timer");
+                saveGame.hazardsCompleted[currentHazardManager.hazardType] = true;
+                Destroy(currentHazardManager.gameObject);
+                currentHazardManager = null;
+                numHazardsCompleted++;
+                hazardWindDownTimer = hazardWindDownTime;
+                hazardWindDown = true;
+                cometManager.StartCometBurst();
+                return;
             }
             if (currentHazardManager == null) {
                 //new hazard or enemy.
-                if (hazardsCompleted == 0) {
-                    if (!isTutorialComplete()) return;
-                    else Debug.Log("Tutorial complete, starting first Hazard");
+                if (numHazardsCompleted == 0) {
+                    if (!CheckMoveTutorialComplete()) return;
+                    else {
+                        Debug.Log("Tutorial complete, starting first Hazard");
+                        cometManager.StartCometSpawner();
+                    }
                 }
-                GameObject nextHazard = PickNextHazard();
+                (GameObject nextHazard, HazardDifficulty difficulty) = PickNextHazard();
                 if (nextHazard == null) return;
                 GameObject newHazard = Instantiate(nextHazard, new Vector3(0, 0, 0), Quaternion.identity);
                 Debug.Log("New hazard: " + newHazard.name);
                 currentHazardManager = newHazard.GetComponent<IHazardManager>();
-                currentHazardManager.StartHazard();
+                currentHazardManager.StartHazard(difficulty);
                 if (playSoundtrack && currentHazardManager.hazardSoundtrack != "") {
                     sound.Play(currentHazardManager.hazardSoundtrack);
                 }
@@ -333,8 +401,13 @@ namespace SpaceBoat {
 
         }
 
-        bool isTutorialComplete() {
-            return (helpPrompts.wasPromptDisplayed("MovementTutorial", true) && helpPrompts.wasPromptDisplayed("JumpTutorial", true));
+        bool CheckMoveTutorialComplete() {
+            if (movementTutorialPlayed) return true;
+            if (helpPrompts.wasPromptDisplayed("MovementTutorial", true) && helpPrompts.wasPromptDisplayed("JumpTutorial", true)) {
+                movementTutorialPlayed = true;
+                return true;
+            }
+            return false;
         }
 
         // check if any sails remain unbroken
@@ -344,17 +417,24 @@ namespace SpaceBoat {
             if (utilityCheats) {
                 if (Input.GetKeyDown(KeyCode.P)) {
                     foreach (GameObject sail in shipSails) {
-                        if (sail.GetComponent<Ship.SailsActivatable>().isBroken == false) {
-                            sail.GetComponent<Ship.SailsActivatable>().Break();
+                        if (sail.GetComponent<Ship.Activatables.SailsActivatable>().isBroken == false) {
+                            sail.GetComponent<Ship.Activatables.SailsActivatable>().Break();
                             break;
                         }
                     }
                 }
             }
+            if (isPaused) {
+                foreach (PauseEvent pauseEvent in whilePausedEvents) {
+                    pauseEvent();
+                }
+            }
+
+
             if (DoNotUpdate) return;
             int num_surviving_sails = 0;
             foreach (GameObject sail in shipSails) {
-                 if (sail.GetComponent<Ship.SailsActivatable>().isBroken == false) {
+                 if (sail.GetComponent<Ship.Activatables.SailsActivatable>().isBroken == false) {
                     num_surviving_sails++;
                 }
             }
@@ -368,7 +448,7 @@ namespace SpaceBoat {
                 helpPrompts.AddPrompt(criticalShipPrompt, () => {
                      int num_surviving_sails = 0;
                     foreach (GameObject sail in shipSails) {
-                        if (sail.GetComponent<Ship.SailsActivatable>().isBroken == false) {
+                        if (sail.GetComponent<Ship.Activatables.SailsActivatable>().isBroken == false) {
                             num_surviving_sails++;
                         }
                     }
@@ -382,6 +462,84 @@ namespace SpaceBoat {
             lastSurvivingSailCount = num_surviving_sails;
 
             CheckHazardProgress();
+        }
+
+        // save player progress
+        public void SaveForQuit() {
+            SavePersistantInfo();
+        }
+
+        public void SavePersistantInfo() {
+
+        }
+
+
+        // subclasses for saving and loading
+        [System.Serializable] public class SaveData {
+            public int money = 1000;
+            public Dictionary<RewardType, bool> rewardsUnlocked = new Dictionary<Rewards.RewardType, bool>() {
+                {RewardType.DashEquipmentBlueprint, true},
+                {RewardType.HarpoonGunBuildableBlueprint, false},
+                {RewardType.HarpoonLauncherEquipmentBlueprint, false},
+                {RewardType.ShieldEquipmentBlueprint, true},
+                {RewardType.HealthPackEquipmentBlueprint, false},
+                {RewardType.JumpPadBuildableBlueprint, true},
+                {RewardType.ShipShieldBuildableBlueprint, true}
+            };
+
+            public Dictionary<EquipmentType, bool> equipmentBuilt = new Dictionary<EquipmentType, bool>() {
+                {EquipmentType.Dash, false},
+                {EquipmentType.HarpoonLauncher, false},
+                {EquipmentType.Shield, false},
+                {EquipmentType.HealthPack, false}
+            };
+
+            public List<Ship.Buildables.buildableSaveData> buildables = new List<Ship.Buildables.buildableSaveData>();
+
+            public Dictionary<HazardTypes, bool> hazardsCompleted = new Dictionary<HazardTypes, bool>();
+
+            public bool movementTutorialPlayed;
+            public bool cometTutorialPlayed;
+            public bool craftingTutorialPlayed;
+        }
+
+        public class SaveDataManager {
+
+            public SaveData saveData { get; private set; }
+            private static string saveDataPath = Application.persistentDataPath + "/SpaceBoatSave.json";
+            
+            public SaveDataManager() {
+                saveData = new SaveData();
+            }
+
+            public void Reset() {
+                saveData = new SaveData();
+                Debug.Log("Reset save data - " + saveDataPath);
+                Save();
+            }
+
+            public void ResetBetweenRuns() {
+                saveData.equipmentBuilt.Clear();
+                saveData.hazardsCompleted.Clear();
+                saveData.money = 0;
+                Save();
+            }
+
+            public void Save() {
+                using (StreamWriter writer = new StreamWriter(saveDataPath)) {
+                    string data = JsonConvert.SerializeObject(saveData);
+                    writer.Write(data);
+                }
+            }
+
+            public void Load() {
+                if (File.Exists(saveDataPath)) {
+                    using (StreamReader reader = new StreamReader(saveDataPath)) {
+                        string data = reader.ReadToEnd();
+                        saveData = JsonConvert.DeserializeObject<SaveData>(data);
+                    }
+                }
+            }
         }
     }
 }

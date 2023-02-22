@@ -83,7 +83,7 @@ SpriteRenderer:
   m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 4.14, y: 1.51}
+  m_Size: {x: 8.28, y: 3.02}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -122,8 +122,8 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -1.669399, y: 0.15913866}
-  m_Size: {x: 5.1022162, y: 3.1652145}
+  m_Offset: {x: -1.5937309, y: -0.0747481}
+  m_Size: {x: 4.5381494, y: 2.6974654}
   m_Direction: 1
 --- !u!50 &653873643848027199
 Rigidbody2D:
@@ -158,7 +158,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 687982dbac467a348a6212c44fe60a04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  horizontalMomentum: -16
+  horizontalMomentum: -18
 --- !u!114 &5259379489711739542
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,3 +171,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ed178064b1e6ef4dbdb802a0a375be0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTestWind: 0

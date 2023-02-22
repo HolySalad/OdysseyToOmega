@@ -9,11 +9,11 @@ public class ShipWheel : MonoBehaviour
 
         private float currentRotationSpeed = 0f;
         private float currentRotation = 0f;
-        private Ship.SailsActivatable[] sails = new Ship.SailsActivatable[4];
+        private Ship.Activatables.SailsActivatable[] sails = new Ship.Activatables.SailsActivatable[4];
 
         void Awake() {
             currentRotationSpeed = rotationSpeed;
-            sails = GetComponentsInChildren<Ship.SailsActivatable>();
+            sails = GetComponentsInChildren<Ship.Activatables.SailsActivatable>();
         }
 
         void Update() {
@@ -24,7 +24,7 @@ public class ShipWheel : MonoBehaviour
                 platform.transform.localRotation = Quaternion.Euler(0f, 0f, -currentRotation);
             }
             int sailsBroken = 0;
-            foreach (Ship.SailsActivatable sail in sails) {
+            foreach (Ship.Activatables.SailsActivatable sail in sails) {
                 if (sail.isBroken) {
                     sailsBroken++;
                 }

@@ -11,6 +11,27 @@ namespace SpaceBoat.HazardManagers.MeteorShowerSubclasses {
         public float rockRateIncrease = 0f;
         public float rockSpeedIncrease = 0f;
     }
+
+    [System.Serializable] public class EscalationSettings {
+        public List<EscalationLevel> escalationLevelsEasy;
+        public List<EscalationLevel> escalationLevelsMedium;
+        public List<EscalationLevel> escalationLevelsHard;
+
+        public List<EscalationLevel> GetEscalationLevels(HazardDifficulty difficulty) {
+            switch (difficulty) {
+                case HazardDifficulty.Easy:
+                    return escalationLevelsEasy;
+                case HazardDifficulty.Medium:
+                    if (escalationLevelsMedium.Count == 0) return GetEscalationLevels(HazardDifficulty.Easy);
+                    return escalationLevelsMedium;
+                case HazardDifficulty.Hard:
+                    if (escalationLevelsHard.Count == 0) return GetEscalationLevels(HazardDifficulty.Medium);
+                    return escalationLevelsHard;
+                default:
+                    return escalationLevelsEasy;
+            }
+        }
+    }
 }
 
 
@@ -21,12 +42,9 @@ namespace SpaceBoat.HazardManagers {
         [SerializeField] private bool testMode = false; 
         [SerializeField] private float baseDuration = 120f; //how many seconds into the game does the last meteor spawn.
         [SerializeField] private List<UI.HelpPrompt> meteorPrompts;
-        [SerializeField] private int earliestAppearence;
-        [SerializeField] private int latestAppearence;
-        [SerializeField] private int priority;
 
         [Header("Escalation Settings")]
-        [SerializeField] private List<EscalationLevel> escalationLevels;
+        [SerializeField] private EscalationSettings escalationSettings;
         [Header("Meteor Settings")]
         [SerializeField] private GameObject meteorPrefab;
 
@@ -65,8 +83,9 @@ namespace SpaceBoat.HazardManagers {
 
         public string hazardSoundtrack { get; private set; } = "FirstGalaxy";
 
-
+        public HazardTypes hazardType {get;} = HazardTypes.MeteorShower;
         public bool hasEnded {get; private set;} = false;
+        public bool wasCompleted {get; private set;} = false;
         public float hazardDuration {get; private set;} = 0f;
         public float hazardBeganTime {get; private set;} = -1;
 
@@ -78,18 +97,9 @@ namespace SpaceBoat.HazardManagers {
         private bool fullyRepairedIncreaseApplied = true;
         private int meteorsOut = 0;
 
+        private List<EscalationLevel> escalationLevels;
         private EscalationLevel currentEscalationLevel;
         private int nextEscalationIndex = 0;
-
-        public int GetPriority() {
-            return priority;
-        }
-        public int GetEarliestAppearence() {
-            return earliestAppearence;
-        }
-        public int GetLatestAppearence() {
-            return latestAppearence;
-        }
 
         public void meteorHit() {
             meteorsOut--;
@@ -99,34 +109,10 @@ namespace SpaceBoat.HazardManagers {
             return Time.time - hazardBeganTime;
         }
 
-        /* replaced with GameModel.Instance.SelectSailsForTargetting
-        List<GameObject> GetTargetSails(int maxNumSelect = 1) {
-            List<GameObject> targetSails = new List<GameObject>();
-            List<GameObject> sails = GameModel.Instance.shipSails;
-            bool respectCooldown = GameModel.Instance.lastSurvivingSailCount > maxNumSelect;
-            Debug.Log("Selecting max " + maxNumSelect + " sails to break. Respect Cooldown: " + respectCooldown + ".");
-            foreach (GameObject sail in sails)
-            {
-                Ship.SailsActivatable sailScript = sail.GetComponent<Ship.SailsActivatable>();
-                Debug.Log("Sail " + sail.name + " is broken: " + sailScript.isBroken + " is cooldown " + sailScript.IsOnCooldown() +".");
-                if (!sailScript.isBroken && (!sailScript.IsOnCooldown() || !respectCooldown))
-                {
-                    targetSails.Add(sail);
-                }
-            }
-            Debug.Log("Found " + targetSails.Count + " valid sails to break.");
-            while (targetSails.Count > maxNumSelect)
-            {
-                targetSails.RemoveAt(Random.Range(0, targetSails.Count));
-            }
-            Debug.Log("Selected " + targetSails.Count + " sails to break.");
-            return targetSails;
-        }
-        */
 
         IEnumerator StartupSequence(float delay) {
             yield return new WaitForSeconds(delay-2f);
-            GameModel.Instance.cameraController.ForceShipView(true);
+            GameModel.Instance.cameraController.AddShipViewOverride("HazardStartup", 1);   
             meteorPrompts.Sort((a, b) => a.priority.CompareTo(b.priority));
             foreach (UI.HelpPrompt meteorPrompt in meteorPrompts) {
                 GameModel.Instance.helpPrompts.AddPrompt(meteorPrompt);
@@ -135,7 +121,7 @@ namespace SpaceBoat.HazardManagers {
                 yield return null;
             }
             yield return new WaitForSeconds(1.5f);
-            GameModel.Instance.cameraController.ForceShipView(false);
+             GameModel.Instance.cameraController.RemoveShipViewOverride("HazardStartup");   
         }
 
         IEnumerator EmitMeteors() {
@@ -149,7 +135,7 @@ namespace SpaceBoat.HazardManagers {
                     List<GameObject> targetSails = GameModel.Instance.SelectSailsForTargetting(meteorsOut);
                     bool playSound = true;
                     foreach (GameObject randomSail in targetSails) {
-                        randomSail.GetComponent<Ship.SailsActivatable>().TargetSail();
+                        randomSail.GetComponent<Ship.Activatables.SailsActivatable>().TargetSail();
                         handleMeteorSpawning(randomSail, playSound);
                         playSound = false;
                     }
@@ -241,6 +227,7 @@ namespace SpaceBoat.HazardManagers {
                 Debug.Log("Hazard " + this.gameObject.name + " has ended");
                 hazardBeganTime = -1;
                 hasEnded = true;
+                wasCompleted = true;
                 return;
             }
 
@@ -258,8 +245,9 @@ namespace SpaceBoat.HazardManagers {
             } 
         }
 
-        public void StartHazard() {
+        public void StartHazard(HazardDifficulty difficulty) {
             Debug.Log("Starting hazard " + this.gameObject.name);
+            escalationLevels = escalationSettings.GetEscalationLevels(difficulty);
             hazardDuration = baseDuration;
             hazardBeganTime = Time.time;
             hasEnded = false;
@@ -268,12 +256,12 @@ namespace SpaceBoat.HazardManagers {
         }
 
         void Start() {
-            if (escalationLevels.Count == 0) {
+            if (escalationSettings.escalationLevelsEasy.Count == 0) {
                 Debug.LogError("No escalation levels set for hazard " + this.gameObject.name);
                 return;
             }
             if (testMode) {
-                StartHazard();
+                StartHazard(HazardDifficulty.Easy);
             }
         }
     }

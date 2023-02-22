@@ -5,7 +5,8 @@ using UnityEngine;
 public class TriggerEnter2D : MonoBehaviour
 {
     public bool triggered;
-    public string tagg = "Testing";
+    public bool Shoot;
+    public string tagg = "Harpoons";
     void Start()
     {
         triggered = false;
@@ -14,12 +15,13 @@ public class TriggerEnter2D : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.CompareTag(tagg))
+        if(collision.gameObject.CompareTag("Harpoons"))
         {
-        triggered = true;
 
+            triggered = true;
         }
+
+        
     }
 
-    
 }

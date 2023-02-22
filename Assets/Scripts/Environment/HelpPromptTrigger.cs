@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using SpaceBoat.UI;
-using SpaceBoat.Ship;
+using SpaceBoat.Ship.Activatables;
 
 namespace SpaceBoat.Environment {
 

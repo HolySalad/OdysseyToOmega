@@ -8,6 +8,27 @@ namespace SpaceBoat {
         private Player player; 
         private Camera cameraComponent;
 
+        public struct ForcedCamera {
+            public string name;
+            public Transform target;
+            public int priority;
+            public bool isXPositionOverride;
+            public bool isCameraPositionOverride;
+
+            public bool overrideControls;
+
+            public ForcedCamera(string name, Transform target, int priority, bool isXPositionOverride, bool isCameraPositionOverride, bool overrideControls = false) {
+                this.name = name;
+                this.target = target;
+                this.priority = priority;
+                this.isXPositionOverride = isXPositionOverride;
+                this.isCameraPositionOverride = isCameraPositionOverride;
+                this.overrideControls = overrideControls;
+            }
+        }
+
+        private List<ForcedCamera> shipViewOverrides = new List<ForcedCamera>();
+
         [SerializeField] private Transform shipViewTarget;
         [SerializeField] private float shipViewSize = 34f;
         [SerializeField] private float cameraShiftTime = 1f;
@@ -30,6 +51,12 @@ namespace SpaceBoat {
         private bool inShipView = false;
         private bool shipViewHeld = false;
         private bool shipViewForced = false;
+        private bool controlsLocked = false;
+        private Transform originalShipViewTarget = null;
+
+        private bool hasXPositionOverride = false;
+        private float xPositionOverride = 0f;
+
         private bool cameraBehaviourForced = false;
         private float cameraTargetY = 0f;
         private float cameraTargetX = 0f;
@@ -48,10 +75,14 @@ namespace SpaceBoat {
         private bool inShipViewTransition = false;
         private float currentHeadLampTarget = 0;
 
+        void CamLog(string message) {
+            Debug.Log("CAMERA: " + message);
+        }
+
         void Start() {
             player = GameModel.Instance.player;
             cameraComponent = GetComponent<Camera>();
-
+            originalShipViewTarget = shipViewTarget;
         }
 
         (float, float, bool) GetCurrentCameraZoneValues() {
@@ -108,11 +139,11 @@ namespace SpaceBoat {
             if (newY == previousY && newSize == previousSize) {
                 return;
             }
-            Debug.Log("Player camera target changes from " + previousY + " to " + newY + " Y and from " + previousSize + " to " + newSize + " Size");
+            CamLog("Player camera target changes from " + previousY + " to " + newY + " Y and from " + previousSize + " to " + newSize + " Size");
             // don't change the camera to a higher level until the player is grounded.
             bool grounded = player.GetIsGrounded(false, true);
             if (newY > previousY && !grounded && !inShipViewTransition) {
-                Debug.Log("Player is not grounded, not adjusting camera upwards.");
+                CamLog("Player is not grounded, not adjusting camera upwards.");
                 return;
             }
 
@@ -135,14 +166,14 @@ namespace SpaceBoat {
             float cameraMovementDuration = (cameraShiftTime*(1-shiftTimeReductionProportion)) + (changeProportion * cameraShiftTime * shiftTimeReductionProportion);
             if (!supressFastFallingCameraShift && newY < previousY && !grounded && !inShipViewTransition && diffY > newSize/2.2) {
                 (bool isJumping, bool fastFall, bool halfJump, bool hitApex) = player.GetJumpStatus();
-                Debug.Log("Player is falling, adjusting camera downwards at gravity terminal velocity.");
+                CamLog("Player is falling, adjusting camera downwards at gravity terminal velocity.");
                 if (!isJumping || (isJumping && hitApex)) {
                     cameraMovementDuration = diffY / player.gravityTerminalVelocity;
                 }
             }
             currentTargetTransitionDuration = cameraMovementDuration;
-            cameraMovementTargetEndTime = Time.time + cameraMovementDuration;
-            Debug.Log("Camera movement duration " + cameraMovementDuration + " target end time: " + cameraMovementTargetEndTime);
+            cameraMovementTargetEndTime = Time.realtimeSinceStartup + cameraMovementDuration;
+            CamLog("Camera movement duration " + cameraMovementDuration + " target end time: " + cameraMovementTargetEndTime);
             //set movement origins and targets
             currentCameraMovementOriginY = transform.position.y - currentLookOffsetDown;
             currentCameraMovementOriginSize = cameraComponent.orthographicSize;
@@ -153,7 +184,9 @@ namespace SpaceBoat {
         void SetCameraTargetX() {
             float scaledXOffset = (baseCameraXOffset + currentLookOffsetRight) * (cameraComponent.orthographicSize / 10);
             float newXTarget = player.transform.position.x + scaledXOffset + player.playerCameraXFocusOffset;
-            if (inShipView) {
+            if (hasXPositionOverride) {
+                newXTarget = xPositionOverride;
+            } else if (inShipView) {
                 newXTarget = Mathf.Clamp(newXTarget, shipViewCameraXMin, shipViewCameraXMax);
             } else {
                 newXTarget = Mathf.Clamp(newXTarget, cameraXMin, cameraXMax);
@@ -163,7 +196,7 @@ namespace SpaceBoat {
 
         
         void MoveAndResizeCamera() {
-            float percentageMovementComplete = 1 - Mathf.Max((cameraMovementTargetEndTime - Time.time) / currentTargetTransitionDuration, 0);
+            float percentageMovementComplete = 1 - Mathf.Max((cameraMovementTargetEndTime - Time.realtimeSinceStartup) / currentTargetTransitionDuration, 0);
             if (percentageMovementComplete == 1) {
                 inShipViewTransition = false;
                 transform.position = new Vector3(cameraTargetX, cameraTargetY + currentLookOffsetDown, transform.position.z);
@@ -171,7 +204,7 @@ namespace SpaceBoat {
                 return;
             }
             Vector3 newCameraPosition = transform.position;
-            //Debug.Log("Camera is moving, percentage complete: " + percentageMovementComplete);
+            //CamLog("Camera is moving, percentage complete: " + percentageMovementComplete);
             if (inShipViewTransition) {
                 newCameraPosition.x = currentCameraMovementOriginX + ((cameraTargetX - currentCameraMovementOriginX) * percentageMovementComplete);
             } else {
@@ -198,12 +231,12 @@ namespace SpaceBoat {
             }
             if ((int)existingZRotation != (int)currentHeadLampTarget) {
 
-                //Debug.Log("Headlamp rotation is " + existingZRotation + " and target is " + currentHeadLampTarget);
+                //CamLog("Headlamp rotation is " + existingZRotation + " and target is " + currentHeadLampTarget);
                 float neededChange = currentHeadLampTarget - existingZRotation;
-                float changeThisFrame = Mathf.Min(headlampRotationSpeed * Time.deltaTime, Mathf.Abs(neededChange));
-                //Debug.Log("Needed change " + neededChange +  " Headlamp rotation change this frame: " + changeThisFrame);
+                float changeThisFrame = Mathf.Min(headlampRotationSpeed * Time.unscaledDeltaTime, Mathf.Abs(neededChange));
+                //CamLog("Needed change " + neededChange +  " Headlamp rotation change this frame: " + changeThisFrame);
                 float newRotation = Mathf.Clamp(existingZRotation + (changeThisFrame*Mathf.Sign(neededChange)), -headlampRotation, headlampRotation);
-                //Debug.Log("New headlamp rotation: " + newRotation);
+                //CamLog("New headlamp rotation: " + newRotation);
                 headlamp.transform.rotation = Quaternion.Euler(existingXRotation, 0, newRotation);
             }
         }
@@ -219,21 +252,21 @@ namespace SpaceBoat {
             }
             float verticalLook = CthulkInput.cameraVerticalLook();
             SetHeadlampState(verticalLook);
-            if (verticalLook != 0) {
+            if (verticalLook != 0 && !inShipView) {
                 if (verticalLook < 0 && currentLookOffsetDown > lookDownCameraYOffset) {
                     float changePerSecond = lookDownCameraYOffset / cameraLookTime;
-                    currentLookOffsetDown = Mathf.Max(currentLookOffsetDown + (changePerSecond * Time.deltaTime), lookDownCameraYOffset);
+                    currentLookOffsetDown = Mathf.Max(currentLookOffsetDown + (changePerSecond * Time.unscaledDeltaTime), lookDownCameraYOffset);
                 } else if (verticalLook > 0 && currentLookOffsetDown < lookUpCameraYOffset) {
                     float changePerSecond = lookUpCameraYOffset / cameraLookTime;
-                    currentLookOffsetDown = Mathf.Min(currentLookOffsetDown + (changePerSecond * Time.deltaTime), lookUpCameraYOffset);
+                    currentLookOffsetDown = Mathf.Min(currentLookOffsetDown + (changePerSecond * Time.unscaledDeltaTime), lookUpCameraYOffset);
                 }
             } else {
                 if (currentLookOffsetDown < 0) {
                     float changePerSecond = lookDownCameraYOffset / cameraLookTime;
-                    currentLookOffsetDown = Mathf.Min(currentLookOffsetDown - (changePerSecond * Time.deltaTime), 0);
+                    currentLookOffsetDown = Mathf.Min(currentLookOffsetDown - (changePerSecond * Time.unscaledDeltaTime), 0);
                 } else if (currentLookOffsetDown > 0) {
                     float changePerSecond = lookUpCameraYOffset / cameraLookTime;
-                    currentLookOffsetDown = Mathf.Max(currentLookOffsetDown - (changePerSecond * Time.deltaTime), 0);
+                    currentLookOffsetDown = Mathf.Max(currentLookOffsetDown - (changePerSecond * Time.unscaledDeltaTime), 0);
                 }
             }
 
@@ -241,15 +274,15 @@ namespace SpaceBoat {
                 cameraLookRightToggled = !cameraLookRightToggled;
             }
 
-            if (cameraLookRightToggled) {
+            if (cameraLookRightToggled && !inShipView) {
                 if (currentLookOffsetRight < lookRightCameraXOffset) {
                     float changePerSecond = lookRightCameraXOffset / cameraShiftTime;
-                    currentLookOffsetRight = Mathf.Min(currentLookOffsetRight + (changePerSecond * Time.deltaTime), lookRightCameraXOffset);
+                    currentLookOffsetRight = Mathf.Min(currentLookOffsetRight + (changePerSecond * Time.unscaledDeltaTime), lookRightCameraXOffset);
                 }
             } else {
                 if (currentLookOffsetRight > 0) {
                     float changePerSecond = lookRightCameraXOffset / cameraShiftTime;
-                    currentLookOffsetRight = Mathf.Max(currentLookOffsetRight - (changePerSecond * Time.deltaTime), 0);
+                    currentLookOffsetRight = Mathf.Max(currentLookOffsetRight - (changePerSecond * Time.unscaledDeltaTime), 0);
                 }
             }
 
@@ -277,11 +310,56 @@ namespace SpaceBoat {
             cameraTargetY = y;
             cameraTargetSize = size;
             currentTargetTransitionDuration = cameraShiftTime;
-            cameraMovementTargetEndTime = Time.time + cameraShiftTime;
+            cameraMovementTargetEndTime = Time.realtimeSinceStartup + cameraShiftTime;
         }
 
-        public void ForceShipView(bool force) {
-            shipViewForced = force;
+        void UpdateShipViewOverride(bool exitShipViewIfExhausted = false) {
+            if (shipViewOverrides.Count == 0) {
+                CamLog("Removing ship view override -- no overrides remaining");
+                shipViewForced = false;
+                shipViewTarget = originalShipViewTarget;
+                hasXPositionOverride = false;
+                if (exitShipViewIfExhausted) {
+                    shipViewHeld = false;
+                }
+            } else {
+                CamLog("Updating ship view override -- " + shipViewOverrides.Count + " overrides");
+                shipViewOverrides.Sort((x, y) => y.priority.CompareTo(x.priority));
+                ForcedCamera highestPriorityOverride = shipViewOverrides[0];
+                CamLog("Highest priority override is " + highestPriorityOverride.name);
+                if (highestPriorityOverride.isCameraPositionOverride) {
+                    shipViewTarget = highestPriorityOverride.target;
+                } else {
+                    shipViewTarget = originalShipViewTarget;
+                }
+                shipViewForced = true;
+                hasXPositionOverride = highestPriorityOverride.isXPositionOverride;
+                xPositionOverride = highestPriorityOverride.target.position.x;
+            }
+            if ((!inShipView && shipViewForced) || (inShipView && !shipViewForced) || (hasXPositionOverride)) {
+                currentCameraMovementOriginX = transform.position.x;
+                inShipViewTransition = true;
+            }
+            
         }
+
+        public void AddShipViewOverride(string overrideName, int priority, bool lockControls = false) {
+            ForcedCamera cameraOverride = new ForcedCamera(overrideName, originalShipViewTarget, priority, false, false, lockControls);
+            shipViewOverrides.Add(cameraOverride);
+            UpdateShipViewOverride();
+        }
+
+        public void AddShipViewOverride(string overrideName, int priority, Transform targetOverride, bool overrideXPosition = false, bool overrideCameraTarget = true, bool lockControls = false) {
+            ForcedCamera cameraOverride = new ForcedCamera(overrideName, targetOverride, priority, overrideXPosition, overrideCameraTarget, lockControls);
+            shipViewOverrides.Add(cameraOverride);
+            UpdateShipViewOverride();
+        }
+
+        public void RemoveShipViewOverride(string overrideName, bool exitShipView = false) {
+            shipViewOverrides.RemoveAll(x => x.name == overrideName);
+            UpdateShipViewOverride(exitShipView);
+        }
+
+       
     }
 }
