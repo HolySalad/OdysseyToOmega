@@ -4,7 +4,9 @@ using UnityEngine;
 
 namespace SpaceBoat.Ship.Activatables {    
     public class LadderActivatable : MonoBehaviour, IActivatables
-    {
+    {   
+        [SerializeField] private UI.HelpPrompt helpPrompt;
+        public UI.HelpPrompt HelpPrompt {get {return helpPrompt;}}
         [SerializeField] private GameObject ladderTop;
         [SerializeField] private GameObject ladderBottom;
         [SerializeField] public bool jumpAtEnd = false;

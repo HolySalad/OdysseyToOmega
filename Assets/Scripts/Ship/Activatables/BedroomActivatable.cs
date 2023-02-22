@@ -4,6 +4,8 @@ using UnityEngine;
 namespace SpaceBoat.Ship.Activatables {
     public class BedroomActivatable : MonoBehaviour, IActivatables
     {
+        [SerializeField] private UI.HelpPrompt helpPrompt;
+        public UI.HelpPrompt HelpPrompt {get {return helpPrompt;}}
 
         public ActivatablesNames kind {get;} = ActivatablesNames.Bedroom;
         public bool isInUse {get; private set;} = false;
