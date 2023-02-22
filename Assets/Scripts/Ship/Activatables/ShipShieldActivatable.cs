@@ -5,7 +5,9 @@ using UnityEngine.Rendering.Universal;
 
 namespace SpaceBoat.Ship.Activatables {
     public class ShipShieldActivatable : MonoBehaviour, IActivatables
-    {
+    {   
+        [SerializeField] private UI.HelpPrompt helpPrompt;
+        public UI.HelpPrompt HelpPrompt {get {return helpPrompt;}}
         [Header("Sprites")]
         [SerializeField] private Sprite readySprite;
         [SerializeField] private Color readyColor;

@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace SpaceBoat.Ship.Activatables {
-        public class HarpoonGunActivatable : MonoBehaviour, IActivatables
-    {
+    public class HarpoonGunActivatable : MonoBehaviour, IActivatables
+    {   
+        [SerializeField] private UI.HelpPrompt helpPrompt;
+        public UI.HelpPrompt HelpPrompt {get {return helpPrompt;}}
         [SerializeField] private GameObject harpoonPrefab;
         [SerializeField] private GameObject harpoonLocation;
         [SerializeField] private GameObject backBarrel;

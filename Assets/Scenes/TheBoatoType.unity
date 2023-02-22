@@ -166,7 +166,6 @@ GameObject:
   - component: {fileID: 8088733}
   - component: {fileID: 8088732}
   - component: {fileID: 8088731}
-  - component: {fileID: 8088734}
   m_Layer: 9
   m_Name: main_top_right
   m_TagString: Activatable
@@ -228,6 +227,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f8cb94edd5c8824d85eb1ba399118e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  helpPrompt:
+    promptLabel: repairSail
+    priority: 2
+    duration: 0
+    text: Press F to repair the sails.
+    color: {r: 1, g: 1, b: 1, a: 1}
+    TriggerOnlyOnce: 0
   repairedSprite: {fileID: 21300000, guid: b9d9a563de369264abd256c65c496f2b, type: 3}
   brokenSprite: {fileID: 21300000, guid: 4a908e7cc1171bd488f4001ba5fbbd54, type: 3}
   hazardTarget: {fileID: 357666684}
@@ -289,26 +295,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &8088734
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8088729}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb6d406bc9b331140aa8a914b8731efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  helpPrompt:
-    promptLabel: repairSail
-    priority: 2
-    duration: 0
-    text: Press F to repair the sails.
-    color: {r: 1, g: 0.88550174, b: 0, a: 0}
-    TriggerOnlyOnce: 0
-  requireUsableActivatable: 1
 --- !u!1 &14931435
 GameObject:
   m_ObjectHideFlags: 0
@@ -1629,6 +1615,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e44af194af7077f46a31d8afe9d63e3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  helpPrompt:
+    promptLabel: CraftBench
+    priority: 3
+    duration: 0
+    text: Press F to Craft
+    color: {r: 1, g: 1, b: 1, a: 0}
+    TriggerOnlyOnce: 0
 --- !u!1 &257693940
 GameObject:
   m_ObjectHideFlags: 0
@@ -2028,10 +2021,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: ControlPrompts
       objectReference: {fileID: 0}
-    - target: {fileID: 1181307049, guid: 1867d33c320fca94a9e5fee0301a56d1, type: 3}
-      propertyPath: m_text
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 601514396458854645, guid: 1867d33c320fca94a9e5fee0301a56d1, type: 3}
       propertyPath: m_Name
       value: Canvas
@@ -2124,8 +2113,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 2017400695, guid: 1867d33c320fca94a9e5fee0301a56d1, type: 3}
+    - target: {fileID: 3639246533826074415, guid: 1867d33c320fca94a9e5fee0301a56d1, type: 3}
+      propertyPath: m_fontSize
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 3639246533826074415, guid: 1867d33c320fca94a9e5fee0301a56d1, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 14
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 1867d33c320fca94a9e5fee0301a56d1, type: 3}
 --- !u!114 &312070738 stripped
@@ -5420,7 +5416,6 @@ GameObject:
   - component: {fileID: 869351015}
   - component: {fileID: 869351014}
   - component: {fileID: 869351016}
-  - component: {fileID: 869351017}
   m_Layer: 9
   m_Name: BackSail
   m_TagString: Activatable
@@ -5456,6 +5451,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f8cb94edd5c8824d85eb1ba399118e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  helpPrompt:
+    promptLabel: repairSail
+    priority: 2
+    duration: 0
+    text: Press F to repair the sails.
+    color: {r: 1, g: 1, b: 1, a: 1}
+    TriggerOnlyOnce: 0
   repairedSprite: {fileID: 21300000, guid: 2f2ecf1fabed6cc409914008a861d7c1, type: 3}
   brokenSprite: {fileID: 21300000, guid: 24eb7c6de6aa4434d82c7debaace9a68, type: 3}
   hazardTarget: {fileID: 2017869525}
@@ -5543,26 +5545,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 11.771428, y: 8.073502}
   m_EdgeRadius: 0
---- !u!114 &869351017
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 869351012}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb6d406bc9b331140aa8a914b8731efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  helpPrompt:
-    promptLabel: repairSail
-    priority: 2
-    duration: 0
-    text: Press F to repair the sails.
-    color: {r: 1, g: 0.88550174, b: 0, a: 0}
-    TriggerOnlyOnce: 0
-  requireUsableActivatable: 1
 --- !u!1 &876923519
 GameObject:
   m_ObjectHideFlags: 0
@@ -6042,7 +6024,6 @@ GameObject:
   - component: {fileID: 904344880}
   - component: {fileID: 904344879}
   - component: {fileID: 904344878}
-  - component: {fileID: 904344881}
   m_Layer: 9
   m_Name: BackSail (1)
   m_TagString: Activatable
@@ -6104,6 +6085,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f8cb94edd5c8824d85eb1ba399118e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  helpPrompt:
+    promptLabel: repairSail
+    priority: 2
+    duration: 0
+    text: Press F to repair the sails.
+    color: {r: 1, g: 1, b: 1, a: 1}
+    TriggerOnlyOnce: 0
   repairedSprite: {fileID: 21300000, guid: 9779f3f52af6f49429f1012e2255efb4, type: 3}
   brokenSprite: {fileID: 21300000, guid: 0a6180634476ec94fab92f7e88c1bb78, type: 3}
   hazardTarget: {fileID: 1948658649}
@@ -6165,26 +6153,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &904344881
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 904344876}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb6d406bc9b331140aa8a914b8731efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  helpPrompt:
-    promptLabel: repairSail
-    priority: 2
-    duration: 0
-    text: Press F to repair the sails.
-    color: {r: 1, g: 0.88550174, b: 0, a: 0}
-    TriggerOnlyOnce: 0
-  requireUsableActivatable: 1
 --- !u!1 &938011505
 GameObject:
   m_ObjectHideFlags: 0
@@ -6708,6 +6676,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3559e8d7f89e29e4d8c050f0f05b05db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  helpPrompt:
+    promptLabel: 
+    priority: 0
+    duration: 0
+    text: 
+    color: {r: 0, g: 0, b: 0, a: 0}
+    TriggerOnlyOnce: 0
 --- !u!61 &1069623008
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -7363,7 +7338,6 @@ GameObject:
   - component: {fileID: 1124481455}
   - component: {fileID: 1124481458}
   - component: {fileID: 1124481457}
-  - component: {fileID: 1124481459}
   m_Layer: 9
   m_Name: FrontSail
   m_TagString: Activatable
@@ -7477,6 +7451,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f8cb94edd5c8824d85eb1ba399118e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  helpPrompt:
+    promptLabel: repairSail
+    priority: 2
+    duration: 0
+    text: Press F to repair the sails.
+    color: {r: 1, g: 1, b: 1, a: 1}
+    TriggerOnlyOnce: 0
   repairedSprite: {fileID: 21300000, guid: 2f2ecf1fabed6cc409914008a861d7c1, type: 3}
   brokenSprite: {fileID: 21300000, guid: 24eb7c6de6aa4434d82c7debaace9a68, type: 3}
   hazardTarget: {fileID: 768430754}
@@ -7486,26 +7467,6 @@ MonoBehaviour:
   breakOnStart: 0
   sailGrouping: 2
   lastTargettedTime: -99
---- !u!114 &1124481459
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1124481454}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb6d406bc9b331140aa8a914b8731efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  helpPrompt:
-    promptLabel: repairSail
-    priority: 2
-    duration: 0
-    text: Press F to repair the sails.
-    color: {r: 1, g: 0.88550174, b: 0, a: 0}
-    TriggerOnlyOnce: 0
-  requireUsableActivatable: 1
 --- !u!1 &1129551625 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 86901369046651300, guid: 1867d33c320fca94a9e5fee0301a56d1, type: 3}
@@ -7775,27 +7736,17 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 3.9599998, y: 0.75}
   m_Direction: 1
---- !u!1 &1181307047 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1181307047, guid: 1867d33c320fca94a9e5fee0301a56d1, type: 3}
+--- !u!114 &1181307051 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6263570546104170242, guid: 1867d33c320fca94a9e5fee0301a56d1, type: 3}
   m_PrefabInstance: {fileID: 312070737}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1181307051
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1181307047}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 18972ed60f8ad0a4797e43f6a6eb6425, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  promptFadeTime: 0.25
-  currentDisplayedPrompt: 
-  currentTargetPrompt: 
-  prompts: []
 --- !u!1 &1203261440
 GameObject:
   m_ObjectHideFlags: 0
@@ -8300,26 +8251,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1250439866
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2928727376338418795}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb6d406bc9b331140aa8a914b8731efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  helpPrompt:
-    promptLabel: harpoonLauncher
-    priority: 1
-    duration: 0
-    text: Press F to use the Harpoon Launcher
-    color: {r: 1, g: 0.8820387, b: 0, a: 0}
-    TriggerOnlyOnce: 0
-  requireUsableActivatable: 1
 --- !u!1 &1262542353
 GameObject:
   m_ObjectHideFlags: 0
@@ -8370,7 +8301,7 @@ MonoBehaviour:
     priority: 1
     duration: 0
     text: Use A and D to Move.
-    color: {r: 1, g: 0.8926479, b: 0, a: 0}
+    color: {r: 1, g: 1, b: 1, a: 0}
     TriggerOnlyOnce: 1
   requireUsableActivatable: 0
 --- !u!61 &1262542356
@@ -8960,7 +8891,6 @@ GameObject:
   - component: {fileID: 1361564858}
   - component: {fileID: 1361564861}
   - component: {fileID: 1361564860}
-  - component: {fileID: 1361564862}
   m_Layer: 14
   m_Name: kitchen
   m_TagString: Activatable
@@ -9047,6 +8977,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c6e157b75d3ac542835989a096aa270, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  helpPrompt:
+    promptLabel: kitchenHelp;
+    priority: 4
+    duration: 0
+    text: Press F to eat and restore health.
+    color: {r: 1, g: 0.930903, b: 0, a: 0}
+    TriggerOnlyOnce: 0
   healTime: 3
 --- !u!61 &1361564861
 BoxCollider2D:
@@ -9074,26 +9011,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 10.851064, y: 6.12766}
   m_EdgeRadius: 0
---- !u!114 &1361564862
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1361564857}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb6d406bc9b331140aa8a914b8731efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  helpPrompt:
-    promptLabel: kitchenHelp;
-    priority: 4
-    duration: 0
-    text: Press F to eat and restore health.
-    color: {r: 1, g: 0.930903, b: 0, a: 0}
-    TriggerOnlyOnce: 0
-  requireUsableActivatable: 1
 --- !u!1 &1385699944
 GameObject:
   m_ObjectHideFlags: 0
@@ -9106,7 +9023,6 @@ GameObject:
   - component: {fileID: 1385699948}
   - component: {fileID: 1385699947}
   - component: {fileID: 1385699946}
-  - component: {fileID: 1385699949}
   m_Layer: 9
   m_Name: main_top_left
   m_TagString: Activatable
@@ -9168,6 +9084,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f8cb94edd5c8824d85eb1ba399118e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  helpPrompt:
+    promptLabel: repairSail
+    priority: 2
+    duration: 0
+    text: Press F to repair the sails.
+    color: {r: 1, g: 1, b: 1, a: 1}
+    TriggerOnlyOnce: 0
   repairedSprite: {fileID: 21300000, guid: 665b288b3505b1f4b9a7b1b57dc2b6c9, type: 3}
   brokenSprite: {fileID: 21300000, guid: a67db2792cf5cc54d86379d60481c794, type: 3}
   hazardTarget: {fileID: 1748023645}
@@ -9229,26 +9152,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1385699949
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1385699944}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb6d406bc9b331140aa8a914b8731efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  helpPrompt:
-    promptLabel: repairSail
-    priority: 2
-    duration: 0
-    text: Press F to repair the sails.
-    color: {r: 1, g: 0.88550174, b: 0, a: 0}
-    TriggerOnlyOnce: 0
-  requireUsableActivatable: 1
 --- !u!43 &1392540959
 Mesh:
   m_ObjectHideFlags: 0
@@ -9730,7 +9633,6 @@ GameObject:
   - component: {fileID: 1418640283}
   - component: {fileID: 1418640282}
   - component: {fileID: 1418640281}
-  - component: {fileID: 1418640284}
   m_Layer: 9
   m_Name: main_bottom_right
   m_TagString: Activatable
@@ -9792,6 +9694,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f8cb94edd5c8824d85eb1ba399118e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  helpPrompt:
+    promptLabel: repairSail
+    priority: 2
+    duration: 0
+    text: Press F to repair the sails.
+    color: {r: 1, g: 1, b: 1, a: 1}
+    TriggerOnlyOnce: 0
   repairedSprite: {fileID: 21300000, guid: a3d8d754f781a874e86a3cfa0d9f52d3, type: 3}
   brokenSprite: {fileID: 21300000, guid: a2e8c802102674e4e8c8505779b897fb, type: 3}
   hazardTarget: {fileID: 1345371585}
@@ -9853,26 +9762,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1418640284
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1418640279}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb6d406bc9b331140aa8a914b8731efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  helpPrompt:
-    promptLabel: repairSail
-    priority: 2
-    duration: 0
-    text: Press F to repair the sails.
-    color: {r: 1, g: 0.88550174, b: 0, a: 0}
-    TriggerOnlyOnce: 0
-  requireUsableActivatable: 1
 --- !u!1 &1428258506
 GameObject:
   m_ObjectHideFlags: 0
@@ -10522,7 +10411,7 @@ MonoBehaviour:
     priority: 1
     duration: 0
     text: Press W or Space to Jump
-    color: {r: 1, g: 0.8926479, b: 0, a: 0}
+    color: {r: 0.990566, g: 0.990566, b: 0.990566, a: 0}
     TriggerOnlyOnce: 1
   requireUsableActivatable: 0
 --- !u!61 &1619471322
@@ -12314,7 +12203,6 @@ GameObject:
   - component: {fileID: 1828708153}
   - component: {fileID: 1828708152}
   - component: {fileID: 1828708151}
-  - component: {fileID: 1828708154}
   m_Layer: 9
   m_Name: main_bottom_left
   m_TagString: Activatable
@@ -12376,6 +12264,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f8cb94edd5c8824d85eb1ba399118e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  helpPrompt:
+    promptLabel: repairSail
+    priority: 2
+    duration: 0
+    text: Press F to repair the sails.
+    color: {r: 1, g: 1, b: 1, a: 1}
+    TriggerOnlyOnce: 0
   repairedSprite: {fileID: 21300000, guid: 5e86f5e00c2fc8b4c9263ed0dfd74dda, type: 3}
   brokenSprite: {fileID: 21300000, guid: c222f5a137f2a4b41bc914c2f3b18327, type: 3}
   hazardTarget: {fileID: 1819084543}
@@ -12437,26 +12332,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1828708154
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1828708149}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb6d406bc9b331140aa8a914b8731efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  helpPrompt:
-    promptLabel: repairSail
-    priority: 2
-    duration: 0
-    text: Press F to repair the sails.
-    color: {r: 1, g: 0.88550174, b: 0, a: 0}
-    TriggerOnlyOnce: 0
-  requireUsableActivatable: 1
 --- !u!1 &1832653734
 GameObject:
   m_ObjectHideFlags: 0
@@ -15512,6 +15387,54 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 521614029}
     m_Modifications:
+    - target: {fileID: 497870173191873602, guid: 9e1ecdf655223c041a11e61b32df22a7, type: 3}
+      propertyPath: helpPrompt.color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 497870173191873602, guid: 9e1ecdf655223c041a11e61b32df22a7, type: 3}
+      propertyPath: helpPrompt.color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 497870173191873602, guid: 9e1ecdf655223c041a11e61b32df22a7, type: 3}
+      propertyPath: helpPrompt.color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 497870173191873602, guid: 9e1ecdf655223c041a11e61b32df22a7, type: 3}
+      propertyPath: helpPrompt.color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1518854777123062831, guid: 9e1ecdf655223c041a11e61b32df22a7, type: 3}
+      propertyPath: helpPrompt.color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1518854777123062831, guid: 9e1ecdf655223c041a11e61b32df22a7, type: 3}
+      propertyPath: helpPrompt.color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1518854777123062831, guid: 9e1ecdf655223c041a11e61b32df22a7, type: 3}
+      propertyPath: helpPrompt.color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1518854777123062831, guid: 9e1ecdf655223c041a11e61b32df22a7, type: 3}
+      propertyPath: helpPrompt.color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2245465626373928836, guid: 9e1ecdf655223c041a11e61b32df22a7, type: 3}
+      propertyPath: helpPrompt.color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2245465626373928836, guid: 9e1ecdf655223c041a11e61b32df22a7, type: 3}
+      propertyPath: helpPrompt.color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2245465626373928836, guid: 9e1ecdf655223c041a11e61b32df22a7, type: 3}
+      propertyPath: helpPrompt.color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2245465626373928836, guid: 9e1ecdf655223c041a11e61b32df22a7, type: 3}
+      propertyPath: helpPrompt.color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7837276630178798449, guid: 9e1ecdf655223c041a11e61b32df22a7, type: 3}
       propertyPath: m_RootOrder
       value: -1
@@ -15559,6 +15482,22 @@ PrefabInstance:
     - target: {fileID: 7837276630178798450, guid: 9e1ecdf655223c041a11e61b32df22a7, type: 3}
       propertyPath: m_Name
       value: SpinnyBoi
+      objectReference: {fileID: 0}
+    - target: {fileID: 8619999351821139223, guid: 9e1ecdf655223c041a11e61b32df22a7, type: 3}
+      propertyPath: helpPrompt.color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8619999351821139223, guid: 9e1ecdf655223c041a11e61b32df22a7, type: 3}
+      propertyPath: helpPrompt.color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8619999351821139223, guid: 9e1ecdf655223c041a11e61b32df22a7, type: 3}
+      propertyPath: helpPrompt.color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8619999351821139223, guid: 9e1ecdf655223c041a11e61b32df22a7, type: 3}
+      propertyPath: helpPrompt.color.r
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
@@ -15958,7 +15897,6 @@ GameObject:
   - component: {fileID: 2928727376338418794}
   - component: {fileID: 2928727376338418797}
   - component: {fileID: 2928727376338418796}
-  - component: {fileID: 1250439866}
   m_Layer: 14
   m_Name: GunAimer
   m_TagString: Activatable
@@ -15978,6 +15916,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 065cb4bcbc8ba604ea40dc1ac4d64093, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  helpPrompt:
+    promptLabel: harpoonLauncher
+    priority: 1
+    duration: 0
+    text: Press F to use the Harpoon Launcher
+    color: {r: 1, g: 1, b: 1, a: 0}
+    TriggerOnlyOnce: 0
   harpoonPrefab: {fileID: 4792589185087811438, guid: f924795fbed84794fae763ed576193d8, type: 3}
   harpoonLocation: {fileID: 6001530800613727977}
   backBarrel: {fileID: 2928727375989139081}

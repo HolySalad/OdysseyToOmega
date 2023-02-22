@@ -5,7 +5,8 @@ using UnityEngine;
 namespace SpaceBoat.Ship.Activatables {
     public class CraftingBenchActivatable : MonoBehaviour, IActivatables
     {
-        public ActivatablesNames kind {get;} = ActivatablesNames.CraftingBench;
+        [SerializeField] private UI.HelpPrompt helpPrompt;
+        public UI.HelpPrompt HelpPrompt {get {return helpPrompt;}}        public ActivatablesNames kind {get;} = ActivatablesNames.CraftingBench;
         public bool isInUse {get; private set;} = false;
         public bool canManuallyDeactivate {get;} = true;
         public PlayerStateName playerState {get;} = PlayerStateName.uiPauseState;

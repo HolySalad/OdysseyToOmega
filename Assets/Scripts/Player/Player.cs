@@ -179,6 +179,7 @@ namespace SpaceBoat {
         //activatables
 
         public IActivatables activatableInUse {get; private set;}
+        public GameObject activatableInRange {get; private set;}
         public float playerCameraXFocusOffset;
 
         // Callbacks
@@ -705,7 +706,10 @@ namespace SpaceBoat {
         */
         // activatables 
 
-        void UseActivatable(IActivatables activatable, GameObject obj) {
+        bool UseActivatable(IActivatables activatable, GameObject obj) {
+            if (activatableInRange == null) {
+                return false;
+            }
             Debug.Log("Using activatable "+ obj.name);
             activatable.Activate(this);
             activatableInUse = activatable;
@@ -717,6 +721,7 @@ namespace SpaceBoat {
                 game.sound.Play(activatable.usageSound);
             }
             ChangeState(activatable.playerState);
+            return true;
         }
 
         bool CheckForActivatables() {
@@ -727,10 +732,19 @@ namespace SpaceBoat {
                     Debug.Log("Can activate " + coll.name);
                     IActivatables activatable = game.GetActivatableComponent(coll.gameObject);
                     if (activatable.ActivationCondition(this) ) {
-                        UseActivatable(activatable, coll.gameObject);
+                        if (coll.gameObject != activatableInRange) {
+                            activatableInRange = coll.gameObject;
+                            if (activatable.HelpPrompt.promptLabel != "") game.controlsPrompts.AddPrompt(activatable.HelpPrompt);
+                        }
                         return true;
                     }
                 }
+            }
+            if (activatableInRange != null) {
+                Debug.Log("Can no longer activate " + activatableInRange.ToString());
+                IActivatables activatable = game.GetActivatableComponent(activatableInRange);
+                if (activatable.HelpPrompt.promptLabel != "") game.controlsPrompts.RemovePrompt(activatable.HelpPrompt);
+                activatableInRange = null;
             }
             return false;
         }
@@ -749,12 +763,13 @@ namespace SpaceBoat {
         
 
         public bool ActivateInput(bool keyDown) {
+            CheckForActivatables();
             if (keyDown && activatableInUse != null && activatableInUse.canManuallyDeactivate) {
                 activatableInUse.Deactivate(this);
                 DetatchFromActivatable();
                 return true;
             } else if (keyDown) {
-                return CheckForActivatables();
+                return UseActivatable(game.GetActivatableComponent(activatableInRange), activatableInRange);
             }
             return false;
         }

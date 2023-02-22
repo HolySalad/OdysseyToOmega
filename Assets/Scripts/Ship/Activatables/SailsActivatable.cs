@@ -4,7 +4,9 @@ using UnityEngine;
 
 namespace SpaceBoat.Ship.Activatables {
     public class SailsActivatable : MonoBehaviour, IActivatables
-    {
+    {   
+        [SerializeField] private UI.HelpPrompt helpPrompt;
+        public UI.HelpPrompt HelpPrompt {get {return helpPrompt;}}
         public enum SailGrouping {
             WheelSails,
             MainSails,

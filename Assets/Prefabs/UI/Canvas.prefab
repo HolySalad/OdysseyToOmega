@@ -443,6 +443,7 @@ GameObject:
   - component: {fileID: 1181307048}
   - component: {fileID: 1181307050}
   - component: {fileID: 1181307049}
+  - component: {fileID: 6263570546104170242}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -498,9 +499,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Press F to Confirm
-
-    Press Escape to Cancel'
+  m_text: Press F to Activate the Shield Generator
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d59977a130ea6a540849c98b9da92fed, type: 2}
   m_sharedMaterial: {fileID: -3097884124353629746, guid: d59977a130ea6a540849c98b9da92fed, type: 2}
@@ -534,7 +533,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 4
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -569,6 +568,23 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &6263570546104170242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1181307047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18972ed60f8ad0a4797e43f6a6eb6425, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PromptManagerName: DefaultHelpPromptsManager
+  promptFadeTime: 0.25
+  currentDisplayedPrompt: 
+  currentTargetPrompt: 
+  prompts: []
 --- !u!1 &1296150430
 GameObject:
   m_ObjectHideFlags: 0
@@ -1088,7 +1104,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2017400694}
-  - component: {fileID: 2017400695}
   m_Layer: 5
   m_Name: ControlsHintsParent
   m_TagString: Untagged
@@ -1117,22 +1132,6 @@ RectTransform:
   m_AnchoredPosition: {x: 824, y: -403}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2017400695
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2017400693}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18972ed60f8ad0a4797e43f6a6eb6425, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  promptFadeTime: 0.25
-  currentDisplayedPrompt: 
-  currentTargetPrompt: 
-  prompts: []
 --- !u!1 &98055086875248970
 GameObject:
   m_ObjectHideFlags: 0
@@ -1791,6 +1790,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18972ed60f8ad0a4797e43f6a6eb6425, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PromptManagerName: DefaultHelpPromptsManager
   promptFadeTime: 0.55
   currentDisplayedPrompt: 
   currentTargetPrompt: 

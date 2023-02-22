@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+
 namespace SpaceBoat.UI {
 
     public enum UIState {
@@ -17,6 +20,8 @@ namespace SpaceBoat.UI {
 
         private GameObject buildmodeObject;
 
+        private TextMeshProUGUI controlsText;
+
         public delegate void OnNextBuildModeExit(bool isCancelled);
         private List<OnNextBuildModeExit> onNextBuildModeExitCallbacks = new List<OnNextBuildModeExit>();
         public void AddOnNextBuildModeExitCallback(OnNextBuildModeExit callback) {
@@ -32,6 +37,7 @@ namespace SpaceBoat.UI {
         }
 
         void Start() {
+            controlsText = GameModel.Instance.controlsPrompts.gameObject.GetComponent<TextMeshProUGUI>();
             CurrentState = UIState.HUD;
             hudParent.SetActive(true);
             craftMenuParent.SetActive(false);
@@ -43,12 +49,17 @@ namespace SpaceBoat.UI {
 
         public UIState CurrentState { get; private set; }
 
+        void ToggleControlHints(bool show) {
+            controlsText.enabled = show;
+        }
+
         public void OpenCraftingMenu() {
             CurrentState = UIState.CraftMenu;
             hudParent.SetActive(false);
             craftMenuParent.SetActive(true);
             craftMenuParent.GetComponent<CraftingUI>().OpenCraftingUI();
             GameModel.Instance.PauseGame();
+            ToggleControlHints(false);
         }
 
         public void CloseCraftingMenu() {
@@ -56,6 +67,7 @@ namespace SpaceBoat.UI {
             hudParent.SetActive(true);
             craftMenuParent.SetActive(false);
             GameModel.Instance.UnpauseGame();
+            ToggleControlHints(true);
         }
         private int pendingBuildCost = 0;
         public void EnterBuildMode(GameObject buildablePrefab, int cost) {
@@ -64,6 +76,7 @@ namespace SpaceBoat.UI {
             craftMenuParent.SetActive(false);
             Transform buildmodeTransform = buildmodeObject.GetComponentInChildren<Ship.Buildables.BuildableExtras.BuildSystemPlacementMarker>().transform;
             GameModel.Instance.cameraController.AddShipViewOverride("UIManager", 100, buildmodeTransform, true, false);
+            ToggleControlHints(true);
         }
 
         public void ExitBuildMode(bool isCancelled = false) {
@@ -79,6 +92,7 @@ namespace SpaceBoat.UI {
             }
             onNextBuildModeExitCallbacks.Clear();
             craftMenuParent.GetComponent<CraftingUI>().OpenCraftingUI();
+            ToggleControlHints(false);
         }
     }
 }
