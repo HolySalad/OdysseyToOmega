@@ -744,7 +744,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -795,6 +795,8 @@ MonoBehaviour:
   targettingCooldown: 30
   targetFlagTimeout: 10
   breakOnStart: 0
+  sailGrouping: 0
+  lastTargettedTime: -99
 --- !u!61 &1840950220746983144
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1350,7 +1352,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1401,6 +1403,8 @@ MonoBehaviour:
   targettingCooldown: 30
   targetFlagTimeout: 10
   breakOnStart: 0
+  sailGrouping: 0
+  lastTargettedTime: -99
 --- !u!61 &5049153848543242102
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2397,7 +2401,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2448,6 +2452,8 @@ MonoBehaviour:
   targettingCooldown: 30
   targetFlagTimeout: 10
   breakOnStart: 0
+  sailGrouping: 0
+  lastTargettedTime: -99
 --- !u!61 &4815250026004944927
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2529,7 +2535,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2580,6 +2586,8 @@ MonoBehaviour:
   targettingCooldown: 30
   targetFlagTimeout: 10
   breakOnStart: 0
+  sailGrouping: 0
+  lastTargettedTime: -99
 --- !u!61 &6614020060423688797
 BoxCollider2D:
   m_ObjectHideFlags: 0

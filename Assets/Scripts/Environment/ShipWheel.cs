@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-namespace SpaceBoat {
+namespace SpaceBoat.Environment {
 public class ShipWheel : MonoBehaviour
     {
         [SerializeField] private float rotationSpeed = 15f;

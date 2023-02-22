@@ -216,6 +216,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b442ac774e3369745b3ac27ade80ec1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  earliestAppearence: 1
+  latestAppearence: 10
+  priority: 0
   windEmitters:
   - {fileID: 3311819142627891230}
   - {fileID: 8129445716360535458}

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SpaceBoat.PlayerStates {
+namespace SpaceBoat.PlayerSubclasses.PlayerStates {
     public class ReadyState : MonoBehaviour, IPlayerState
     {
         public bool stealVelocityControl {get;} = false;
@@ -25,7 +25,7 @@ namespace SpaceBoat.PlayerStates {
         public void EnterState(PlayerStateName previousState) {
            timeEnteredState = Time.time;
            // if we were previosuly aiming, we don't want the spacebar input 
-           if (previousState == PlayerStateName.aiming) {
+           if (previousState == PlayerStateName.turret) {
                 jumpLockOut = true;
            }
 
@@ -33,12 +33,13 @@ namespace SpaceBoat.PlayerStates {
         public void ExitState(PlayerStateName nextState) {
             
         }
+
         public void UpdateState() {
             // Handle Input
-            // Inputs which can change state go first.
 
-            //Item Usage
-            if (player.ActivateInput(CthulkInput.ActivateKeyDown())) return;
+            //Possibly state changing inputs.
+            if (player.EquipmentUsageInput(CthulkInput.EquipmentUsageKeyDown(), CthulkInput.EquipmentUsageKeyHeld())) return;
+            if (player.ActivateInput(CthulkInput.ActivateKeyHeld())) return;
 
 
             bool jumpKeyDown = CthulkInput.JumpKeyDown();
@@ -48,18 +49,27 @@ namespace SpaceBoat.PlayerStates {
 
             player.CrouchInput(crouchHeld);
 
-            //Item pick up
-            bool pickItemDown = CthulkInput.PickItemDown();
-
             player.WalkInput(horizontal);
             if (jumpLockOut && (jumpKeyDown || (Time.time > timeEnteredState + jumpLockOutTime))) {
                 jumpLockOut = false;
             }
             player.JumpInput(jumpKeyHeld && !jumpLockOut, jumpKeyDown);
-            // Camera Toggles
-            if (CthulkInput.CameraToggleDown()) {
-                player.cameraControls?.ToggleShipView();
-            }
+
+        }
+
+
+        IEnumerator DestroyAfterSquishSound() {
+            AudioSource audioSource = GetComponent<AudioSource>();
+            audioSource.Play();
+            yield return new WaitForSeconds(audioSource.clip.length);
+        }
+
+        void OnMouseDown() {
+            //Destroy(gameObject);
+            GetComponent<SpriteRenderer>().enabled = false;
+            GetComponent<Collider2D>().enabled = false;
+            GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            StartCoroutine(DestroyAfterSquishSound());
         }
     }
 }

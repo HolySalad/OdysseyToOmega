@@ -16,7 +16,7 @@ public class ButtonManager : MonoBehaviour
     }
 
     public void PlayButton(){
-        SceneManager.LoadScene("TheJourney");
+        SceneManager.LoadScene("TheBoatoType");
     }
 
     public void ExitButton(){

@@ -5,6 +5,12 @@ using UnityEngine;
 namespace SpaceBoat.Ship {
     public class SailsActivatable : MonoBehaviour, IActivatables
     {
+        public enum SailGrouping {
+            WheelSails,
+            MainSails,
+            SmallSails,
+        }
+
         [SerializeField] private Sprite repairedSprite;
         [SerializeField] private Sprite brokenSprite;
         [SerializeField] public Transform hazardTarget;
@@ -12,6 +18,7 @@ namespace SpaceBoat.Ship {
         [SerializeField] private float targettingCooldown = 30f;
         [SerializeField] private float targetFlagTimeout = 10f;
         [SerializeField] private bool breakOnStart = false;
+        [SerializeField] public SailGrouping sailGrouping = SailGrouping.SmallSails;
 
         public ActivatablesNames kind {get;} = ActivatablesNames.Sails;
         public bool isInUse {get; private set;} = false;
@@ -25,7 +32,7 @@ namespace SpaceBoat.Ship {
 
 
         private float timeBeganRepairing = 0;
-        private float lastTargettedTime = 0;
+        public float lastTargettedTime = -99f;
 
         private Player player;
 
@@ -75,7 +82,7 @@ namespace SpaceBoat.Ship {
         }
 
         public bool IsOnCooldown() {
-            return Time.time - lastTargettedTime < targettingCooldown;
+            return Time.time -lastTargettedTime < targettingCooldown;
         }
 
         public void TargetSail() {

@@ -1,13 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SpaceBoat.HazardManagers.MeteorShowerSubclasses;
+
+namespace SpaceBoat.HazardManagers.MeteorShowerSubclasses {
+    [System.Serializable] public class EscalationLevel {
+        public float timeIntoHazard = 0f;
+        public int baseNumMeteors = 0;
+        public float meteorIntervalMultiplier = 1f;
+        public float rockRateIncrease = 0f;
+        public float rockSpeedIncrease = 0f;
+    }
+}
+
+
 namespace SpaceBoat.HazardManagers {
     public class MeteorShower : MonoBehaviour, IHazardManager
     {
-        [Header("General Hazard Settings")]
+        [Header("General Hazard Settings")]        
         [SerializeField] private bool testMode = false; 
         [SerializeField] private float baseDuration = 120f; //how many seconds into the game does the last meteor spawn.
+        [SerializeField] private List<UI.HelpPrompt> meteorPrompts;
+        [SerializeField] private int earliestAppearence;
+        [SerializeField] private int latestAppearence;
+        [SerializeField] private int priority;
 
+        [Header("Escalation Settings")]
+        [SerializeField] private List<EscalationLevel> escalationLevels;
         [Header("Meteor Settings")]
         [SerializeField] private GameObject meteorPrefab;
 
@@ -15,12 +34,7 @@ namespace SpaceBoat.HazardManagers {
         [SerializeField] private float firstMeteorSpawnTimer = 10f; //how many seconds into the game does the first meteor spawn.
         [SerializeField] private float meteorInterval = 32f; // how often does a meteor spawn to break a sail by default.
         [SerializeField] private float meteorIntervalVariance = 0.2f; //% variance in meteor base interval.
-        [SerializeField] private float meteorIntervalRampTime = 40f; //begins decreasing the time between spawns this many seconds after the first meteor spawns.
-        [SerializeField] private float meteorIntervalRampRate = 3f; //how much to decrease the time between spawns by.
-        [SerializeField] private float meteorIntervalNumRamps = 5f; //how many times to decrease the time between spawns.
-        [SerializeField] private int meteorEaseOffIntervalSails = 3; // begin increasing the interval between meteors after this many sails are already broken.
-        [SerializeField] private float meteorEaseOfIntervalRamp = 10f; // increases the interval by this many seconds per sail.
-        [SerializeField] private float fullyRepairedTimerReduction = 0.7f; // reduces the interval by this proportion if all sails are repaired.
+        [SerializeField] private float fullyRepairedTimerReduction = 0.5f; // reduces the interval by this proportion if all sails are repaired.
 
         [Header("Meteor Projectile Settings")]
         [SerializeField] private float meteorSpawnXPos = 56f; //where do meteors spawn on the X axis
@@ -38,14 +52,7 @@ namespace SpaceBoat.HazardManagers {
 
         [SerializeField] private float rockVolleyBaseInterval = 8f; // how long does a volley of rocks last.
         [SerializeField] private float rockVolleyIntervalVariance = 0.2f; //% variance in rock volley base interval.
-        [SerializeField] private float peakRockPaceSwell = 2f; // how many more rocks should be thrown during a swell.
-        [SerializeField] private float firstSwellTimer = 70f; // how many seconds into the game does the first swell begin
-        [SerializeField] private float swellCycleTime = 60f; // how often does the pace of rocks swell.
-        [SerializeField] private float swellCycleRampTime = 10f; // Time between swells get shorter each tiime by this many seconds
-        [SerializeField] private float swellCycleMinTime = 30f; // how short can the time between swells get.
         [SerializeField] private float baseRockRate = 3f; // how many base rocks are thrown at the player at once.
-        [SerializeField] private float firstExtraRockAddedTime = 150f; // how many seconds into the game does an additional base rock get added
-        [SerializeField] private float secondExtraRockAddedTime = 210f; // how often does an additional base rock get added
         [Header("Rock Projectile Settings")]
         [SerializeField] private float rockSpeed = 1f; //how many units per second do rocks travel
         [SerializeField] private float rockSpeedVariance = 0.25f; //how much variance is there in the speed of rocks
@@ -55,95 +62,156 @@ namespace SpaceBoat.HazardManagers {
         [SerializeField] private float rockBaseSize = 1f; //base size of rocks
         [SerializeField] private float rockSizeIncreaseVariance = 1.5f; //how much bigger can rocks be?
         [SerializeField] private int rockSoundChance = 50; //% chance that a rock will play a sound when it spawns.
+
+        public string hazardSoundtrack { get; private set; } = "FirstGalaxy";
+
+
         public bool hasEnded {get; private set;} = false;
         public float hazardDuration {get; private set;} = 0f;
         public float hazardBeganTime {get; private set;} = -1;
 
-        private float nextMeteorSpawnTime; //when is the next meteor?
-        private bool isNextMeteorSpawnTimeSet = false; //has the next meteor spawn time been set yet?
-        private bool firstMeteor = false; //is this the first meteor?
-
         private float meteorSoundDuration;
-        private int lastSailIndex = -1; //the index of the last sail that was broken by a meteor.
 
-        private bool rocksStarted = false; //have rocks started spawning yet?
-        private float rockVolleyStartTime; //when did the last volley begin?
-        private float rockSwellStartTime; //when did the last swell begin?
-        private float nextSwellTime; //when is the next swell?
-        private bool rockSwellActive = false; //is the swell ramping up or down?
-        private float currentSwellStrength = 1f; // between 1 and 1+peakRockPaceSwell
+        private bool rocksStarted = false; 
+        private bool meteorsStarted = false; 
+        private bool startupSequence = false;
+        private bool fullyRepairedIncreaseApplied = true;
+        private int meteorsOut = 0;
 
-        void handleMeteorSpawning(float timeSinceGameBegan, float deltaTime)
-        {
+        private EscalationLevel currentEscalationLevel;
+        private int nextEscalationIndex = 0;
+
+        public int GetPriority() {
+            return priority;
+        }
+        public int GetEarliestAppearence() {
+            return earliestAppearence;
+        }
+        public int GetLatestAppearence() {
+            return latestAppearence;
+        }
+
+        public void meteorHit() {
+            meteorsOut--;
+        }
+
+        float HazardTime() {
+            return Time.time - hazardBeganTime;
+        }
+
+        /* replaced with GameModel.Instance.SelectSailsForTargetting
+        List<GameObject> GetTargetSails(int maxNumSelect = 1) {
+            List<GameObject> targetSails = new List<GameObject>();
             List<GameObject> sails = GameModel.Instance.shipSails;
-            List<GameObject> nonbrokenSails = new List<GameObject>();
+            bool respectCooldown = GameModel.Instance.lastSurvivingSailCount > maxNumSelect;
+            Debug.Log("Selecting max " + maxNumSelect + " sails to break. Respect Cooldown: " + respectCooldown + ".");
             foreach (GameObject sail in sails)
             {
-                if (!sail.GetComponent<Ship.SailsActivatable>().isBroken)
+                Ship.SailsActivatable sailScript = sail.GetComponent<Ship.SailsActivatable>();
+                Debug.Log("Sail " + sail.name + " is broken: " + sailScript.isBroken + " is cooldown " + sailScript.IsOnCooldown() +".");
+                if (!sailScript.isBroken && (!sailScript.IsOnCooldown() || !respectCooldown))
                 {
-                    nonbrokenSails.Add(sail);
+                    targetSails.Add(sail);
                 }
             }
-            int targetSailIndex = Random.Range(0, nonbrokenSails.Count);
-            if (nonbrokenSails.Count > 1 && targetSailIndex == lastSailIndex)
+            Debug.Log("Found " + targetSails.Count + " valid sails to break.");
+            while (targetSails.Count > maxNumSelect)
             {
-                targetSailIndex = (targetSailIndex + 1) % nonbrokenSails.Count;
+                targetSails.RemoveAt(Random.Range(0, targetSails.Count));
             }
-            GameObject randomSail = nonbrokenSails[targetSailIndex];
-            lastSailIndex = targetSailIndex;
-            float xPos = meteorSpawnXPos + Random.Range(-meteorSpawnXVariance, meteorSpawnXVariance);
-            float yPos = meteorSpawnYPos + Random.Range(-meteorSpawnYVariance, meteorSpawnYVariance);
+            Debug.Log("Selected " + targetSails.Count + " sails to break.");
+            return targetSails;
+        }
+        */
+
+        IEnumerator StartupSequence(float delay) {
+            yield return new WaitForSeconds(delay-2f);
+            GameModel.Instance.cameraController.ForceShipView(true);
+            meteorPrompts.Sort((a, b) => a.priority.CompareTo(b.priority));
+            foreach (UI.HelpPrompt meteorPrompt in meteorPrompts) {
+                GameModel.Instance.helpPrompts.AddPrompt(meteorPrompt);
+            }
+            while (meteorsOut > 0) {
+                yield return null;
+            }
+            yield return new WaitForSeconds(1.5f);
+            GameModel.Instance.cameraController.ForceShipView(false);
+        }
+
+        IEnumerator EmitMeteors() {
+            float nextMeteorSpawn = firstMeteorSpawnTimer;
+            Debug.Log("Emit meteors started. First meteor in " + nextMeteorSpawn + " seconds.");
+            while (!hasEnded) {
+                float timeSinceGameBegan = HazardTime();
+                if (timeSinceGameBegan > nextMeteorSpawn) {
+                    meteorsOut = calcNextNumMeteors();
+                    Debug.Log("Emitting " + meteorsOut + " meteors.");
+                    List<GameObject> targetSails = GameModel.Instance.SelectSailsForTargetting(meteorsOut);
+                    bool playSound = true;
+                    foreach (GameObject randomSail in targetSails) {
+                        randomSail.GetComponent<Ship.SailsActivatable>().TargetSail();
+                        handleMeteorSpawning(randomSail, playSound);
+                        playSound = false;
+                    }
+                    fullyRepairedIncreaseApplied = false;
+                    nextMeteorSpawn = calcNextMeteorSpawnTime();
+                    Debug.Log("Next meteor in " + (nextMeteorSpawn - HazardTime()) + " seconds.");
+                } else if (meteorsOut == 0 && !fullyRepairedIncreaseApplied && GameModel.Instance.lastSurvivingSailCount == GameModel.Instance.shipSails.Count) {
+                    
+                    float remainingTimer = nextMeteorSpawn - timeSinceGameBegan;
+                    nextMeteorSpawn = nextMeteorSpawn - (remainingTimer * fullyRepairedTimerReduction);
+                    Debug.Log("All sails repaired, reducing time to next meteor by " + (remainingTimer*fullyRepairedTimerReduction));
+                    fullyRepairedIncreaseApplied = true;
+                }
+                yield return null;
+            }
+        }
+
+        void handleMeteorSpawning(GameObject targetSail, bool playSound)
+        {
+            float xPos = targetSail.transform.position.x + meteorSpawnXPos + Random.Range(-meteorSpawnXVariance, meteorSpawnXVariance);
+            float yPos = targetSail.transform.position.y + meteorSpawnYPos + Random.Range(-meteorSpawnYVariance, meteorSpawnYVariance);
             GameObject meteorObject = Instantiate(meteorPrefab, new Vector2(xPos, yPos), Quaternion.identity);
             Meteorite meteor = meteorObject.GetComponent<Meteorite>();
-            meteor.SetupMeteor(meteorSpeed, meteorObject.transform.position, randomSail, meteorSoundDuration);   
-            isNextMeteorSpawnTimeSet = false;
+            float delay = meteor.SetupMeteor(this, meteorSpeed, meteorObject.transform.position, targetSail, meteorSoundDuration, !playSound);   
+            if (!startupSequence) {
+                StartCoroutine(StartupSequence(delay));
+                startupSequence = true;
+            }
         }
 
-        void calcNextMeteorSpawnTime(float timeSinceGameBegan, float deltaTime) {
-            Debug.Log("Determining next meteor spawn at " + timeSinceGameBegan);
-            if (!firstMeteor) {
-                handleMeteorSpawning(timeSinceGameBegan, deltaTime);
-                isNextMeteorSpawnTimeSet = true;
-                firstMeteor = true;
-                 Debug.Log("Next meteoer will spawn at " + nextMeteorSpawnTime);
-            }
-            List<GameObject> sails = GameModel.Instance.shipSails;
-            List<GameObject> nonbrokenSails = new List<GameObject>();
-            foreach (GameObject sail in sails)
-            {
-                if (!sail.GetComponent<Ship.SailsActivatable>().isBroken)
-                {
-                    nonbrokenSails.Add(sail);
+        float calcNextMeteorSpawnTime() {
+            float nextInterval = meteorInterval * (1 + Random.Range(-meteorIntervalVariance, meteorIntervalVariance));
+            nextInterval = nextInterval*currentEscalationLevel.meteorIntervalMultiplier;
+            return nextInterval + HazardTime();
+        }
+
+        int calcNextNumMeteors() {
+            int survivingSails = GameModel.Instance.lastSurvivingSailCount;
+            if (survivingSails == 1) {
+                return 1;
+            } else {
+                int numMeteors = currentEscalationLevel.baseNumMeteors;
+                if (survivingSails > 2 && numMeteors >= survivingSails) {
+                    numMeteors = survivingSails -1;
                 }
+                return numMeteors;
             }
-            float nextInterval = meteorInterval;
-            nextInterval *= (1 - Random.Range(-meteorIntervalVariance, meteorIntervalVariance));
-            float intervalRamp = Mathf.Min(((timeSinceGameBegan - firstMeteorSpawnTimer) / meteorIntervalRampTime), meteorIntervalNumRamps) * meteorIntervalRampRate;
-            nextInterval -= intervalRamp;
-            int brokenSailCount = sails.Count - nonbrokenSails.Count;
-            if (brokenSailCount >= meteorEaseOffIntervalSails) {
-                nextInterval += meteorEaseOfIntervalRamp*(brokenSailCount - meteorEaseOffIntervalSails + 1);
-            } else if (brokenSailCount == 0) {
-                nextInterval *= fullyRepairedTimerReduction;
-            }
-            nextMeteorSpawnTime = timeSinceGameBegan + nextInterval;
-            Debug.Log("Next meteoer will spawn at " + nextMeteorSpawnTime);
-            isNextMeteorSpawnTimeSet = true;
         }
 
-        IEnumerator RockSpawner(GameObject emiter, float timeSinceGameBegan, float deltaTime) {
-            float nextRockSpawn = timeSinceGameBegan + Random.Range(0, rockVolleyBaseInterval);
+        IEnumerator RockSpawner(GameObject emiter, float timeSinceGameBegan) {
+            float nextRockSpawn = HazardTime() + firstRockSpawnTimer + Random.Range(0, rockVolleyBaseInterval);
             while (!hasEnded) {
                 if (Time.time >= nextRockSpawn) {
                     float height = emiter.transform.position.y + Random.Range(-rockSpawnHeightVariance, rockSpawnHeightVariance);
                     GameObject rockObject = Instantiate(rockPrefab, new Vector2(emiter.transform.position.x, height), Quaternion.identity);
                     SpaceRock rock = rockObject.GetComponent<SpaceRock>();
-                    float speed = rockSpeed* (1- Random.Range(-rockSpeedVariance, rockSpeedVariance));
+                    float speed = (rockSpeed + currentEscalationLevel.rockSpeedIncrease)  * (1- Random.Range(-rockSpeedVariance, rockSpeedVariance));
                     float angle = rockAngleOffset + Random.Range(-rockAngleVariance, rockAngleVariance);
                     float scale = rockBaseSize * (1 + Random.Range(0, rockSizeIncreaseVariance));
                     bool sound = Random.Range(0, 100) < rockSoundChance;
                     rock.SetupRock(speed, angle, scale, sound);
-                    nextRockSpawn = Time.time + rockVolleyBaseInterval / (GetCurrentRockRate(hazardBeganTime - Time.time) * (1 - Random.Range(-rockVolleyIntervalVariance, rockVolleyIntervalVariance)));
+                    nextRockSpawn = Time.time + rockVolleyBaseInterval / (GetCurrentRockRate(HazardTime()) * (1 - Random.Range(-rockVolleyIntervalVariance, rockVolleyIntervalVariance)));
                 }
                 yield return null;
             }
@@ -151,18 +219,7 @@ namespace SpaceBoat.HazardManagers {
 
         float GetCurrentRockRate(float timeSinceGameBegan) {
             float currentRockRate = baseRockRate;
-            if (rockSwellActive) {
-                currentRockRate = Mathf.Floor(currentSwellStrength*currentRockRate);
-            }
-            if (timeSinceGameBegan > firstExtraRockAddedTime)
-            {
-                currentRockRate += 1;
-            }
-
-            if (timeSinceGameBegan > secondExtraRockAddedTime)
-            {
-                currentRockRate += 1;
-            }
+            currentRockRate = currentRockRate + currentEscalationLevel.rockRateIncrease;
             return currentRockRate;
         }
         void FixedUpdate() {
@@ -172,7 +229,13 @@ namespace SpaceBoat.HazardManagers {
                 return;
             }
             float deltaTime = Time.fixedDeltaTime;
-            float timeSinceStart = Time.time - hazardBeganTime;
+            float timeSinceStart = HazardTime();
+
+            if (nextEscalationIndex < escalationLevels.Count && timeSinceStart > escalationLevels[nextEscalationIndex].timeIntoHazard) {
+                Debug.Log("Escalating hazard " + this.gameObject.name + " to level " + nextEscalationIndex);
+                currentEscalationLevel = escalationLevels[nextEscalationIndex];
+                nextEscalationIndex++;
+            }
 
             if (timeSinceStart > hazardDuration) {
                 Debug.Log("Hazard " + this.gameObject.name + " has ended");
@@ -181,38 +244,15 @@ namespace SpaceBoat.HazardManagers {
                 return;
             }
 
-            if (timeSinceStart > firstMeteorSpawnTimer && timeSinceStart < hazardDuration) {
-                if (isNextMeteorSpawnTimeSet) {
-                    if (nextMeteorSpawnTime < timeSinceStart) {
-                        handleMeteorSpawning(timeSinceStart, deltaTime);
-                    }
-                } else if (!isNextMeteorSpawnTimeSet) {
-                    calcNextMeteorSpawnTime(timeSinceStart, deltaTime);
-                }
+            if (!meteorsStarted) {
+                meteorsStarted = true;
+                StartCoroutine(EmitMeteors());
             }
 
-            // handle rock swells.
-            if (rockSwellActive) {
-                float swellTime = timeSinceStart - rockSwellStartTime;
-                if (swellTime < swellCycleTime) {
-                    currentSwellStrength = (peakRockPaceSwell * (swellTime / swellCycleTime));
-                } else if (swellTime < 2*swellCycleTime) {
-                    currentSwellStrength = (peakRockPaceSwell * (1 - ((swellTime - swellCycleTime) / swellCycleTime)));
-                } else {
-                    rockSwellActive = false;
-                    swellCycleTime = Mathf.Max(swellCycleTime - swellCycleRampTime , swellCycleMinTime );
-                    nextSwellTime = timeSinceStart + (swellCycleTime/2);
-                }
-            } else if (nextSwellTime < timeSinceStart) {
-                rockSwellActive = true;
-                rockSwellStartTime = timeSinceStart;
-                Debug.Log("Starting rock swell at " + timeSinceStart);
-            }
 
-            if (timeSinceStart > firstRockSpawnTimer && !rocksStarted) {
-                Debug.Log("Starting Rock Volley. Time since game began: " + timeSinceStart + " Rock volley start time: " + rockVolleyStartTime + " Rock volley length: " + rockVolleyBaseInterval);
+            if (!rocksStarted) {
                 foreach (GameObject emiter in rockEmiters) {
-                    StartCoroutine(RockSpawner(emiter, timeSinceStart, deltaTime));
+                    StartCoroutine(RockSpawner(emiter, timeSinceStart));
                 }
                 rocksStarted = true;
             } 
@@ -222,11 +262,16 @@ namespace SpaceBoat.HazardManagers {
             Debug.Log("Starting hazard " + this.gameObject.name);
             hazardDuration = baseDuration;
             hazardBeganTime = Time.time;
+            hasEnded = false;
             meteorSoundDuration = SoundManager.Instance.Length("MeteorWhoosh_0");
-            nextSwellTime = hazardBeganTime + firstSwellTimer;
+            escalationLevels.Sort((a, b) => a.timeIntoHazard.CompareTo(b.timeIntoHazard));
         }
 
         void Start() {
+            if (escalationLevels.Count == 0) {
+                Debug.LogError("No escalation levels set for hazard " + this.gameObject.name);
+                return;
+            }
             if (testMode) {
                 StartHazard();
             }
