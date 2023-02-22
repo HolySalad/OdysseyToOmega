@@ -68,8 +68,9 @@ namespace SpaceBoat.Ship.Activatables
         }
 
         IEnumerator RespawnHarpoon() {
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(3.5f);
             harpoonGun.LoadHarpoon();
+                Destroy(gameObject);
         }
 
         public void OnCollisionEnter2D(Collision2D collision) {
