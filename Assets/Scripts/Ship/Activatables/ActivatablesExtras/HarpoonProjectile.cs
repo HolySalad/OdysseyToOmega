@@ -68,7 +68,7 @@ namespace SpaceBoat.Ship.Activatables
         }
 
         IEnumerator RespawnHarpoon() {
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(3.5f);
             harpoonGun.LoadHarpoon();
         }
 
@@ -76,6 +76,7 @@ namespace SpaceBoat.Ship.Activatables
             if (collision.gameObject.layer == LayerMask.NameToLayer("MapBounds")) {
                 Debug.Log("Harpoon hit map bounds");
                 StartCoroutine(RespawnHarpoon());
+                Destroy(gameObject);
             } else  if (collision.gameObject.layer == LayerMask.NameToLayer("PhysicalHazards")) {
                 Destructable destructable = collision.gameObject.GetComponent<Destructable>();
                 if (destructable != null) {

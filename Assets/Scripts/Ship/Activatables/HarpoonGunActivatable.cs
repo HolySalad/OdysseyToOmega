@@ -9,12 +9,15 @@ namespace SpaceBoat.Ship.Activatables {
         public UI.HelpPrompt HelpPrompt {get {return helpPrompt;}}
         [SerializeField] private GameObject harpoonPrefab;
         [SerializeField] private GameObject harpoonLocation;
-        [SerializeField] private GameObject backBarrel;
-        [SerializeField] private GameObject frontBarrel;
+        [SerializeField] private GameObject harpoonBarrel;
+        [SerializeField] private GameObject AimerParent;
+        [SerializeField] private GameObject Aimer1;
+        [SerializeField] private GameObject Aimer2;
         [SerializeField] private Transform overrideShipViewTarget;
         [SerializeField] private float minAngle = -5;
         [SerializeField] private float maxAngle = 30;
         [SerializeField] private float RotationSpeed = 5f;
+        [SerializeField] private int maxAimerDistance = 100;
 
 
 
@@ -38,6 +41,7 @@ namespace SpaceBoat.Ship.Activatables {
 
         public void Activate(Player player) {
             isInUse = true;            
+            AimerParent.SetActive(true);
             foreach (UsageCallback callback in usageCallbacks) {
                 callback();
             }
@@ -51,19 +55,23 @@ namespace SpaceBoat.Ship.Activatables {
 
         public void Deactivate(Player player) {
             isInUse = false;
+            AimerParent.SetActive(false);
             foreach (UsageCallback callback in deactivationCallbacks) {
                 callback();
             }
+            Debug.Log("Deactivating harpoon gun by player");
             StartCoroutine(RestoreCamera(0.2f));
         }
 
         public void Deactivate(Player player, bool internalDeactivation) {
+            Debug.Log("Deactivating harpoon gun by harpoon");
+            AimerParent.SetActive(false);
             isInUse = false;
             foreach (UsageCallback callback in deactivationCallbacks) {
                 callback();
             }
             player.DetatchFromActivatable();
-            StartCoroutine(RestoreCamera(2.5f));
+            StartCoroutine(RestoreCamera(3.5f));
         }
 
         public bool ActivationCondition(Player player) {
@@ -73,6 +81,19 @@ namespace SpaceBoat.Ship.Activatables {
         public void LoadHarpoon() {
             isLoaded = true;
             harpoonLocation.GetComponent<SpriteRenderer>().enabled = true;
+        }
+
+        void Start() {
+            Quaternion rot = Aimer1.transform.rotation;
+            Vector3 posDiff = Aimer2.transform.position - Aimer1.transform.position;
+            Vector3 lastPos = Aimer2.transform.position;
+            for (int i = 0; i < maxAimerDistance; i++) {
+                GameObject aimer = Instantiate(Aimer1, AimerParent.transform);
+                aimer.transform.position = lastPos + posDiff;
+                lastPos = aimer.transform.position;
+                aimer.transform.rotation = rot;
+            }
+            AimerParent.SetActive(false);
         }
 
         public void FireHarpoon() {
@@ -104,11 +125,25 @@ namespace SpaceBoat.Ship.Activatables {
                 Debug.DrawRay(harpoonLocation.transform.position, harpoonLocation.transform.TransformDirection(Vector3.right)*100, Color.red, Time.deltaTime );
                 if (CthulkInput.EquipmentUsageKeyDown()) {
                     FireHarpoon();
-                    Deactivate(GameModel.Instance.player);
                 }
-                
-                Quaternion target = Quaternion.Euler(transform.rotation.eulerAngles.x,transform.rotation.eulerAngles.y,Mathf.Clamp(transform.rotation.eulerAngles.z + (CthulkInput.HorizontalInput() *-1 * RotationSpeed), minAngle, maxAngle));
+                float rotation = (CthulkInput.HorizontalInput() *-1 * RotationSpeed * Time.deltaTime);
+                if (rotation == 0) {
+                    return;
+                } else if (rotation > 0) {
+                } else {
+                }
+                float originalRotation = transform.rotation.eulerAngles.z;
+                if (originalRotation > 180) {
+                    originalRotation = originalRotation - 360;
+                }
+                float clampedValue = Mathf.Clamp(originalRotation + rotation, minAngle, maxAngle);
+                if (clampedValue < 0) {
+                    clampedValue = 360 + clampedValue;
+                }
+                Debug.Log("Original rotation: " + originalRotation + " Rotation: " + rotation + " Clamped Value: " + clampedValue);
+                Quaternion target = Quaternion.Euler(transform.rotation.eulerAngles.x,transform.rotation.eulerAngles.y, clampedValue);
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, target, RotationSpeed);
+                harpoonBarrel.transform.rotation = Quaternion.RotateTowards(harpoonBarrel.transform.rotation, target, RotationSpeed);
             }
         }
 
