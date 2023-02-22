@@ -4,7 +4,9 @@ using UnityEngine;
 
 namespace SpaceBoat.Ship.Activatables {
     public class SailsActivatable : MonoBehaviour, IActivatables
-    {
+    {   
+        [SerializeField] private UI.HelpPrompt helpPrompt;
+        public UI.HelpPrompt HelpPrompt {get {return helpPrompt;}}
         public enum SailGrouping {
             WheelSails,
             MainSails,
@@ -38,11 +40,15 @@ namespace SpaceBoat.Ship.Activatables {
 
         private List<UsageCallback> usageCallbacks = new List<UsageCallback>();
         private List<UsageCallback> deactivationCallbacks = new List<UsageCallback>();
+        private List<UsageCallback> onNextSailRepairCallbacks = new List<UsageCallback>();
         public void AddActivationCallback(UsageCallback callback) {
             usageCallbacks.Add(callback);
         }
         public void AddDeactivationCallback(UsageCallback callback) {
             deactivationCallbacks.Add(callback);
+        }
+        public void AddOnSailRepairCallback(UsageCallback callback) {
+            onNextSailRepairCallbacks.Add(callback);
         }
 
         void Awake() {
@@ -64,6 +70,9 @@ namespace SpaceBoat.Ship.Activatables {
         public void Repair() {
             isBroken = false;
             spriteRenderer.sprite = repairedSprite;
+            foreach (UsageCallback callback in onNextSailRepairCallbacks) {
+                callback();
+            }
         }
 
         public void Break() {

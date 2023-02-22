@@ -5,6 +5,10 @@ using UnityEngine;
 namespace SpaceBoat {    
     public class CthulkInput {
 
+        public static bool EscapeKeyDown() {
+            return Input.GetKeyDown(KeyCode.Escape);
+        }
+
         public static bool AttackKeyDown() {
             return Input.GetButtonDown("Attack");
         }

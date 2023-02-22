@@ -14,7 +14,7 @@ using Newtonsoft.Json;
 
 
 namespace SpaceBoat {
-    public enum ActivatablesNames {HarpoonGun, Kitchen, Ladder, Sails, Bedroom, CraftingBench, None};
+    public enum ActivatablesNames {HarpoonGun, Kitchen, Ladder, Sails, Bedroom, CraftingBench, ShipShield, None};
 
     public class GameModel : MonoBehaviour
     {
@@ -31,9 +31,11 @@ namespace SpaceBoat {
         [SerializeField] public Player player;
         [SerializeField] public SoundManager sound;
         [SerializeField] public UI.HelpPromptsManager helpPrompts;
+        [SerializeField] public UI.HelpPromptsManager controlsPrompts;
         [SerializeField] public CameraController cameraController;
         [SerializeField] public GameObject theBoat;
         [SerializeField] public CometManager cometManager;
+        [SerializeField] public GameObject shipShield;
 
         [Header("Ship")]
         [SerializeField] public List<GameObject> shipSails;
@@ -47,11 +49,10 @@ namespace SpaceBoat {
         [SerializeField] public GameObject foodPrefab;
 
         // hazard manager prefabs
-        [SerializeField] public List<GameObject> hazardManagerPrefabs;
+        [Header("Hazard Prefabs")] 
+        [SerializeField] public List<HazardDefinition> hazardDefinitions;
+        [SerializeField] private HazardPlanner hazardPlanner;
         [SerializeField] private float hazardWindDownTime = 15f;
-
-        [Header("Enemy Prefabs")] 
-        [SerializeField] public GameObject hydraPrefab;
 
         [Header("Help Prompts && Tutorial")]
         [SerializeField] public Environment.HelpPromptTrigger[] movementTutorialTrigger;
@@ -81,9 +82,12 @@ namespace SpaceBoat {
         public int lastSurvivingSailCount {get; private set;}
 
         private IHazardManager currentHazardManager;
-        private int hazardsCompleted = 0;
+        private Dictionary<HazardTypes, GameObject> hazardManagerPrefabsDict = new Dictionary<HazardTypes, GameObject>();
+        private int numHazardsCompleted = 0;
         private float hazardWindDownTimer = 0f;
         public bool hazardWindDown {get; private set;}
+
+        private bool hasRebuiltBuildablesAfterLoad = false;
 
 
         public bool isPaused {get; private set;}
@@ -200,6 +204,23 @@ namespace SpaceBoat {
             }
             saveGame = saveGameManager.saveData;
 
+            //hazard dictionary
+            foreach (HazardDefinition hazardManagerPrefab in hazardDefinitions) {
+                hazardManagerPrefabsDict.Add(hazardManagerPrefab.hazardType, hazardManagerPrefab.hazardManagerPrefab);
+                if (!saveGame.hazardsCompleted.ContainsKey(hazardManagerPrefab.hazardType)) {
+                    saveGame.hazardsCompleted.Add(hazardManagerPrefab.hazardType, false);
+                }
+            }
+            //veryify hazard plans
+            foreach (HazardOptions hazardOptions in hazardPlanner.hazardPlan) {
+                foreach (HazardTypes hazardType in hazardOptions.hazardOptions) {
+                    if (!hazardManagerPrefabsDict.ContainsKey(hazardType)) {
+                        Debug.LogError("Hazard type " + hazardType + " not found in hazard manager dictionary, but is used in a hazard plan!");
+                    }
+                }
+            }
+
+
             GameBeganTime = Time.time;
             lastSurvivingSailCount = shipSails.Count;
         }
@@ -315,32 +336,27 @@ namespace SpaceBoat {
 
         }
 
-        GameObject PickNextHazard() {
-            List<GameObject> availableHazards = new List<GameObject>();
-            int highestPriority = -1;
-            Debug.Log("Selecting one of " + hazardManagerPrefabs.Count + " hazards for the next hazard");
-            foreach (GameObject hazard in hazardManagerPrefabs) {
-                IHazardManager hazardManager = hazard.GetComponent<IHazardManager>();
-                if (!hazardManager.wasCompleted && hazardsCompleted >= hazardManager.GetEarliestAppearence() && hazardsCompleted < hazardManager.GetLatestAppearence()) {
-                    availableHazards.Add(hazard);
-                    if (hazardManager.GetPriority() > highestPriority) {
-                        highestPriority = hazardManager.GetPriority();
-                    }
-                }
-            }
-            if (availableHazards.Count == 0) {
-                Debug.Log("No hazards available, game has ended.");
+        (GameObject, HazardDifficulty) PickNextHazard() {
+            if (numHazardsCompleted >= hazardPlanner.hazardPlan.Count) {
+                Debug.Log("No more hazards to spawn, game over!");
                 TriggerToBeContinued();
-                return null;
+                return (null, HazardDifficulty.Easy);;
             }
-            List<GameObject> highestPriorityHazards = new List<GameObject>();
-            foreach (GameObject hazard in availableHazards) {
-                IHazardManager hazardManager = hazard.GetComponent<IHazardManager>();
-                if (hazardManager.GetPriority() == highestPriority) {
-                    highestPriorityHazards.Add(hazard);
+            HazardOptions hazardOptions = hazardPlanner.hazardPlan[numHazardsCompleted];
+            List<HazardTypes> validHazards = new List<HazardTypes>();
+            foreach (HazardTypes hazardType in hazardOptions.hazardOptions) {
+                if (!saveGame.hazardsCompleted[hazardType]) {
+                    validHazards.Add(hazardType);
                 }
             }
-            return highestPriorityHazards[Random.Range(0, highestPriorityHazards.Count)];
+            if (validHazards.Count == 0) {
+                Debug.LogError("All of the hazards registered in Hazard Plan " + numHazardsCompleted + " are already complete! Mistake in setup in the Game Model?");
+                TriggerToBeContinued();
+                return (null, HazardDifficulty.Easy);
+            }
+            HazardTypes hazardTypeToSpawn = validHazards[Random.Range(0, validHazards.Count)];
+            Debug.Log("Spawning hazard " + hazardTypeToSpawn + " with difficulty " + hazardOptions.difficulty + ".");
+            return (hazardManagerPrefabsDict[hazardTypeToSpawn], hazardOptions.difficulty);
         }
 
 
@@ -353,33 +369,31 @@ namespace SpaceBoat {
                 hazardWindDown = false;
             }
             if (currentHazardManager != null && currentHazardManager.hasEnded) {
-                if (hazardWindDownTimer == 0) {
-                    Debug.Log("Hazard has ended, starting wind-down timer");
-                    hazardManagerPrefabs.Remove(currentHazardManager.gameObject);
-                    Destroy(currentHazardManager.gameObject);
-                    currentHazardManager = null;
-                    hazardsCompleted++;
-                    hazardWindDownTimer = hazardWindDownTime;
-                    hazardWindDown = true;
-                    cometManager.StartCometBurst();
-                    return;
-                }
+                Debug.Log("Hazard has ended, starting wind-down timer");
+                saveGame.hazardsCompleted[currentHazardManager.hazardType] = true;
+                Destroy(currentHazardManager.gameObject);
+                currentHazardManager = null;
+                numHazardsCompleted++;
+                hazardWindDownTimer = hazardWindDownTime;
+                hazardWindDown = true;
+                cometManager.StartCometBurst();
+                return;
             }
             if (currentHazardManager == null) {
                 //new hazard or enemy.
-                if (hazardsCompleted == 0) {
+                if (numHazardsCompleted == 0) {
                     if (!CheckMoveTutorialComplete()) return;
                     else {
                         Debug.Log("Tutorial complete, starting first Hazard");
                         cometManager.StartCometSpawner();
                     }
                 }
-                GameObject nextHazard = PickNextHazard();
+                (GameObject nextHazard, HazardDifficulty difficulty) = PickNextHazard();
                 if (nextHazard == null) return;
                 GameObject newHazard = Instantiate(nextHazard, new Vector3(0, 0, 0), Quaternion.identity);
                 Debug.Log("New hazard: " + newHazard.name);
                 currentHazardManager = newHazard.GetComponent<IHazardManager>();
-                currentHazardManager.StartHazard();
+                currentHazardManager.StartHazard(difficulty);
                 if (playSoundtrack && currentHazardManager.hazardSoundtrack != "") {
                     sound.Play(currentHazardManager.hazardSoundtrack);
                 }
@@ -470,7 +484,7 @@ namespace SpaceBoat {
                 {RewardType.ShieldEquipmentBlueprint, true},
                 {RewardType.HealthPackEquipmentBlueprint, false},
                 {RewardType.JumpPadBuildableBlueprint, true},
-                {RewardType.ShipShieldBuildableBlueprint, false}
+                {RewardType.ShipShieldBuildableBlueprint, true}
             };
 
             public Dictionary<EquipmentType, bool> equipmentBuilt = new Dictionary<EquipmentType, bool>() {
@@ -479,6 +493,10 @@ namespace SpaceBoat {
                 {EquipmentType.Shield, false},
                 {EquipmentType.HealthPack, false}
             };
+
+            public List<Ship.Buildables.buildableSaveData> buildables = new List<Ship.Buildables.buildableSaveData>();
+
+            public Dictionary<HazardTypes, bool> hazardsCompleted = new Dictionary<HazardTypes, bool>();
 
             public bool movementTutorialPlayed;
             public bool cometTutorialPlayed;
@@ -502,6 +520,7 @@ namespace SpaceBoat {
 
             public void ResetBetweenRuns() {
                 saveData.equipmentBuilt.Clear();
+                saveData.hazardsCompleted.Clear();
                 saveData.money = 0;
                 Save();
             }

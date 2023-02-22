@@ -5,9 +5,11 @@ using UnityEngine;
 namespace SpaceBoat.Ship.Buildables.BuildableExtras {
     public class BuildSystemPlacementMarker : MonoBehaviour
     {
+        [SerializeField] private UI.HelpPrompt buildPrompt;
         [SerializeField] private float movementDistancePerSecond = 4f;
         [SerializeField] private float verticalMovementCooldown = 0.3f;
         
+        private UI.HelpPromptsManager controlsPrompts;
         private BuildSystemTrack currentTrack;
         private SpriteRenderer spriteRenderer;
         private IBuildable buildable;
@@ -29,6 +31,7 @@ namespace SpaceBoat.Ship.Buildables.BuildableExtras {
         void Start() {
             buildable = GetComponentInParent<IBuildable>();
             spriteRenderer = GetComponent<SpriteRenderer>();
+            controlsPrompts = GameModel.Instance.controlsPrompts;
             Sprite sprite = buildable.BuildablePrefab.GetComponent<SpriteRenderer>().sprite;
             spriteRenderer.sprite = sprite;
             spriteRenderer.color = Color.green;
@@ -44,13 +47,15 @@ namespace SpaceBoat.Ship.Buildables.BuildableExtras {
                     BuildSystemTrack trackCollider = collider.GetComponent<BuildSystemTrack>();
                     if (trackCollider != null) {
                         currentTrack = trackCollider;
+                        StartCoroutine(PulseColor());
+                        Debug.Log("Adding build prompt "+buildPrompt.promptLabel);
+                        controlsPrompts.AddPrompt(buildPrompt);
                         return;
                     }
                 }
             } else {
                 Debug.LogError("BuildSystemPlacementMarker could not find a BuildSystemTrack to attach to.");
             }
-            StartCoroutine(PulseColor());
         }
 
         void Update() {
@@ -59,8 +64,18 @@ namespace SpaceBoat.Ship.Buildables.BuildableExtras {
                 buildable.Build(transform.position);
                 StopAllCoroutines();
                 UI.UIManager.Instance.ExitBuildMode();
+                controlsPrompts.RemovePrompt(buildPrompt);
                 return;
             }
+            if (CthulkInput.EscapeKeyDown()) {
+                StopAllCoroutines();
+                UI.UIManager.Instance.ExitBuildMode(true);
+                controlsPrompts.RemovePrompt(buildPrompt);
+                Destroy(gameObject);
+                return;
+            }
+
+
             //vertical movement
             float VertMovement = CthulkInput.cameraVerticalLook();
             vertMoveTimer -= Time.unscaledDeltaTime;
