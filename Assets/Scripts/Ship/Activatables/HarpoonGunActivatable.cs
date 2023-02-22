@@ -71,7 +71,7 @@ namespace SpaceBoat.Ship.Activatables {
                 callback();
             }
             player.DetatchFromActivatable();
-            StartCoroutine(RestoreCamera(3.5f));
+            StartCoroutine(RestoreCamera(2f));
         }
 
         public bool ActivationCondition(Player player) {

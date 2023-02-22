@@ -70,13 +70,13 @@ namespace SpaceBoat.Ship.Activatables
         IEnumerator RespawnHarpoon() {
             yield return new WaitForSeconds(3.5f);
             harpoonGun.LoadHarpoon();
+                Destroy(gameObject);
         }
 
         public void OnCollisionEnter2D(Collision2D collision) {
             if (collision.gameObject.layer == LayerMask.NameToLayer("MapBounds")) {
                 Debug.Log("Harpoon hit map bounds");
                 StartCoroutine(RespawnHarpoon());
-                Destroy(gameObject);
             } else  if (collision.gameObject.layer == LayerMask.NameToLayer("PhysicalHazards")) {
                 Destructable destructable = collision.gameObject.GetComponent<Destructable>();
                 if (destructable != null) {
