@@ -35,11 +35,13 @@ namespace SpaceBoat.Ship.Activatables {
         private SpriteRenderer spriteRenderer;
         private Light2D generatorLight;
         private GameObject shield;
+        private Collider2D shieldCollider;
 
         void Awake() {
             spriteRenderer = GetComponent<SpriteRenderer>();
             generatorLight = GetComponentInChildren<Light2D>();
             shield = GameModel.Instance.shipShield;
+            shieldCollider = shield.GetComponent<Collider2D>();
         }
 
         IEnumerator EnableShield() {
@@ -60,6 +62,7 @@ namespace SpaceBoat.Ship.Activatables {
                 } else if (timer < shieldFlashDuration) {
                     shieldLight.intensity = Mathf.Lerp(shieldFlashStrength, 0f, (timer-(shieldFlashDuration/2))/(shieldFlashDuration/2));
                 } else {
+                    shieldCollider.enabled = true;
                     shieldLight.intensity = 0f;
                 }
                 timer += Time.deltaTime;
@@ -96,10 +99,12 @@ namespace SpaceBoat.Ship.Activatables {
                         shieldLight.intensity = Mathf.Lerp(shieldFlashStrength, 0f, (timer-(shieldGrowthTime-(shieldFlashDuration/2)))/(shieldFlashDuration/2));
                     }
                 } else {
+                    shieldCollider.enabled = false;
                     shieldLight.intensity = 0f;
                 }
                 yield return null;
             }
+            shieldCollider.enabled = false;
             shieldRenderer.enabled = false;
             shieldLight.enabled = false;
             yield return new WaitForSeconds(shieldCooldown);
