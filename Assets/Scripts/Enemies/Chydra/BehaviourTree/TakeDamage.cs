@@ -26,16 +26,17 @@ namespace BehaviorDesigner.Runtime.Tasks.Unity.UnityAnimator
             if (triggered.triggered)
             {
                 health.Value -= healthLoss;
-                headObject.Value.GetComponent<Animator>().SetTrigger(animationTriggerName);
-                if (health.Value > 0)
+                if(health.Value>0)
                 {
-                    headObject.Value.GetComponent<Animator>().SetBool("BreakHookBool", true);
+
+                headObject.Value.GetComponent<Animator>().SetTrigger(animationTriggerName);
+                headObject.Value.GetComponent<Animator>().SetBool("BreakHookBool",true);
                 }
                 else
                 {
-
-                headObject.Value.GetComponent<Animator>().SetBool("BreakHookBool", false);
+                    headObject.Value.GetComponent<Animator>().SetBool("Dead", true);
                 }
+
                 triggered.triggered = false;
                 return TaskStatus.Success;
             }

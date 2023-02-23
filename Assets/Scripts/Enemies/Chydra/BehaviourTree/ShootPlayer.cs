@@ -7,6 +7,8 @@ using UnityEngine.U2D.IK;
 using DG.Tweening;
 public class ShootPlayer : SetupChydra
 {
+    public int headNumber = 0;
+    private int fireballCounter;
     public int fireballCount = 1;
     public float prepareShotTime;
     public float fireballSpeed = 2f;
@@ -25,6 +27,7 @@ public class ShootPlayer : SetupChydra
 
         // DOVirtual.DelayedCall(prepareShotTime, Shoot);
          animator.SetTrigger(animationTriggerName);
+        fireballCounter = fireballCount;
     }
     public void Shoot()
     {
@@ -35,9 +38,21 @@ public class ShootPlayer : SetupChydra
 
         fireballObject = GameObject.Instantiate(fireballPrefab, new Vector2(xPos, yPos), Quaternion.identity);
        Fireball fireball = fireballObject.GetComponent<Fireball>();
-       fireball.SetupMeteor(fireballSpeed, fireballObject.transform.position, playerController.gameObject, 4f);
+        if (headNumber > 0)
+        {
 
-        fireballCount--;
+            if (headNumber == 1)
+            {
+                fireball.GetComponent<SpriteRenderer>().color = Color.green;
+            }
+            else if (headNumber == 2)
+            {
+                fireball.GetComponent<SpriteRenderer>().color = Color.red;
+            }
+        }
+        fireball.SetupMeteor(fireballSpeed, fireballObject.transform.position, playerController.gameObject, 4f);
+
+        fireballCounter--;
         shotFireball = true;
         stopwatch = 0;
     }
@@ -56,12 +71,12 @@ public class ShootPlayer : SetupChydra
             stopwatch += Time.deltaTime;
         }
 
-        if (stopwatch > shooting_delay && fireballCount > 0)
+        if (stopwatch > shooting_delay && fireballCounter > 0)
         {
             Shoot();
             return TaskStatus.Running;
         }
-        else if (stopwatch > shooting_delay && fireballCount <= 0)
+        else if (stopwatch > shooting_delay && fireballCounter <= 0)
         {
             return TaskStatus.Success;
         }
@@ -74,6 +89,7 @@ public class ShootPlayer : SetupChydra
         stopwatch = 0;
         triggered = false;
         trigger.Shoot = false;
+        fireballCounter = fireballCount;
     }
 }
 
