@@ -7,6 +7,7 @@ namespace SpaceBoat.PlayerSubclasses.Equipment {
         public EquipmentType equipmentType {get;} = EquipmentType.HealthPack;
         public PlayerStateName usageState {get;} = PlayerStateName.staticEquipment;
         public bool isActive {get; private set;} = false;
+        public bool canCancelWorkToUse {get;} = false;
         public EquipmentActivationBehaviour activationBehaviour {get;} = EquipmentActivationBehaviour.Toggle;
 
         [SerializeField] private float usageTime = 3f;

@@ -16,6 +16,7 @@ namespace SpaceBoat.PlayerSubclasses.Equipment {
         public EquipmentType equipmentType {get;} = EquipmentType.Dash;
         public PlayerStateName usageState {get;} = PlayerStateName.dash;
         public bool isActive {get; private set;} = false;
+        public bool canCancelWorkToUse {get;} = false;
         public EquipmentActivationBehaviour activationBehaviour {get;} = EquipmentActivationBehaviour.Press;
         private float cooldown = 0f;
         private float dashTimer = 0f;

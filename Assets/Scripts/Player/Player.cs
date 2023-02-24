@@ -579,6 +579,10 @@ namespace SpaceBoat {
 
         // player equipment
 
+        public IPlayerEquipment GetCurrentEquipmentScript() {
+            return equipmentScripts[currentEquipmentType];
+        }
+
         public void CraftEquipment(EquipmentType type, int cost) {
             game.saveGame.equipmentBuilt[type] = true;
             PlayerSpendsMoney(cost);

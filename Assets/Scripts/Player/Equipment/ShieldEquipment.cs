@@ -17,6 +17,7 @@ namespace SpaceBoat.PlayerSubclasses.Equipment {
         public EquipmentType equipmentType {get;} = EquipmentType.Shield;
         public PlayerStateName usageState {get;} = PlayerStateName.staticEquipment;
         public bool isActive {get; private set;} = false;
+        public bool canCancelWorkToUse {get;} = true;
         public EquipmentActivationBehaviour activationBehaviour {get;} = EquipmentActivationBehaviour.Hold;
         private float shieldStrength;
         private float shieldBrokenTime = -99f;

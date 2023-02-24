@@ -11,6 +11,8 @@ namespace SpaceBoat.PlayerSubclasses.Equipment {
         public EquipmentType equipmentType {get;} = EquipmentType.HarpoonLauncher;
         public PlayerStateName usageState {get;} = PlayerStateName.weaponEquipment;
         public bool isActive {get;} = false;
+        public bool canCancelWorkToUse {get;} = false;
+        
         public EquipmentActivationBehaviour activationBehaviour {get;} = EquipmentActivationBehaviour.Toggle;
 
         public bool ActivationCondition(Player player) {
