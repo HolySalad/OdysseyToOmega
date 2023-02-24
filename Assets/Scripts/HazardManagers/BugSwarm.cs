@@ -52,6 +52,7 @@ namespace SpaceBoat.HazardManagers {
         [SerializeField] private float baseBugSpawnInterval = 10f;
         [SerializeField] private float firstBugSpawnTime = 5f;
         [SerializeField] private float baseBomberBugSpawnInterval = 30f;
+        [SerializeField] private float bomberBugSpawnBuffer = 1.5f;
 
         public HazardTypes HazardType {get;} = HazardTypes.BugSwarm;
 
@@ -135,6 +136,7 @@ namespace SpaceBoat.HazardManagers {
                         bomberBugTargets = GameModel.Instance.SelectSailsForTargetting(currentEscalationLevel.numBomberBugs);
                         for (int i = 0; i < bomberBugTargets.Count; i++) {
                             SpawnBug(true);
+                            yield return new WaitForSeconds(bomberBugSpawnBuffer);
                         }
                     } else if (HazardTime() > lastBugSpawnTime + (baseBugSpawnInterval * currentEscalationLevel.bugSpawnIntervalMultiplier)) {
                         SpawnBug(false);
