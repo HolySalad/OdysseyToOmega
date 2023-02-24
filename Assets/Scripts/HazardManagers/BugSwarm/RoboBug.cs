@@ -219,7 +219,7 @@ namespace SpaceBoat.HazardManagers.BugSwarmSubclasses {
             if ((int)transform.position.x - (int)currentMovementOffset.x == (int)targetLocation.x) {
                 reachedTargetLocation = true;
                 bombSprite.enabled = false;
-                GameObject bomb = Instantiate(bombPrefab, transform.position, bombSprite.transform.rotation);
+                GameObject bomb = Instantiate(bombPrefab, bombSprite.transform.position, bombSprite.transform.rotation);
                 bomb.GetComponent<BugBomb>().SetTargetSail(bombTarget);
                 isLeaving = true;
                 carriesBomb = false;

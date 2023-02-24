@@ -218,27 +218,27 @@ MonoBehaviour:
   escalationSettings:
     escalationLevelsEasy:
     - timeIntoHazard: 0
-      maxNumBugs: 5
-      bugSpawnIntervalMultiplier: 1
-      bomberBugSpawnIntervalMultiplier: 0.5
-      numBomberBugs: 3
-    - timeIntoHazard: 16
-      maxNumBugs: 6
-      bugSpawnIntervalMultiplier: 1
-      bomberBugSpawnIntervalMultiplier: 1
-      numBomberBugs: 2
-    - timeIntoHazard: 76
       maxNumBugs: 7
       bugSpawnIntervalMultiplier: 1
+      bomberBugSpawnIntervalMultiplier: 0.5
+      numBomberBugs: 4
+    - timeIntoHazard: 16
+      maxNumBugs: 7
+      bugSpawnIntervalMultiplier: 0.9
+      bomberBugSpawnIntervalMultiplier: 1
+      numBomberBugs: 3
+    - timeIntoHazard: 76
+      maxNumBugs: 8
+      bugSpawnIntervalMultiplier: 0.8
       bomberBugSpawnIntervalMultiplier: 0.75
       numBomberBugs: 3
     - timeIntoHazard: 99
-      maxNumBugs: 7
+      maxNumBugs: 9
       bugSpawnIntervalMultiplier: 0.5
       bomberBugSpawnIntervalMultiplier: 0.6
-      numBomberBugs: 3
+      numBomberBugs: 4
     - timeIntoHazard: 117
-      maxNumBugs: 7
+      maxNumBugs: 11
       bugSpawnIntervalMultiplier: 0.5
       bomberBugSpawnIntervalMultiplier: 0.5
       numBomberBugs: 4
@@ -263,7 +263,7 @@ MonoBehaviour:
   - {fileID: 8971267930640056011}
   baseBugSpawnInterval: 10
   firstBugSpawnTime: 5
-  baseBomberBugSpawnInterval: 30
+  baseBomberBugSpawnInterval: 20
   bomberBugSpawnBuffer: 1.5
 --- !u!1 &5794598897063023708
 GameObject:

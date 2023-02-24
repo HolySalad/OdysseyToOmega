@@ -48,10 +48,10 @@ public class SoundManager : MonoBehaviour
 
             SetTrueVolume(sound, sound.volume);
             sound.source.pitch = 1;
-            sound.source.loop = sound.loop;
+            sound.source.loop = sound.loop; 
         }
 
-        SceneManager.activeSceneChanged += ClearSoundsOnSceneChange;
+        //SceneManager.activeSceneChanged += ClearSoundsOnSceneChange;
     }
 
     void RefreshSources(){
