@@ -15,7 +15,7 @@ namespace SpaceBoat.HazardManagers.CosmicStormSubclasses {
 
         void OnTriggerEnter2D(Collider2D collision) {
             bool isMapBounds = collision.gameObject.layer == LayerMask.NameToLayer("MapBounds");
-            bool isShip = collision.gameObject.tag == "Ground" && collision.gameObject.CompareTag("Ship");
+            bool isShip = collision.gameObject.layer == LayerMask.NameToLayer("Ground") && collision.gameObject.CompareTag("Ship");
             if (isMapBounds || isShip) {
                 Destroy(this.gameObject);
             }
