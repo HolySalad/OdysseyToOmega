@@ -6,6 +6,12 @@ using UnityEngine.SceneManagement;
 
 public class SoundManager : MonoBehaviour
 {
+    [Range(0f,1f)]
+    [SerializeField] private float masterVolume = 1f;
+    [Range(0f,1f)]
+    [SerializeField] private float musicVolume = 1f;
+    [Range(0f,1f)]
+    [SerializeField] private float sfxVolume = 1f;
     public Sound[] sounds;
 
     public static SoundManager Instance;
@@ -15,6 +21,15 @@ public class SoundManager : MonoBehaviour
     private List<Coroutine> coroutines = new List<Coroutine>();
 
     //TODO Add to awake FindObjectOfType<SoundManager>() and then call it and ad .("WhatheverSoundName")
+
+    void SetTrueVolume (Sound s, float volume) {
+        if (s.isMusic) {
+            s.source.volume = volume * masterVolume * musicVolume;
+        } else {
+            s.source.volume = volume * masterVolume * sfxVolume;
+        }
+    }
+
     void Awake()
     {
         if (Instance != null){
@@ -31,7 +46,7 @@ public class SoundManager : MonoBehaviour
             sound.source = gameObject.AddComponent<AudioSource>();
             sound.source.clip = sound.clip;
 
-            sound.source.volume = sound.volume;
+            SetTrueVolume(sound, sound.volume);
             sound.source.pitch = 1;
             sound.source.loop = sound.loop;
         }
@@ -46,7 +61,7 @@ public class SoundManager : MonoBehaviour
                 sound.source = gameObject.AddComponent<AudioSource>();
                 sound.source.clip = sound.clip;
 
-                sound.source.volume = sound.volume;
+                SetTrueVolume(sound, sound.volume);
                 sound.source.pitch = 1;
                 sound.source.loop = sound.loop;
             }
@@ -85,10 +100,10 @@ public class SoundManager : MonoBehaviour
         float startTime = Time.time;
         float endTime = startTime + time;
         while (Time.time < endTime){
-            s.source.volume = Mathf.Lerp(startVolume, endVolume, (Time.time - startTime) / time);
+            SetTrueVolume(s, Mathf.Lerp(startVolume, endVolume, (Time.time - startTime) / time));
             yield return null;
         }
-        s.source.volume = endVolume;
+        SetTrueVolume(s, endVolume);
     }
 
     public void Play(string name, float volume = 1f, bool fadeIn = false, float fadeTime = 1f, float delayBeforeFade = 0f) {
@@ -102,20 +117,23 @@ public class SoundManager : MonoBehaviour
             s.source.volume = 0f;
             coroutines.Add(StartCoroutine(FadeSoundIn(s, volume, fadeTime, delayBeforeFade)));
         } else {
-            s.source.volume = volume;
+            SetTrueVolume(s, volume);
         }
         
         s.source.Play();
     }
 
-    public void Oneshot(string name){
+    public void Oneshot(string name, float volume = 1f){
         Sound s = Array.Find(sounds, sound => sound.name == name);
         Debug.Log("Playing Sound " + name);
         if(s == null){
             Debug.LogWarning("Sound "+ name + " not found.");
             return;
         }
-        s.source.PlayOneShot(s.source.clip);
+        float trueVolume = volume * masterVolume;
+        if (s.isMusic) trueVolume *= musicVolume;
+        else trueVolume *= sfxVolume;
+        s.source.PlayOneShot(s.source.clip, trueVolume);
     }
 
     IEnumerator FadeOutSound(Sound s, float time){
