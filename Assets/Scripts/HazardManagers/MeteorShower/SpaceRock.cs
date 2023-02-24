@@ -41,9 +41,11 @@ namespace SpaceBoat.HazardManagers.MeteorShowerSubclasses {
             } else if (collision.gameObject.layer == LayerMask.NameToLayer("PlayerChar")) {
                 GameModel.Instance.player.PlayerTakesDamage();
                 //GameModel.Instance.player.AddMomentum(new Vector2(velocity.x, 0));
+                GetComponent<Collider2D>().enabled = false;
                 destructable.Destruct(this.gameObject);
             } else if (collision.gameObject.layer == LayerMask.NameToLayer("Ground") && !collision.gameObject.tag.Equals("Platforms")
                 && !collision.gameObject.tag.Equals("SpaceRocks")) {
+                GetComponent<Collider2D>().enabled = false;
                 destructable.Destruct(this.gameObject);
             }
         }

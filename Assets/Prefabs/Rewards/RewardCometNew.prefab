@@ -112,6 +112,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7043717955650290217}
   - component: {fileID: 5710422949429317542}
+  - component: {fileID: 3888828257098608660}
+  - component: {fileID: 7708441191020369055}
   m_Layer: 8
   m_Name: BounceWalkway
   m_TagString: Comets
@@ -145,11 +147,51 @@ CapsuleCollider2D:
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_UsedByEffector: 0
+  m_UsedByEffector: 1
   m_UsedByComposite: 0
-  m_Offset: {x: 1.1629256, y: -1.2108834}
-  m_Size: {x: 3.5451863, y: 0.7637645}
+  m_Offset: {x: 1.1509371, y: -1.2108834}
+  m_Size: {x: 4.7201104, y: 0.7637645}
   m_Direction: 1
+--- !u!50 &3888828257098608660
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2269064243820526706}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 1
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!251 &7708441191020369055
+PlatformEffector2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2269064243820526706}
+  m_Enabled: 1
+  m_UseColliderMask: 1
+  m_ColliderMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RotationalOffset: 0
+  m_UseOneWay: 1
+  m_UseOneWayGrouping: 0
+  m_SurfaceArc: 180
+  m_UseSideFriction: 0
+  m_UseSideBounce: 0
+  m_SideArc: 1
 --- !u!1 &6422490716872590728
 GameObject:
   m_ObjectHideFlags: 0
