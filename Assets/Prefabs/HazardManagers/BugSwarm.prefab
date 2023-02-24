@@ -200,7 +200,7 @@ Transform:
   - {fileID: 7950210062078371865}
   - {fileID: 779375578987569729}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8803737850798611973
 MonoBehaviour:
@@ -218,10 +218,30 @@ MonoBehaviour:
   escalationSettings:
     escalationLevelsEasy:
     - timeIntoHazard: 0
+      maxNumBugs: 5
+      bugSpawnIntervalMultiplier: 1
+      bomberBugSpawnIntervalMultiplier: 0.5
+      numBomberBugs: 3
+    - timeIntoHazard: 16
+      maxNumBugs: 6
+      bugSpawnIntervalMultiplier: 1
+      bomberBugSpawnIntervalMultiplier: 1
+      numBomberBugs: 2
+    - timeIntoHazard: 76
+      maxNumBugs: 7
+      bugSpawnIntervalMultiplier: 1
+      bomberBugSpawnIntervalMultiplier: 0.75
+      numBomberBugs: 3
+    - timeIntoHazard: 99
+      maxNumBugs: 7
+      bugSpawnIntervalMultiplier: 0.5
+      bomberBugSpawnIntervalMultiplier: 0.6
+      numBomberBugs: 3
+    - timeIntoHazard: 117
       maxNumBugs: 7
       bugSpawnIntervalMultiplier: 0.5
       bomberBugSpawnIntervalMultiplier: 0.5
-      numBomberBugs: 3
+      numBomberBugs: 4
     escalationLevelsMedium: []
     escalationLevelsHard: []
   baseHazardDuration: 135
@@ -244,6 +264,7 @@ MonoBehaviour:
   baseBugSpawnInterval: 10
   firstBugSpawnTime: 5
   baseBomberBugSpawnInterval: 30
+  bomberBugSpawnBuffer: 1.5
 --- !u!1 &5794598897063023708
 GameObject:
   m_ObjectHideFlags: 0

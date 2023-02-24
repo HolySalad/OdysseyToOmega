@@ -12056,7 +12056,7 @@ PrefabInstance:
       objectReference: {fileID: 520569538}
     - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
       propertyPath: DoNotUpdate
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
       propertyPath: helpPrompts
@@ -12136,7 +12136,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
       propertyPath: hazardPlanner.hazardPlan.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
       propertyPath: movementTutorialTrigger.Array.data[0]
@@ -12169,7 +12169,7 @@ PrefabInstance:
     - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
       propertyPath: hazardDefinitions.Array.data[2].hazardManagerPrefab
       value: 
-      objectReference: {fileID: 3819972910884401993, guid: 19d1b8fc8a639ad4485351aa38842945, type: 3}
+      objectReference: {fileID: 4024047624258082750, guid: a9c7e8b2d61ce7143bd7ce4cc3e73fc4, type: 3}
     - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
       propertyPath: hazardDefinitions.Array.data[3].hazardManagerPrefab
       value: 
@@ -12180,7 +12180,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
       propertyPath: hazardPlanner.hazardPlan.Array.data[1].hazardOptions.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
       propertyPath: hazardPlanner.hazardPlan.Array.data[2].hazardOptions.Array.size
@@ -16168,165 +16168,6 @@ MonoBehaviour:
   - {x: -52.332844, y: -12.203318, z: 0}
   - {x: -35.20535, y: -12.104548, z: 0}
   - {x: -30.543411, y: -16.160776, z: 0}
---- !u!1001 &4024047623525459004
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 2
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4024047624258082750, guid: a9c7e8b2d61ce7143bd7ce4cc3e73fc4, type: 3}
-      propertyPath: m_Name
-      value: BugSwarm
-      objectReference: {fileID: 0}
-    - target: {fileID: 4024047624258082751, guid: a9c7e8b2d61ce7143bd7ce4cc3e73fc4, type: 3}
-      propertyPath: m_RootOrder
-      value: 13
-      objectReference: {fileID: 0}
-    - target: {fileID: 4024047624258082751, guid: a9c7e8b2d61ce7143bd7ce4cc3e73fc4, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4024047624258082751, guid: a9c7e8b2d61ce7143bd7ce4cc3e73fc4, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4024047624258082751, guid: a9c7e8b2d61ce7143bd7ce4cc3e73fc4, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4024047624258082751, guid: a9c7e8b2d61ce7143bd7ce4cc3e73fc4, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4024047624258082751, guid: a9c7e8b2d61ce7143bd7ce4cc3e73fc4, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4024047624258082751, guid: a9c7e8b2d61ce7143bd7ce4cc3e73fc4, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4024047624258082751, guid: a9c7e8b2d61ce7143bd7ce4cc3e73fc4, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4024047624258082751, guid: a9c7e8b2d61ce7143bd7ce4cc3e73fc4, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4024047624258082751, guid: a9c7e8b2d61ce7143bd7ce4cc3e73fc4, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4024047624258082751, guid: a9c7e8b2d61ce7143bd7ce4cc3e73fc4, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8803737850798611973, guid: a9c7e8b2d61ce7143bd7ce4cc3e73fc4, type: 3}
-      propertyPath: isTestMode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8803737850798611973, guid: a9c7e8b2d61ce7143bd7ce4cc3e73fc4, type: 3}
-      propertyPath: escalationSettings.escalationLevelsEasy.Array.size
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8803737850798611973, guid: a9c7e8b2d61ce7143bd7ce4cc3e73fc4, type: 3}
-      propertyPath: escalationSettings.escalationLevelsEasy.Array.data[0].maxNumBugs
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8803737850798611973, guid: a9c7e8b2d61ce7143bd7ce4cc3e73fc4, type: 3}
-      propertyPath: escalationSettings.escalationLevelsEasy.Array.data[1].maxNumBugs
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 8803737850798611973, guid: a9c7e8b2d61ce7143bd7ce4cc3e73fc4, type: 3}
-      propertyPath: escalationSettings.escalationLevelsEasy.Array.data[2].maxNumBugs
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 8803737850798611973, guid: a9c7e8b2d61ce7143bd7ce4cc3e73fc4, type: 3}
-      propertyPath: escalationSettings.escalationLevelsEasy.Array.data[3].maxNumBugs
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 8803737850798611973, guid: a9c7e8b2d61ce7143bd7ce4cc3e73fc4, type: 3}
-      propertyPath: escalationSettings.escalationLevelsEasy.Array.data[4].maxNumBugs
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 8803737850798611973, guid: a9c7e8b2d61ce7143bd7ce4cc3e73fc4, type: 3}
-      propertyPath: escalationSettings.escalationLevelsEasy.Array.data[1].numBomberBugs
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8803737850798611973, guid: a9c7e8b2d61ce7143bd7ce4cc3e73fc4, type: 3}
-      propertyPath: escalationSettings.escalationLevelsEasy.Array.data[2].numBomberBugs
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8803737850798611973, guid: a9c7e8b2d61ce7143bd7ce4cc3e73fc4, type: 3}
-      propertyPath: escalationSettings.escalationLevelsEasy.Array.data[3].numBomberBugs
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8803737850798611973, guid: a9c7e8b2d61ce7143bd7ce4cc3e73fc4, type: 3}
-      propertyPath: escalationSettings.escalationLevelsEasy.Array.data[4].numBomberBugs
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 8803737850798611973, guid: a9c7e8b2d61ce7143bd7ce4cc3e73fc4, type: 3}
-      propertyPath: escalationSettings.escalationLevelsEasy.Array.data[1].timeIntoHazard
-      value: 16
-      objectReference: {fileID: 0}
-    - target: {fileID: 8803737850798611973, guid: a9c7e8b2d61ce7143bd7ce4cc3e73fc4, type: 3}
-      propertyPath: escalationSettings.escalationLevelsEasy.Array.data[2].timeIntoHazard
-      value: 76
-      objectReference: {fileID: 0}
-    - target: {fileID: 8803737850798611973, guid: a9c7e8b2d61ce7143bd7ce4cc3e73fc4, type: 3}
-      propertyPath: escalationSettings.escalationLevelsEasy.Array.data[3].timeIntoHazard
-      value: 99
-      objectReference: {fileID: 0}
-    - target: {fileID: 8803737850798611973, guid: a9c7e8b2d61ce7143bd7ce4cc3e73fc4, type: 3}
-      propertyPath: escalationSettings.escalationLevelsEasy.Array.data[4].timeIntoHazard
-      value: 117
-      objectReference: {fileID: 0}
-    - target: {fileID: 8803737850798611973, guid: a9c7e8b2d61ce7143bd7ce4cc3e73fc4, type: 3}
-      propertyPath: escalationSettings.escalationLevelsEasy.Array.data[0].bugSpawnIntervalMultiplier
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8803737850798611973, guid: a9c7e8b2d61ce7143bd7ce4cc3e73fc4, type: 3}
-      propertyPath: escalationSettings.escalationLevelsEasy.Array.data[1].bugSpawnIntervalMultiplier
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8803737850798611973, guid: a9c7e8b2d61ce7143bd7ce4cc3e73fc4, type: 3}
-      propertyPath: escalationSettings.escalationLevelsEasy.Array.data[2].bugSpawnIntervalMultiplier
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8803737850798611973, guid: a9c7e8b2d61ce7143bd7ce4cc3e73fc4, type: 3}
-      propertyPath: escalationSettings.escalationLevelsEasy.Array.data[3].bugSpawnIntervalMultiplier
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8803737850798611973, guid: a9c7e8b2d61ce7143bd7ce4cc3e73fc4, type: 3}
-      propertyPath: escalationSettings.escalationLevelsEasy.Array.data[4].bugSpawnIntervalMultiplier
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8803737850798611973, guid: a9c7e8b2d61ce7143bd7ce4cc3e73fc4, type: 3}
-      propertyPath: escalationSettings.escalationLevelsEasy.Array.data[0].bomberBugSpawnIntervalMultiplier
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8803737850798611973, guid: a9c7e8b2d61ce7143bd7ce4cc3e73fc4, type: 3}
-      propertyPath: escalationSettings.escalationLevelsEasy.Array.data[1].bomberBugSpawnIntervalMultiplier
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8803737850798611973, guid: a9c7e8b2d61ce7143bd7ce4cc3e73fc4, type: 3}
-      propertyPath: escalationSettings.escalationLevelsEasy.Array.data[2].bomberBugSpawnIntervalMultiplier
-      value: 0.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 8803737850798611973, guid: a9c7e8b2d61ce7143bd7ce4cc3e73fc4, type: 3}
-      propertyPath: escalationSettings.escalationLevelsEasy.Array.data[3].bomberBugSpawnIntervalMultiplier
-      value: 0.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 8803737850798611973, guid: a9c7e8b2d61ce7143bd7ce4cc3e73fc4, type: 3}
-      propertyPath: escalationSettings.escalationLevelsEasy.Array.data[4].bomberBugSpawnIntervalMultiplier
-      value: 0.5
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_AddedGameObjects: []
-  m_SourcePrefab: {fileID: 100100000, guid: a9c7e8b2d61ce7143bd7ce4cc3e73fc4, type: 3}
 --- !u!114 &4982469117670442914
 MonoBehaviour:
   m_ObjectHideFlags: 0
