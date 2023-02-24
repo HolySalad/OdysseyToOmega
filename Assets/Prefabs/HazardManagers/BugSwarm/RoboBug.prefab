@@ -2277,6 +2277,7 @@ MonoBehaviour:
   noAbortingAttackAfterSpeedProportion: 0.8
   attackAcceleration: 50
   maxAttackVectorChangePercent: 0.5
+  minAttackVectorChangePercent: 0.1
   attackVectorMagDifferenceForAbort: 1
   explosionRadius: 2
   attackTimeoutTime: 1.5

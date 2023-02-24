@@ -25,6 +25,7 @@ namespace SpaceBoat.HazardManagers.BugSwarmSubclasses {
         [SerializeField] private float noAbortingAttackAfterSpeedProportion = 0.8f;
         [SerializeField] private float attackAcceleration = 10f;
         [SerializeField] private float maxAttackVectorChangePercent = 0.1f;
+        [SerializeField] private float minAttackVectorChangePercent = 0.1f;
         [SerializeField] private float attackVectorMagDifferenceForAbort = 0.1f;
         [SerializeField] private float explosionRadius = 2f;
         [SerializeField] private float attackTimeoutTime = 2f;
@@ -131,6 +132,8 @@ namespace SpaceBoat.HazardManagers.BugSwarmSubclasses {
                     attackEndedTime = Time.time;
                     return;
                 }
+            } else {
+                attackVector = (attackVector + ((targetVector - attackVector) *minAttackVectorChangePercent*Time.deltaTime)).normalized;
             }
 
             float angle = Mathf.Atan2(attackVector.y, attackVector.x)*Mathf.Rad2Deg;
@@ -329,7 +332,7 @@ namespace SpaceBoat.HazardManagers.BugSwarmSubclasses {
                 playerChar.PlayerTakesDamage();
             }
             swarm?.RemoveBugFromSwarm(this);
-            SoundManager.Instance.Play("BugExplosion");
+            if (collision.gameObject.layer != LayerMask.NameToLayer("MapBounds")) SoundManager.Instance.Play("BugExplosion");
         }
 
         bool CheckLineOfSight(Vector3 target) {
