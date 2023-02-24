@@ -9,6 +9,7 @@ namespace SpaceBoat.Rewards {
         [SerializeField] private GameObject spriteObject;
         [SerializeField] private GameObject itemPlaceObject;
         [SerializeField] private GameObject destructionAnimationObject;
+        [SerializeField] private GameObject bounceWalkway;
 
         private GameObject itemPrefab;
         private GameObject secondaryItemPrefab;
@@ -27,6 +28,7 @@ namespace SpaceBoat.Rewards {
             this.numSecondaryItems = numSecondaryItems;
 
             itemPlaceObject.GetComponent<SpriteRenderer>().sprite = itemPrefab.GetComponent<SpriteRenderer>().sprite;
+            bounceWalkway.AddComponent<Extras.CometBounceWalkway>();
         }
 
 
@@ -73,4 +75,21 @@ namespace SpaceBoat.Rewards {
         }
 
     }
+}
+
+namespace SpaceBoat.Rewards.Extras {
+    public class CometBounceWalkway: MonoBehaviour, Environment.IBouncable
+    {
+        public bool Bounce(Player player) {
+            float playerVelocity = player.gameObject.GetComponent<Rigidbody2D>().velocity.y;
+            
+            if (playerVelocity < 0) {
+                player.ForceJump(false, true, true);
+                Destroy(gameObject.transform.parent.gameObject);
+                return true;
+            }
+            return false;
+        }
+    }
+
 }
