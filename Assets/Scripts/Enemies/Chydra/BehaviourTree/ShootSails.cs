@@ -23,6 +23,7 @@ public class ShootSails : SetupChydra
     bool shotFireball = false;
     GameObject fireballObject;
     private float stopwatch;
+    private float runningFor = 0;
     public override void OnStart()
     {
        // DOVirtual.DelayedCall(prepareShotTime, Shoot);
@@ -102,6 +103,11 @@ public class ShootSails : SetupChydra
         {
             return TaskStatus.Success;
         }
+        runningFor += Time.deltaTime;
+        if (runningFor > 10)
+        {
+            return TaskStatus.Failure;
+        }
         else return TaskStatus.Running;
     }
 
@@ -112,6 +118,6 @@ public class ShootSails : SetupChydra
         fireballCounter = fireballCount;
         triggered = false;
         trigger.Shoot = false;
-
+        runningFor = 0;
     }
 }

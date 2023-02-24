@@ -21,6 +21,7 @@ public class ShootPlayer : SetupChydra
     bool shotFireball = false;
     GameObject fireballObject;
     private float stopwatch;
+    private float runningFor = 0;
 
     public override void OnStart()
     {
@@ -80,6 +81,11 @@ public class ShootPlayer : SetupChydra
         {
             return TaskStatus.Success;
         }
+        runningFor += Time.deltaTime;
+        if (runningFor > 10)
+        {
+            return TaskStatus.Failure;
+        }
         else return TaskStatus.Running;
     }
 
@@ -90,6 +96,7 @@ public class ShootPlayer : SetupChydra
         triggered = false;
         trigger.Shoot = false;
         fireballCounter = fireballCount;
+        runningFor = 0;
     }
 }
 

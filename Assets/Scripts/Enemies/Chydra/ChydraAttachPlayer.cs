@@ -16,14 +16,25 @@ namespace SpaceBoat.HazardManagers
            
             if(option == 1)
             {
+                if (!GameModel.Instance.heads[option].activeInHierarchy)
+                {
 
             GameModel.Instance.heads[option].SetActive(true);
+                }
+                
+                   animator.SetBool("Dead", false);
+                
             animator.SetBool("H2Awaken", false);
             }
             if (option == 2)
             {
 
-                GameModel.Instance.heads[option].SetActive(true);
+                if (!GameModel.Instance.heads[option].activeInHierarchy)
+                {
+
+                    GameModel.Instance.heads[option].SetActive(true);
+                }
+                animator.SetBool("Dead", false);
                 animator.SetBool("H3Awaken", false);
             }
             if (option == 3)

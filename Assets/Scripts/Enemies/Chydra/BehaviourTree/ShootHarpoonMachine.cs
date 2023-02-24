@@ -24,7 +24,7 @@ using UnityEngine.U2D.IK;
     bool shotFireball = false;
         GameObject fireballObject;
         private float stopwatch;
-
+    private float runningFor = 0;
         public override void OnStart()
         {
         fireballCounter = fireballCount;
@@ -84,7 +84,13 @@ using UnityEngine.U2D.IK;
             {
                 return TaskStatus.Success;
             }
-            else return TaskStatus.Running;
+
+        runningFor += Time.deltaTime;
+        if(runningFor>10)
+        {
+            return TaskStatus.Failure;
+        }
+         return TaskStatus.Running;
         }
 
         public override void OnEnd()
@@ -94,5 +100,6 @@ using UnityEngine.U2D.IK;
             triggered = false;
             trigger.Shoot = false;
         fireballCounter = fireballCount;
+        runningFor = 0;
     }
     }
