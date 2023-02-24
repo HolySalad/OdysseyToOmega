@@ -82,6 +82,8 @@ namespace SpaceBoat.Ship.Activatables
                 if (destructable != null) {
                     Debug.Log("Harpoon hit a physical hazard with a destruction behaviour");
                     destructable.Destruct();
+                } else if (collision.gameObject.TryGetComponent(out HazardManagers.BugSwarmSubclasses.RoboBug roboBug)) {
+                    roboBug.DropMoney();
                 } else {
                     Debug.Log("Harpoon hit a physical hazard without a destruction behaviour");
                     Destroy(collision.gameObject);

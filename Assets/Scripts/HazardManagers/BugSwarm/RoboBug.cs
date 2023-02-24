@@ -35,6 +35,8 @@ namespace SpaceBoat.HazardManagers.BugSwarmSubclasses {
         [SerializeField] private float bombDropHeight = 4f;
         [SerializeField] private GameObject bombPrefab;
         [SerializeField] private SpriteRenderer bombSprite;
+        [SerializeField] private GameObject moneyPrefab;
+        [SerializeField] private int moneyDropChance = 10;
 
         
         [SerializeField] private float bugoffTime = 12f;    
@@ -241,6 +243,10 @@ namespace SpaceBoat.HazardManagers.BugSwarmSubclasses {
             rb.velocity = movementVector.normalized*travellingMovementSpeed;
         }
 
+        public void DropMoney() {
+            Instantiate(moneyPrefab, transform.position, Quaternion.identity);
+        }
+
 
         IEnumerator MoveBug() {
             if (explosionAnimationObject.activeSelf) {
@@ -321,6 +327,7 @@ namespace SpaceBoat.HazardManagers.BugSwarmSubclasses {
         void OnCollisionEnter2D(Collision2D collision) {
             if (collision.gameObject.layer == LayerMask.NameToLayer("PhysicalHazards"))
                 return;
+            if (explosionAnimationObject.activeSelf) return;
             spriteRenderer.enabled = false;
             foreach (Light2D light in atttackModeLights) {
                 light.enabled = false;
@@ -332,7 +339,12 @@ namespace SpaceBoat.HazardManagers.BugSwarmSubclasses {
                 playerChar.PlayerTakesDamage();
             }
             swarm?.RemoveBugFromSwarm(this);
-            if (collision.gameObject.layer != LayerMask.NameToLayer("MapBounds")) SoundManager.Instance.Play("BugExplosion");
+            if (collision.gameObject.layer != LayerMask.NameToLayer("MapBounds")) {
+                SoundManager.Instance.Play("BugExplosion");
+                if (Random.Range(0, 100) < moneyDropChance) {
+                    DropMoney();
+                }
+            }
         }
 
         bool CheckLineOfSight(Vector3 target) {
