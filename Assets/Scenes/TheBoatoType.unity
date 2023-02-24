@@ -234,6 +234,13 @@ MonoBehaviour:
     text: Press F to repair the sails.
     color: {r: 1, g: 1, b: 1, a: 1}
     TriggerOnlyOnce: 0
+  inUseHelpPrompt:
+    promptLabel: 
+    priority: 0
+    duration: 0
+    text: 
+    color: {r: 0, g: 0, b: 0, a: 0}
+    TriggerOnlyOnce: 0
   repairedSprite: {fileID: 21300000, guid: b9d9a563de369264abd256c65c496f2b, type: 3}
   brokenSprite: {fileID: 21300000, guid: 4a908e7cc1171bd488f4001ba5fbbd54, type: 3}
   hazardTarget: {fileID: 357666684}
@@ -1711,6 +1718,13 @@ MonoBehaviour:
     text: Press F to Craft
     color: {r: 1, g: 1, b: 1, a: 0}
     TriggerOnlyOnce: 0
+  inUseHelpPrompt:
+    promptLabel: 
+    priority: 0
+    duration: 0
+    text: 
+    color: {r: 0, g: 0, b: 0, a: 0}
+    TriggerOnlyOnce: 0
 --- !u!1 &257693940
 GameObject:
   m_ObjectHideFlags: 0
@@ -1933,6 +1947,213 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &276359536 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3620209243767773600, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+  m_PrefabInstance: {fileID: 1840913048}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &276359540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 276359536}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ComponentVersion: 1
+  m_LightType: 1
+  m_BlendStyleIndex: 0
+  m_FalloffIntensity: 0.5
+  m_Color: {r: 1, g: 0.9215687, b: 0.058823533, a: 1}
+  m_Intensity: 5
+  m_LightVolumeIntensity: 1
+  m_LightVolumeIntensityEnabled: 0
+  m_ApplyToSortingLayers: b979dbcd7b77acdef1464b98d37fdc85695479bd000000004b4f5e1c2bedd38faffd6e60cbc6ec18db6ca57b7142583cad63e4e0371b9f142f27c051
+  m_LightCookieSprite: {fileID: 0}
+  m_DeprecatedPointLightCookieSprite: {fileID: 0}
+  m_LightOrder: 0
+  m_AlphaBlendOnOverlap: 0
+  m_OverlapOperation: 0
+  m_NormalMapDistance: 3
+  m_NormalMapQuality: 2
+  m_UseNormalMap: 0
+  m_ShadowIntensityEnabled: 0
+  m_ShadowIntensity: 0.75
+  m_ShadowVolumeIntensityEnabled: 0
+  m_ShadowVolumeIntensity: 0.75
+  m_Vertices:
+  - position: {x: 0.29045868, y: -0.09802115, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 1}
+    uv: {x: 0, y: 0}
+  - position: {x: -0.1236763, y: 0.26052332, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 1}
+    uv: {x: 0, y: 0}
+  - position: {x: 0.11512756, y: 0.110850215, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 1}
+    uv: {x: 0, y: 0}
+  - position: {x: -0.2134819, y: -0.37170887, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 1}
+    uv: {x: 0, y: 0}
+  - position: {x: -0.456913, y: -0.17866635, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 1}
+    uv: {x: 0, y: 0}
+  - position: {x: -0.2134819, y: -0.37170887, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 1}
+    uv: {x: 0, y: 0}
+  - position: {x: 0.29045868, y: -0.09802115, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 1}
+    uv: {x: 0, y: 0}
+  - position: {x: 0.11512756, y: 0.110850215, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 1}
+    uv: {x: 0, y: 0}
+  - position: {x: -0.1236763, y: 0.26052332, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 1}
+    uv: {x: 0, y: 0}
+  - position: {x: -0.456913, y: -0.17866635, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 1}
+    uv: {x: 0, y: 0}
+  - position: {x: -0.5241, y: -0.7635, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: -0.4418, y: -0.8165, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: -0.3508, y: -0.8524, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: -0.2545, y: -0.87, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: -0.1567, y: -0.8685, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: -0.061, y: -0.8479, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: 0.0253, y: -0.8111, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: 0.5291, y: -0.5374, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: 0.6101, y: -0.4824, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: 0.6789, y: -0.4128, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: 0.7327, y: -0.3311, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: 0.7697, y: -0.2405, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: 0.7882, y: -0.1444, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: 0.7877, y: -0.0465, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: 0.7682, y: 0.0493, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: 0.7303, y: 0.1396, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: 0.6733, y: 0.2235, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: 0.498, y: 0.4323, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: 0.4281, y: 0.5007, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: 0.3808, y: 0.5344, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: 0.1421, y: 0.6841, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: 0.0545, y: 0.7277, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: -0.04, y: 0.7535, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: -0.1376, y: 0.7603, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: -0.2347, y: 0.748, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: -0.3275, y: 0.717, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: -0.4125, y: 0.6686, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: -0.4865, y: 0.6045, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: -0.5219, y: 0.5628, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: -0.8552, y: 0.1237, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: -0.9064, y: 0.0403, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: -0.9405, y: -0.0514, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: -0.956, y: -0.148, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: -0.9524, y: -0.2458, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: -0.9298, y: -0.3411, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: -0.8891, y: -0.4301, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: -0.8318, y: -0.5094, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: -0.7676, y: -0.5704, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  m_Triangles: 00000100020003000100000001000300040005000a000a0005000a000b0005000b000c0005000c000d0005000d000e0005000e000f0005000f001000050006001100050010001100060011001200060012001300060013001400060014001500060015001600060016001700060017001800060018001900060019001a00060007001b0006001a001b0007001b001c0007001c001d00070008001e0007001d001e0008001e001f0008001f002000080020002100080021002200080022002300080023002400080024002500080025002600080009002700080026002700090027002800090028002900090029002a0009002a002b0009002b002c0009002c002d0009002d002e0009002e002f000a00050009000a002f000900
+  m_LocalBounds:
+    m_Center: {x: -0.083899975, y: -0.054850012, z: 0}
+    m_Extent: {x: 0.8721, y: 0.81515, z: 0}
+  m_PointLightInnerAngle: 360
+  m_PointLightOuterAngle: 360
+  m_PointLightInnerRadius: 0
+  m_PointLightOuterRadius: 1
+  m_ShapeLightParametricSides: 5
+  m_ShapeLightParametricAngleOffset: 0
+  m_ShapeLightParametricRadius: 1
+  m_ShapeLightFalloffSize: 0.5
+  m_ShapeLightFalloffOffset: {x: 0, y: 0}
+  m_ShapePath:
+  - {x: -0.2134819, y: -0.37170887, z: 0}
+  - {x: 0.29045868, y: -0.09802115, z: 0}
+  - {x: 0.11512756, y: 0.110850215, z: 0}
+  - {x: -0.1236763, y: 0.26052332, z: 0}
+  - {x: -0.456913, y: -0.17866635, z: 0}
+--- !u!212 &292703900 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 4663575126505360841, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+  m_PrefabInstance: {fileID: 1840913048}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &312070737
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4492,6 +4713,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 86901368753283555, guid: 1867d33c320fca94a9e5fee0301a56d1, type: 3}
   m_PrefabInstance: {fileID: 312070737}
   m_PrefabAsset: {fileID: 0}
+--- !u!212 &699859554 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 2027952627490720794, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+  m_PrefabInstance: {fileID: 1840913048}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &702206718
 GameObject:
   m_ObjectHideFlags: 0
@@ -5658,6 +5884,13 @@ MonoBehaviour:
     text: Press F to repair the sails.
     color: {r: 1, g: 1, b: 1, a: 1}
     TriggerOnlyOnce: 0
+  inUseHelpPrompt:
+    promptLabel: 
+    priority: 0
+    duration: 0
+    text: 
+    color: {r: 0, g: 0, b: 0, a: 0}
+    TriggerOnlyOnce: 0
   repairedSprite: {fileID: 21300000, guid: 2f2ecf1fabed6cc409914008a861d7c1, type: 3}
   brokenSprite: {fileID: 21300000, guid: 24eb7c6de6aa4434d82c7debaace9a68, type: 3}
   hazardTarget: {fileID: 2017869525}
@@ -6261,6 +6494,13 @@ MonoBehaviour:
     text: Press F to repair the sails.
     color: {r: 1, g: 1, b: 1, a: 1}
     TriggerOnlyOnce: 0
+  inUseHelpPrompt:
+    promptLabel: 
+    priority: 0
+    duration: 0
+    text: 
+    color: {r: 0, g: 0, b: 0, a: 0}
+    TriggerOnlyOnce: 0
   repairedSprite: {fileID: 21300000, guid: 9779f3f52af6f49429f1012e2255efb4, type: 3}
   brokenSprite: {fileID: 21300000, guid: 0a6180634476ec94fab92f7e88c1bb78, type: 3}
   hazardTarget: {fileID: 1948658649}
@@ -6846,6 +7086,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   helpPrompt:
+    promptLabel: 
+    priority: 0
+    duration: 0
+    text: 
+    color: {r: 0, g: 0, b: 0, a: 0}
+    TriggerOnlyOnce: 0
+  inUseHelpPrompt:
     promptLabel: 
     priority: 0
     duration: 0
@@ -7472,6 +7719,13 @@ MonoBehaviour:
     text: Press F to repair the sails.
     color: {r: 1, g: 1, b: 1, a: 1}
     TriggerOnlyOnce: 0
+  inUseHelpPrompt:
+    promptLabel: 
+    priority: 0
+    duration: 0
+    text: 
+    color: {r: 0, g: 0, b: 0, a: 0}
+    TriggerOnlyOnce: 0
   repairedSprite: {fileID: 21300000, guid: 2f2ecf1fabed6cc409914008a861d7c1, type: 3}
   brokenSprite: {fileID: 21300000, guid: 24eb7c6de6aa4434d82c7debaace9a68, type: 3}
   hazardTarget: {fileID: 768430754}
@@ -7750,6 +8004,11 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 3.9599998, y: 0.75}
   m_Direction: 1
+--- !u!212 &1178134124 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 1324512748714856507, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+  m_PrefabInstance: {fileID: 1840913048}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1181307051 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6263570546104170242, guid: 1867d33c320fca94a9e5fee0301a56d1, type: 3}
@@ -9367,8 +9626,15 @@ MonoBehaviour:
     promptLabel: kitchenHelp
     priority: 4
     duration: 0
-    text: Press F to eat and restore health.
+    text: Hold F to eat and restore health.
     color: {r: 0.990566, g: 0.990566, b: 0.990566, a: 0}
+    TriggerOnlyOnce: 0
+  inUseHelpPrompt:
+    promptLabel: 
+    priority: 0
+    duration: 0
+    text: 
+    color: {r: 0, g: 0, b: 0, a: 0}
     TriggerOnlyOnce: 0
   healTime: 3
 --- !u!61 &1361564861
@@ -9476,6 +9742,13 @@ MonoBehaviour:
     duration: 0
     text: Press F to repair the sails.
     color: {r: 1, g: 1, b: 1, a: 1}
+    TriggerOnlyOnce: 0
+  inUseHelpPrompt:
+    promptLabel: 
+    priority: 0
+    duration: 0
+    text: 
+    color: {r: 0, g: 0, b: 0, a: 0}
     TriggerOnlyOnce: 0
   repairedSprite: {fileID: 21300000, guid: 665b288b3505b1f4b9a7b1b57dc2b6c9, type: 3}
   brokenSprite: {fileID: 21300000, guid: a67db2792cf5cc54d86379d60481c794, type: 3}
@@ -9922,6 +10195,13 @@ MonoBehaviour:
     text: Press F to repair the sails.
     color: {r: 1, g: 1, b: 1, a: 1}
     TriggerOnlyOnce: 0
+  inUseHelpPrompt:
+    promptLabel: 
+    priority: 0
+    duration: 0
+    text: 
+    color: {r: 0, g: 0, b: 0, a: 0}
+    TriggerOnlyOnce: 0
   repairedSprite: {fileID: 21300000, guid: a3d8d754f781a874e86a3cfa0d9f52d3, type: 3}
   brokenSprite: {fileID: 21300000, guid: a2e8c802102674e4e8c8505779b897fb, type: 3}
   hazardTarget: {fileID: 1345371585}
@@ -10321,7 +10601,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2652018774195889313, guid: 63d98d3d85ef08f48b61f125cc5c237f, type: 3}
       propertyPath: sounds.Array.size
-      value: 38
+      value: 39
       objectReference: {fileID: 0}
     - target: {fileID: 2652018774195889313, guid: 63d98d3d85ef08f48b61f125cc5c237f, type: 3}
       propertyPath: sounds.Array.data[35].clip
@@ -10360,6 +10640,14 @@ PrefabInstance:
       value: ShieldBreak
       objectReference: {fileID: 0}
     - target: {fileID: 2652018774195889313, guid: 63d98d3d85ef08f48b61f125cc5c237f, type: 3}
+      propertyPath: sounds.Array.data[38].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: cbbf01d1bd7203c4b80fc4d30c0b2531, type: 3}
+    - target: {fileID: 2652018774195889313, guid: 63d98d3d85ef08f48b61f125cc5c237f, type: 3}
+      propertyPath: sounds.Array.data[38].name
+      value: Dash
+      objectReference: {fileID: 0}
+    - target: {fileID: 2652018774195889313, guid: 63d98d3d85ef08f48b61f125cc5c237f, type: 3}
       propertyPath: sounds.Array.data[35].volume
       value: 1
       objectReference: {fileID: 0}
@@ -10369,6 +10657,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2652018774195889313, guid: 63d98d3d85ef08f48b61f125cc5c237f, type: 3}
       propertyPath: sounds.Array.data[37].volume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2652018774195889313, guid: 63d98d3d85ef08f48b61f125cc5c237f, type: 3}
+      propertyPath: sounds.Array.data[38].volume
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2652018774195889313, guid: 63d98d3d85ef08f48b61f125cc5c237f, type: 3}
@@ -11621,6 +11913,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 674e99118ffc5924b9056eae976b6f39, type: 3}
+--- !u!212 &1711977181 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 7961413154796137122, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+  m_PrefabInstance: {fileID: 1840913048}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1723639126 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7359222020145517940, guid: d691983cccdcaa14189726940dcbf2c2, type: 3}
@@ -12744,6 +13041,13 @@ MonoBehaviour:
     text: Press F to repair the sails.
     color: {r: 1, g: 1, b: 1, a: 1}
     TriggerOnlyOnce: 0
+  inUseHelpPrompt:
+    promptLabel: 
+    priority: 0
+    duration: 0
+    text: 
+    color: {r: 0, g: 0, b: 0, a: 0}
+    TriggerOnlyOnce: 0
   repairedSprite: {fileID: 21300000, guid: 5e86f5e00c2fc8b4c9263ed0dfd74dda, type: 3}
   brokenSprite: {fileID: 21300000, guid: c222f5a137f2a4b41bc914c2f3b18327, type: 3}
   hazardTarget: {fileID: 1819084543}
@@ -13028,6 +13332,26 @@ PrefabInstance:
       propertyPath: twoThirdsStrengthSprite
       value: 
       objectReference: {fileID: 1462872421}
+    - target: {fileID: 1877163400, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: activeLight
+      value: 
+      objectReference: {fileID: 276359540}
+    - target: {fileID: 1877163400, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: readySprite
+      value: 
+      objectReference: {fileID: 292703900}
+    - target: {fileID: 1877163400, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: cooldownZeroSprite
+      value: 
+      objectReference: {fileID: 1178134124}
+    - target: {fileID: 1877163400, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: cooldownOneThirdSprite
+      value: 
+      objectReference: {fileID: 1711977181}
+    - target: {fileID: 1877163400, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: cooldownTwoThirdsSprite
+      value: 
+      objectReference: {fileID: 699859554}
     - target: {fileID: 172426300997684343, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.23810422
@@ -13050,7 +13374,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
       propertyPath: startingEquipment
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2876327340956515682, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -13087,6 +13411,18 @@ PrefabInstance:
     - target: {fileID: 5140594238898839795, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5160406112707587533, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.707
+      objectReference: {fileID: 0}
+    - target: {fileID: 5160406112707587533, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.957
+      objectReference: {fileID: 0}
+    - target: {fileID: 7148959547558846618, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7691977599830055013, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
       propertyPath: m_Name
@@ -16380,9 +16716,33 @@ PrefabInstance:
     m_TransformParent: {fileID: 1229047327}
     m_Modifications:
     - target: {fileID: 1107500520704108271, guid: 9d3df58a8cb24a34aa7fc450d6442ce9, type: 3}
+      propertyPath: inUseHelpPrompt.text
+      value: Use A and D to aim\nPress Shift to Fire
+      objectReference: {fileID: 0}
+    - target: {fileID: 1107500520704108271, guid: 9d3df58a8cb24a34aa7fc450d6442ce9, type: 3}
       propertyPath: overrideShipViewTarget
       value: 
       objectReference: {fileID: 1327083200}
+    - target: {fileID: 1107500520704108271, guid: 9d3df58a8cb24a34aa7fc450d6442ce9, type: 3}
+      propertyPath: inUseHelpPrompt.color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1107500520704108271, guid: 9d3df58a8cb24a34aa7fc450d6442ce9, type: 3}
+      propertyPath: inUseHelpPrompt.color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1107500520704108271, guid: 9d3df58a8cb24a34aa7fc450d6442ce9, type: 3}
+      propertyPath: inUseHelpPrompt.color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1107500520704108271, guid: 9d3df58a8cb24a34aa7fc450d6442ce9, type: 3}
+      propertyPath: inUseHelpPrompt.priority
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1107500520704108271, guid: 9d3df58a8cb24a34aa7fc450d6442ce9, type: 3}
+      propertyPath: inUseHelpPrompt.promptLabel
+      value: harpoonLauncherAim
+      objectReference: {fileID: 0}
     - target: {fileID: 1107500522413993206, guid: 9d3df58a8cb24a34aa7fc450d6442ce9, type: 3}
       propertyPath: m_Name
       value: harpoon cannon

@@ -724,6 +724,8 @@ namespace SpaceBoat {
             if (activatable.usageSound != null && activatable.usageSound != "") {
                 game.sound.Play(activatable.usageSound);
             }
+            if (activatable.activatableHelpPrompt.promptLabel != "") game.controlsPrompts.RemovePrompt(activatable.activatableHelpPrompt);
+            if (activatable.activatableInUseHelpPrompt.promptLabel != "") game.controlsPrompts.AddPrompt(activatable.activatableInUseHelpPrompt);
             ChangeState(activatable.playerState);
             return true;
         }
@@ -738,7 +740,7 @@ namespace SpaceBoat {
                     if (activatable.ActivationCondition(this) ) {
                         if (coll.gameObject != activatableInRange) {
                             activatableInRange = coll.gameObject;
-                            if (activatable.HelpPrompt.promptLabel != "") game.controlsPrompts.AddPrompt(activatable.HelpPrompt);
+                            if (activatable.activatableHelpPrompt.promptLabel != "") game.controlsPrompts.AddPrompt(activatable.activatableHelpPrompt);
                         }
                         return true;
                     }
@@ -747,7 +749,7 @@ namespace SpaceBoat {
             if (activatableInRange != null) {
                 Debug.Log("Can no longer activate " + activatableInRange.ToString());
                 IActivatables activatable = game.GetActivatableComponent(activatableInRange);
-                if (activatable.HelpPrompt.promptLabel != "") game.controlsPrompts.RemovePrompt(activatable.HelpPrompt);
+                if (activatable.activatableHelpPrompt.promptLabel != "") game.controlsPrompts.RemovePrompt(activatable.activatableHelpPrompt);
                 activatableInRange = null;
             }
             return false;
@@ -761,6 +763,7 @@ namespace SpaceBoat {
             if (activatableInUse.usageSound != "" && game.sound.IsPlaying(activatableInUse.usageSound)) {
                 game.sound.Stop(activatableInUse.usageSound);
             }
+            if (activatableInUse.activatableInUseHelpPrompt.promptLabel != "") game.controlsPrompts.RemovePrompt(activatableInUse.activatableInUseHelpPrompt);
             activatableInUse = null;
             ChangeState(PlayerStateName.ready);
         }

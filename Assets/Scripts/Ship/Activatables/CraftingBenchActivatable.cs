@@ -6,7 +6,12 @@ namespace SpaceBoat.Ship.Activatables {
     public class CraftingBenchActivatable : MonoBehaviour, IActivatables
     {
         [SerializeField] private UI.HelpPrompt helpPrompt;
-        public UI.HelpPrompt HelpPrompt {get {return helpPrompt;}}        public ActivatablesNames kind {get;} = ActivatablesNames.CraftingBench;
+        public UI.HelpPrompt activatableHelpPrompt {get {return helpPrompt;}}
+
+        [SerializeField] private UI.HelpPrompt inUseHelpPrompt;
+        public UI.HelpPrompt activatableInUseHelpPrompt {get {return inUseHelpPrompt;}}        
+        
+        public ActivatablesNames kind {get;} = ActivatablesNames.CraftingBench;
         public bool isInUse {get; private set;} = false;
         public bool canManuallyDeactivate {get;} = true;
         public PlayerStateName playerState {get;} = PlayerStateName.uiPauseState;
