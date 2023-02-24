@@ -12055,10 +12055,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 520569538}
     - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: DoNotUpdate
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
       propertyPath: helpPrompts
       value: 
       objectReference: {fileID: 312070738}
@@ -12067,10 +12063,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1635726836}
     - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: playSoundtrack
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
       propertyPath: controlsPrompts
       value: 
       objectReference: {fileID: 1181307051}
@@ -12078,14 +12070,6 @@ PrefabInstance:
       propertyPath: cameraController
       value: 
       objectReference: {fileID: 702206720}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: resetSaveFileOnStart
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: criticalShipPrompt.text
-      value: Repair the Sails to prevent your ship from sinking!
-      objectReference: {fileID: 0}
     - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
       propertyPath: shipSails.Array.data[0]
       value: 
@@ -12131,14 +12115,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 904344876}
     - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: hazardDefinitions.Array.size
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: hazardPlanner.hazardPlan.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
       propertyPath: movementTutorialTrigger.Array.data[0]
       value: 
       objectReference: {fileID: 1262542355}
@@ -12146,82 +12122,6 @@ PrefabInstance:
       propertyPath: movementTutorialTrigger.Array.data[1]
       value: 
       objectReference: {fileID: 1619471321}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: hazardDefinitions.Array.data[1].hazardType
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: hazardDefinitions.Array.data[2].hazardType
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: hazardDefinitions.Array.data[3].hazardType
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: hazardDefinitions.Array.data[0].hazardManagerPrefab
-      value: 
-      objectReference: {fileID: 3819972910884401993, guid: 19d1b8fc8a639ad4485351aa38842945, type: 3}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: hazardDefinitions.Array.data[1].hazardManagerPrefab
-      value: 
-      objectReference: {fileID: 4632434320095983342, guid: 6e1ebaf3cf80b5b4d8b4b42c90b6c429, type: 3}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: hazardDefinitions.Array.data[2].hazardManagerPrefab
-      value: 
-      objectReference: {fileID: 4024047624258082750, guid: a9c7e8b2d61ce7143bd7ce4cc3e73fc4, type: 3}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: hazardDefinitions.Array.data[3].hazardManagerPrefab
-      value: 
-      objectReference: {fileID: 3819972910884401993, guid: 19d1b8fc8a639ad4485351aa38842945, type: 3}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: hazardPlanner.hazardPlan.Array.data[0].hazardOptions.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: hazardPlanner.hazardPlan.Array.data[1].hazardOptions.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: hazardPlanner.hazardPlan.Array.data[2].hazardOptions.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: hazardPlanner.hazardPlan.Array.data[3].hazardOptions.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: hazardPlanner.hazardPlan.Array.data[0].hazardOptions.Array.data[1]
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: hazardPlanner.hazardPlan.Array.data[1].hazardOptions.Array.data[1]
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: hazardPlanner.hazardPlan.Array.data[1].hazardOptions.Array.data[2]
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: hazardPlanner.hazardPlan.Array.data[2].hazardOptions.Array.data[1]
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: hazardPlanner.hazardPlan.Array.data[2].hazardOptions.Array.data[2]
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: hazardPlanner.hazardPlan.Array.data[3].hazardOptions.Array.data[0]
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: hazardPlanner.hazardPlan.Array.data[3].hazardOptions.Array.data[1]
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: hazardPlanner.hazardPlan.Array.data[3].hazardOptions.Array.data[2]
-      value: 2
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
@@ -12517,6 +12417,10 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: startingEquipment
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7691977599830055013, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
       propertyPath: m_Name
       value: Cthulk3.0
