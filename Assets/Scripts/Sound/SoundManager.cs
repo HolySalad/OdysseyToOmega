@@ -61,17 +61,6 @@ public class SoundManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    public void Play(string name){
-        Sound s = Array.Find(sounds, sound => sound.name == name);
-        Debug.Log("Playing Sound " + name);
-        if(s == null){
-            Debug.LogWarning("Sound "+ name + " not found.");
-            return;
-        }
-        if (s.source == null) RefreshSources();
-        s.source.Play();
-    }
-
     public void Play(string name, afterSoundCallback callback){
         Sound s = Array.Find(sounds, sound => sound.name == name);
         Debug.Log("Playing Sound " + name + " with callback");
@@ -89,15 +78,33 @@ public class SoundManager : MonoBehaviour
         callback();
     }
 
-    public void Play(string name, float volume){
+    IEnumerator FadeSoundIn(Sound s, float targetVolume, float time, float delayBeforeFade){
+        if (delayBeforeFade > 0f) yield return new WaitForSeconds(delayBeforeFade);
+        float startVolume = s.source.volume;
+        float endVolume = targetVolume;
+        float startTime = Time.time;
+        float endTime = startTime + time;
+        while (Time.time < endTime){
+            s.source.volume = Mathf.Lerp(startVolume, endVolume, (Time.time - startTime) / time);
+            yield return null;
+        }
+        s.source.volume = endVolume;
+    }
+
+    public void Play(string name, float volume = 1f, bool fadeIn = false, float fadeTime = 1f, float delayBeforeFade = 0f) {
         Sound s = Array.Find(sounds, sound => sound.name == name);
         Debug.Log("Playing Sound " + name);
         if(s == null){
             Debug.LogWarning("Sound "+ name + " not found.");
             return;
         }
+        if (fadeIn) {
+            s.source.volume = 0f;
+            coroutines.Add(StartCoroutine(FadeSoundIn(s, volume, fadeTime, delayBeforeFade)));
+        } else {
+            s.source.volume = volume;
+        }
         
-        s.source.volume = volume;
         s.source.Play();
     }
 
@@ -111,7 +118,19 @@ public class SoundManager : MonoBehaviour
         s.source.PlayOneShot(s.source.clip);
     }
 
-    public void Stop(string name){
+    IEnumerator FadeOutSound(Sound s, float time){
+        float startVolume = s.source.volume;
+        float startTime = Time.time;
+        float endTime = startTime + time;
+        while (Time.time < endTime){
+            s.source.volume = Mathf.Lerp(startVolume, 0f, (Time.time - startTime) / time);
+            yield return null;
+        }
+        s.source.volume = 0f;
+        s.source.Stop();
+    }
+
+    public void Stop(string name, bool fadeOut = false, float fadeTime = 1f){
         Sound s = Array.Find(sounds, sound => sound.name == name);
         Debug.Log("No longer playing Sound " + name);
         if(s == null){
@@ -119,7 +138,11 @@ public class SoundManager : MonoBehaviour
             return;
         }
         if (s.source == null) return;
-        s.source.Stop();
+        if (fadeOut) {
+            coroutines.Add(StartCoroutine(FadeOutSound(s, fadeTime)));
+        } else {
+            s.source.Stop();
+        }
     }
 
     public float Length(string name){

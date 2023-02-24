@@ -87,11 +87,11 @@ namespace SpaceBoat.HazardManagers {
         private bool hasLightningStruck = false;
         private bool hasStartedWind = false;
         
-        public HazardTypes hazardType {get;} = HazardTypes.CosmicStorm;
-        public bool hasEnded { get; private set; }
-        public bool wasCompleted { get; private set; } = false;
-        public float hazardDuration { get; private set; }
-        public string hazardSoundtrack { get; private set; } = "StormGalaxy";
+        public HazardTypes HazardType {get;} = HazardTypes.CosmicStorm;
+        public bool HasEnded { get; private set; }
+        public bool WasCompleted { get; private set; } = false;
+        public float HazardDuration { get; private set; }
+        public string HazardSoundtrack { get; private set; } = "StormGalaxy";
 
         private float lastCloudSpawnedTime = 0f;
         private float lastLightningPendedTime = 0f;
@@ -107,7 +107,7 @@ namespace SpaceBoat.HazardManagers {
 
         IEnumerator EmitWindVolley(Transform emitter) {
             float nextWindSpawn = HazardTime() + Random.Range(0, windFirstSpawnVariationAbsolute);
-            while (!hasEnded) {
+            while (!HasEnded) {
                 if (HazardTime() > nextWindSpawn) {
                     float yPos = emitter.position.y + Random.Range(-windSpawnYVariationAbsolute, windSpawnYVariationAbsolute);
                     GameObject wind = Instantiate(windPrefab, new Vector3(emitter.position.x, yPos, 0), Quaternion.identity);
@@ -156,7 +156,7 @@ namespace SpaceBoat.HazardManagers {
 
         public void StartHazard(HazardDifficulty difficulty) {
             escalationLevels = escalationSettings.GetEscalationLevels(difficulty);
-            hasEnded = false;
+            HasEnded = false;
             hazardBeganTime = Time.time;
         }
 
@@ -173,7 +173,7 @@ namespace SpaceBoat.HazardManagers {
         }
 
         IEnumerator TriggerLightningStrikes() {
-            while (!hasEnded) {
+            while (!HasEnded) {
                 float currentStrikeInterval = lightningStrikeInterval * currentEscalationLevel.lightningStrikeIntervalMultiplier;
                 if (HazardTime() > lastLightningPendedTime + currentStrikeInterval) {
                     AddStrikes();
@@ -231,7 +231,7 @@ namespace SpaceBoat.HazardManagers {
         }
 
         void Start() {
-            hazardDuration = baseHazardDuration;
+            HazardDuration = baseHazardDuration;
             if (escalationSettings.escalationLevelsEasy.Count == 0) {
                 Debug.LogError("No escalation levels set for hazard " + this.gameObject.name);
                 return;
@@ -245,13 +245,13 @@ namespace SpaceBoat.HazardManagers {
         void FixedUpdate() {
             if (hazardBeganTime < 0) {
                 return;
-            } else if (hasEnded) {
+            } else if (HasEnded) {
                 return;
             }
-            if (hasEnded) return;
+            if (HasEnded) return;
             float timeSinceStart = HazardTime();
-            if (timeSinceStart > hazardDuration) {
-                hasEnded = true;
+            if (timeSinceStart > HazardDuration) {
+                HasEnded = true;
                 return;
             }
 

@@ -236,7 +236,7 @@ namespace SpaceBoat {
             if (sound.IsPlaying("MenuSoundtrack")) {
                 sound.Stop("MenuSoundtrack");
             }
-            //if (playSoundtrack) sound.Play("GameplaySoundtrack");
+            if (playSoundtrack) sound.Play("Interlude", 1f, true, 1f);
             if (movementTutorialPlayed) {
                 foreach (Environment.HelpPromptTrigger trigger in movementTutorialTrigger) {
                     trigger.gameObject.SetActive(false);
@@ -368,11 +368,12 @@ namespace SpaceBoat {
                 Debug.Log("Hazard wind-down complete, starting new hazard");
                 hazardWindDown = false;
             }
-            if (currentHazardManager != null && currentHazardManager.hasEnded) {
+            if (currentHazardManager != null && currentHazardManager.HasEnded) {
                 Debug.Log("Hazard has ended, starting wind-down timer");
-                saveGame.hazardsCompleted[currentHazardManager.hazardType] = true;
-                if (currentHazardManager.hazardSoundtrack != "" && sound.IsPlaying(currentHazardManager.hazardSoundtrack)) {
-                    sound.Stop(currentHazardManager.hazardSoundtrack);
+                saveGame.hazardsCompleted[currentHazardManager.HazardType] = true;
+                if (currentHazardManager.HazardSoundtrack != "" && sound.IsPlaying(currentHazardManager.HazardSoundtrack)) {
+                    sound.Stop(currentHazardManager.HazardSoundtrack, true, 1f);
+                    sound.Play("Interlude", 1f, true,  0.5f, 0.5f);
                 }
                 Destroy(currentHazardManager.gameObject);
                 currentHazardManager = null;
@@ -397,8 +398,9 @@ namespace SpaceBoat {
                 Debug.Log("New hazard: " + newHazard.name);
                 currentHazardManager = newHazard.GetComponent<IHazardManager>();
                 currentHazardManager.StartHazard(difficulty);
-                if (playSoundtrack && currentHazardManager.hazardSoundtrack != "") {
-                    sound.Play(currentHazardManager.hazardSoundtrack);
+                if (playSoundtrack && currentHazardManager.HazardSoundtrack != "") {
+                    sound.Stop("Interlude", true, 0.5f);
+                    sound.Play(currentHazardManager.HazardSoundtrack,1f, true, 0.5f, 0.5f);
                 }
             }
 

@@ -81,12 +81,12 @@ namespace SpaceBoat.HazardManagers {
         [SerializeField] private float rockSizeIncreaseVariance = 1.5f; //how much bigger can rocks be?
         [SerializeField] private int rockSoundChance = 50; //% chance that a rock will play a sound when it spawns.
 
-        public string hazardSoundtrack { get; private set; } = "FirstGalaxy";
+        public string HazardSoundtrack { get; private set; } = "FirstGalaxy";
 
-        public HazardTypes hazardType {get;} = HazardTypes.MeteorShower;
-        public bool hasEnded {get; private set;} = false;
-        public bool wasCompleted {get; private set;} = false;
-        public float hazardDuration {get; private set;} = 0f;
+        public HazardTypes HazardType {get;} = HazardTypes.MeteorShower;
+        public bool HasEnded {get; private set;} = false;
+        public bool WasCompleted {get; private set;} = false;
+        public float HazardDuration {get; private set;} = 0f;
         public float hazardBeganTime {get; private set;} = -1;
 
         private float meteorSoundDuration;
@@ -127,7 +127,7 @@ namespace SpaceBoat.HazardManagers {
         IEnumerator EmitMeteors() {
             float nextMeteorSpawn = firstMeteorSpawnTimer;
             Debug.Log("Emit meteors started. First meteor in " + nextMeteorSpawn + " seconds.");
-            while (!hasEnded) {
+            while (!HasEnded) {
                 float timeSinceGameBegan = HazardTime();
                 if (timeSinceGameBegan > nextMeteorSpawn) {
                     meteorsOut = calcNextNumMeteors();
@@ -187,7 +187,7 @@ namespace SpaceBoat.HazardManagers {
 
         IEnumerator RockSpawner(GameObject emiter, float timeSinceGameBegan) {
             float nextRockSpawn = HazardTime() + firstRockSpawnTimer + Random.Range(0, rockVolleyBaseInterval);
-            while (!hasEnded) {
+            while (!HasEnded) {
                 if (Time.time >= nextRockSpawn) {
                     float height = emiter.transform.position.y + Random.Range(-rockSpawnHeightVariance, rockSpawnHeightVariance);
                     GameObject rockObject = Instantiate(rockPrefab, new Vector2(emiter.transform.position.x, height), Quaternion.identity);
@@ -211,7 +211,7 @@ namespace SpaceBoat.HazardManagers {
         void FixedUpdate() {
             if (hazardBeganTime < 0) {
                 return;
-            } else if (hasEnded) {
+            } else if (HasEnded) {
                 return;
             }
             float deltaTime = Time.fixedDeltaTime;
@@ -223,11 +223,11 @@ namespace SpaceBoat.HazardManagers {
                 nextEscalationIndex++;
             }
 
-            if (timeSinceStart > hazardDuration) {
+            if (timeSinceStart > HazardDuration) {
                 Debug.Log("Hazard " + this.gameObject.name + " has ended");
                 hazardBeganTime = -1;
-                hasEnded = true;
-                wasCompleted = true;
+                HasEnded = true;
+                WasCompleted = true;
                 return;
             }
 
@@ -248,9 +248,9 @@ namespace SpaceBoat.HazardManagers {
         public void StartHazard(HazardDifficulty difficulty) {
             Debug.Log("Starting hazard " + this.gameObject.name);
             escalationLevels = escalationSettings.GetEscalationLevels(difficulty);
-            hazardDuration = baseDuration;
+            HazardDuration = baseDuration;
             hazardBeganTime = Time.time;
-            hasEnded = false;
+            HasEnded = false;
             meteorSoundDuration = SoundManager.Instance.Length("MeteorWhoosh_0");
             escalationLevels.Sort((a, b) => a.timeIntoHazard.CompareTo(b.timeIntoHazard));
         }

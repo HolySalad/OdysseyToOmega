@@ -26,11 +26,11 @@ namespace SpaceBoat.HazardManagers {
         public GameObject gameObject {get;}
         public void StartHazard(HazardDifficulty difficulty);
 
-        public string hazardSoundtrack {get;}
+        public string HazardSoundtrack {get;}
         
-        public float hazardDuration {get;}
-        public bool hasEnded {get;} 
-        public bool wasCompleted {get;}
-        public HazardTypes hazardType {get;}
+        public float HazardDuration {get;}
+        public bool HasEnded {get;} 
+        public bool WasCompleted {get;}
+        public HazardTypes HazardType {get;}
     }
 }
