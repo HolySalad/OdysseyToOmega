@@ -797,17 +797,18 @@ namespace SpaceBoat {
             if (IsPlayerInvulnerable()) {
                 return;
             }
+            hitOnframe = Time.frameCount;
             if (currentEquipment is ShieldEquipment && currentEquipment.isActive) {
                 ((ShieldEquipment)currentEquipment).TakeDamage(this);
                 return;
             }
-            hitOnframe = Time.frameCount;
             ChangeState(PlayerStateName.hitstun);
             health -= 1;
             if (health <= 0) {
                 PlayerDies(false);
                 return;
             }  
+            animator.SetTrigger("Hit");
             SoundManager.Instance.Play("Hit"); 
             if (activatableInUse != null) {
                 activatableInUse.Deactivate(this);

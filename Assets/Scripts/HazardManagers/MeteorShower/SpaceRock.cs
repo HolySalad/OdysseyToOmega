@@ -30,10 +30,6 @@ namespace SpaceBoat.HazardManagers.MeteorShowerSubclasses {
             Rigidbody2D rb = GetComponent<Rigidbody2D>();
             rb.velocity = new Vector2(-speed * Mathf.Cos(Mathf.Deg2Rad *angle), speed * Mathf.Sin(Mathf.Deg2Rad * angle));
             transform.rotation = Quaternion.Euler(0, 0, -angle);
-            if (playSound) {
-                AudioSource source = gameObject.AddComponent<AudioSource>();
-                source.PlayOneShot(rockWhoosh);
-            }
         }
 
         void OnCollisionEnter2D(Collision2D collision) {

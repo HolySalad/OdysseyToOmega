@@ -228,6 +228,9 @@ namespace SpaceBoat.HazardManagers {
                 hazardBeganTime = -1;
                 HasEnded = true;
                 WasCompleted = true;
+                if (SoundManager.Instance.IsPlaying("RockWhoosh_0")) {
+                    SoundManager.Instance.Stop("RockWhoosh_0");
+                }
                 return;
             }
 
@@ -238,6 +241,7 @@ namespace SpaceBoat.HazardManagers {
 
 
             if (!rocksStarted) {
+                SoundManager.Instance.Play("RockWhoosh_0", 0.5f);
                 foreach (GameObject emiter in rockEmiters) {
                     StartCoroutine(RockSpawner(emiter, timeSinceStart));
                 }

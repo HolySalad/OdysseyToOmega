@@ -33,6 +33,7 @@ namespace SpaceBoat.Rewards {
         public void ShatterComet() {
             spriteObject.SetActive(false);
             itemPlaceObject.SetActive(false);
+            GetComponent<Collider2D>().enabled = false;
             Instantiate(itemPrefab, transform.position, Quaternion.identity);
             for (int i = 0; i < numSecondaryItems; i++) {
                 Instantiate(secondaryItemPrefab, 
