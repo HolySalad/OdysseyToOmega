@@ -7,6 +7,7 @@ namespace SpaceBoat.Rewards {
     {
         [SerializeField] private RewardType rewardType;
         [SerializeField] private int value = 1;
+        [SerializeField] public string blueprintCollectableName = "Blueprint";
 
         void Collect(Player player) {
             if (player == null) return;
@@ -16,7 +17,7 @@ namespace SpaceBoat.Rewards {
                     break;
                 default:
                     GameModel.Instance.saveGame.rewardsUnlocked[rewardType] = true;
-                    //TODO trigger unlock UI.
+                    UI.UIManager.Instance.OpenBlueprintUnlockPanel(this);
                     break;
             }
             Destroy(gameObject);

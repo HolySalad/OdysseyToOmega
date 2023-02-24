@@ -8,19 +8,22 @@ namespace SpaceBoat.UI {
 
     public enum UIState {
         HUD,
-        CraftMenu
+        CraftMenu,
+        BlueprintUnlock
     }
 
     public class UIManager : MonoBehaviour
     {
         [SerializeField] private GameObject hudParent;
         [SerializeField] private GameObject craftMenuParent;
+        [SerializeField] private GameObject blueprintUnlockParent;
 
         public static UIManager Instance { get; private set; }
 
         private GameObject buildmodeObject;
 
         private TextMeshProUGUI controlsText;
+        private TextMeshProUGUI helpText;
 
         public delegate void OnNextBuildModeExit(bool isCancelled);
         private List<OnNextBuildModeExit> onNextBuildModeExitCallbacks = new List<OnNextBuildModeExit>();
@@ -38,9 +41,11 @@ namespace SpaceBoat.UI {
 
         void Start() {
             controlsText = GameModel.Instance.controlsPrompts.gameObject.GetComponent<TextMeshProUGUI>();
+            helpText = GameModel.Instance.helpPrompts.gameObject.GetComponent<TextMeshProUGUI>();
             CurrentState = UIState.HUD;
             hudParent.SetActive(true);
             craftMenuParent.SetActive(false);
+            blueprintUnlockParent.SetActive(false);
         }
 
         public string FixedUIText(string text) {
@@ -53,6 +58,10 @@ namespace SpaceBoat.UI {
             controlsText.enabled = show;
         }
 
+        void ToggleHelpText(bool show) {
+            helpText.enabled = show;
+        }
+
         public void OpenCraftingMenu() {
             CurrentState = UIState.CraftMenu;
             hudParent.SetActive(false);
@@ -60,6 +69,7 @@ namespace SpaceBoat.UI {
             craftMenuParent.GetComponent<CraftingUI>().OpenCraftingUI();
             GameModel.Instance.PauseGame();
             ToggleControlHints(false);
+            ToggleHelpText(false);
         }
 
         public void CloseCraftingMenu() {
@@ -68,6 +78,7 @@ namespace SpaceBoat.UI {
             craftMenuParent.SetActive(false);
             GameModel.Instance.UnpauseGame();
             ToggleControlHints(true);
+            ToggleHelpText(true);
         }
         private int pendingBuildCost = 0;
         public void EnterBuildMode(GameObject buildablePrefab, int cost) {
@@ -93,6 +104,25 @@ namespace SpaceBoat.UI {
             onNextBuildModeExitCallbacks.Clear();
             craftMenuParent.GetComponent<CraftingUI>().OpenCraftingUI();
             ToggleControlHints(false);
+        }
+
+        public void OpenBlueprintUnlockPanel(Rewards.Collectable collectable) {
+            CurrentState = UIState.BlueprintUnlock;
+            hudParent.SetActive(false);
+            GameModel.Instance.PauseGame();
+            ToggleControlHints(false);
+            ToggleHelpText(false);
+            blueprintUnlockParent.SetActive(true);
+            blueprintUnlockParent.GetComponent<BlueprintUnlockUI>().CreateBlueprintUnlockUI(collectable);
+        }
+
+        public void CloseBlueprintUnlockPanel() {
+            CurrentState = UIState.HUD;
+            hudParent.SetActive(true);
+            GameModel.Instance.UnpauseGame();
+            ToggleControlHints(true);
+            ToggleHelpText(true);
+            blueprintUnlockParent.SetActive(false);
         }
     }
 }

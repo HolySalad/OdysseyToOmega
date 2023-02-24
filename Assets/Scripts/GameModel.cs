@@ -371,6 +371,9 @@ namespace SpaceBoat {
             if (currentHazardManager != null && currentHazardManager.hasEnded) {
                 Debug.Log("Hazard has ended, starting wind-down timer");
                 saveGame.hazardsCompleted[currentHazardManager.hazardType] = true;
+                if (currentHazardManager.hazardSoundtrack != "" && sound.IsPlaying(currentHazardManager.hazardSoundtrack)) {
+                    sound.Stop(currentHazardManager.hazardSoundtrack);
+                }
                 Destroy(currentHazardManager.gameObject);
                 currentHazardManager = null;
                 numHazardsCompleted++;
@@ -476,15 +479,15 @@ namespace SpaceBoat {
 
         // subclasses for saving and loading
         [System.Serializable] public class SaveData {
-            public int money = 1000;
+            public int money = 0;
             public Dictionary<RewardType, bool> rewardsUnlocked = new Dictionary<Rewards.RewardType, bool>() {
-                {RewardType.DashEquipmentBlueprint, true},
+                {RewardType.DashEquipmentBlueprint, false},
                 {RewardType.HarpoonGunBuildableBlueprint, false},
                 {RewardType.HarpoonLauncherEquipmentBlueprint, false},
-                {RewardType.ShieldEquipmentBlueprint, true},
+                {RewardType.ShieldEquipmentBlueprint, false},
                 {RewardType.HealthPackEquipmentBlueprint, false},
-                {RewardType.JumpPadBuildableBlueprint, true},
-                {RewardType.ShipShieldBuildableBlueprint, true}
+                {RewardType.JumpPadBuildableBlueprint, false},
+                {RewardType.ShipShieldBuildableBlueprint, false}
             };
 
             public Dictionary<EquipmentType, bool> equipmentBuilt = new Dictionary<EquipmentType, bool>() {

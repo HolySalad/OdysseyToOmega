@@ -768,7 +768,7 @@ namespace SpaceBoat {
                 activatableInUse.Deactivate(this);
                 DetatchFromActivatable();
                 return true;
-            } else if (keyDown) {
+            } else if (keyDown && activatableInRange != null) {
                 return UseActivatable(game.GetActivatableComponent(activatableInRange), activatableInRange);
             }
             return false;
