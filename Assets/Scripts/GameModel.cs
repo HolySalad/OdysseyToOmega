@@ -28,6 +28,7 @@ namespace SpaceBoat {
         [SerializeField] private bool utilityCheats = false;
         [SerializeField] private bool resetSaveFileOnStart = false;
         [SerializeField] public bool unlockEverything = false;
+        [SerializeField] public bool skipTutorial = false;
         [SerializeField] private HazardTypes forceHazard = HazardTypes.None;
         
 
@@ -443,6 +444,7 @@ namespace SpaceBoat {
 
         private bool tutorialHazardTriggered = false;
         bool CheckMoveTutorialComplete() {
+            if (skipTutorial) return true;
             if (tutorialHazardPlayed) return true;
             if (helpPrompts.wasPromptDisplayed("MovementTutorial", true) && !tutorialHazardTriggered) {
                 movementTutorialPlayed = true;
