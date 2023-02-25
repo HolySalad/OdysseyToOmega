@@ -124,8 +124,7 @@ namespace SpaceBoat.UI {
             }
         }
 
-
-        void OnGUI() {
+        void Update() {
             if (currentDisplayedPrompt != "" && currentDuration > 0) {
                 currentDuration -= Time.unscaledDeltaTime;
                 if (currentDuration <= 0) {
@@ -134,6 +133,10 @@ namespace SpaceBoat.UI {
                     RemovePrompt(prompts.Find(p => p.promptLabel == currentDisplayedPrompt));
                 }
             }
+        }
+
+
+        void OnGUI() {
             CheckPromptTargetting();
         }
 

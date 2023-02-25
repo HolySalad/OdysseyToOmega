@@ -445,6 +445,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &16507578 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3110734117551180888, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+  m_PrefabInstance: {fileID: 1840913048}
+  m_PrefabAsset: {fileID: 0}
+--- !u!70 &16507581
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 16507578}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.24, y: -0.6}
+  m_Size: {x: 0.89, y: 0.82}
+  m_Direction: 0
 --- !u!1 &23174786
 GameObject:
   m_ObjectHideFlags: 0
@@ -3577,7 +3598,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 462699082}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 31.3, y: 16.2, z: 0}
+  m_LocalPosition: {x: 31.3, y: 7.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5231,7 +5252,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 748119978}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 31.3, y: 2.8, z: 0}
+  m_LocalPosition: {x: 31.3, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7157,8 +7178,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1881936597
-  m_SortingLayer: 2
+  m_SortingLayerID: -2049146925
+  m_SortingLayer: -2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: ef998b31faee33f48b8d591a1faa95a8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -12870,6 +12891,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1635726836}
     - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: playSoundtrack
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: tutorialHazard
+      value: 
+      objectReference: {fileID: 800051936456181465, guid: 3944765dff7c74548bd71cd8fedb8eb4, type: 3}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
       propertyPath: controlsPrompts
       value: 
       objectReference: {fileID: 1181307051}
@@ -12879,7 +12908,11 @@ PrefabInstance:
       objectReference: {fileID: 702206720}
     - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
       propertyPath: resetSaveFileOnStart
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: youreDoingGreat.text
+      value: Good Luck!
       objectReference: {fileID: 0}
     - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
       propertyPath: shipSails.Array.data[0]
@@ -12922,9 +12955,154 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1385699944}
     - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: youreDoingGreat.color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: youreDoingGreat.color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: youreDoingGreat.color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
       propertyPath: shipSails.Array.data[10]
       value: 
       objectReference: {fileID: 904344876}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: youreDoingGreat.duration
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: youreDoingGreat.priority
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: tutorialHazardCamera.text
+      value: Press Tab to zoom in and out.
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: tutorialHazardStage1.text
+      value: A Meteor struck your ship! Climb the masts to repair your sails.
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: tutorialHazardStage2.text
+      value: Avoid the Asteroids and continue repairing your sails.
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: tutorialHazardStage3.text
+      value: Comets incoming! \n Use the Harpoon Launcher to break them and claim
+        the items inside.
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: youreDoingGreat.promptLabel
+      value: DoingGreat
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: tutorialHazardCamera.color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: tutorialHazardCamera.color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: tutorialHazardCamera.color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: tutorialHazardStage1.color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: tutorialHazardStage1.color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: tutorialHazardStage1.color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: tutorialHazardStage2.color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: tutorialHazardStage2.color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: tutorialHazardStage2.color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: tutorialHazardStage3.color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: tutorialHazardStage3.color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: tutorialHazardStage3.color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: tutorialHazardCamera.duration
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: tutorialHazardCamera.priority
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: tutorialHazardStage1.duration
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: tutorialHazardStage1.priority
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: tutorialHazardStage2.duration
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: tutorialHazardStage2.priority
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: tutorialHazardStage3.duration
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: tutorialHazardStage3.priority
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: youreDoingGreat.TriggerOnlyOnce
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: tutorialHazardCamera.promptLabel
+      value: tutorialHazardCamera
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: tutorialHazardStage1.promptLabel
+      value: tutorialStage1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: tutorialHazardStage2.promptLabel
+      value: tutorialStage2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: tutorialHazardStage3.promptLabel
+      value: tutorialStage3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: tutorialHazardCamera.TriggerOnlyOnce
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
       propertyPath: movementTutorialTrigger.Array.data[0]
       value: 
@@ -13317,7 +13495,7 @@ PrefabInstance:
       objectReference: {fileID: 592909770}
     - target: {fileID: 1877163398, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
       propertyPath: cooldownTime
-      value: 12
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 1877163398, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
       propertyPath: cooldownLight
@@ -13388,8 +13566,112 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: slipCheckDistance
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
       propertyPath: startingEquipment
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: wallCheckDistance
+      value: 1.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: crouchTutorialPrompt.text
+      value: Press Ctrl to crouch.
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: criticalHealthPrompt.color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: criticalHealthPrompt.color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: criticalHealthPrompt.color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: criticalHealthPrompt.color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: crouchTutorialPrompt.color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: crouchTutorialPrompt.color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: crouchTutorialPrompt.color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: equipmentTutorialPrompt.text
+      value: Press Shift to use your equipment.
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: crouchTutorialPrompt.duration
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: crouchTutorialPrompt.priority
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: equipmentTutorialPrompt.color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: equipmentTutorialPrompt.color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: equipmentTutorialPrompt.color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: crouchTutorialPrompt.promptLabel
+      value: crouchTutorial
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: equipmentTutorialPrompt.duration
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: equipmentTutorialPrompt.priority
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: criticalHealthPromptHealthpack.text
+      value: 'Health critical! Hold Shift to heal. '
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: equipmentTutorialPrompt.promptLabel
+      value: equipmentTutorial
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: crouchTutorialPrompt.TriggerOnlyOnce
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: criticalHealthPromptHealthpack.color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: criticalHealthPromptHealthpack.priority
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: equipmentTutorialPrompt.TriggerOnlyOnce
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676066118663944457, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: criticalHealthPromptHealthpack.promptLabel
+      value: criticalHealthBackpack
       objectReference: {fileID: 0}
     - target: {fileID: 1957817345328340208, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
       propertyPath: m_Enabled
@@ -13503,7 +13785,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 291552388592283855, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
 --- !u!212 &1845235092 stripped
@@ -16029,7 +16312,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 1
   m_UsedByComposite: 0
-  m_Offset: {x: -2.4034255, y: -0.39091146}
+  m_Offset: {x: -2.4034252, y: 0.10936327}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -16040,7 +16323,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 20.492306, y: 2.1543472}
+  m_Size: {x: 20.492306, y: 1.1537977}
   m_EdgeRadius: 0
 --- !u!50 &2072399029
 Rigidbody2D:

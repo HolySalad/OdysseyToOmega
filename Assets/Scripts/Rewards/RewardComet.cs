@@ -15,6 +15,12 @@ namespace SpaceBoat.Rewards {
         private GameObject secondaryItemPrefab;
         private int numSecondaryItems = 0;
 
+        public delegate void CometShatterCallbackDelegate();
+        private List<CometShatterCallbackDelegate> cometShatterCallbacks = new List<CometShatterCallbackDelegate>();
+        public void AddCometShatterCallback(CometShatterCallbackDelegate callback) {
+            cometShatterCallbacks.Add(callback);
+        }
+
         public void SetupComet(float velocity, Vector3 target, GameObject itemPrefab, GameObject secondaryItemPrefab, int numSecondaryItems) {
             Rigidbody2D rb = GetComponent<Rigidbody2D>();
             Vector3 direction = target - transform.position;
@@ -37,14 +43,18 @@ namespace SpaceBoat.Rewards {
             itemPlaceObject.SetActive(false);
             GetComponent<Collider2D>().enabled = false;
             Instantiate(itemPrefab, transform.position, Quaternion.identity);
-            for (int i = 0; i < numSecondaryItems; i++) {
-                Instantiate(secondaryItemPrefab, 
-                new Vector3(transform.position.x + ((1+i)*1* (Random.Range(0, 2) == 0 ? -1 : 1)), transform.position.y + (1+i)*1* (Random.Range(0, 2) == 0 ? -1 : 1), transform.position.z)
-                , Quaternion.identity);
-                
+            if (numSecondaryItems > 0) {
+                for (int i = 0; i < numSecondaryItems; i++) {
+                    Instantiate(secondaryItemPrefab, 
+                    new Vector3(transform.position.x + ((1+i)*1* (Random.Range(0, 2) == 0 ? -1 : 1)), transform.position.y + (1+i)*1* (Random.Range(0, 2) == 0 ? -1 : 1), transform.position.z)
+                    , Quaternion.identity);
+                }
             }
             destructionAnimationObject.SetActive(true);
             GameModel.Instance.sound.Play("CometBreaking");
+            foreach (CometShatterCallbackDelegate callback in cometShatterCallbacks) {
+                callback();
+            }
         }
 
         IEnumerator UpdateComet() {
