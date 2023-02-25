@@ -832,6 +832,10 @@ namespace SpaceBoat {
             health = maxHealth;
         }
 
+        public void PlayerHeals(bool individualHearts) {
+            health = Mathf.Min(health++, maxHealth);
+        }
+
         //currency
         public void PlayerGainsMoney(int amount) {
             money += amount;

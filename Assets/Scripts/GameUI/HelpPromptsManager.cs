@@ -144,7 +144,7 @@ namespace SpaceBoat.UI {
                 return;
             }
             if (prompts.Exists(p => p.promptLabel == newLabel)) {
-                PromptManagerLogWarning("Prompt with label " + newLabel + " already exists. Ignoring.");
+                //PromptManagerLogWarning("Prompt with label " + newLabel + " already exists. Ignoring.");
                 return;
             }
 
@@ -174,7 +174,7 @@ namespace SpaceBoat.UI {
 
         public void RemovePrompt(HelpPrompt prompt) {
             if (!prompts.Contains(prompt)) {
-                PromptManagerLogWarning("Prompt with label " + prompt.promptLabel + " does not exist. Ignoring.");
+                //PromptManagerLogWarning("Prompt with label " + prompt.promptLabel + " does not exist. Ignoring.");
                 return;
             }
             prompts.Remove(prompt);
