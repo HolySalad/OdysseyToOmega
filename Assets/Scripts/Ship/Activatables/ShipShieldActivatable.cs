@@ -7,7 +7,10 @@ namespace SpaceBoat.Ship.Activatables {
     public class ShipShieldActivatable : MonoBehaviour, IActivatables
     {   
         [SerializeField] private UI.HelpPrompt helpPrompt;
-        public UI.HelpPrompt HelpPrompt {get {return helpPrompt;}}
+        public UI.HelpPrompt activatableHelpPrompt {get {return helpPrompt;}}
+
+        [SerializeField] private UI.HelpPrompt inUseHelpPrompt;
+        public UI.HelpPrompt activatableInUseHelpPrompt {get {return inUseHelpPrompt;}}
         [Header("Sprites")]
         [SerializeField] private Sprite readySprite;
         [SerializeField] private Color readyColor;
@@ -29,7 +32,7 @@ namespace SpaceBoat.Ship.Activatables {
         public bool canManuallyDeactivate {get;} = true;
         public PlayerStateName playerState {get;} = PlayerStateName.ready;
         public string usageAnimation {get;} = "";
-        public string usageSound {get;} = "";
+        public string usageSound {get;} = "ShipShieldActivate";
         
         private bool isOnCooldown = false;
         private SpriteRenderer spriteRenderer;
@@ -56,6 +59,7 @@ namespace SpaceBoat.Ship.Activatables {
             shieldLight.enabled = true;
             shieldLight.intensity = 0f;
             float timer = 0f;
+            SoundManager.Instance.Play("ShipShieldActiveStatic", 0.5f, true, shieldGrowthTime);
             while (timer < shieldGrowthTime) {
                 if (timer < shieldFlashDuration/2) {
                     shieldLight.intensity = Mathf.Lerp(0f, shieldFlashStrength, timer/(shieldFlashDuration/2));
@@ -71,6 +75,8 @@ namespace SpaceBoat.Ship.Activatables {
             }
             shieldLight.intensity = 0f;
             yield return new WaitForSeconds(shieldDuration-1f);
+            SoundManager.Instance.Stop("ShipShieldActiveStatic");
+            SoundManager.Instance.Play("ShipShieldWane");
             timer = 0f;
             bool flashState = false;
             while (timer < 1) {

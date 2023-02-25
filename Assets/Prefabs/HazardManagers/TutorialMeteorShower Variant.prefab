@@ -1,0 +1,113 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &4474642755036165520
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 2
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -5974397870093916663, guid: 19d1b8fc8a639ad4485351aa38842945, type: 3}
+      propertyPath: isTutorial
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -5974397870093916663, guid: 19d1b8fc8a639ad4485351aa38842945, type: 3}
+      propertyPath: baseDuration
+      value: 999
+      objectReference: {fileID: 0}
+    - target: {fileID: -5974397870093916663, guid: 19d1b8fc8a639ad4485351aa38842945, type: 3}
+      propertyPath: baseRockRate
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5974397870093916663, guid: 19d1b8fc8a639ad4485351aa38842945, type: 3}
+      propertyPath: escalationSettings.escalationLevelsEasy.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -5974397870093916663, guid: 19d1b8fc8a639ad4485351aa38842945, type: 3}
+      propertyPath: escalationSettings.escalationLevelsEasy.Array.data[0].baseNumMeteors
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -5974397870093916663, guid: 19d1b8fc8a639ad4485351aa38842945, type: 3}
+      propertyPath: escalationSettings.escalationLevelsEasy.Array.data[1].baseNumMeteors
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -5974397870093916663, guid: 19d1b8fc8a639ad4485351aa38842945, type: 3}
+      propertyPath: escalationSettings.escalationLevelsEasy.Array.data[2].baseNumMeteors
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5974397870093916663, guid: 19d1b8fc8a639ad4485351aa38842945, type: 3}
+      propertyPath: escalationSettings.escalationLevelsEasy.Array.data[2].timeIntoHazard
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: -5974397870093916663, guid: 19d1b8fc8a639ad4485351aa38842945, type: 3}
+      propertyPath: escalationSettings.escalationLevelsEasy.Array.data[1].rockRateIncrease
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -5974397870093916663, guid: 19d1b8fc8a639ad4485351aa38842945, type: 3}
+      propertyPath: escalationSettings.escalationLevelsEasy.Array.data[2].rockRateIncrease
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -5974397870093916663, guid: 19d1b8fc8a639ad4485351aa38842945, type: 3}
+      propertyPath: escalationSettings.escalationLevelsEasy.Array.data[2].rockSpeedIncrease
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5974397870093916663, guid: 19d1b8fc8a639ad4485351aa38842945, type: 3}
+      propertyPath: escalationSettings.escalationLevelsEasy.Array.data[1].meteorIntervalMultiplier
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: -5974397870093916663, guid: 19d1b8fc8a639ad4485351aa38842945, type: 3}
+      propertyPath: escalationSettings.escalationLevelsEasy.Array.data[2].meteorIntervalMultiplier
+      value: 999
+      objectReference: {fileID: 0}
+    - target: {fileID: 3670898647483130851, guid: 19d1b8fc8a639ad4485351aa38842945, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3670898647483130851, guid: 19d1b8fc8a639ad4485351aa38842945, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3670898647483130851, guid: 19d1b8fc8a639ad4485351aa38842945, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3670898647483130851, guid: 19d1b8fc8a639ad4485351aa38842945, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3670898647483130851, guid: 19d1b8fc8a639ad4485351aa38842945, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3670898647483130851, guid: 19d1b8fc8a639ad4485351aa38842945, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3670898647483130851, guid: 19d1b8fc8a639ad4485351aa38842945, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3670898647483130851, guid: 19d1b8fc8a639ad4485351aa38842945, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3670898647483130851, guid: 19d1b8fc8a639ad4485351aa38842945, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3670898647483130851, guid: 19d1b8fc8a639ad4485351aa38842945, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3670898647483130851, guid: 19d1b8fc8a639ad4485351aa38842945, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3819972910884401993, guid: 19d1b8fc8a639ad4485351aa38842945, type: 3}
+      propertyPath: m_Name
+      value: TutorialMeteorShower Variant
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_AddedGameObjects: []
+  m_SourcePrefab: {fileID: 100100000, guid: 19d1b8fc8a639ad4485351aa38842945, type: 3}

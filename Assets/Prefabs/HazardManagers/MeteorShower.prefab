@@ -79,7 +79,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35d5be2b24a3e5449b75301801353c48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  testMode: 1
+  testMode: 0
   baseDuration: 132
   meteorPrompts:
   - promptLabel: MeteorShower1
@@ -94,9 +94,6 @@ MonoBehaviour:
     text: Avoid Hazards and Repair your ship to survive.
     color: {r: 1, g: 0, b: 0, a: 0}
     TriggerOnlyOnce: 0
-  earliestAppearence: 0
-  latestAppearence: 10
-  priority: 1
   escalationSettings:
     escalationLevelsEasy:
     - timeIntoHazard: 0

@@ -49,6 +49,10 @@ namespace SpaceBoat {
             return Input.GetAxisRaw("Horizontal"); 
         }
 
+        public static bool HorizontalInputKeyDown() {
+            return Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D);
+        }
+
         public static bool CameraToggleDown() {
             return Input.GetButtonDown("ToggleShipCamera") || Input.GetAxisRaw("ToggleShipCameraAxis") != 0;
         }

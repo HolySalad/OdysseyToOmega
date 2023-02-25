@@ -9,10 +9,17 @@ namespace SpaceBoat.Rewards {
         [SerializeField] private GameObject spriteObject;
         [SerializeField] private GameObject itemPlaceObject;
         [SerializeField] private GameObject destructionAnimationObject;
+        [SerializeField] private GameObject bounceWalkway;
 
         private GameObject itemPrefab;
         private GameObject secondaryItemPrefab;
         private int numSecondaryItems = 0;
+
+        public delegate void CometShatterCallbackDelegate();
+        private List<CometShatterCallbackDelegate> cometShatterCallbacks = new List<CometShatterCallbackDelegate>();
+        public void AddCometShatterCallback(CometShatterCallbackDelegate callback) {
+            cometShatterCallbacks.Add(callback);
+        }
 
         public void SetupComet(float velocity, Vector3 target, GameObject itemPrefab, GameObject secondaryItemPrefab, int numSecondaryItems) {
             Rigidbody2D rb = GetComponent<Rigidbody2D>();
@@ -27,21 +34,27 @@ namespace SpaceBoat.Rewards {
             this.numSecondaryItems = numSecondaryItems;
 
             itemPlaceObject.GetComponent<SpriteRenderer>().sprite = itemPrefab.GetComponent<SpriteRenderer>().sprite;
+            bounceWalkway.AddComponent<Extras.CometBounceWalkway>();
         }
 
 
         public void ShatterComet() {
             spriteObject.SetActive(false);
             itemPlaceObject.SetActive(false);
+            GetComponent<Collider2D>().enabled = false;
             Instantiate(itemPrefab, transform.position, Quaternion.identity);
-            for (int i = 0; i < numSecondaryItems; i++) {
-                Instantiate(secondaryItemPrefab, 
-                new Vector3(transform.position.x + ((1+i)*1* (Random.Range(0, 2) == 0 ? -1 : 1)), transform.position.y + (1+i)*1* (Random.Range(0, 2) == 0 ? -1 : 1), transform.position.z)
-                , Quaternion.identity);
-                
+            if (numSecondaryItems > 0) {
+                for (int i = 0; i < numSecondaryItems; i++) {
+                    Instantiate(secondaryItemPrefab, 
+                    new Vector3(transform.position.x + ((1+i)*1* (Random.Range(0, 2) == 0 ? -1 : 1)), transform.position.y + (1+i)*1* (Random.Range(0, 2) == 0 ? -1 : 1), transform.position.z)
+                    , Quaternion.identity);
+                }
             }
             destructionAnimationObject.SetActive(true);
             GameModel.Instance.sound.Play("CometBreaking");
+            foreach (CometShatterCallbackDelegate callback in cometShatterCallbacks) {
+                callback();
+            }
         }
 
         IEnumerator UpdateComet() {
@@ -72,4 +85,21 @@ namespace SpaceBoat.Rewards {
         }
 
     }
+}
+
+namespace SpaceBoat.Rewards.Extras {
+    public class CometBounceWalkway: MonoBehaviour, Environment.IBouncable
+    {
+        public bool Bounce(Player player) {
+            float playerVelocity = player.gameObject.GetComponent<Rigidbody2D>().velocity.y;
+            
+            if (playerVelocity < 0) {
+                player.ForceJump(false, true, true);
+                Destroy(gameObject.transform.parent.gameObject);
+                return true;
+            }
+            return false;
+        }
+    }
+
 }

@@ -15,7 +15,7 @@ namespace SpaceBoat.UI {
         }
 
         void Update() {
-            if (Input.GetKeyDown(KeyCode.Escape)) {
+            if (Input.GetKeyDown(KeyCode.Escape) || CthulkInput.JumpKeyDown() || CthulkInput.ActivateKeyDown()) {
                 UIManager.Instance.CloseBlueprintUnlockPanel();
             }
         }

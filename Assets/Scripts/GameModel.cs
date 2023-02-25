@@ -23,9 +23,13 @@ namespace SpaceBoat {
         [Header("Game Settings")]
         [SerializeField] private bool DoNotUpdate = false;
         [SerializeField] private bool playSoundtrack = true;
+        [SerializeField] private float musicFadeTime = 1f;
         [SerializeField] private bool slowMo = false;
         [SerializeField] private bool utilityCheats = false;
         [SerializeField] private bool resetSaveFileOnStart = false;
+        [SerializeField] public bool unlockEverything = false;
+        [SerializeField] private HazardTypes forceHazard = HazardTypes.None;
+        
 
         [Header("Object References")]
         [SerializeField] public Player player;
@@ -59,21 +63,42 @@ namespace SpaceBoat {
         [Header("Help Prompts && Tutorial")]
         [SerializeField] public Environment.HelpPromptTrigger[] movementTutorialTrigger;
         [SerializeField] public HelpPrompt criticalShipPrompt;
+        [SerializeField] public GameObject tutorialHazard;
+        [SerializeField] public HelpPrompt tutorialHazardStage1;
+        [SerializeField] public HelpPrompt tutorialHazardCamera;
+        [SerializeField] public HelpPrompt tutorialHazardStage2;
+        [SerializeField] public HelpPrompt tutorialHazardStage3; 
+        [SerializeField] public HelpPrompt youreDoingGreat;
 
         public SaveData saveGame;
         public SaveDataManager saveGameManager;
 
         public bool movementTutorialPlayed {
             get {return saveGame.movementTutorialPlayed;} 
-            private set {saveGame.movementTutorialPlayed = value; saveGameManager.Save();}
+            set {saveGame.movementTutorialPlayed = value; saveGameManager.Save();}
         }
         public bool cometTutorialPlayed {
             get {return saveGame.cometTutorialPlayed;} 
-            private set {saveGame.cometTutorialPlayed = value; saveGameManager.Save();}
+            set {saveGame.cometTutorialPlayed = value; saveGameManager.Save();}
         }
         public bool craftingTutorialPlayed  {
             get {return saveGame.craftingTutorialPlayed;} 
-            private set {saveGame.craftingTutorialPlayed = value; saveGameManager.Save();}
+            set {saveGame.craftingTutorialPlayed = value; saveGameManager.Save();}
+        }
+
+        public bool crouchTutorialPlayed {
+            get {return saveGame.crouchTutorialPlayed;} 
+            set {saveGame.crouchTutorialPlayed = value; saveGameManager.Save();}
+        }
+
+        public bool equipmentTutorialPlayed {
+            get {return saveGame.equipmentTutorialPlayed;} 
+            set {saveGame.equipmentTutorialPlayed = value; saveGameManager.Save();}
+        }
+
+        public bool tutorialHazardPlayed {
+            get {return saveGame.tutorialHazardPlayed;} 
+            set {saveGame.tutorialHazardPlayed = value; saveGameManager.Save();}
         }
 
 
@@ -238,8 +263,8 @@ namespace SpaceBoat {
             if (sound.IsPlaying("MenuSoundtrack")) {
                 sound.Stop("MenuSoundtrack");
             }
-            //if (playSoundtrack) sound.Play("GameplaySoundtrack");
-            if (movementTutorialPlayed) {
+            if (playSoundtrack) sound.Play("Interlude", 1f, true, musicFadeTime);
+            if (tutorialHazardPlayed) {
                 foreach (Environment.HelpPromptTrigger trigger in movementTutorialTrigger) {
                     trigger.gameObject.SetActive(false);
                 }
@@ -262,8 +287,8 @@ namespace SpaceBoat {
 
         private IEnumerator GameOver(float delay = 2f) {
             Debug.Log("Gameover!");
+            saveGameManager.ResetBetweenRuns();
             yield return new WaitForSeconds(delay);
-            //SoundManager.Instance.Stop("GameplaySoundtrack");
             SceneManager.LoadScene("GameOver");
         }
 
@@ -339,6 +364,13 @@ namespace SpaceBoat {
         }
 
         (GameObject, HazardDifficulty) PickNextHazard() {
+            if (forceHazard != HazardTypes.None) {
+                HazardTypes hazardType = forceHazard;
+                forceHazard = HazardTypes.None;
+                Debug.Log("Force Spawned hazard " + hazardType + " with difficulty " + HazardDifficulty.Easy + ".");
+                return (hazardManagerPrefabsDict[hazardType], HazardDifficulty.Easy);
+            }
+
             if (numHazardsCompleted >= hazardPlanner.hazardPlan.Count) {
                 Debug.Log("No more hazards to spawn, game over!");
                 TriggerToBeContinued();
@@ -370,11 +402,12 @@ namespace SpaceBoat {
                 Debug.Log("Hazard wind-down complete, starting new hazard");
                 hazardWindDown = false;
             }
-            if (currentHazardManager != null && currentHazardManager.hasEnded) {
+            if (currentHazardManager != null && currentHazardManager.HasEnded) {
                 Debug.Log("Hazard has ended, starting wind-down timer");
-                saveGame.hazardsCompleted[currentHazardManager.hazardType] = true;
-                if (currentHazardManager.hazardSoundtrack != "" && sound.IsPlaying(currentHazardManager.hazardSoundtrack)) {
-                    sound.Stop(currentHazardManager.hazardSoundtrack);
+                saveGame.hazardsCompleted[currentHazardManager.HazardType] = true;
+                if (currentHazardManager.HazardSoundtrack != "" && sound.IsPlaying(currentHazardManager.HazardSoundtrack)) {
+                    sound.Stop(currentHazardManager.HazardSoundtrack, true, 1f);
+                    sound.Play("Interlude", 1f, true,  0.5f, 0.5f);
                 }
                 Destroy(currentHazardManager.gameObject);
                 currentHazardManager = null;
@@ -399,20 +432,114 @@ namespace SpaceBoat {
                 Debug.Log("New hazard: " + newHazard.name);
                 currentHazardManager = newHazard.GetComponent<IHazardManager>();
                 currentHazardManager.StartHazard(difficulty);
-                if (playSoundtrack && currentHazardManager.hazardSoundtrack != "") {
-                    sound.Play(currentHazardManager.hazardSoundtrack);
+                if (playSoundtrack && currentHazardManager.HazardSoundtrack != "") {
+                    sound.Stop("Interlude", true, musicFadeTime);
+                    sound.Play(currentHazardManager.HazardSoundtrack,1f, true, musicFadeTime, musicFadeTime);
                 }
             }
 
         }
 
+        private bool tutorialHazardTriggered = false;
         bool CheckMoveTutorialComplete() {
-            if (movementTutorialPlayed) return true;
-            if (helpPrompts.wasPromptDisplayed("MovementTutorial", true) && helpPrompts.wasPromptDisplayed("JumpTutorial", true)) {
+            if (tutorialHazardPlayed) return true;
+            if (helpPrompts.wasPromptDisplayed("MovementTutorial", true) && !tutorialHazardTriggered) {
                 movementTutorialPlayed = true;
-                return true;
+                StartTutorialHazard();
+                tutorialHazardTriggered = true;
             }
             return false;
+        }
+
+        IEnumerator TutorialHazard() {
+            GameObject newHazard = Instantiate(tutorialHazard, new Vector3(0, 0, 0), Quaternion.identity);
+            MeteorShower shower = newHazard.GetComponent<MeteorShower>();
+            shower.StartHazard(HazardDifficulty.Easy);
+            int tutorialSailsRepaired = 0;
+            bool stage1 = false;
+            bool stage2 = false;
+            bool stage3 = false;
+            foreach (GameObject sail in shipSails) {
+                SailsActivatable sailActivatable = sail.GetComponent<SailsActivatable>();
+                sailActivatable.AddOnSailRepairCallback(() => {
+                    if (shower != null) {
+                        tutorialSailsRepaired++;
+                    }
+                });
+            }
+            while (shower.meteorsOut == 0) {
+                yield return null;
+            }
+            Debug.Log("Tutorial hazard fired first meteor");
+            yield return new WaitForSeconds(10.5f);
+            cameraController.AddShipViewOverride("HazardStartup", 1);  
+            while (shower.meteorsOut > 0) {
+                yield return null;
+            }
+            helpPrompts.AddPrompt(tutorialHazardStage1);
+            yield return new WaitForSeconds(1f);
+            cameraController.RemoveShipViewOverride("HazardStartup");   
+            while (!stage1) {
+                if (tutorialSailsRepaired >= 1) {
+                    stage1 = true;
+                }
+                yield return null;
+            }
+            shower.tutorialStage = 1;
+            yield return new WaitForSeconds(3f);
+            cameraController.AddShipViewOverride("HazardStartup", 1);  
+            helpPrompts.AddPrompt(tutorialHazardStage2);
+            yield return new WaitForSeconds(3f);
+            cameraController.RemoveShipViewOverride("HazardStartup");   
+            float stage2Timer = 0;
+            while (!stage2) {
+                stage2Timer += Time.deltaTime;
+                if (stage2Timer >= 24) {
+                    shower.tutorialStage = 2;
+                }
+                if (tutorialSailsRepaired >= 4) {
+                    stage2 = true;
+                } else if (tutorialSailsRepaired >= 2) {
+                    helpPrompts.AddPrompt(tutorialHazardCamera);
+                }
+                yield return null;
+            }
+            shower.tutorialStage = 2;            
+            GameObject comet = cometManager.SpawnComet(4, 100);
+            comet.GetComponent<RewardComet>().AddCometShatterCallback(() => {
+                stage3 = true;
+            });
+            yield return new WaitForSeconds(3f);
+            helpPrompts.AddPrompt(tutorialHazardStage3);        
+            cameraController.AddShipViewOverride("HazardStartup", 1); 
+            yield return new WaitForSeconds(3f);
+            cameraController.RemoveShipViewOverride("HazardStartup");  
+            int numCometsSpawned = 1;
+            float stage3Timer = 0;
+            while (!stage3) {
+                if (stage3Timer > numCometsSpawned*10) {
+                    GameObject newComet = cometManager.SpawnComet(4, 100);
+                    newComet.GetComponent<RewardComet>().AddCometShatterCallback(() => {
+                        stage3 = true;
+                    });
+                    numCometsSpawned++;
+                }
+                stage3Timer += Time.deltaTime;
+                if (stage3Timer/24 == 1) {
+                    helpPrompts.AddPrompt(tutorialHazardStage3);
+                }
+                yield return null;
+            }
+
+            Destroy(shower.gameObject);
+            tutorialHazardPlayed = true;
+            yield return new WaitForSeconds(3f);
+            helpPrompts.AddPrompt(youreDoingGreat);
+            yield break;
+        }
+        
+        void StartTutorialHazard() {
+            StartCoroutine(TutorialHazard());            
         }
 
         // check if any sails remain unbroken
@@ -506,6 +633,9 @@ namespace SpaceBoat {
             public bool movementTutorialPlayed;
             public bool cometTutorialPlayed;
             public bool craftingTutorialPlayed;
+            public bool equipmentTutorialPlayed;
+            public bool crouchTutorialPlayed;
+            public bool tutorialHazardPlayed;
         }
 
         public class SaveDataManager {

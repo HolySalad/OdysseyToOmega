@@ -1,12 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 namespace SpaceBoat.PlayerSubclasses.Equipment {
     public class DashEquipment : MonoBehaviour, IPlayerEquipment
     {
-        [SerializeField] private SpriteRenderer offSprite;
         [SerializeField] private SpriteRenderer activeSprite;
+        [SerializeField] private Light2D activeLight;
+        [SerializeField] private SpriteRenderer readySprite;
+        [SerializeField] private SpriteRenderer cooldownTwoThirdsSprite;
+        [SerializeField] private SpriteRenderer cooldownOneThirdSprite;
+        [SerializeField] private SpriteRenderer cooldownZeroSprite;
 
         [SerializeField] private float dashCooldown = 2f;
         [SerializeField] private float dashDuration = 0.5f;
@@ -16,6 +21,7 @@ namespace SpaceBoat.PlayerSubclasses.Equipment {
         public EquipmentType equipmentType {get;} = EquipmentType.Dash;
         public PlayerStateName usageState {get;} = PlayerStateName.dash;
         public bool isActive {get; private set;} = false;
+        public bool canCancelWorkToUse {get;} = false;
         public EquipmentActivationBehaviour activationBehaviour {get;} = EquipmentActivationBehaviour.Press;
         private float cooldown = 0f;
         private float dashTimer = 0f;
@@ -28,19 +34,54 @@ namespace SpaceBoat.PlayerSubclasses.Equipment {
             isActive = true;
             cooldown = dashCooldown;
             dashTimer = dashDuration;
-            offSprite.enabled = false;
+            readySprite.enabled = false;
             activeSprite.enabled = true;
+            activeLight.enabled = true;
+            SoundManager.Instance.Play("Dash");
         }
         public void CancelActivation(Player player) {
             isActive = false;
-            offSprite.enabled = true;
+            cooldownZeroSprite.enabled = false;
             activeSprite.enabled = false;
+            activeLight.enabled = false;
         }
         public void Equip(Player player) {
-            offSprite.enabled = true;
+            StartCoroutine(UpdateBackpackVisuals());
         }
         public void Unequip(Player player) {
-            offSprite.enabled = false;
+            StopCoroutine(UpdateBackpackVisuals());
+            cooldownTwoThirdsSprite.enabled = false;
+            cooldownOneThirdSprite.enabled = false;
+            cooldownZeroSprite.enabled = false;
+            readySprite.enabled = false;
+            activeSprite.enabled = false;
+            activeLight.enabled = false;
+        }
+
+        IEnumerator UpdateBackpackVisuals() {
+            while (true) {
+                if (cooldown > 0f) {
+                    if (cooldown > dashCooldown * 2f / 3f) {
+                        cooldownTwoThirdsSprite.enabled = false;
+                        cooldownOneThirdSprite.enabled = false;
+                        cooldownZeroSprite.enabled = true;
+                    } else if (cooldown > dashCooldown * 1f / 3f) {
+                        cooldownTwoThirdsSprite.enabled = false;
+                        cooldownOneThirdSprite.enabled = true;
+                        cooldownZeroSprite.enabled = false;
+                    } else {
+                        cooldownTwoThirdsSprite.enabled = true;
+                        cooldownOneThirdSprite.enabled = false;
+                        cooldownZeroSprite.enabled = false;
+                    }
+                } else {
+                    cooldownTwoThirdsSprite.enabled = false;
+                    cooldownOneThirdSprite.enabled = false;
+                    cooldownZeroSprite.enabled = false;
+                    readySprite.enabled = true;
+                }
+                yield return null;
+            }
         }
 
         public void UpdateEquipment(Player player) {

@@ -38,7 +38,7 @@ namespace SpaceBoat.PlayerSubclasses.PlayerStates {
             dashVerticalMomentum = 0f;
             if (dashHeight == 0f) {
                 float playerVerticalVelocity = rb.velocity.y;
-                dashVerticalMomentum = playerVerticalVelocity / dashEquipment.dashSpeed;
+                dashVerticalMomentum = Mathf.Max(0, playerVerticalVelocity / dashEquipment.dashSpeed);
             } else {
                 dashVerticalMomentum = 0.8f;
             }

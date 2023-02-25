@@ -12,7 +12,8 @@ namespace SpaceBoat.Ship.Activatables {
         public PlayerStateName playerState {get;}
         public string usageAnimation {get;}
         public string usageSound {get;}
-        public UI.HelpPrompt HelpPrompt {get;}
+        public UI.HelpPrompt activatableHelpPrompt {get;}
+        public UI.HelpPrompt activatableInUseHelpPrompt {get;}
 
         public void Activate(Player player);
         public void Deactivate(Player player);

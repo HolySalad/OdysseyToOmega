@@ -6,7 +6,10 @@ namespace SpaceBoat.Ship.Activatables {
     public class SailsActivatable : MonoBehaviour, IActivatables
     {   
         [SerializeField] private UI.HelpPrompt helpPrompt;
-        public UI.HelpPrompt HelpPrompt {get {return helpPrompt;}}
+        public UI.HelpPrompt activatableHelpPrompt {get {return helpPrompt;}}
+
+        [SerializeField] private UI.HelpPrompt inUseHelpPrompt;
+        public UI.HelpPrompt activatableInUseHelpPrompt {get {return inUseHelpPrompt;}}
         public enum SailGrouping {
             WheelSails,
             MainSails,
@@ -31,8 +34,6 @@ namespace SpaceBoat.Ship.Activatables {
         public PlayerStateName playerState {get;} = PlayerStateName.working;
         public string usageAnimation {get;} = "Repairing";
         public string usageSound {get;} = "Repair";
-
-
         private float timeBeganRepairing = 0;
         public float lastTargettedTime = -99f;
 
@@ -121,6 +122,7 @@ namespace SpaceBoat.Ship.Activatables {
             if (isInUse && isBroken) {
                 if (Time.time - timeBeganRepairing >= repairTime) {
                     Repair();
+                    SoundManager.Instance.Oneshot("ActivationCompleteDing");
                     Deactivate(player);
                     player.DetatchFromActivatable();
                 }

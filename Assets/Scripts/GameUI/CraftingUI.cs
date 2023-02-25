@@ -131,6 +131,7 @@ namespace SpaceBoat.UI {
         public void StoreCraftingButtonPressed() {
             if (selectedBlueprint != null) {
                 selectedBlueprint.Craft(GameModel.Instance.player);
+                SoundManager.Instance.Play("ItemCrafted");
                 switch (selectedBlueprint.BlueprintType) {
                     case BlueprintType.Equipment:
                         if (numEquipmentOwned == 0) {
@@ -168,7 +169,7 @@ namespace SpaceBoat.UI {
             bool ownsAtLeastOne = false;
             foreach (ICraftBlueprint blueprint in blueprints.Values) {
                 bool alreadyOwns = blueprint.AlreadyOwns(GameModel.Instance.player);
-                bool rewardUnlocked = GameModel.Instance.saveGame.rewardsUnlocked[blueprint.RewardType];
+                bool rewardUnlocked = GameModel.Instance.unlockEverything || GameModel.Instance.saveGame.rewardsUnlocked[blueprint.RewardType];
                 if (!alreadyOwns && rewardUnlocked) {
                     numBlueprintsOwned++;
                     GameObject storeItem = Instantiate(TemplateStoreItem, StoreContentBox.transform);
