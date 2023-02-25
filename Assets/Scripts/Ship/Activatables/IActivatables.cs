@@ -6,6 +6,7 @@ namespace SpaceBoat.Ship.Activatables {
     public delegate void UsageCallback();
     public interface IActivatables
     {
+        public GameObject gameObject {get;}
         public ActivatablesNames kind {get;}
         public bool isInUse {get;}
         public bool canManuallyDeactivate {get;}

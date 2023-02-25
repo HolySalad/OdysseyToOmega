@@ -123,7 +123,7 @@ namespace SpaceBoat.Ship.Activatables {
         }
 
         public void Activate(Player player) {
-            Debug.Log("Player activated bedroom equipment station");
+            Debug.Log("Player activated ship shield equipment");
             isOnCooldown = true;
             isInUse = true;
             foreach (UsageCallback callback in usageCallbacks) {
@@ -131,6 +131,8 @@ namespace SpaceBoat.Ship.Activatables {
             }
             generatorLight.intensity = 2f;
             StartCoroutine(EnableShield());
+            Deactivate(player);
+            player.DetatchFromActivatable();
         }
 
         public void Deactivate(Player player) {

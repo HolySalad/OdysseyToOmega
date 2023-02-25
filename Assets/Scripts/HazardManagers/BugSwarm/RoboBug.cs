@@ -229,9 +229,10 @@ namespace SpaceBoat.HazardManagers.BugSwarmSubclasses {
             }
         }
         
-        public void Explode() {
+        public void Explode(bool silently = false) {
             explosionAnimationObject.SetActive(true);
             swarm?.RemoveBugFromSwarm(this);
+            if (!silently) SoundManager.Instance.Play("BugExplosion");
         }
 
         void BugLeavingMovementBehaviour() {
@@ -345,13 +346,11 @@ namespace SpaceBoat.HazardManagers.BugSwarmSubclasses {
             if (collision.gameObject.layer == LayerMask.NameToLayer("PlayerChar") && collision.gameObject.TryGetComponent(out Player playerChar)) {
                 playerChar.PlayerTakesDamage();
             }
-            Explode();
-            if (collision.gameObject.layer != LayerMask.NameToLayer("MapBounds")) {
-                SoundManager.Instance.Play("BugExplosion");
-                if (Random.Range(0, 100) < moneyDropChance) {
-                    DropMoney();
-                }
+            Explode(collision.gameObject.layer == LayerMask.NameToLayer("MapBounds"));
+            if (Random.Range(0, 100) < moneyDropChance) {
+                DropMoney();
             }
+            
         }
 
         bool CheckLineOfSight(Vector3 target) {

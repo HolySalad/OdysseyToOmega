@@ -58,6 +58,7 @@ namespace SpaceBoat.UI {
 
         private EquipmentType[] equipmentTypes = new EquipmentType[] { EquipmentType.Dash, EquipmentType.HealthPack, EquipmentType.Shield };
         private int numEquipmentOwned = 0;
+        private EquipmentType pendingEquipmentType = EquipmentType.None;
 
         void Awake() {
             blueprints[RewardType.DashEquipmentBlueprint] = GetComponent<DashEquipmentBlueprint>();
@@ -130,17 +131,13 @@ namespace SpaceBoat.UI {
 
         public void StoreCraftingButtonPressed() {
             if (selectedBlueprint != null) {
+                Debug.Log("CraftingUI.cs: StoreCraftingButtonPressed() selectedBlueprint == " + selectedBlueprint.Title);
                 selectedBlueprint.Craft(GameModel.Instance.player);
                 SoundManager.Instance.Play("ItemCrafted");
                 switch (selectedBlueprint.BlueprintType) {
                     case BlueprintType.Equipment:
                         if (numEquipmentOwned == 0) {
-                            foreach (EquipmentType type in equipmentTypes) {
-                                if (GameModel.Instance.player.HasEquipment(type)) {
-                                    GameModel.Instance.player.ChangeEquipment(type);
-                                    break;
-                                }
-                            }
+                            pendingEquipmentType = GameModel.Instance.player.lastCraftedEquipmentType;
                             UIManager.Instance.CloseCraftingMenu();
                         } else {
                             currentPanelIndex = (int)CraftUIState.EquipmentPanel;
@@ -170,7 +167,10 @@ namespace SpaceBoat.UI {
             foreach (ICraftBlueprint blueprint in blueprints.Values) {
                 bool alreadyOwns = blueprint.AlreadyOwns(GameModel.Instance.player);
                 bool rewardUnlocked = GameModel.Instance.unlockEverything || GameModel.Instance.saveGame.rewardsUnlocked[blueprint.RewardType];
+                
+                    Debug.Log("store item for " + blueprint.RewardType + " already owns: " + alreadyOwns + " reward unlocked: " + rewardUnlocked);
                 if (!alreadyOwns && rewardUnlocked) {
+                    Debug.Log("Creating store item for " + blueprint.RewardType);
                     numBlueprintsOwned++;
                     GameObject storeItem = Instantiate(TemplateStoreItem, StoreContentBox.transform);
                     RectTransform rect = storeItem.GetComponent<RectTransform>();
@@ -205,35 +205,41 @@ namespace SpaceBoat.UI {
 
         
         void SetEquipmentPanelDetails(EquipmentType type) {
+            if (type == EquipmentType.None) {
+                equipmentDescriptionText.text = UIManager.Instance.FixedUIText(NoEquipmentText);
+                equipmentTitleText.text = "";
+                return;
+            }
             equipmentTitleText.text = UIManager.Instance.FixedUIText(equipmentBlueprints[type].Title);
             equipmentDescriptionText.text = UIManager.Instance.FixedUIText(equipmentBlueprints[type].Description);
         }
         public void SelectDash() {
             SetEquipmentPanelDetails(EquipmentType.Dash);
-            GameModel.Instance.player.ChangeEquipment(EquipmentType.Dash);
+            pendingEquipmentType = EquipmentType.Dash;
             SetupEquipmentButtons();
         }
 
         public void SelectHealthPack() {
             SetEquipmentPanelDetails(EquipmentType.HealthPack);
-            GameModel.Instance.player.ChangeEquipment(EquipmentType.HealthPack);
+            pendingEquipmentType = EquipmentType.HealthPack;
             SetupEquipmentButtons();
         }
 
         public void SelectShield() {
             SetEquipmentPanelDetails(EquipmentType.Shield);
-            GameModel.Instance.player.ChangeEquipment(EquipmentType.Shield);
+            pendingEquipmentType = EquipmentType.Shield;
             SetupEquipmentButtons();
         }
 
         void SetupEquipmentButtons() {
-            Dictionary<EquipmentType, bool> ownedEquipment = GameModel.Instance.saveGame.equipmentBuilt;
             Button dashButton = dashEquipmentButtonObject.GetComponent<Button>();
             Image dashImage = dashButton.GetComponent<Image>();
             dashImage.sprite = equipmentBlueprints[EquipmentType.Dash].IconLarge;
             dashEquipmentButtonBackground.sprite = equipmentBlueprints[EquipmentType.Dash].IconLarge;
-            if (ownedEquipment[EquipmentType.Dash]) {
-                if (GameModel.Instance.player.currentEquipmentType == EquipmentType.Dash) {
+            Player player = GameModel.Instance.player;
+            Debug.Log("player has dash: " + player.HasEquipment(EquipmentType.Dash));
+            if (player.HasEquipment(EquipmentType.Dash)) {
+                if (pendingEquipmentType == EquipmentType.Dash) {
                     dashButton.interactable = false;
                     dashImage.color = Color.white;
                     dashEquipmentButtonBackground.color = Color.yellow;
@@ -252,8 +258,9 @@ namespace SpaceBoat.UI {
             Image healthPackImage = healthPackButton.GetComponent<Image>();
             healthPackImage.sprite = equipmentBlueprints[EquipmentType.HealthPack].IconLarge;
             healthPackEquipmentButtonBackground.sprite = equipmentBlueprints[EquipmentType.HealthPack].IconLarge;
-            if (ownedEquipment[EquipmentType.HealthPack]) {
-                if (GameModel.Instance.player.currentEquipmentType == EquipmentType.HealthPack) {
+            Debug.Log("player has health pack: " + player.HasEquipment(EquipmentType.HealthPack));
+            if (player.HasEquipment(EquipmentType.HealthPack)) {
+                if (pendingEquipmentType == EquipmentType.HealthPack) {
                     healthPackButton.interactable = false;
                     healthPackImage.color = Color.white;
                     healthPackEquipmentButtonBackground.color = Color.yellow;
@@ -272,8 +279,9 @@ namespace SpaceBoat.UI {
             Image shieldImage = shieldButton.GetComponent<Image>();
             shieldImage.sprite = equipmentBlueprints[EquipmentType.Shield].IconLarge;
             shieldEquipmentButtonBackground.sprite = equipmentBlueprints[EquipmentType.Shield].IconLarge;
-            if (ownedEquipment[EquipmentType.Shield]) {
-                if (GameModel.Instance.player.currentEquipmentType == EquipmentType.Shield) {
+            Debug.Log("player has shield: " + player.HasEquipment(EquipmentType.Shield));
+            if (player.HasEquipment(EquipmentType.Shield)) {
+                if (pendingEquipmentType == EquipmentType.Shield) {
                     shieldButton.interactable = false;
                     shieldImage.color = Color.white;
                     shieldEquipmentButtonBackground.color = Color.yellow;
@@ -291,12 +299,11 @@ namespace SpaceBoat.UI {
         }
 
         void OpenEquipmentPanel() {
-            if (numEquipmentOwned > 0) {
                 SetEquipmentPanelDetails(GameModel.Instance.player.currentEquipmentType);
-            } else {
-                equipmentDescriptionText.text = UIManager.Instance.FixedUIText(NoEquipmentText);
-                equipmentTitleText.text = "";
-            }
+                pendingEquipmentType = GameModel.Instance.player.currentEquipmentType;
+        
+
+            
             SetupEquipmentButtons();
         }
 
@@ -316,6 +323,12 @@ namespace SpaceBoat.UI {
                 if (GameModel.Instance.player.HasEquipment(type)) {
                     numEquipmentOwned++;
                 }
+            }
+        }
+
+        public void CloseCraftingUI() {
+            if (pendingEquipmentType != GameModel.Instance.player.currentEquipmentType) {
+                GameModel.Instance.player.ChangeEquipment(pendingEquipmentType);
             }
         }
 

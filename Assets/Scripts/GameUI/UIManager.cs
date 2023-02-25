@@ -77,6 +77,7 @@ namespace SpaceBoat.UI {
             hudParent.SetActive(true);
             craftMenuParent.SetActive(false);
             GameModel.Instance.UnpauseGame();
+            craftMenuParent.GetComponent<CraftingUI>().CloseCraftingUI();
             ToggleControlHints(true);
             ToggleHelpText(true);
         }
@@ -117,6 +118,7 @@ namespace SpaceBoat.UI {
         }
 
         public void CloseBlueprintUnlockPanel() {
+            GameModel.Instance.saveGameManager.Save();
             CurrentState = UIState.HUD;
             hudParent.SetActive(true);
             GameModel.Instance.UnpauseGame();

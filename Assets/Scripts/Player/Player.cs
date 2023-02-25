@@ -604,9 +604,19 @@ namespace SpaceBoat {
             return equipmentScripts[currentEquipmentType];
         }
 
+        public EquipmentType lastCraftedEquipmentType {get; private set;} = EquipmentType.None;
+
+
         public void CraftEquipment(EquipmentType type, int cost) {
+            if (HasEquipment(type)) {
+                Debug.LogError("Player already has equipment of type " + type);
+                return;
+            }
+            Debug.Log("Player crafted equipment of type " + type);
             game.saveGame.equipmentBuilt[type] = true;
+            lastCraftedEquipmentType = type;
             PlayerSpendsMoney(cost);
+            game.saveGameManager.Save();
         }
 
         public bool HasEquipment(EquipmentType type) {
@@ -761,7 +771,7 @@ namespace SpaceBoat {
                     if (activatable.ActivationCondition(this) ) {
                         if (coll.gameObject != activatableInRange) {
                             activatableInRange = coll.gameObject;
-                            if (activatable.activatableHelpPrompt.promptLabel != "") game.controlsPrompts.AddPrompt(activatable.activatableHelpPrompt);
+                            if (activatableInUse == null && activatable.activatableHelpPrompt.promptLabel != "") game.controlsPrompts.AddPrompt(activatable.activatableHelpPrompt);
                         }
                         return true;
                     }
@@ -771,12 +781,18 @@ namespace SpaceBoat {
                 Debug.Log("Can no longer activate " + activatableInRange.ToString());
                 IActivatables activatable = game.GetActivatableComponent(activatableInRange);
                 if (activatable.activatableHelpPrompt.promptLabel != "") game.controlsPrompts.RemovePrompt(activatable.activatableHelpPrompt);
+                if (activatableInRange == activatableInUse?.gameObject) {
+                    Debug.Log("Can no longer activate current activatable: " + activatableInUse.ToString());
+                    activatableInUse.Deactivate(this);
+                    DetatchFromActivatable();
+                }
                 activatableInRange = null;
             }
             return false;
         }
 
         public void DetatchFromActivatable() {
+            if (activatableInUse == null) return;
             Debug.Log("stopped using " + activatableInUse.ToString());
             if (activatableInUse.usageAnimation != "") {
                 animator.SetBool(activatableInUse.usageAnimation, false);

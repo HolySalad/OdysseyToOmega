@@ -26,6 +26,7 @@ TagManager:
   - Activatable
   - EndOfMapRight
   - TopOfMap
+  - Fireball
   layers:
   - Default
   - TransparentFX
@@ -63,12 +64,6 @@ TagManager:
   - name: Background
     uniqueID: 3453712825
     locked: 0
-  - name: Foreground1
-    uniqueID: 3735844731
-    locked: 0
-  - name: Foreground2
-    uniqueID: 2555070193
-    locked: 0
   - name: ShipBackLayer
     uniqueID: 2245820371
     locked: 0
@@ -93,11 +88,20 @@ TagManager:
   - name: ShipFrontLayer
     uniqueID: 2074438875
     locked: 0
+  - name: Foreground1
+    uniqueID: 3735844731
+    locked: 0
+  - name: Foreground2
+    uniqueID: 2555070193
+    locked: 0
   - name: Player
     uniqueID: 1012417137
     locked: 0
   - name: SpaceRocks
     uniqueID: 3773064109
+    locked: 0
+  - name: comets
+    uniqueID: 3241660579
     locked: 0
   - name: New Layer 3
     uniqueID: 345971511

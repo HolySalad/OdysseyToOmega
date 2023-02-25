@@ -89,7 +89,7 @@ namespace SpaceBoat.Rewards {
             if (chanceOverride > baseChance) {
                 baseChance = chanceOverride;
             }
-            if (possibleRewards.Count == 0 || Random.Range(0, 100) > Mathf.Max(baseChance, cometBlueprintDropChanceMin)) {
+            if (possibleRewards.Count == 0 || Random.Range(0, 100) < Mathf.Max(baseChance, cometBlueprintDropChanceMin)) {
                 return RewardType.Money;
             } else {
                 return possibleRewards[Random.Range(0, possibleRewards.Count)];

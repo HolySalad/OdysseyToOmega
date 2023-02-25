@@ -116,14 +116,14 @@ namespace SpaceBoat.Ship.Activatables {
         public bool ActivationCondition(Player player) {
             return isBroken;
         }
-
+    /*
         void OnTriggerExit2D(Collider2D other) {
             if (isInUse && other.gameObject.tag == "Player") {
                 Deactivate(player);
                 player.DetatchFromActivatable();
             }
         }
-
+*/
         void Update() {
             if (isInUse && isBroken) {
                 if (Time.time - timeBeganRepairing >= repairTime) {

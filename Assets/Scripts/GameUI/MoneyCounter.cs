@@ -69,6 +69,10 @@ namespace SpaceBoat.UI {
                 text.text = money.ToString();
                 return;
             }
+            if (GameModel.Instance.gameOverTriggered) {
+                StartCoroutine(TickMoneyUp(0));
+                return;
+            }
             if (money != lastDisplayedMoney) {
                 StopCoroutine(TickMoneyUp(money));
                 StartCoroutine(TickMoneyUp(money));

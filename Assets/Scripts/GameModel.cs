@@ -107,7 +107,7 @@ namespace SpaceBoat {
 
         public TotemDNADefaultAvatar playerAvatar { get; private set; }
         public float GameBeganTime {get; private set;}
-        public bool gameOverTriggered {get; private set;}
+        public bool gameOverTriggered {get; private set;} = false;
         public int lastSurvivingSailCount {get; private set;}
 
         private IHazardManager currentHazardManager;
@@ -661,7 +661,12 @@ namespace SpaceBoat {
             }
 
             public void ResetBetweenRuns() {
-                saveData.equipmentBuilt.Clear();
+                saveData.equipmentBuilt = new Dictionary<EquipmentType, bool> {
+                    {EquipmentType.Dash, false},
+                    {EquipmentType.HarpoonLauncher, false},
+                    {EquipmentType.Shield, false},
+                    {EquipmentType.HealthPack, false}
+                };
                 saveData.hazardsCompleted.Clear();
                 saveData.money = 0;
                 Save();
