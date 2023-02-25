@@ -229,8 +229,17 @@ namespace SpaceBoat.HazardManagers.BugSwarmSubclasses {
                 rb.velocity = movementVector.normalized*travellingMovementSpeed;
             }
         }
+        
+        public void Explode() {
+            explosionAnimationObject.SetActive(true);
+            Destroy(gameObject);
+        }
 
         void BugLeavingMovementBehaviour() {
+            if (exitTarget == null) {
+                explosionAnimationObject.SetActive(true);
+                return;
+            }
             if (transform.position.x < exitTarget.position.x) {
                 swarm?.RemoveBugFromSwarm(this);
                 Destroy(gameObject);
