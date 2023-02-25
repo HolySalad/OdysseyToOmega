@@ -2556,30 +2556,6 @@ PrefabInstance:
       propertyPath: m_hasFontAssetChanged
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1908489675348491443, guid: 1867d33c320fca94a9e5fee0301a56d1, type: 3}
-      propertyPath: cost
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 1908489675348491443, guid: 1867d33c320fca94a9e5fee0301a56d1, type: 3}
-      propertyPath: iconLarge
-      value: 
-      objectReference: {fileID: -7670772567931111913, guid: 8f2b0b7b1d468b5458a1a0c8d716fff3, type: 3}
-    - target: {fileID: 1908489675348491443, guid: 1867d33c320fca94a9e5fee0301a56d1, type: 3}
-      propertyPath: iconSmall
-      value: 
-      objectReference: {fileID: -7670772567931111913, guid: 8f2b0b7b1d468b5458a1a0c8d716fff3, type: 3}
-    - target: {fileID: 1988229419991046723, guid: 1867d33c320fca94a9e5fee0301a56d1, type: 3}
-      propertyPath: cost
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1988229419991046723, guid: 1867d33c320fca94a9e5fee0301a56d1, type: 3}
-      propertyPath: iconLarge
-      value: 
-      objectReference: {fileID: -8092637305567445648, guid: 8f2b0b7b1d468b5458a1a0c8d716fff3, type: 3}
-    - target: {fileID: 1988229419991046723, guid: 1867d33c320fca94a9e5fee0301a56d1, type: 3}
-      propertyPath: iconSmall
-      value: 
-      objectReference: {fileID: -8092637305567445648, guid: 8f2b0b7b1d468b5458a1a0c8d716fff3, type: 3}
     - target: {fileID: 2373684262478444620, guid: 1867d33c320fca94a9e5fee0301a56d1, type: 3}
       propertyPath: m_fontAsset
       value: 
@@ -2620,14 +2596,6 @@ PrefabInstance:
       propertyPath: m_sharedMaterial
       value: 
       objectReference: {fileID: 8656376140541443741, guid: d59977a130ea6a540849c98b9da92fed, type: 2}
-    - target: {fileID: 3995697086778934341, guid: 1867d33c320fca94a9e5fee0301a56d1, type: 3}
-      propertyPath: cost
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4068064822785686377, guid: 1867d33c320fca94a9e5fee0301a56d1, type: 3}
-      propertyPath: cost
-      value: 8
-      objectReference: {fileID: 0}
     - target: {fileID: 4324334894764826511, guid: 1867d33c320fca94a9e5fee0301a56d1, type: 3}
       propertyPath: m_fontAsset
       value: 
@@ -2636,18 +2604,6 @@ PrefabInstance:
       propertyPath: m_hasFontAssetChanged
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4698991961831534548, guid: 1867d33c320fca94a9e5fee0301a56d1, type: 3}
-      propertyPath: cost
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 4698991961831534548, guid: 1867d33c320fca94a9e5fee0301a56d1, type: 3}
-      propertyPath: iconLarge
-      value: 
-      objectReference: {fileID: 6963504112057975369, guid: 8f2b0b7b1d468b5458a1a0c8d716fff3, type: 3}
-    - target: {fileID: 4698991961831534548, guid: 1867d33c320fca94a9e5fee0301a56d1, type: 3}
-      propertyPath: iconSmall
-      value: 
-      objectReference: {fileID: 6963504112057975369, guid: 8f2b0b7b1d468b5458a1a0c8d716fff3, type: 3}
     - target: {fileID: 5852545960270134770, guid: 1867d33c320fca94a9e5fee0301a56d1, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -8.607422
@@ -10904,82 +10860,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2652018774195889313, guid: 63d98d3d85ef08f48b61f125cc5c237f, type: 3}
-      propertyPath: sounds.Array.size
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 2652018774195889313, guid: 63d98d3d85ef08f48b61f125cc5c237f, type: 3}
-      propertyPath: sounds.Array.data[46].clip
-      value: 
-      objectReference: {fileID: 8300000, guid: 8ca1b144d26e5c949b0a6f5eb3a676ce, type: 3}
-    - target: {fileID: 2652018774195889313, guid: 63d98d3d85ef08f48b61f125cc5c237f, type: 3}
-      propertyPath: sounds.Array.data[46].loop
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2652018774195889313, guid: 63d98d3d85ef08f48b61f125cc5c237f, type: 3}
-      propertyPath: sounds.Array.data[46].name
-      value: ShipShieldActivate
-      objectReference: {fileID: 0}
-    - target: {fileID: 2652018774195889313, guid: 63d98d3d85ef08f48b61f125cc5c237f, type: 3}
-      propertyPath: sounds.Array.data[47].clip
-      value: 
-      objectReference: {fileID: 8300000, guid: 5fee31f0bb6bc6b4d924ba993223623a, type: 3}
-    - target: {fileID: 2652018774195889313, guid: 63d98d3d85ef08f48b61f125cc5c237f, type: 3}
-      propertyPath: sounds.Array.data[47].loop
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2652018774195889313, guid: 63d98d3d85ef08f48b61f125cc5c237f, type: 3}
-      propertyPath: sounds.Array.data[47].name
-      value: ShipShieldActiveStatic
-      objectReference: {fileID: 0}
-    - target: {fileID: 2652018774195889313, guid: 63d98d3d85ef08f48b61f125cc5c237f, type: 3}
-      propertyPath: sounds.Array.data[48].clip
-      value: 
-      objectReference: {fileID: 8300000, guid: 9075cf5edb9f48c4f9d530dd0ba8fcce, type: 3}
-    - target: {fileID: 2652018774195889313, guid: 63d98d3d85ef08f48b61f125cc5c237f, type: 3}
-      propertyPath: sounds.Array.data[48].loop
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2652018774195889313, guid: 63d98d3d85ef08f48b61f125cc5c237f, type: 3}
-      propertyPath: sounds.Array.data[48].name
-      value: ShipShieldWane
-      objectReference: {fileID: 0}
-    - target: {fileID: 2652018774195889313, guid: 63d98d3d85ef08f48b61f125cc5c237f, type: 3}
-      propertyPath: sounds.Array.data[49].clip
-      value: 
-      objectReference: {fileID: 8300000, guid: 60446dfcb90e58d46bf494172a8b6b71, type: 3}
-    - target: {fileID: 2652018774195889313, guid: 63d98d3d85ef08f48b61f125cc5c237f, type: 3}
-      propertyPath: sounds.Array.data[49].name
-      value: JumpPadBounce
-      objectReference: {fileID: 0}
-    - target: {fileID: 2652018774195889313, guid: 63d98d3d85ef08f48b61f125cc5c237f, type: 3}
-      propertyPath: sounds.Array.data[46].volume
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2652018774195889313, guid: 63d98d3d85ef08f48b61f125cc5c237f, type: 3}
-      propertyPath: sounds.Array.data[47].volume
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2652018774195889313, guid: 63d98d3d85ef08f48b61f125cc5c237f, type: 3}
-      propertyPath: sounds.Array.data[48].volume
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2652018774195889313, guid: 63d98d3d85ef08f48b61f125cc5c237f, type: 3}
-      propertyPath: sounds.Array.data[49].volume
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2652018774195889313, guid: 63d98d3d85ef08f48b61f125cc5c237f, type: 3}
-      propertyPath: sounds.Array.data[46].isMusic
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2652018774195889313, guid: 63d98d3d85ef08f48b61f125cc5c237f, type: 3}
-      propertyPath: sounds.Array.data[47].isMusic
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2652018774195889313, guid: 63d98d3d85ef08f48b61f125cc5c237f, type: 3}
-      propertyPath: sounds.Array.data[48].isMusic
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2652018774195889315, guid: 63d98d3d85ef08f48b61f125cc5c237f, type: 3}
       propertyPath: m_Name
       value: SoundManager
@@ -12867,10 +12747,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 520569538}
     - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: DoNotUpdate
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
       propertyPath: helpPrompts
       value: 
       objectReference: {fileID: 312070738}
@@ -12879,14 +12755,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1635726836}
     - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: playSoundtrack
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: tutorialHazard
-      value: 
-      objectReference: {fileID: 800051936456181465, guid: 3944765dff7c74548bd71cd8fedb8eb4, type: 3}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
       propertyPath: controlsPrompts
       value: 
       objectReference: {fileID: 1181307051}
@@ -12894,14 +12762,6 @@ PrefabInstance:
       propertyPath: cameraController
       value: 
       objectReference: {fileID: 702206720}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: resetSaveFileOnStart
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: youreDoingGreat.text
-      value: Good Luck!
-      objectReference: {fileID: 0}
     - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
       propertyPath: shipSails.Array.data[0]
       value: 
@@ -12943,154 +12803,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1385699944}
     - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: youreDoingGreat.color.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: youreDoingGreat.color.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: youreDoingGreat.color.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
       propertyPath: shipSails.Array.data[10]
       value: 
       objectReference: {fileID: 904344876}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: youreDoingGreat.duration
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: youreDoingGreat.priority
-      value: 13
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: tutorialHazardCamera.text
-      value: Press Tab to zoom in and out.
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: tutorialHazardStage1.text
-      value: A Meteor struck your ship! Climb the masts to repair your sails.
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: tutorialHazardStage2.text
-      value: Avoid the Asteroids and continue repairing your sails.
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: tutorialHazardStage3.text
-      value: Comets incoming! \n Use the Harpoon Launcher to break them and claim
-        the items inside.
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: youreDoingGreat.promptLabel
-      value: DoingGreat
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: tutorialHazardCamera.color.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: tutorialHazardCamera.color.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: tutorialHazardCamera.color.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: tutorialHazardStage1.color.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: tutorialHazardStage1.color.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: tutorialHazardStage1.color.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: tutorialHazardStage2.color.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: tutorialHazardStage2.color.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: tutorialHazardStage2.color.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: tutorialHazardStage3.color.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: tutorialHazardStage3.color.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: tutorialHazardStage3.color.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: tutorialHazardCamera.duration
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: tutorialHazardCamera.priority
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: tutorialHazardStage1.duration
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: tutorialHazardStage1.priority
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: tutorialHazardStage2.duration
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: tutorialHazardStage2.priority
-      value: 11
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: tutorialHazardStage3.duration
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: tutorialHazardStage3.priority
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: youreDoingGreat.TriggerOnlyOnce
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: tutorialHazardCamera.promptLabel
-      value: tutorialHazardCamera
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: tutorialHazardStage1.promptLabel
-      value: tutorialStage1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: tutorialHazardStage2.promptLabel
-      value: tutorialStage2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: tutorialHazardStage3.promptLabel
-      value: tutorialStage3
-      objectReference: {fileID: 0}
-    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
-      propertyPath: tutorialHazardCamera.TriggerOnlyOnce
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
       propertyPath: movementTutorialTrigger.Array.data[0]
       value: 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace SpaceBoat.HazardManagers {
-    public enum HazardTypes {MeteorShower, CosmicStorm, BugSwarm, HydraBoss}
+    public enum HazardTypes {MeteorShower, CosmicStorm, BugSwarm, HydraBoss, None}
     public enum HazardDifficulty {Easy, Medium, Hard}
 
     [System.Serializable] public class HazardDefinition {

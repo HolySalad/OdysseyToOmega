@@ -121,6 +121,9 @@ namespace SpaceBoat {
 
         public int money {
             get {
+                if (game != null && game.unlockEverything) {
+                    return 9999;
+                }
                 return game.saveGame.money;
             }
             private set {

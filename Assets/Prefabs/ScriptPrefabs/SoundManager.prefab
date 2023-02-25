@@ -370,3 +370,31 @@ MonoBehaviour:
     isMusic: 1
     loop: 1
     source: {fileID: 0}
+  - name: ShipShieldActivate
+    clip: {fileID: 8300000, guid: 8ca1b144d26e5c949b0a6f5eb3a676ce, type: 3}
+    volume: 1
+    pitch: 0
+    isMusic: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: ShipShieldActiveStatic
+    clip: {fileID: 8300000, guid: 5fee31f0bb6bc6b4d924ba993223623a, type: 3}
+    volume: 1
+    pitch: 0
+    isMusic: 0
+    loop: 1
+    source: {fileID: 0}
+  - name: ShipShieldWane
+    clip: {fileID: 8300000, guid: 9075cf5edb9f48c4f9d530dd0ba8fcce, type: 3}
+    volume: 1
+    pitch: 0
+    isMusic: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: JumpPadBounce
+    clip: {fileID: 8300000, guid: 60446dfcb90e58d46bf494172a8b6b71, type: 3}
+    volume: 1
+    pitch: 0
+    isMusic: 0
+    loop: 0
+    source: {fileID: 0}

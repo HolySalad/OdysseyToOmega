@@ -27,6 +27,9 @@ namespace SpaceBoat {
         [SerializeField] private bool slowMo = false;
         [SerializeField] private bool utilityCheats = false;
         [SerializeField] private bool resetSaveFileOnStart = false;
+        [SerializeField] public bool unlockEverything = false;
+        [SerializeField] private HazardTypes forceHazard = HazardTypes.None;
+        
 
         [Header("Object References")]
         [SerializeField] public Player player;
@@ -358,6 +361,13 @@ namespace SpaceBoat {
         }
 
         (GameObject, HazardDifficulty) PickNextHazard() {
+            if (forceHazard != HazardTypes.None) {
+                HazardTypes hazardType = forceHazard;
+                forceHazard = HazardTypes.None;
+                Debug.Log("Force Spawned hazard " + hazardType + " with difficulty " + HazardDifficulty.Easy + ".");
+                return (hazardManagerPrefabsDict[hazardType], HazardDifficulty.Easy);
+            }
+            
             if (numHazardsCompleted >= hazardPlanner.hazardPlan.Count) {
                 Debug.Log("No more hazards to spawn, game over!");
                 TriggerToBeContinued();

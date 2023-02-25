@@ -30,7 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6332493757859967071
 MonoBehaviour:
@@ -46,9 +46,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DoNotUpdate: 0
   playSoundtrack: 1
+  musicFadeTime: 1
   slowMo: 0
-  utilityCheats: 1
+  utilityCheats: 0
   resetSaveFileOnStart: 0
+  unlockEverything: 0
+  forceHazard: 4
   player: {fileID: 0}
   sound: {fileID: 0}
   helpPrompts: {fileID: 0}
@@ -102,9 +105,49 @@ MonoBehaviour:
     text: Repair the Sails to prevent your ship from sinking!
     color: {r: 1, g: 0.05345905, b: 0.05345905, a: 0}
     TriggerOnlyOnce: 0
+  tutorialHazard: {fileID: 800051936456181465, guid: 3944765dff7c74548bd71cd8fedb8eb4, type: 3}
+  tutorialHazardStage1:
+    promptLabel: tutorialStage1
+    priority: 10
+    duration: 6
+    text: A Meteor struck your ship! Climb the masts to repair your sails.
+    color: {r: 1, g: 1, b: 1, a: 0}
+    TriggerOnlyOnce: 0
+  tutorialHazardCamera:
+    promptLabel: tutorialHazardCamera
+    priority: 8
+    duration: 6
+    text: Press Tab to zoom in and out.
+    color: {r: 1, g: 1, b: 1, a: 0}
+    TriggerOnlyOnce: 1
+  tutorialHazardStage2:
+    promptLabel: tutorialStage2
+    priority: 11
+    duration: 6
+    text: Avoid the Asteroids and continue repairing your sails.
+    color: {r: 1, g: 1, b: 1, a: 0}
+    TriggerOnlyOnce: 0
+  tutorialHazardStage3:
+    promptLabel: tutorialStage3
+    priority: 12
+    duration: 6
+    text: Comets incoming! \n Use the Harpoon Launcher to break them and claim the
+      items inside.
+    color: {r: 1, g: 1, b: 1, a: 0}
+    TriggerOnlyOnce: 0
+  youreDoingGreat:
+    promptLabel: DoingGreat
+    priority: 13
+    duration: 6
+    text: Good Luck!
+    color: {r: 1, g: 1, b: 1, a: 0}
+    TriggerOnlyOnce: 1
   saveGame:
     money: 0
     buildables: []
     movementTutorialPlayed: 0
     cometTutorialPlayed: 0
     craftingTutorialPlayed: 0
+    equipmentTutorialPlayed: 0
+    crouchTutorialPlayed: 0
+    tutorialHazardPlayed: 0
