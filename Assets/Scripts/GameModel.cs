@@ -367,7 +367,7 @@ namespace SpaceBoat {
                 Debug.Log("Force Spawned hazard " + hazardType + " with difficulty " + HazardDifficulty.Easy + ".");
                 return (hazardManagerPrefabsDict[hazardType], HazardDifficulty.Easy);
             }
-            
+
             if (numHazardsCompleted >= hazardPlanner.hazardPlan.Count) {
                 Debug.Log("No more hazards to spawn, game over!");
                 TriggerToBeContinued();
@@ -511,14 +511,15 @@ namespace SpaceBoat {
             cameraController.AddShipViewOverride("HazardStartup", 1); 
             yield return new WaitForSeconds(3f);
             cameraController.RemoveShipViewOverride("HazardStartup");  
-
+            int numCometsSpawned = 1;
             float stage3Timer = 0;
             while (!stage3) {
-                if (stage3Timer/10 == 1) {
+                if (stage3Timer > numCometsSpawned*10) {
                     GameObject newComet = cometManager.SpawnComet(4, 100);
                     newComet.GetComponent<RewardComet>().AddCometShatterCallback(() => {
                         stage3 = true;
                     });
+                    numCometsSpawned++;
                 }
                 stage3Timer += Time.deltaTime;
                 if (stage3Timer/24 == 1) {
