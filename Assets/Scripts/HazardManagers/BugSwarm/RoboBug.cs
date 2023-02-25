@@ -27,7 +27,6 @@ namespace SpaceBoat.HazardManagers.BugSwarmSubclasses {
         [SerializeField] private float maxAttackVectorChangePercent = 0.1f;
         [SerializeField] private float minAttackVectorChangePercent = 0.1f;
         [SerializeField] private float attackVectorMagDifferenceForAbort = 0.1f;
-        [SerializeField] private float explosionRadius = 2f;
         [SerializeField] private float attackTimeoutTime = 2f;
         [SerializeField] private float minAttackWaitTime = 0.2f;
         [SerializeField] private float attackCooldown = 1.5f;
