@@ -27,10 +27,13 @@ namespace SpaceBoat.PlayerSubclasses.Equipment {
         private float dashTimer = 0f;
         public bool hasLandedSinceLastDash = true;
 
+        private Player player;
+
         public bool ActivationCondition(Player player) {
             return (cooldown <= 0f && hasLandedSinceLastDash);
         }
         public void Activate(Player player) {
+            this.player = player;
             isActive = true;
             cooldown = dashCooldown;
             dashTimer = dashDuration;
@@ -59,7 +62,7 @@ namespace SpaceBoat.PlayerSubclasses.Equipment {
         }
 
         IEnumerator UpdateBackpackVisuals() {
-            while (true) {
+            while (player.currentEquipmentType == EquipmentType.Dash) {
                 if (cooldown > 0f) {
                     if (cooldown > dashCooldown * 2f / 3f) {
                         cooldownTwoThirdsSprite.enabled = false;

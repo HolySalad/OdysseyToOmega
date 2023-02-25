@@ -617,7 +617,7 @@ namespace SpaceBoat {
                 return;
             } 
             if (currentEquipment.isActive) {
-                currentEquipment.CancelActivation(this);
+                Debug.LogError("Cannot change equipment while current equipment is active");
             }
             currentEquipment.Unequip(this);
 
