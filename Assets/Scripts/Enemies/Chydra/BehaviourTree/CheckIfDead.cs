@@ -15,26 +15,33 @@ namespace BehaviorDesigner.Runtime.Tasks.Unity
         public SharedInt[] healths;
         public SharedInt headsActive;
         public SharedInt survivingheads;
+        public SharedInt maxHealth;
 
         
 
 
         public override TaskStatus OnUpdate()
         {
-            survivingheads = 0;
-            for (int i = 0; i < 3; i++)
+            survivingheads.Value = 0;
+            for (int i = 0; i < headsActive.Value; i++)
             {
-                if (healths[i].Value > 0 && headsActive.Value - 1 >= i)
+                if (healths[i].Value > 0 )
                 {
                     survivingheads.Value++;
                 }
-                if (healths[i].Value <= 0 && heads[i].Value.activeInHierarchy)
+                if (healths[i].Value <= 0 )
                 {
+                    if (!heads[i].Value.GetComponent<Animator>().GetBool("Dead"))
+                    {
+
+                    heads[i].Value.GetComponent<Animator>().SetBool("BreakHookBool", false);
                     heads[i].Value.GetComponent<Animator>().SetBool("Dead",true);
                     heads[i].Value.GetComponent<Animator>().SetTrigger("Die");
                     survivingheads.Value--;
+                    }
                 }
-              
+               
+
 
                 if (survivingheads.Value <= 0)
                 {
@@ -42,34 +49,28 @@ namespace BehaviorDesigner.Runtime.Tasks.Unity
                     switch (headsActive)
                     {
                         case var value when value.Value == 1:
-                            headsActive = 2;
-
-
-                            healths[0].Value = 50;
-                            heads[0].Value.SetActive(true);
-                            heads[1].Value.SetActive(true);
+                            headsActive.Value = 2;
+                            healths[0].Value = maxHealth.Value;
                             survivingheads.Value = 2;
-                            heads[0].Value.GetComponent<Animator>().SetBool("Dead", false);
+                            //heads[0].Value.GetComponent<Animator>().SetBool("Dead", false);
+                            heads[0].Value.GetComponent<Animator>().SetBool("H2Awaken", true);
                             break;
                         case var value when value.Value == 2:
-                            headsActive = 3;
-                            healths[0].Value = 50;
-                            healths[1].Value = 50;
+                            headsActive.Value = 3;
+                            healths[0].Value = maxHealth.Value;
+                            healths[1].Value = maxHealth.Value;
 
-                            heads[0].Value.GetComponent<Animator>().SetBool("Dead", false);
-                            heads[1].Value.GetComponent<Animator>().SetBool("Dead", false);
-                            heads[0].Value.SetActive(true);
-                            heads[1].Value.SetActive(true);
-                            heads[2].Value.SetActive(true);
+                            //heads[0].Value.GetComponent<Animator>().SetBool("Dead", false);
+                            //heads[1].Value.GetComponent<Animator>().SetBool("Dead", false);
+                            heads[0].Value.GetComponent<Animator>().SetBool("H3Awaken", true);
+                            heads[1].Value.GetComponent<Animator>().SetBool("H3Awaken", true);
                             survivingheads.Value = 3;
                             break;
                         case var value when value.Value == 3:
-                            headsActive = 0;
+                            
                             for (int x = 0; x < 3; x++)
                             {
-                                heads[0].Value.GetComponent<Animator>().SetBool("Dead", false);
-                                heads[1].Value.GetComponent<Animator>().SetBool("Dead", false);
-                               // heads[x].Value.SetActive(false);
+                                heads[0].Value.GetComponent<Animator>().SetBool("CompletelyDead", true);
                             }
                             Debug.Log("Finally dead");
                             break;

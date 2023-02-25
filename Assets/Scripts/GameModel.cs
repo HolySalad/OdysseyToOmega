@@ -40,6 +40,8 @@ namespace SpaceBoat {
         [SerializeField] public GameObject theBoat;
         [SerializeField] public CometManager cometManager;
         [SerializeField] public GameObject shipShield;
+        [SerializeField] public GameObject bossParent;
+       [SerializeField] public GameObject[] heads;
 
         [Header("Ship")]
         [SerializeField] public List<GameObject> shipSails;
