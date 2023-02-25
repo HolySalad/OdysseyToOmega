@@ -548,11 +548,13 @@ namespace SpaceBoat {
                     } else {
                         List<RaycastHit2D> hitsHead = new List<RaycastHit2D>();
                         Vector2 dir = isFacingRight ? Vector2.right : Vector2.left;
+                        
                         int numHitsHead = headCollider.GetComponent<Collider2D>().Cast(dir, filter, hitsHead, slipCheckDistance, true);
                         if (numHitsHead > 0)
                         {
                             isSlipping = true;
                             isSlippingLeft = isFacingRight;
+                            Debug.Log("Players' head slipped "+ (isSlippingLeft ? "left" : "right"));
                         }
                     }
                 }
@@ -916,8 +918,11 @@ namespace SpaceBoat {
 
         }
 
-        void MovementUpdate() {
+        void FixedUpdate() {
             UpdateGrounded();
+        }
+
+        void MovementUpdate() {
             MomentumUpdate();
             bool headBump = CheckHeadBump();
             if (headBump) {CallOnPlayerHeadbumpCallbacks();}
