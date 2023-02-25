@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 341836164546490889}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.112273, y: 0.08201538, z: 0}
+  m_LocalPosition: {x: 2.112273, y: 0.10099884, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -121,7 +121,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 1
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.069541484}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -132,7 +132,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.055, y: 0.97}
+  m_Size: {x: 1.055, y: 0.83091706}
   m_EdgeRadius: 0
 --- !u!251 &1104795405
 PlatformEffector2D:
@@ -795,6 +795,13 @@ MonoBehaviour:
     text: 
     color: {r: 0, g: 0, b: 0, a: 0}
     TriggerOnlyOnce: 0
+  inUseHelpPrompt:
+    promptLabel: 
+    priority: 0
+    duration: 0
+    text: 
+    color: {r: 0, g: 0, b: 0, a: 0}
+    TriggerOnlyOnce: 0
   repairedSprite: {fileID: 21300000, guid: 74beecc9368494f4d839d42509286914, type: 3}
   brokenSprite: {fileID: 21300000, guid: b639ecc865469694a83d2a3f84657d18, type: 3}
   hazardTarget: {fileID: 6922434024704948985}
@@ -848,7 +855,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3542951340076223037}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.112273, y: 0.08201538, z: 0}
+  m_LocalPosition: {x: 2.112273, y: 0.10099884, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -941,7 +948,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 1
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.08878286}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -952,7 +959,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.055, y: 0.97}
+  m_Size: {x: 1.055, y: 0.79243433}
   m_EdgeRadius: 0
 --- !u!251 &1219304249
 PlatformEffector2D:
@@ -1400,6 +1407,13 @@ MonoBehaviour:
     text: 
     color: {r: 0, g: 0, b: 0, a: 0}
     TriggerOnlyOnce: 0
+  inUseHelpPrompt:
+    promptLabel: 
+    priority: 0
+    duration: 0
+    text: 
+    color: {r: 0, g: 0, b: 0, a: 0}
+    TriggerOnlyOnce: 0
   repairedSprite: {fileID: 21300000, guid: 6cede7c875718844db4ec41cead3f178, type: 3}
   brokenSprite: {fileID: 21300000, guid: 44dbf9105c535f240a0fc6fdb32ae7cc, type: 3}
   hazardTarget: {fileID: 1582349550943209700}
@@ -1515,7 +1529,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7452074824509621033}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.112273, y: 0.08201538, z: 0}
+  m_LocalPosition: {x: 2.112273, y: 0.101, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1608,7 +1622,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 1
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.0735576}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -1619,7 +1633,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.055, y: 0.97}
+  m_Size: {x: 1.055, y: 0.8228848}
   m_EdgeRadius: 0
 --- !u!251 &522559790
 PlatformEffector2D:
@@ -2215,7 +2229,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7887031395302939305}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.112273, y: 0.08201538, z: 0}
+  m_LocalPosition: {x: 2.112273, y: 0.10099884, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2308,7 +2322,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 1
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.08695029}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -2319,7 +2333,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.055, y: 0.97}
+  m_Size: {x: 1.055, y: 0.7960994}
   m_EdgeRadius: 0
 --- !u!251 &1044213758
 PlatformEffector2D:
@@ -2440,6 +2454,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   helpPrompt:
+    promptLabel: 
+    priority: 0
+    duration: 0
+    text: 
+    color: {r: 0, g: 0, b: 0, a: 0}
+    TriggerOnlyOnce: 0
+  inUseHelpPrompt:
     promptLabel: 
     priority: 0
     duration: 0
@@ -2571,6 +2592,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   helpPrompt:
+    promptLabel: 
+    priority: 0
+    duration: 0
+    text: 
+    color: {r: 0, g: 0, b: 0, a: 0}
+    TriggerOnlyOnce: 0
+  inUseHelpPrompt:
     promptLabel: 
     priority: 0
     duration: 0
