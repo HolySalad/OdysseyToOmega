@@ -30,7 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2652018774195889313
 MonoBehaviour:
@@ -224,7 +224,7 @@ MonoBehaviour:
     loop: 1
     source: {fileID: 0}
   - name: Cooking
-    clip: {fileID: 8300000, guid: cd5280623de372347b9fcff30d265a87, type: 3}
+    clip: {fileID: 8300000, guid: 37ccf1011bb8044459e1ecae38823bfa, type: 3}
     volume: 1
     pitch: 0
     isMusic: 0
@@ -288,6 +288,83 @@ MonoBehaviour:
     source: {fileID: 0}
   - name: Interlude
     clip: {fileID: 8300000, guid: c422b8623b25ec34e89cb19c7ace4974, type: 3}
+    volume: 1
+    pitch: 0
+    isMusic: 1
+    loop: 1
+    source: {fileID: 0}
+  - name: ShieldActivate
+    clip: {fileID: 8300000, guid: dd01201c288a834448de06c36ebe7c8e, type: 3}
+    volume: 1
+    pitch: 0
+    isMusic: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: ShieldRecharge
+    clip: {fileID: 8300000, guid: 6e2448f40e6dd9d4696aa8846d8ff5ce, type: 3}
+    volume: 1
+    pitch: 0
+    isMusic: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: ShieldBreak
+    clip: {fileID: 8300000, guid: 00531817fcff12f4390d425a8708fd2e, type: 3}
+    volume: 1
+    pitch: 0
+    isMusic: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: Dash
+    clip: {fileID: 8300000, guid: cbbf01d1bd7203c4b80fc4d30c0b2531, type: 3}
+    volume: 1
+    pitch: 0
+    isMusic: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: Blender
+    clip: {fileID: 8300000, guid: e32520581f5220c40ac4eef2bd10e7aa, type: 3}
+    volume: 1
+    pitch: 0
+    isMusic: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: ActivationCompleteDing
+    clip: {fileID: 8300000, guid: 9ae2e8374ab2d22448364bfa4c389009, type: 3}
+    volume: 1
+    pitch: 0
+    isMusic: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: ItemCrafted
+    clip: {fileID: 8300000, guid: 5c15abd0fa33e1b4d9766dcbbfcf2c92, type: 3}
+    volume: 1
+    pitch: 0
+    isMusic: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: MoneyPickup
+    clip: {fileID: 8300000, guid: 944857c965890d342b2281248dbe4a7b, type: 3}
+    volume: 1
+    pitch: 0
+    isMusic: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: BlueprintPickup
+    clip: {fileID: 8300000, guid: 165adbab078dc6e459ea8bcbb2f46f77, type: 3}
+    volume: 1
+    pitch: 0
+    isMusic: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: HarpoonReloaded
+    clip: {fileID: 8300000, guid: 3066510140e57c94d915be403efebe32, type: 3}
+    volume: 1
+    pitch: 0
+    isMusic: 0
+    loop: 0
+    source: {fileID: 0}
+  - name: SwarmGalaxy
+    clip: {fileID: 8300000, guid: dd3e5f2c495e35840b0744e38cfd0bb5, type: 3}
     volume: 1
     pitch: 0
     isMusic: 1

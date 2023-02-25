@@ -122,6 +122,7 @@ namespace SpaceBoat.Ship.Activatables {
             if (isInUse && isBroken) {
                 if (Time.time - timeBeganRepairing >= repairTime) {
                     Repair();
+                    SoundManager.Instance.Oneshot("ActivationCompleteDing");
                     Deactivate(player);
                     player.DetatchFromActivatable();
                 }

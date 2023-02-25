@@ -59,6 +59,7 @@ namespace SpaceBoat.Ship.Activatables {
             if (isInUse) {
                 if (Time.time - timeBeganCooking >= healTime) {
                     player.PlayerHeals();
+                    SoundManager.Instance.Oneshot("ActivationCompleteDing");
                     Deactivate(player);
                     player.DetatchFromActivatable();
                 }

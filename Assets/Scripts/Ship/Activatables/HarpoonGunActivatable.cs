@@ -84,6 +84,7 @@ namespace SpaceBoat.Ship.Activatables {
         public void LoadHarpoon() {
             isLoaded = true;
             harpoonLocation.GetComponent<SpriteRenderer>().enabled = true;
+            SoundManager.Instance.Play("HarpoonReloaded");
         }
 
         void Start() {

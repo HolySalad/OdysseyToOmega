@@ -10,6 +10,7 @@ namespace SpaceBoat.Ship.Buildables.BuildableExtras {
                 return false;
             }
             Debug.Log("Jumppad bounce");
+            SoundManager.Instance.Play("JumpPadBounce");
             player.ForceJump(false, true, true, 2.6f);
 
             return true;

@@ -61,7 +61,7 @@ namespace SpaceBoat.HazardManagers {
         private List<EscalationLevel> escalationLevels;
         
 
-        public string HazardSoundtrack {get;} = "";
+        public string HazardSoundtrack {get;} = "SwarmGalaxy";
         public float HazardDuration {get; private set;} = 0f;
 
         public bool HasEnded {get; private set;} = false;
