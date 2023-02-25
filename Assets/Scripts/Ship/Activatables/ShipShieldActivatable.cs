@@ -46,7 +46,9 @@ namespace SpaceBoat.Ship.Activatables {
             shield = GameModel.Instance.shipShield;
             shieldCollider = shield.GetComponent<Collider2D>();
         }
-
+        public bool isShieldUp() {
+            return shieldCollider.enabled;
+        }
         IEnumerator EnableShield() {
             spriteRenderer.sprite = inUseSprite;
             generatorLight.color = inUseColor;
@@ -73,6 +75,7 @@ namespace SpaceBoat.Ship.Activatables {
                 shield.transform.localScale = Vector3.Lerp(new Vector3(shieldInitialSize, shieldInitialSize, 1f), Vector3.one, timer/shieldGrowthTime);
                 yield return null;
             }
+            shieldCollider.enabled = true;
             shieldLight.intensity = 0f;
             yield return new WaitForSeconds(shieldDuration-1f);
             SoundManager.Instance.Stop("ShipShieldActiveStatic");

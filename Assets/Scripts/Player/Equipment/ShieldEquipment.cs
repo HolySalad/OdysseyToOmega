@@ -24,7 +24,7 @@ namespace SpaceBoat.PlayerSubclasses.Equipment {
         public bool isActive {get; private set;} = false;
         public bool canCancelWorkToUse {get;} = true;
         public EquipmentActivationBehaviour activationBehaviour {get;} = EquipmentActivationBehaviour.Hold;
-        private float shieldStrength;
+        public float shieldStrength;
         private float shieldBrokenTime = -99f;
         private bool onCooldown = false;
         private bool wasBroken = false;

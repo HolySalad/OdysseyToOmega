@@ -77,6 +77,12 @@ namespace SpaceBoat.Ship.Activatables {
         }
 
         public void Break() {
+            ShipShieldActivatable[] shields = FindObjectsOfType<ShipShieldActivatable>();
+            foreach (ShipShieldActivatable shield in shields) {
+                if (shield.isShieldUp()) {
+                    return;
+                }
+            }
             isBroken = true;
             isTargetted = false;
             spriteRenderer.sprite = brokenSprite;

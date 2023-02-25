@@ -232,7 +232,7 @@ namespace SpaceBoat.HazardManagers.BugSwarmSubclasses {
         
         public void Explode() {
             explosionAnimationObject.SetActive(true);
-            Destroy(gameObject);
+            swarm?.RemoveBugFromSwarm(this);
         }
 
         void BugLeavingMovementBehaviour() {
@@ -343,11 +343,10 @@ namespace SpaceBoat.HazardManagers.BugSwarmSubclasses {
             }
             rb.constraints = RigidbodyConstraints2D.FreezeAll;
             StopCoroutine(MoveBug());
-            explosionAnimationObject.SetActive(true);
             if (collision.gameObject.layer == LayerMask.NameToLayer("PlayerChar") && collision.gameObject.TryGetComponent(out Player playerChar)) {
                 playerChar.PlayerTakesDamage();
             }
-            swarm?.RemoveBugFromSwarm(this);
+            Explode();
             if (collision.gameObject.layer != LayerMask.NameToLayer("MapBounds")) {
                 SoundManager.Instance.Play("BugExplosion");
                 if (Random.Range(0, 100) < moneyDropChance) {

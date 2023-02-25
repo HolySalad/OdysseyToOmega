@@ -51,7 +51,7 @@ namespace SpaceBoat.PlayerSubclasses.Equipment {
         public void Unequip(Player player) {
             activeSprite[currentSprite].enabled = false;
             cooldownSprite.enabled = false;
-            cablesSprite.enabled = true;
+            //cablesSprite.enabled = true;
         }
 
         IEnumerator PulseCooldownIndictator() {
@@ -88,8 +88,9 @@ namespace SpaceBoat.PlayerSubclasses.Equipment {
                     currentSprite = 0;
                 }
             } else {
-                currentUsageTime = Mathf.Max(currentUsageTime - Time.deltaTime, 0f);                    int nextSprite = (currentSprite + 1);
-                if (swapSpriteNextFrame) {
+                currentUsageTime = Mathf.Max(currentUsageTime - Time.deltaTime, 0f);
+                if (swapSpriteNextFrame) {                    
+                    int nextSprite = (currentSprite + 1);
                     if (nextSprite >= activeSprite.Length) {
                         nextSprite = 0;
                     }
