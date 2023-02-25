@@ -285,6 +285,7 @@ namespace SpaceBoat {
 
         private IEnumerator GameOver(float delay = 2f) {
             Debug.Log("Gameover!");
+            saveGameManager.ResetBetweenRuns();
             yield return new WaitForSeconds(delay);
             SceneManager.LoadScene("GameOver");
         }

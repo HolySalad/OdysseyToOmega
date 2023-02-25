@@ -21,7 +21,8 @@ namespace SpaceBoat {
         [SerializeField] private HelpPrompt criticalHealthPrompt;
         [SerializeField] private HelpPrompt criticalHealthPromptHealthpack;
         [SerializeField] private HelpPrompt crouchTutorialPrompt;
-        [SerializeField] private HelpPrompt equipmentTutorialPrompt;
+        [SerializeField] private HelpPrompt equipmentTutorialPressPrompt;
+        [SerializeField] private HelpPrompt equipmentTutorialHoldPrompt;
 
         [Header("Collision Detection Settings")]
         [SerializeField] private float groundCheckDistance = 0.1f;
@@ -1026,7 +1027,11 @@ namespace SpaceBoat {
             if (game.equipmentTutorialPlayed == false && currentPlayerStateName == PlayerStateName.ready) {
                 if (currentEquipmentType != EquipmentType.None && currentEquipment.ActivationCondition(this)) {
                     game.equipmentTutorialPlayed = true;
-                    game.helpPrompts.AddPrompt(equipmentTutorialPrompt, () => {
+                    HelpPrompt promptToAdd = equipmentTutorialPressPrompt;
+                    if (currentEquipment.activationBehaviour == EquipmentActivationBehaviour.Hold) {
+                        promptToAdd = equipmentTutorialHoldPrompt;
+                    }
+                    game.helpPrompts.AddPrompt(equipmentTutorialPressPrompt, () => {
                         return currentPlayerStateName != PlayerStateName.ready;
                     });
                 }
