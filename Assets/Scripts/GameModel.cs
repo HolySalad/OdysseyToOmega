@@ -47,6 +47,7 @@ namespace SpaceBoat {
         [SerializeField] public List<GameObject> shipSails;
         [SerializeField] public GameObject cometFlightTarget;
         [SerializeField] public GameObject cometDeckTarget;
+        [SerializeField] public GameObject HarpoonGun;
         
         // item prefabs
         [Header("Item Prefabs")]
@@ -545,6 +546,10 @@ namespace SpaceBoat {
         // check if any sails remain unbroken
         // trigger gameover if none remain
         public void Update() {
+            int currentFrame = Time.frameCount;
+            if (currentFrame%24 == 0) {
+                //Debug.Log("Frame " + currentFrame + ", Time " + Time.time);
+            }
 
             if (utilityCheats) {
                 if (Input.GetKeyDown(KeyCode.P)) {

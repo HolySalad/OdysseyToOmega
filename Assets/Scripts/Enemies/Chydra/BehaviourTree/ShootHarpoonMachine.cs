@@ -12,24 +12,25 @@ using UnityEngine.U2D.IK;
     public int headNumber = 0;
     public int fireballCount = 1;
     private int fireballCounter;
-        public float prepareShotTime;
-        public float fireballSpeed = 2f;
-        public float shooting_delay = 2f;
-        public string animationTriggerName;
-        public Transform harpoonMachine;
-        public LimbSolver2D solver;
+    public float prepareShotTime;
+    public float fireballSpeed = 2f;
+    public float shooting_delay = 2f;
+    public string animationTriggerName;
+    public Transform harpoonMachine;
+    public LimbSolver2D solver;
     bool triggered = false;
     public Transform defaultSolver;
     public TriggerEnter2D trigger;
     bool shotFireball = false;
-        GameObject fireballObject;
-        private float stopwatch;
+    GameObject fireballObject;
+    private float stopwatch;
     private float runningFor = 0;
         public override void OnStart()
         {
-        fireballCounter = fireballCount;
-    //DOVirtual.DelayedCall(prepareShotTime, Shoot);
-    animator.SetTrigger(animationTriggerName);
+            harpoonMachine = SpaceBoat.GameModel.Instance.HarpoonGun.transform;
+            fireballCounter = fireballCount;
+            //DOVirtual.DelayedCall(prepareShotTime, Shoot);
+            animator.SetTrigger(animationTriggerName);
         }
         public void Shoot()
         {
@@ -85,12 +86,11 @@ using UnityEngine.U2D.IK;
                 return TaskStatus.Success;
             }
 
-        runningFor += Time.deltaTime;
-        if(runningFor>10)
-        {
-            return TaskStatus.Failure;
-        }
-         return TaskStatus.Running;
+            runningFor += Time.deltaTime;
+            if(runningFor>10) {
+                return TaskStatus.Failure;
+            }
+            return TaskStatus.Running;
         }
 
         public override void OnEnd()
@@ -99,7 +99,7 @@ using UnityEngine.U2D.IK;
             stopwatch = 0;
             triggered = false;
             trigger.Shoot = false;
-        fireballCounter = fireballCount;
-        runningFor = 0;
-    }
+            fireballCounter = fireballCount;
+            runningFor = 0;
+        }
     }
