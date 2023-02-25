@@ -27,8 +27,6 @@ namespace SpaceBoat.HazardManagers {
         public void StartHazard(HazardDifficulty difficulty);
 
         public string HazardSoundtrack {get;}
-        
-        public float HazardDuration {get;}
         public bool HasEnded {get;} 
         public bool WasCompleted {get;}
         public HazardTypes HazardType {get;}

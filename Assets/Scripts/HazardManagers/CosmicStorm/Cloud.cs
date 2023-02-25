@@ -10,7 +10,6 @@ namespace SpaceBoat.HazardManagers.CosmicStormSubclasses {
 
         [SerializeField] private bool isTestCloud = false;        
         [SerializeField] private List<Sprite> cloudSprites;
-        [SerializeField] private int attemptLightningChance = 10;
         [SerializeField] private float lightningHeightBase = 17f;
         [SerializeField] private GameObject lightningPrefab;
         [SerializeField] private AudioClip lightningSound;

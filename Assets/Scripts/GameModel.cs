@@ -28,6 +28,7 @@ namespace SpaceBoat {
         [SerializeField] private bool utilityCheats = false;
         [SerializeField] private bool resetSaveFileOnStart = false;
         [SerializeField] public bool unlockEverything = false;
+        [SerializeField] public bool skipTutorial = false;
         [SerializeField] private HazardTypes forceHazard = HazardTypes.None;
         
 
@@ -40,11 +41,14 @@ namespace SpaceBoat {
         [SerializeField] public GameObject theBoat;
         [SerializeField] public CometManager cometManager;
         [SerializeField] public GameObject shipShield;
+        [SerializeField] public GameObject bossParent;
+       [SerializeField] public GameObject[] heads;
 
         [Header("Ship")]
         [SerializeField] public List<GameObject> shipSails;
         [SerializeField] public GameObject cometFlightTarget;
         [SerializeField] public GameObject cometDeckTarget;
+        [SerializeField] public GameObject HarpoonGun;
         
         // item prefabs
         [Header("Item Prefabs")]
@@ -440,6 +444,7 @@ namespace SpaceBoat {
 
         private bool tutorialHazardTriggered = false;
         bool CheckMoveTutorialComplete() {
+            if (skipTutorial) return true;
             if (tutorialHazardPlayed) return true;
             if (helpPrompts.wasPromptDisplayed("MovementTutorial", true) && !tutorialHazardTriggered) {
                 movementTutorialPlayed = true;
@@ -543,6 +548,10 @@ namespace SpaceBoat {
         // check if any sails remain unbroken
         // trigger gameover if none remain
         public void Update() {
+            int currentFrame = Time.frameCount;
+            if (currentFrame%24 == 0) {
+                //Debug.Log("Frame " + currentFrame + ", Time " + Time.time);
+            }
 
             if (utilityCheats) {
                 if (Input.GetKeyDown(KeyCode.P)) {

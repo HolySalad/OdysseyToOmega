@@ -104,6 +104,7 @@ namespace SpaceBoat.PlayerSubclasses.Equipment {
 
                 if (currentUsageTime <= 0f) {
                     player.PlayerHeals();
+                    SoundManager.Instance.Oneshot("ActivationCompleteDing");
                     activeSprite[currentSprite].enabled = false;
                     cooldownSprite.enabled = true;
                     currentCooldownTime = cooldownTime;
