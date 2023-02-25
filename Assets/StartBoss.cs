@@ -9,8 +9,11 @@ public class StartBoss : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         
-        
-            boss.SetActive(false);
+        if(collision.gameObject.CompareTag("Player"))
+        {
+
+            boss.SetActive(true);
+        }
         
     }
 }
