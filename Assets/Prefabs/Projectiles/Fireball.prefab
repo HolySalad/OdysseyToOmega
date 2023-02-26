@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7295278631796672915}
   - component: {fileID: 7029948593518617539}
   - component: {fileID: -4620905250927111719}
+  - component: {fileID: 1437811765663399055}
   m_Layer: 25
   m_Name: Fireball
   m_TagString: Fireball
@@ -27,14 +28,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5275087259869894873}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0.9937908, w: 0.11126469}
   m_LocalPosition: {x: -11.276903, y: 3.2149806, z: 0}
   m_LocalScale: {x: 0.42691347, y: 0.42691347, z: 0.42691347}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -167.224}
 --- !u!212 &8602227927528824803
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -42,7 +43,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5275087259869894873}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -74,9 +75,9 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -521903187
-  m_SortingLayer: 7
+  m_SortingLayer: 9
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1231676409, guid: c04e647eee8924541ad723e3084a4fdc, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 203e3bd3446e0fd4e8ec44bbdabdb0ef, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -100,9 +101,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 2.5095046}
+  m_Offset: {x: -0.33310696, y: -3.315011}
   serializedVersion: 2
-  m_Radius: 3.699505
+  m_Radius: 3.268593
 --- !u!50 &7029948593518617539
 Rigidbody2D:
   serializedVersion: 4
@@ -115,7 +116,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 1
   m_UseAutoMass: 1
-  m_Mass: 7.8364053
+  m_Mass: 6.117182
   m_LinearDrag: 0
   m_AngularDrag: 0
   m_GravityScale: 0
@@ -136,4 +137,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cd5e786da2ad67489cc852e648201ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fireballSprite: {fileID: -1231676409, guid: c04e647eee8924541ad723e3084a4fdc, type: 3}
+  fireballSprite: {fileID: 21300000, guid: 203e3bd3446e0fd4e8ec44bbdabdb0ef, type: 3}
+--- !u!95 &1437811765663399055
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5275087259869894873}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 0c6d426161d60a94999d8711368f863e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

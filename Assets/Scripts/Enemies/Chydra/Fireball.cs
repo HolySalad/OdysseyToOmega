@@ -26,7 +26,7 @@ namespace SpaceBoat.HazardManagers
             spriteRenderer.sprite = fireballSprite;
             velocity = new Vector2(targetVector.normalized.x * speed, targetVector.normalized.y * speed);
             SoundManager.Instance.Oneshot("MeteorWhoosh_0");
-            float angle = (Mathf.Atan2(target.transform.position.y-transform.position.y, target.transform.position.x-transform.position.x) * Mathf.Rad2Deg)-90;
+            float angle = (Mathf.Atan2(target.transform.position.y-transform.position.y, target.transform.position.x-transform.position.x) * Mathf.Rad2Deg)+90;
             if (angle < 0)
             {
                 angle += 360f;
