@@ -19,6 +19,7 @@ public class TriggerEnter2D : MonoBehaviour
         {
 
             triggered = true;
+            GameObject.Destroy(collision.gameObject);
         }
 
         
