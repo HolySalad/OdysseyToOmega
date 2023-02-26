@@ -9,7 +9,8 @@ namespace SpaceBoat.Ship.Activatables {
         public UI.HelpPrompt activatableHelpPrompt {get {return helpPrompt;}}
 
         [SerializeField] private UI.HelpPrompt inUseHelpPrompt;
-        public UI.HelpPrompt activatableInUseHelpPrompt {get {return inUseHelpPrompt;}}        
+        public UI.HelpPrompt activatableInUseHelpPrompt {get {return inUseHelpPrompt;}}    
+        public bool supressPromptDuringTutorial {get;} = true;    
         
         public ActivatablesNames kind {get;} = ActivatablesNames.CraftingBench;
         public bool isInUse {get; private set;} = false;

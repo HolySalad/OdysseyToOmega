@@ -381,7 +381,7 @@ namespace SpaceBoat.UI {
                 //GameModel.Instance.player.ApplyTotem(pendingTotemHarpoon);
             }
         }
-
+        
         public void CloseCraftingUI() {
             if (pendingEquipmentType != GameModel.Instance.player.currentEquipmentType) {
                 GameModel.Instance.player.ChangeEquipment(pendingEquipmentType);

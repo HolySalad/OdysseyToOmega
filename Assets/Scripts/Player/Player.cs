@@ -771,7 +771,7 @@ namespace SpaceBoat {
                     if (activatable.ActivationCondition(this) ) {
                         if (coll.gameObject != activatableInRange) {
                             activatableInRange = coll.gameObject;
-                            if (activatableInUse == null && activatable.activatableHelpPrompt.promptLabel != "") game.controlsPrompts.AddPrompt(activatable.activatableHelpPrompt);
+                            if ((GameModel.Instance.saveGame.tutorialHazardPlayed || !activatable.supressPromptDuringTutorial) && activatableInUse == null && activatable.activatableHelpPrompt.promptLabel != "") game.controlsPrompts.AddPrompt(activatable.activatableHelpPrompt);
                         }
                         return true;
                     }
@@ -780,7 +780,8 @@ namespace SpaceBoat {
             if (activatableInRange != null) {
                 Debug.Log("Can no longer activate " + activatableInRange.ToString());
                 IActivatables activatable = game.GetActivatableComponent(activatableInRange);
-                if (activatable.activatableHelpPrompt.promptLabel != "") game.controlsPrompts.RemovePrompt(activatable.activatableHelpPrompt);
+                if ( activatable.activatableHelpPrompt.promptLabel != "") 
+                    game.controlsPrompts.RemovePrompt(activatable.activatableHelpPrompt);
                 if (activatableInRange == activatableInUse?.gameObject) {
                     Debug.Log("Can no longer activate current activatable: " + activatableInUse.ToString());
                     activatableInUse.Deactivate(this);

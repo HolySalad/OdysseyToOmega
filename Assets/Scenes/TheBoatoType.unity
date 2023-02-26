@@ -8838,6 +8838,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18972ed60f8ad0a4797e43f6a6eb6425, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!212 &1184652090 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 2170651763322390636, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+  m_PrefabInstance: {fileID: 1840913048}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1203261440
 GameObject:
   m_ObjectHideFlags: 0
@@ -13789,7 +13794,7 @@ PrefabInstance:
     - target: {fileID: 1877163398, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
       propertyPath: cooldownSprite
       value: 
-      objectReference: {fileID: 1683719383}
+      objectReference: {fileID: 946015789}
     - target: {fileID: 1877163398, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
       propertyPath: activeSprite.Array.size
       value: 3
@@ -13801,11 +13806,11 @@ PrefabInstance:
     - target: {fileID: 1877163398, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
       propertyPath: activeSprite.Array.data[1]
       value: 
-      objectReference: {fileID: 946015789}
+      objectReference: {fileID: 1683719383}
     - target: {fileID: 1877163398, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
       propertyPath: activeSprite.Array.data[2]
       value: 
-      objectReference: {fileID: 1683719383}
+      objectReference: {fileID: 1184652090}
     - target: {fileID: 1877163400, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
       propertyPath: activeLight
       value: 
