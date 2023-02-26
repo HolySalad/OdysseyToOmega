@@ -20,7 +20,7 @@ public class TotemManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI accountNameText;
 
     //Classes for totem
-    public static TotemManager Instance;
+    public static TotemManager instance;
     private TotemCore totemCore;
     
     //I think we have to discuss the ID with the totem ppl
@@ -34,12 +34,20 @@ public class TotemManager : MonoBehaviour
     private TotemDNADefaultAvatar firstAvatar;
     private TotemDNADefaultItem firstItem;
 
+    //Events for when the player chooses any asset
+    public delegate void ClickAvatar(string hairStyle, Color32 primaryColor, Color32 secondaryColor);
+    public static event ClickAvatar OnClickedAvatar;
+    public delegate void ClickItem(string material, string elememt, Color32 primaryColor, Color32 secondaryColor);
+    public static event ClickItem OnClickedItem;
+
+    [SerializeField] public GameObject frame;
+
     void Awake(){
-        if (Instance == null)
+        if (instance == null)
         {
-            Instance = this;
+            instance = this;
         }
-        else if (Instance != this)
+        else if (instance != this)
         {
             Destroy(gameObject);
         }
@@ -114,5 +122,14 @@ public class TotemManager : MonoBehaviour
     private void BuildItemList()
     {
         itemList.BuildList(_userItems);
+    }
+
+    public void callAvatarClicked(string hairstyle, Color32 primaryColor, Color32 secondaryColor){
+        if(OnClickedAvatar != null)
+            OnClickedAvatar(hairstyle,primaryColor,secondaryColor);
+    }
+    public void callItemClicked(string material, string element, Color32 primaryColor, Color32 secondaryColor){
+        if(OnClickedItem != null)
+            OnClickedItem(material, element,primaryColor,secondaryColor);
     }
 }
