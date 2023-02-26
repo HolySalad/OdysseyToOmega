@@ -208,7 +208,7 @@ GameObject:
   - component: {fileID: 1347467870}
   - component: {fileID: 1347467871}
   - component: {fileID: 1347467872}
-  - component: {fileID: 102444082}
+  - component: {fileID: 368376452400830021}
   m_Layer: 3
   m_Name: Personal Shield
   m_TagString: Player
@@ -299,7 +299,7 @@ CircleCollider2D:
   m_Offset: {x: -0.3, y: 0}
   serializedVersion: 2
   m_Radius: 1.88
---- !u!114 &102444082
+--- !u!114 &368376452400830021
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -612,6 +612,7 @@ GameObject:
   - component: {fileID: 5382724557997511954}
   - component: {fileID: 6567406596809337526}
   - component: {fileID: 16507581}
+  - component: {fileID: 6461509609621794055}
   m_Layer: 3
   m_Name: HeadCollider
   m_TagString: Untagged
@@ -1037,6 +1038,22 @@ MonoBehaviour:
   - {x: 0.7189981, y: -0.70022607, z: 0}
   - {x: 0.6879057, y: -0.77284443, z: 0}
 --- !u!70 &16507581
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3110734117551180888}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.24, y: -0.6}
+  m_Size: {x: 0.89, y: 0.82}
+  m_Direction: 0
+--- !u!70 &6461509609621794055
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2290,6 +2307,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 2027470424066059630, guid: e61d1eac024ac3844ae7e77a323ba06c, type: 3}
+      propertyPath: m_TagString
+      value: playerTransform
+      objectReference: {fileID: 0}
     - target: {fileID: 2434900724387754473, guid: e61d1eac024ac3844ae7e77a323ba06c, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -3086,6 +3107,11 @@ SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: -1045935536543828542, guid: e61d1eac024ac3844ae7e77a323ba06c, type: 3}
   m_PrefabInstance: {fileID: 7879235565659322840}
   m_PrefabAsset: {fileID: 0}
+--- !u!212 &2170651763322390636 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 8306642429446418868, guid: e61d1eac024ac3844ae7e77a323ba06c, type: 3}
+  m_PrefabInstance: {fileID: 7879235565659322840}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2876327340956515682 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5382487076179248314, guid: e61d1eac024ac3844ae7e77a323ba06c, type: 3}
@@ -3463,7 +3489,7 @@ MonoBehaviour:
   oneThirdStrengthSprite: {fileID: 3992405685253487228}
   brokenSprite: {fileID: 1576501146958950415}
   shieldObject: {fileID: 1347467869}
-  cooldownLight: {fileID: 2030592798}
+  cooldownLight: {fileID: 0}
   shieldMaxDuration: 4
   shieldRecoveryTime: 8
   shieldBreakRecoveryPenalty: 4
@@ -3498,10 +3524,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activeSprite:
   - {fileID: 3139816147328360622}
-  - {fileID: 1957817345328340208}
   - {fileID: 6389147465513381914}
-  cooldownSprite: {fileID: 6389147465513381914}
-  cooldownLight: {fileID: 946015790}
+  - {fileID: 2170651763322390636}
+  cooldownSprite: {fileID: 1957817345328340208}
+  cooldownLight: {fileID: 0}
   blenderCooldownPulseTime: 0.3
   cablesSprite: {fileID: 4667732949754121727}
   usageTime: 3.3
@@ -3533,7 +3559,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   activeSprite: {fileID: 7148959547558846618}
-  activeLight: {fileID: 276359540}
+  activeLight: {fileID: 0}
   readySprite: {fileID: 4663575126505360841}
   cooldownTwoThirdsSprite: {fileID: 2027952627490720794}
   cooldownOneThirdSprite: {fileID: 7961413154796137122}
