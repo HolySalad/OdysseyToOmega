@@ -171,7 +171,14 @@ namespace SpaceBoat.HazardManagers {
             else if (HazardTime() > HazardDuration) {
                 SoundManager.Instance.Stop("BugBuzz", true);
                 HasEnded = true;
+                List<RoboBug>robobugTemp = new List<RoboBug> (); 
+                 
                 foreach (RoboBug bug in roboBugs) {
+                    robobugTemp.Add(bug);
+
+                }
+                foreach (RoboBug bug in robobugTemp)
+                {
                     bug.Explode();
                 }
             }
