@@ -10,7 +10,6 @@ public class TotemApplier : MonoBehaviour
 {
     [SerializeField] Material cthulkMaterial;
     [SerializeField] Material harpoonMaterial;
-    [SerializeField] Material elementMaterial;
     [SerializeField] GameObject harpoon;
     [SerializeField] GameObject harpoonGunSpriteParent;
 
@@ -38,25 +37,25 @@ public class TotemApplier : MonoBehaviour
 
     private SpriteRenderer currentHair;
     void Awake() {
-        avatarssDictionary.Add("afro", cthulkBuzzcutHair);
-        avatarssDictionary.Add("asymmetrical", cthulkAssymetricalHair);
-        avatarssDictionary.Add("braids", cthulkBraidHair);
-        avatarssDictionary.Add("buzz cut", cthulkBuzzcutHair);
-        avatarssDictionary.Add("dreadlocks",cthulkDreadlocksHair);
-        avatarssDictionary.Add("long", cthulkLongHair);
-        avatarssDictionary.Add("ponytail", cthulkPonytailHair);
-        avatarssDictionary.Add("short", cthulkShortHair);
-        currentHair = cthulkShortHair;
+            avatarssDictionary.Add("afro", cthulkBuzzcutHair);
+            avatarssDictionary.Add("asymmetrical", cthulkAssymetricalHair);
+            avatarssDictionary.Add("braids", cthulkBraidHair);
+            avatarssDictionary.Add("buzz cut", cthulkBuzzcutHair);
+            avatarssDictionary.Add("dreadlocks",cthulkDreadlocksHair);
+            avatarssDictionary.Add("long", cthulkLongHair);
+            avatarssDictionary.Add("ponytail", cthulkPonytailHair);
+            avatarssDictionary.Add("short", cthulkShortHair);
+            currentHair = cthulkShortHair;
 
-        harpoonMaterialDictionary.Add("bone", harpoonMaterialBone);
-        harpoonMaterialDictionary.Add("obsidian", harpoonMaterialObsidian);
-        harpoonMaterialDictionary.Add("wood", harpoonMaterialWood);
-        harpoonMaterialDictionary.Add("flint", harpoonMaterialFlint);
+            harpoonMaterialDictionary.Add("bone", harpoonMaterialBone);
+            harpoonMaterialDictionary.Add("obsidian", harpoonMaterialObsidian);
+            harpoonMaterialDictionary.Add("wood", harpoonMaterialWood);
+            harpoonMaterialDictionary.Add("flint", harpoonMaterialFlint);
 
-        harpoonElementDictionary.Add("fire", harpoonElementFire);
-        harpoonElementDictionary.Add("water", harpoonElementWater);
-        harpoonElementDictionary.Add("earth", harpoonElementEarth);
-        harpoonElementDictionary.Add("air", harpoonElementAir);
+            harpoonElementDictionary.Add("fire", harpoonElementFire);
+            harpoonElementDictionary.Add("water", harpoonElementWater);
+            harpoonElementDictionary.Add("earth", harpoonElementEarth);
+            harpoonElementDictionary.Add("air", harpoonElementAir);
     }
 
     void Start() {
@@ -106,8 +105,6 @@ public class TotemApplier : MonoBehaviour
         harpoonGunElementSpriteRenderer.sprite = harpoonElementDictionary[element];
 
         harpoonMaterial.SetColor("_BasePrimaryColour", primaryColour);
-        harpoonMaterial.SetColor("_BaseEyeColour", primaryColour);
-        elementMaterial.SetColor("_BasePrimaryColour", secondaryColour);
-        elementMaterial.SetColor("_BasePrimaryColour", secondaryColour);
+        harpoonMaterial.SetColor("_BaseEyeColour", secondaryColour);
     }
 }

@@ -95,8 +95,8 @@ namespace SpaceBoat.PlayerSubclasses.Equipment {
                     if (nextSprite >= activeSprite.Length) {
                         nextSprite = 0;
                     }
-                    activeSprite[nextSprite].enabled = true;
                     activeSprite[currentSprite].enabled = false;
+                    activeSprite[nextSprite].enabled = true;
                     currentSprite = nextSprite;
                     swapSpriteNextFrame = false;
                 } else {
