@@ -307,6 +307,19 @@ namespace SpaceBoat.UI {
             SetupEquipmentButtons();
         }
 
+        private struct pendingTotemCthulk {
+            string hairStyle;
+            Color32 primaryColour;
+            Color32 secondaryColour;
+
+        }
+
+        private struct pendingTotemHarpoon {
+            string material;
+            string element;
+            Color32 primaryColour;
+            Color32 secondaryColour;
+        }
 
 
 

@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SpaceBoat;
+using SpaceBoat.Ship.Activatables;
+
 
 public class TriggerEnter2D : MonoBehaviour
 {
@@ -17,12 +20,22 @@ public class TriggerEnter2D : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Harpoons"))
         {
+            if(gameObject.GetComponentInParent<Animator>().GetBool("Dead") == false)
+            {
 
             triggered = true;
+            StartCoroutine("reloadHarpoon");
+            collision.gameObject.tag = "Untagged";
             GameObject.Destroy(collision.gameObject);
+            }
         }
 
         
     }
 
+    private IEnumerator reloadHarpoon()
+    {
+        yield return new WaitForSeconds(3f);
+        GameModel.Instance.HarpoonGun.GetComponentInChildren<HarpoonGunActivatable>().LoadHarpoon();
+    }
 }
