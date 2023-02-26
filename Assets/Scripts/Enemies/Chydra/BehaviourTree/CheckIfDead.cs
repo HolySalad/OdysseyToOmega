@@ -46,7 +46,7 @@ namespace BehaviorDesigner.Runtime.Tasks.Unity
 
                 if (survivingheads.Value <= 0)
                 {
-                Debug.LogError("Surviving heads are 0");
+               
                     switch (headsActive)
                     {
                         case var value when value.Value == 1:

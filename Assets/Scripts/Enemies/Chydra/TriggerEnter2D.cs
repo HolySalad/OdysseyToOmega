@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SpaceBoat;
+using SpaceBoat.Ship.Activatables;
 
 public class TriggerEnter2D : MonoBehaviour
 {
@@ -19,7 +21,8 @@ public class TriggerEnter2D : MonoBehaviour
         {
 
             triggered = true;
-            GameObject.Destroy(collision.gameObject);
+            GameModel.Instance.HarpoonGun.GetComponentInChildren<HarpoonGunActivatable>().LoadHarpoon();
+            collision.gameObject.tag = "Untagged";
         }
 
         

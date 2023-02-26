@@ -53,7 +53,7 @@ using UnityEngine.U2D.IK;
                 fireball.GetComponent<SpriteRenderer>().color = Color.red;
             }
         }
-        fireball.SetupMeteor(fireballSpeed, fireballObject.transform.position, harpoonMachine.gameObject, 4f);
+        fireball.SetupMeteor(fireballSpeed, fireballObject.transform.position, harpoonMachine.gameObject, 0f);
 
             fireballCounter--;
             shotFireball = true;
