@@ -72,6 +72,22 @@ namespace SpaceBoat.UI {
             equipmentBlueprints[EquipmentType.Shield] = GetComponent<ShieldEquipmentBlueprint>();
         }
 
+        void Start() {
+            TotemManager totemManager = FindObjectOfType<TotemManager>();
+            TotemManager.ClickAvatar avatarClick = (string hairStyle, Color32 primaryColour, Color32 secondaryColour) => { 
+                Debug.Log("Pending Avatar " + hairStyle + " " + primaryColour + " " + secondaryColour);
+                pendingTotemCthulk = new PendingTotemCthulk(hairStyle, primaryColour, secondaryColour);
+                hasPendingTotemCthulk = true;
+            };
+            TotemManager.OnClickedAvatar +=  avatarClick;
+
+            TotemManager.ClickItem itemClick = (string material, string element, Color32 primaryColour, Color32 secondaryColour) => { 
+                Debug.Log("Pending Item " + material + " " + element + " " + primaryColour + " " + secondaryColour);
+                pendingTotemHarpoon = new PendingTotemHarpoon( material,  element,  primaryColour,  secondaryColour);
+                hasPendingTotemHarpoon = true;
+            };
+        }
+
         void ChangePanel(CraftUIState state) {
             CurrentState = state;
             switch (state) {
@@ -307,21 +323,38 @@ namespace SpaceBoat.UI {
             SetupEquipmentButtons();
         }
 
-        private struct pendingTotemCthulk {
-            string hairStyle;
-            Color32 primaryColour;
-            Color32 secondaryColour;
+        private struct PendingTotemCthulk {
+            public string hairStyle;
+            public Color32 primaryColour;
+            public Color32 secondaryColour;
+            public PendingTotemCthulk(string hairStyle, Color32 primaryColour, Color32 secondaryColour) {
+                this.hairStyle = hairStyle;
+                this.primaryColour = primaryColour;
+                this.secondaryColour = secondaryColour;
+            }
 
         }
 
-        private struct pendingTotemHarpoon {
-            string material;
-            string element;
-            Color32 primaryColour;
-            Color32 secondaryColour;
+        private struct PendingTotemHarpoon {
+            public string material;
+            public string element;
+            public Color32 primaryColour;
+            public Color32 secondaryColour;
+
+            public PendingTotemHarpoon(string material, string element, Color32 primaryColour, Color32 secondaryColour) {
+                this.material = material;
+                this.element = element;
+                this.primaryColour = primaryColour;
+                this.secondaryColour = secondaryColour;
+            }
+
         }
+        private bool hasPendingTotemCthulk = false;
+        private bool hasPendingTotemHarpoon = false;
+        private PendingTotemCthulk pendingTotemCthulk;
+        private PendingTotemHarpoon pendingTotemHarpoon;
 
-
+        
 
         public void OpenCraftingUI() {
             currentPanelIndex = 1;
@@ -339,10 +372,21 @@ namespace SpaceBoat.UI {
             }
         }
 
+        void ApplyTotem() {
+            if (hasPendingTotemCthulk) {
+                Debug.Log("Applying Totem Cthulk");
+                GetComponent<TotemApplier>().ApplyTotemCthulk(pendingTotemCthulk.hairStyle, pendingTotemCthulk.primaryColour, pendingTotemCthulk.secondaryColour);
+            }
+            if (hasPendingTotemHarpoon) {
+                //GameModel.Instance.player.ApplyTotem(pendingTotemHarpoon);
+            }
+        }
+
         public void CloseCraftingUI() {
             if (pendingEquipmentType != GameModel.Instance.player.currentEquipmentType) {
                 GameModel.Instance.player.ChangeEquipment(pendingEquipmentType);
             }
+            ApplyTotem();
         }
 
         public void TabButtonLeft() {
