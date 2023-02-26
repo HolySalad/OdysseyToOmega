@@ -31,6 +31,7 @@ using UnityEngine.U2D.IK;
             fireballCounter = fireballCount;
             //DOVirtual.DelayedCall(prepareShotTime, Shoot);
             animator.SetTrigger(animationTriggerName);
+      //  SoundManager.Instance.Play("HydraRoar");
         }
         public void Shoot()
         {
@@ -38,7 +39,6 @@ using UnityEngine.U2D.IK;
             float yPos = mouthPosition.transform.position.y;
             solver.GetChain(0).target = harpoonMachine;
         solver.GetChain(0).target = defaultSolver;
-
         fireballObject = GameObject.Instantiate(fireballPrefab, new Vector2(xPos, yPos), Quaternion.identity);
             Fireball fireball = fireballObject.GetComponent<Fireball>();
         if (headNumber > 0)

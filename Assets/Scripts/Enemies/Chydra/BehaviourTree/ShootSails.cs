@@ -29,7 +29,8 @@ public class ShootSails : SetupChydra
        // DOVirtual.DelayedCall(prepareShotTime, Shoot);
         animator.SetTrigger(animationTriggerName);
           fireballCounter = fireballCount;
-}
+        //SoundManager.Instance.Play("HydraRoar");
+    }
 
     private void Shoot()
     {
