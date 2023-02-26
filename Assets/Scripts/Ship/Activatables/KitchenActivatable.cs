@@ -10,7 +10,7 @@ namespace SpaceBoat.Ship.Activatables {
 
         [SerializeField] private UI.HelpPrompt inUseHelpPrompt;
         public UI.HelpPrompt activatableInUseHelpPrompt {get {return inUseHelpPrompt;}}    
-        public bool supressPromptDuringTutorial {get;} = true;
+        public bool supressPromptDuringTutorial {get;} = false;
         [SerializeField] private float healTime = 3;
 
         public ActivatablesNames kind {get;} = ActivatablesNames.Kitchen;
