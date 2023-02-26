@@ -75,45 +75,7 @@ namespace TotemDemo
                 Destroy(gameObject);
             }
         }
-        private void Update()
-        {
-            if(Input.GetKeyDown(KeyCode.L))
-            {
-                if(!loginPanel.activeInHierarchy)
-                {
-
-                GameModel.Instance.PauseGame();
-                loginPanel.SetActive(true);
-                }
-                else
-                {
-                    GameModel.Instance.UnpauseGame();
-                    loginPanel.SetActive(false);
-                }
-            }    
-
-
-            if (_userAvatars != null)
-            {
-
-                foreach (TotemDNADefaultAvatar avatar in _userAvatars)
-                {
-                    Debug.Log(avatarssDictionary[avatar.hair_styles]);
-                    Debug.Log(dropdown.options[dropdown.value].text);
-
-                    if (avatar.ToString() == dropdown.options[dropdown.value].text)
-                    {
-                        GameModel.Instance.SetAvatar(avatar);
-                        foreach(SpriteRenderer spriteRenderer in avatarSpriteRenderer)
-                        {
-                            spriteRenderer.enabled = false;
-                        }
-                        avatar_to_spriteRenderer[avatarssDictionary[avatar.hair_styles]].enabled = true;
-                    }
-
-                }
-            }
-        }
+        
         /// <summary>
         /// Initializing TotemCore
         /// </summary>
