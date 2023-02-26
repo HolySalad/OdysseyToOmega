@@ -183,6 +183,7 @@ namespace SpaceBoat.UI {
             }
             prompts.Remove(prompt);
             if (currentTargetPrompt == prompt.promptLabel) {
+                Debug.Log("Removing current target prompt " + prompt.promptLabel + ".");
                 currentTargetPrompt = "";
                 CheckPromptTargetting();
             }
