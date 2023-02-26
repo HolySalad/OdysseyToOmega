@@ -64,7 +64,8 @@ namespace SpaceBoat.UI {
                     HelpPrompt targetPrompt = prompts.Find(p => p.promptLabel == currentTargetPrompt);
                     if (targetPrompt == null) {
                         PromptManagerLogError("Prompt transition coroutine could not find prompt with label " + currentTargetPrompt + ".");
-                        yield break;
+                        yield return null;
+                        continue;
                     }
                     PromptManagerLog("Current target prompt " + currentTargetPrompt + " is different from displayed " + (currentDisplayedPrompt == "" ? "Blank" : currentDisplayedPrompt)  + ". Fading in.");
                     currentDisplayedPrompt = currentTargetPrompt;
