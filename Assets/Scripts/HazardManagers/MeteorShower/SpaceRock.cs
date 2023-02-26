@@ -30,10 +30,6 @@ namespace SpaceBoat.HazardManagers.MeteorShowerSubclasses {
             Rigidbody2D rb = GetComponent<Rigidbody2D>();
             rb.velocity = new Vector2(-speed * Mathf.Cos(Mathf.Deg2Rad *angle), speed * Mathf.Sin(Mathf.Deg2Rad * angle));
             transform.rotation = Quaternion.Euler(0, 0, -angle);
-            if (playSound) {
-                AudioSource source = gameObject.AddComponent<AudioSource>();
-                source.PlayOneShot(rockWhoosh);
-            }
         }
 
         void OnCollisionEnter2D(Collision2D collision) {
@@ -45,9 +41,11 @@ namespace SpaceBoat.HazardManagers.MeteorShowerSubclasses {
             } else if (collision.gameObject.layer == LayerMask.NameToLayer("PlayerChar")) {
                 GameModel.Instance.player.PlayerTakesDamage();
                 //GameModel.Instance.player.AddMomentum(new Vector2(velocity.x, 0));
+                GetComponent<Collider2D>().enabled = false;
                 destructable.Destruct(this.gameObject);
             } else if (collision.gameObject.layer == LayerMask.NameToLayer("Ground") && !collision.gameObject.tag.Equals("Platforms")
                 && !collision.gameObject.tag.Equals("SpaceRocks")) {
+                GetComponent<Collider2D>().enabled = false;
                 destructable.Destruct(this.gameObject);
             }
         }

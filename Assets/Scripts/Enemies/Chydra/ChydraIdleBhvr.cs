@@ -32,7 +32,7 @@ namespace SpaceBoat.HazardManagers
             List<GameObject> nonbrokenSails = new List<GameObject>();
             foreach (GameObject sail in sails)
             {
-                if (!sail.GetComponent<Ship.SailsActivatable>().isBroken)
+                if (!sail.GetComponent<Ship.Activatables.SailsActivatable>().isBroken)
                 {
                     nonbrokenSails.Add(sail);
                 }

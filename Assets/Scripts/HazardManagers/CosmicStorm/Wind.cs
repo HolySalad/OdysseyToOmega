@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SpaceBoat.HazardManagers {
+namespace SpaceBoat.HazardManagers.CosmicStormSubclasses {
     public class Wind : MonoBehaviour
     {
         [SerializeField] private bool isTestWind = false;
@@ -15,9 +15,13 @@ namespace SpaceBoat.HazardManagers {
 
         void OnTriggerEnter2D(Collider2D collision) {
             bool isMapBounds = collision.gameObject.layer == LayerMask.NameToLayer("MapBounds");
-            bool isShip = collision.gameObject.tag == "Ground" && collision.gameObject.CompareTag("Ship");
+            bool isShip = collision.gameObject.layer == LayerMask.NameToLayer("Ground") && collision.gameObject.CompareTag("Ship");
             if (isMapBounds || isShip) {
                 Destroy(this.gameObject);
+            }
+            bool isPlayer = collision.gameObject.tag == "Player" && collision.gameObject.GetComponent<Player>() != null;
+            if (isPlayer) {
+                collision.gameObject.GetComponent<Player>().ForceJump(false, true, true, 0.2f);
             }
         }
     }

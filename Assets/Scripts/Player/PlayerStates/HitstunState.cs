@@ -25,7 +25,6 @@ namespace SpaceBoat.PlayerSubclasses.PlayerStates {
 
         public void EnterState(PlayerStateName previousState) {
             timeEnteredState = Time.time;
-            animator.SetTrigger("Hit");
             if (skipIgnoreCollision) {
                 skipIgnoreCollision = false;
                 return;

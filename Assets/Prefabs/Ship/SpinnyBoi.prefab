@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 341836164546490889}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.112273, y: 0.08201538, z: 0}
+  m_LocalPosition: {x: 2.112273, y: 0.10099884, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -121,7 +121,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 1
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.069541484}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -132,7 +132,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.055, y: 0.97}
+  m_Size: {x: 1.055, y: 0.83091706}
   m_EdgeRadius: 0
 --- !u!251 &1104795405
 PlatformEffector2D:
@@ -700,7 +700,7 @@ GameObject:
   - component: {fileID: 3861797049108873869}
   - component: {fileID: 5398479564851179869}
   - component: {fileID: 1518854777123062831}
-  - component: {fileID: 1840950220746983144}
+  - component: {fileID: 4528383817133528544}
   m_Layer: 9
   m_Name: circle_top_right
   m_TagString: Activatable
@@ -788,17 +788,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f8cb94edd5c8824d85eb1ba399118e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  helpPrompt:
+    promptLabel: 
+    priority: 0
+    duration: 0
+    text: 
+    color: {r: 0, g: 0, b: 0, a: 0}
+    TriggerOnlyOnce: 0
+  inUseHelpPrompt:
+    promptLabel: 
+    priority: 0
+    duration: 0
+    text: 
+    color: {r: 0, g: 0, b: 0, a: 0}
+    TriggerOnlyOnce: 0
   repairedSprite: {fileID: 21300000, guid: 74beecc9368494f4d839d42509286914, type: 3}
   brokenSprite: {fileID: 21300000, guid: b639ecc865469694a83d2a3f84657d18, type: 3}
   hazardTarget: {fileID: 6922434024704948985}
-  repairTime: 3
+  repairTime: 2.2
   targettingCooldown: 30
   targetFlagTimeout: 10
   breakOnStart: 0
   sailGrouping: 0
   lastTargettedTime: -99
---- !u!61 &1840950220746983144
-BoxCollider2D:
+--- !u!58 &4528383817133528544
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -810,19 +824,9 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 8.857142, y: 9.285714}
-    newSize: {x: 8.857142, y: 9.285714}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
+  m_Offset: {x: -1.18, y: -0.99}
   serializedVersion: 2
-  m_Size: {x: 8.857142, y: 9.285714}
-  m_EdgeRadius: 0
+  m_Radius: 3
 --- !u!1 &3542951340076223037
 GameObject:
   m_ObjectHideFlags: 0
@@ -851,7 +855,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3542951340076223037}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.112273, y: 0.08201538, z: 0}
+  m_LocalPosition: {x: 2.112273, y: 0.10099884, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -944,7 +948,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 1
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.08878286}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -955,7 +959,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.055, y: 0.97}
+  m_Size: {x: 1.055, y: 0.79243433}
   m_EdgeRadius: 0
 --- !u!251 &1219304249
 PlatformEffector2D:
@@ -1308,7 +1312,7 @@ GameObject:
   - component: {fileID: 6244316601799621081}
   - component: {fileID: 7244894191755475042}
   - component: {fileID: 8619999351821139223}
-  - component: {fileID: 5049153848543242102}
+  - component: {fileID: 5526658216530113745}
   m_Layer: 9
   m_Name: circle_bottom_left
   m_TagString: Activatable
@@ -1324,7 +1328,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4173104412043908607}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.23, y: -4.11, z: 0}
+  m_LocalPosition: {x: -4.23, y: -4.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1396,17 +1400,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f8cb94edd5c8824d85eb1ba399118e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  helpPrompt:
+    promptLabel: 
+    priority: 0
+    duration: 0
+    text: 
+    color: {r: 0, g: 0, b: 0, a: 0}
+    TriggerOnlyOnce: 0
+  inUseHelpPrompt:
+    promptLabel: 
+    priority: 0
+    duration: 0
+    text: 
+    color: {r: 0, g: 0, b: 0, a: 0}
+    TriggerOnlyOnce: 0
   repairedSprite: {fileID: 21300000, guid: 6cede7c875718844db4ec41cead3f178, type: 3}
   brokenSprite: {fileID: 21300000, guid: 44dbf9105c535f240a0fc6fdb32ae7cc, type: 3}
   hazardTarget: {fileID: 1582349550943209700}
-  repairTime: 3
+  repairTime: 2.2
   targettingCooldown: 30
   targetFlagTimeout: 10
   breakOnStart: 0
   sailGrouping: 0
   lastTargettedTime: -99
---- !u!61 &5049153848543242102
-BoxCollider2D:
+--- !u!58 &5526658216530113745
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1418,19 +1436,9 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 8.914286, y: 8.885715}
-    newSize: {x: 8.914286, y: 8.885715}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
+  m_Offset: {x: 1.17, y: 1.06}
   serializedVersion: 2
-  m_Size: {x: 8.914286, y: 8.885715}
-  m_EdgeRadius: 0
+  m_Radius: 3
 --- !u!1 &6537657013318278203
 GameObject:
   m_ObjectHideFlags: 0
@@ -1521,7 +1529,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7452074824509621033}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.112273, y: 0.08201538, z: 0}
+  m_LocalPosition: {x: 2.112273, y: 0.101, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1614,7 +1622,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 1
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.0735576}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -1625,7 +1633,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.055, y: 0.97}
+  m_Size: {x: 1.055, y: 0.8228848}
   m_EdgeRadius: 0
 --- !u!251 &522559790
 PlatformEffector2D:
@@ -2221,7 +2229,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7887031395302939305}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.112273, y: 0.08201538, z: 0}
+  m_LocalPosition: {x: 2.112273, y: 0.10099884, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2314,7 +2322,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 1
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.08695029}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -2325,7 +2333,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.055, y: 0.97}
+  m_Size: {x: 1.055, y: 0.7960994}
   m_EdgeRadius: 0
 --- !u!251 &1044213758
 PlatformEffector2D:
@@ -2357,7 +2365,7 @@ GameObject:
   - component: {fileID: 2455461551069076078}
   - component: {fileID: 8598244039637470851}
   - component: {fileID: 2245465626373928836}
-  - component: {fileID: 4815250026004944927}
+  - component: {fileID: 1081053891586822159}
   m_Layer: 9
   m_Name: circle_bottom_right
   m_TagString: Activatable
@@ -2373,7 +2381,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8479361921048703374}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.2449417, y: -4.1415653, z: 0}
+  m_LocalPosition: {x: 4.2449417, y: -4.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2445,17 +2453,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f8cb94edd5c8824d85eb1ba399118e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  helpPrompt:
+    promptLabel: 
+    priority: 0
+    duration: 0
+    text: 
+    color: {r: 0, g: 0, b: 0, a: 0}
+    TriggerOnlyOnce: 0
+  inUseHelpPrompt:
+    promptLabel: 
+    priority: 0
+    duration: 0
+    text: 
+    color: {r: 0, g: 0, b: 0, a: 0}
+    TriggerOnlyOnce: 0
   repairedSprite: {fileID: 21300000, guid: 09f28e6e165402f439573dc86e2041f6, type: 3}
   brokenSprite: {fileID: 21300000, guid: da94a9789da312b48a7577985bc1a540, type: 3}
   hazardTarget: {fileID: 7076263995517862899}
-  repairTime: 3
+  repairTime: 2.2
   targettingCooldown: 30
   targetFlagTimeout: 10
   breakOnStart: 0
   sailGrouping: 0
   lastTargettedTime: -99
---- !u!61 &4815250026004944927
-BoxCollider2D:
+--- !u!58 &1081053891586822159
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -2467,19 +2489,9 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 8.942857, y: 8.942857}
-    newSize: {x: 8.942857, y: 8.942857}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
+  m_Offset: {x: -1.19, y: 1.17}
   serializedVersion: 2
-  m_Size: {x: 8.942857, y: 8.942857}
-  m_EdgeRadius: 0
+  m_Radius: 3
 --- !u!1 &8591714344208283582
 GameObject:
   m_ObjectHideFlags: 0
@@ -2491,7 +2503,7 @@ GameObject:
   - component: {fileID: 6507281759987442029}
   - component: {fileID: 3839524197093834682}
   - component: {fileID: 497870173191873602}
-  - component: {fileID: 6614020060423688797}
+  - component: {fileID: 3948663852725562341}
   m_Layer: 9
   m_Name: circle_top_left
   m_TagString: Activatable
@@ -2579,17 +2591,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f8cb94edd5c8824d85eb1ba399118e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  helpPrompt:
+    promptLabel: 
+    priority: 0
+    duration: 0
+    text: 
+    color: {r: 0, g: 0, b: 0, a: 0}
+    TriggerOnlyOnce: 0
+  inUseHelpPrompt:
+    promptLabel: 
+    priority: 0
+    duration: 0
+    text: 
+    color: {r: 0, g: 0, b: 0, a: 0}
+    TriggerOnlyOnce: 0
   repairedSprite: {fileID: 21300000, guid: 3503fb30292574b43a8baf3ad1c1a8c0, type: 3}
   brokenSprite: {fileID: 21300000, guid: ade56f31aa42a784091175d7097a62e5, type: 3}
   hazardTarget: {fileID: 5926253566011312995}
-  repairTime: 3
+  repairTime: 2.2
   targettingCooldown: 30
   targetFlagTimeout: 10
   breakOnStart: 0
   sailGrouping: 0
   lastTargettedTime: -99
---- !u!61 &6614020060423688797
-BoxCollider2D:
+--- !u!58 &3948663852725562341
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -2601,16 +2627,6 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 8.914286, y: 8.6285715}
-    newSize: {x: 8.914286, y: 8.6285715}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
+  m_Offset: {x: 1.15, y: -0.72}
   serializedVersion: 2
-  m_Size: {x: 8.914286, y: 8.6285715}
-  m_EdgeRadius: 0
+  m_Radius: 3

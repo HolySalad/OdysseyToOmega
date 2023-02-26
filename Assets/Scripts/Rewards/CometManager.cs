@@ -1,97 +1,147 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-/*
+
 namespace SpaceBoat.Rewards {    
+
+    public enum RewardType {
+        Money,
+        HealthPackEquipmentBlueprint,
+        HarpoonLauncherEquipmentBlueprint,
+        DashEquipmentBlueprint,
+        ShieldEquipmentBlueprint,
+        JumpPadBuildableBlueprint,
+        HarpoonGunBuildableBlueprint, 
+        ShipShieldBuildableBlueprint,
+    }
+
     public class CometManager : MonoBehaviour
     {
-        [SerializeField] private GameObject cometPrefab;
-        [SerializeField] private float cometSpawnRate = 15f; // seconds between spawns
-        [SerializeField] private float cometSpawnRateVariance = 4f; // seconds between spawns
-        [SerializeField] private float cometPityMaxRate = 45f; // seconds between spawns
+        [SerializeField] private GameObject cometPrefabDefault;
+        [SerializeField] private Transform cometEmitterHigh;
+        [SerializeField] private Transform cometEmitterLow;
+        [SerializeField] private Transform cometTarget;
+        [SerializeField] private float cometSpeed = 7f;
+        [SerializeField] private float cometSpawnInterval = 30f;
+        [SerializeField] private float cometSpawnIntervalVariationPercentage = 0.3f;
 
-        [SerializeField] private float cometSpawnX = 47f;
-        [SerializeField] private float cometSpawnY = 20f;
-        [SerializeField] private float cometSpawnYVariance = 2f;
+        [SerializeField] private float cometStartupDelay = 10f;
+        [SerializeField] private int cometBurstCount = 3;
+        [SerializeField] private float cometBurstInterval = 3.5f;
+        [SerializeField] private float cometBurstIntervalVariationPercentage = 0.4f;
 
-        [SerializeField] private int cometFoodChance = 1;
-        [SerializeField] private int cometFoodNumber = 1;
-        [SerializeField] private int cometClothChance = 3;
-        [SerializeField] private int cometClothNumber = 1;
-        
-        [SerializeField] private Dictionary<ItemTypes, int> itemQuantities = new Dictionary<ItemTypes, int>{
+        [SerializeField] public GameObject moneyPrefab;
+        [SerializeField] private GameObject healthPackEquipmentBlueprintPrefab;
+        [SerializeField] private GameObject harpoonLauncherEquipmentBlueprintPrefab;
+        [SerializeField] private GameObject dashEquipmentBlueprintPrefab;
+        [SerializeField] private GameObject shieldEquipmentBlueprintPrefab;
+        [SerializeField] private GameObject trampolineActivatableBlueprintPrefab;
+        [SerializeField] private GameObject harpoonGunActivatableBlueprintPrefab;
+        [SerializeField] private GameObject shipShieldActivatableBlueprintPrefab;
 
-        };
-        
-        [SerializeField] private float firstCometTime = 20f;
+        [SerializeField] private int cometBlueprintDropChance = 50;
+        [SerializeField] private int cometChanceReductionPerBlueprint = 10;
+        [SerializeField] private int cometBlueprintDropChanceMin = 10;
+        [SerializeField] private int maxMoneyDrop = 4;
 
-        private float cometSpawnTimer = -5f;
-        private float cometPityTimer = 0f;
-        private List<ItemTypes> randomItemSelector = new List<ItemTypes>();
-        private bool isFirstComet = true;
-        public void Awake() {
-            for (int i = 0; i < cometFoodChance; i++) {
-                randomItemSelector.Add(ItemTypes.FoodItem);
-            }
-            for (int i = 0; i < cometClothChance; i++) {
-                randomItemSelector.Add(ItemTypes.ClothItem);
-            }
-            itemQuantities.Add(ItemTypes.FoodItem, cometFoodNumber);
-            itemQuantities.Add(ItemTypes.ClothItem, cometClothNumber);
+
+        private GameModel gameModel;
+        private bool hasStarted = false;
+
+        void Awake() {
+            gameModel = FindObjectOfType<GameModel>();
         }
 
-        void SpawnComet(bool isPity, ItemTypes itemType) {
-            float x = cometSpawnX;
-            float y = Random.Range(cometSpawnY - cometSpawnYVariance, cometSpawnY + cometSpawnYVariance);
-            Vector3 spawnPosition = new Vector3(x, y, 0);
-            GameObject comet = Instantiate(cometPrefab, spawnPosition, Quaternion.identity);
-            RewardComet rewardComet = comet.GetComponent<RewardComet>();
-            rewardComet.SetItemType(itemType);
-            rewardComet.LaunchComet(isPity);
-            rewardComet.numItems = itemQuantities[itemType];
-            if (isFirstComet) {
-                isFirstComet = false;
-                Debug.Log("First comet: displaying help text");
-                //GameModel.Instance.helpPrompts.DisplayPrompt(GameModel.Instance.helpPrompts.cometPrompt);
+        GameObject GetRewardPrefab(RewardType rewardType) {
+            switch (rewardType) {
+                case RewardType.Money:
+                    return moneyPrefab;
+                case RewardType.HealthPackEquipmentBlueprint:
+                    return healthPackEquipmentBlueprintPrefab;
+                case RewardType.HarpoonLauncherEquipmentBlueprint:
+                    return harpoonLauncherEquipmentBlueprintPrefab;
+                case RewardType.DashEquipmentBlueprint:
+                    return dashEquipmentBlueprintPrefab;
+                case RewardType.ShieldEquipmentBlueprint:
+                    return shieldEquipmentBlueprintPrefab;
+                case RewardType.JumpPadBuildableBlueprint:
+                    return trampolineActivatableBlueprintPrefab;
+                case RewardType.HarpoonGunBuildableBlueprint:
+                    return harpoonGunActivatableBlueprintPrefab;
+                case RewardType.ShipShieldBuildableBlueprint:
+                    return shipShieldActivatableBlueprintPrefab;
+                default:
+                    return null;
             }
         }
 
-        (bool, ItemTypes) CheckNeededItemsAndPity() {
-            ClothItem[] clothItems = FindObjectsOfType<ClothItem>();
-            FoodItem[] foodItems = FindObjectsOfType<FoodItem>();
-            Debug.Log("Checking item totals for comet spawn:");
-            Debug.Log("Cloth items: " + clothItems.Length);
-            Debug.Log("Food items: " + foodItems.Length);
-            if (clothItems.Length < 1) {
-                return (true, ItemTypes.ClothItem);
+        RewardType GetRandomRewardType(int chanceOverride = 0) {
+            int baseChance = cometBlueprintDropChance;
+            List<RewardType> possibleRewards = new List<RewardType>();
+            foreach (RewardType rewardType in GameModel.Instance.saveGame.rewardsUnlocked.Keys) {
+                if (rewardType == RewardType.Money || GameModel.Instance.saveGame.rewardsUnlocked[rewardType] == true || GetRewardPrefab(rewardType) == null) {
+                    continue;
+                }
+                possibleRewards.Add(rewardType);
+                baseChance -= cometChanceReductionPerBlueprint;
             }
-
-            if (foodItems.Length < 1 && GameModel.Instance.player.health < GameModel.Instance.player.maxHealth) {
-                return (true, ItemTypes.FoodItem);
+            Debug.Log("Possible rewards: " + possibleRewards.Count + " Chance: " + baseChance);
+            if (chanceOverride > baseChance) {
+                baseChance = chanceOverride;
             }
-            ItemTypes itemType = randomItemSelector[Random.Range(0, randomItemSelector.Count)];
-            return (false, itemType);
+            if (possibleRewards.Count == 0 || Random.Range(0, 100) < Mathf.Max(baseChance, cometBlueprintDropChanceMin)) {
+                return RewardType.Money;
+            } else {
+                return possibleRewards[Random.Range(0, possibleRewards.Count)];
+            }
         }
 
-        public void Update() {
-            if (cometSpawnTimer < 0f) {
-                cometSpawnTimer = firstCometTime;
-                return;
+        public GameObject SpawnComet(int guaranteeSecondaryItems = 0, int chanceOverride = 0) {
+            GameObject cometPrefab = cometPrefabDefault;
+            float yPos = Random.Range(cometEmitterLow.position.y, cometEmitterHigh.position.y);
+            GameObject comet = Instantiate(cometPrefab, new Vector3(cometEmitterHigh.position.x, yPos, 0), Quaternion.identity);
+            RewardType rewardType = GetRandomRewardType(chanceOverride);
+            GameObject rewardPrefab = GetRewardPrefab(rewardType);
+            int secondaryItems = Random.Range(1, maxMoneyDrop);
+            if (guaranteeSecondaryItems > secondaryItems) {
+                secondaryItems = guaranteeSecondaryItems;
             }
-            if (Time.time > cometSpawnTimer ) {
-                (bool shouldPity, ItemTypes itemType) = CheckNeededItemsAndPity();
-                if (shouldPity && Time.time > cometPityTimer) {
-                    SpawnComet(true, itemType);
-                    cometPityTimer = Time.time + cometPityMaxRate;
-                    cometSpawnTimer = Time.time + cometSpawnRate + Random.Range(-cometSpawnRateVariance, cometSpawnRateVariance);
-                    Debug.Log("Pity comet spawned, next comet in " + (cometPityTimer - Time.time) + " seconds");
+            comet.GetComponent<RewardComet>().SetupComet(cometSpeed, cometTarget.position, rewardPrefab, moneyPrefab, secondaryItems);
+            return comet;
+        }
+
+        IEnumerator CometBurst() {
+            for (int i = 0; i < cometBurstCount; i++) {
+                float nextSpawnInterval = cometBurstInterval * (1 + Random.Range(-cometBurstIntervalVariationPercentage, cometBurstIntervalVariationPercentage));
+                yield return new WaitForSeconds(nextSpawnInterval);
+                SpawnComet();
+            }
+        }
+
+        public void StartCometBurst() {
+            StartCoroutine(CometBurst());
+        }
+
+
+        IEnumerator IntermittentCometSpawn() {
+            yield return new WaitForSeconds(cometStartupDelay);
+            while (true) {
+                if (gameModel.hazardWindDown) {
+                    yield return new WaitForSeconds(1);
                 } else {
-                    SpawnComet(false, itemType);
-                    cometSpawnTimer = Time.time + cometSpawnRate + Random.Range(-cometSpawnRateVariance, cometSpawnRateVariance);
-                    Debug.Log("Comet spawned, next comet in " + (cometSpawnTimer - Time.time) + " seconds");
+                    SpawnComet();
+                    float nextSpawnInterval = cometSpawnInterval * (1 + Random.Range(-cometSpawnIntervalVariationPercentage, cometSpawnIntervalVariationPercentage));
+                    yield return new WaitForSeconds(nextSpawnInterval);
                 }
             }
         }
+
+        public void StartCometSpawner() {
+            if (hasStarted) {
+                return;
+            }
+            hasStarted = true;
+            StartCoroutine(IntermittentCometSpawn());
+        }
     }
 }
-*/

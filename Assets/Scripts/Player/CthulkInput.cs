@@ -5,6 +5,10 @@ using UnityEngine;
 namespace SpaceBoat {    
     public class CthulkInput {
 
+        public static bool EscapeKeyDown() {
+            return Input.GetKeyDown(KeyCode.Escape);
+        }
+
         public static bool AttackKeyDown() {
             return Input.GetButtonDown("Attack");
         }
@@ -43,6 +47,10 @@ namespace SpaceBoat {
 
         public static float HorizontalInput() {
             return Input.GetAxisRaw("Horizontal"); 
+        }
+
+        public static bool HorizontalInputKeyDown() {
+            return Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D);
         }
 
         public static bool CameraToggleDown() {

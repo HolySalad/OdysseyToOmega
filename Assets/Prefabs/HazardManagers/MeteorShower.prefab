@@ -79,7 +79,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35d5be2b24a3e5449b75301801353c48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  testMode: 1
+  testMode: 0
   baseDuration: 132
   meteorPrompts:
   - promptLabel: MeteorShower1
@@ -94,35 +94,85 @@ MonoBehaviour:
     text: Avoid Hazards and Repair your ship to survive.
     color: {r: 1, g: 0, b: 0, a: 0}
     TriggerOnlyOnce: 0
-  earliestAppearence: 0
-  latestAppearence: 10
-  priority: 1
-  escalationLevels:
-  - timeIntoHazard: 0
-    baseNumMeteors: 3
-    meteorIntervalMultiplier: 1
-    rockRateIncrease: 0
-    rockSpeedIncrease: 0
-  - timeIntoHazard: 5
-    baseNumMeteors: 2
-    meteorIntervalMultiplier: 1
-    rockRateIncrease: 0
-    rockSpeedIncrease: 0
-  - timeIntoHazard: 48
-    baseNumMeteors: 3
-    meteorIntervalMultiplier: 0.8
-    rockRateIncrease: 0.25
-    rockSpeedIncrease: 0.5
-  - timeIntoHazard: 72
-    baseNumMeteors: 3
-    meteorIntervalMultiplier: 0.66
-    rockRateIncrease: 0.5
-    rockSpeedIncrease: 1.25
-  - timeIntoHazard: 96
-    baseNumMeteors: 4
-    meteorIntervalMultiplier: 0.5
-    rockRateIncrease: 0.75
-    rockSpeedIncrease: 1.5
+  escalationSettings:
+    escalationLevelsEasy:
+    - timeIntoHazard: 0
+      baseNumMeteors: 3
+      meteorIntervalMultiplier: 1
+      rockRateIncrease: 0
+      rockSpeedIncrease: 0
+    - timeIntoHazard: 5
+      baseNumMeteors: 2
+      meteorIntervalMultiplier: 0.9
+      rockRateIncrease: 0
+      rockSpeedIncrease: 0
+    - timeIntoHazard: 48
+      baseNumMeteors: 3
+      meteorIntervalMultiplier: 0.75
+      rockRateIncrease: 0.25
+      rockSpeedIncrease: 0.5
+    - timeIntoHazard: 72
+      baseNumMeteors: 3
+      meteorIntervalMultiplier: 0.66
+      rockRateIncrease: 0.5
+      rockSpeedIncrease: 1.25
+    - timeIntoHazard: 96
+      baseNumMeteors: 4
+      meteorIntervalMultiplier: 0.5
+      rockRateIncrease: 0.75
+      rockSpeedIncrease: 1.5
+    escalationLevelsMedium:
+    - timeIntoHazard: 0
+      baseNumMeteors: 3
+      meteorIntervalMultiplier: 1
+      rockRateIncrease: 0
+      rockSpeedIncrease: 0
+    - timeIntoHazard: 5
+      baseNumMeteors: 2
+      meteorIntervalMultiplier: 0.9
+      rockRateIncrease: 0
+      rockSpeedIncrease: 0
+    - timeIntoHazard: 48
+      baseNumMeteors: 3
+      meteorIntervalMultiplier: 0.75
+      rockRateIncrease: 0.25
+      rockSpeedIncrease: 0.5
+    - timeIntoHazard: 72
+      baseNumMeteors: 3
+      meteorIntervalMultiplier: 0.66
+      rockRateIncrease: 0.5
+      rockSpeedIncrease: 1.25
+    - timeIntoHazard: 96
+      baseNumMeteors: 4
+      meteorIntervalMultiplier: 0.5
+      rockRateIncrease: 0.75
+      rockSpeedIncrease: 1.5
+    escalationLevelsHard:
+    - timeIntoHazard: 0
+      baseNumMeteors: 3
+      meteorIntervalMultiplier: 1
+      rockRateIncrease: 0
+      rockSpeedIncrease: 0
+    - timeIntoHazard: 5
+      baseNumMeteors: 2
+      meteorIntervalMultiplier: 0.9
+      rockRateIncrease: 0
+      rockSpeedIncrease: 0
+    - timeIntoHazard: 48
+      baseNumMeteors: 3
+      meteorIntervalMultiplier: 0.75
+      rockRateIncrease: 0.25
+      rockSpeedIncrease: 0.5
+    - timeIntoHazard: 72
+      baseNumMeteors: 3
+      meteorIntervalMultiplier: 0.66
+      rockRateIncrease: 0.5
+      rockSpeedIncrease: 1.25
+    - timeIntoHazard: 96
+      baseNumMeteors: 4
+      meteorIntervalMultiplier: 0.5
+      rockRateIncrease: 0.75
+      rockSpeedIncrease: 1.5
   meteorPrefab: {fileID: 189507748417666162, guid: 8ad86b7f340c2764ea7cf973e28b644b, type: 3}
   firstMeteorSpawnTimer: 1
   meteorInterval: 30

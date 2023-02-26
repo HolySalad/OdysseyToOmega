@@ -22,6 +22,7 @@ namespace SpaceBoat.PlayerSubclasses.Equipment {
 
         public EquipmentType equipmentType {get;}
         public bool isActive {get;}
+        public bool canCancelWorkToUse {get;}
         public PlayerStateName usageState {get;}
         public EquipmentActivationBehaviour activationBehaviour {get;}
         public bool ActivationCondition(Player player);

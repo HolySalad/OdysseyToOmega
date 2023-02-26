@@ -2,88 +2,104 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 namespace SpaceBoat.Rewards {
-    /*
     public class RewardComet : MonoBehaviour
     {
-        [SerializeField] private GameObject itemPlace;
-        [SerializeField] private float speed = 1f;
-        [SerializeField] private bool LaunchOnStart = false;
-        
-        [SerializeField] public ItemTypes containedItemType;
-        public int numItems;
-        public IHeldItems containedItem;
+        [SerializeField] private bool ShatterOnStart = false;
+        [SerializeField] private List<Sprite> cometSprites = new List<Sprite>();
+        [SerializeField] private GameObject spriteObject;
+        [SerializeField] private GameObject itemPlaceObject;
+        [SerializeField] private GameObject destructionAnimationObject;
+        [SerializeField] private GameObject bounceWalkway;
 
-        private Destructable destructable;
+        private GameObject itemPrefab;
+        private GameObject secondaryItemPrefab;
+        private int numSecondaryItems = 0;
+
+        public delegate void CometShatterCallbackDelegate();
+        private List<CometShatterCallbackDelegate> cometShatterCallbacks = new List<CometShatterCallbackDelegate>();
+        public void AddCometShatterCallback(CometShatterCallbackDelegate callback) {
+            cometShatterCallbacks.Add(callback);
+        }
+
+        public void SetupComet(float velocity, Vector3 target, GameObject itemPrefab, GameObject secondaryItemPrefab, int numSecondaryItems) {
+            Rigidbody2D rb = GetComponent<Rigidbody2D>();
+            Vector3 direction = target - transform.position;
+            rb.velocity = direction.normalized * velocity;
+
+            SpriteRenderer sr = spriteObject.GetComponent<SpriteRenderer>();
+            sr.sprite = cometSprites[Random.Range(0, cometSprites.Count)];
+            StartCoroutine(UpdateComet());
+            this.itemPrefab = itemPrefab;
+            this.secondaryItemPrefab = secondaryItemPrefab;
+            this.numSecondaryItems = numSecondaryItems;
+
+            itemPlaceObject.GetComponent<SpriteRenderer>().sprite = itemPrefab.GetComponent<SpriteRenderer>().sprite;
+            bounceWalkway.AddComponent<Extras.CometBounceWalkway>();
+        }
 
 
-        //private bool beingDestroyed = false;
-
-
-        public void Start() {
-            destructable = GetComponent<Destructable>();
-            if (containedItemType != ItemTypes.None && containedItem == null) {
-               SetItemType(containedItemType);
+        public void ShatterComet() {
+            spriteObject.SetActive(false);
+            itemPlaceObject.SetActive(false);
+            GetComponent<Collider2D>().enabled = false;
+            Instantiate(itemPrefab, transform.position, Quaternion.identity);
+            if (numSecondaryItems > 0) {
+                for (int i = 0; i < numSecondaryItems; i++) {
+                    Instantiate(secondaryItemPrefab, 
+                    new Vector3(transform.position.x + ((1+i)*1* (Random.Range(0, 2) == 0 ? -1 : 1)), transform.position.y + (1+i)*1* (Random.Range(0, 2) == 0 ? -1 : 1), transform.position.z)
+                    , Quaternion.identity);
+                }
             }
-            if (LaunchOnStart) {
-                LaunchComet();
+            destructionAnimationObject.SetActive(true);
+            GameModel.Instance.sound.Play("CometBreaking");
+            foreach (CometShatterCallbackDelegate callback in cometShatterCallbacks) {
+                callback();
             }
         }
 
-        public void LaunchComet(bool isPity) {
-            Vector3 target = GameModel.Instance.cometFlightTarget.transform.position;
-            if (isPity) {
-                target = GameModel.Instance.cometDeckTarget.transform.position;
+        IEnumerator UpdateComet() {
+            while (destructionAnimationObject.activeSelf == false) {
+                spriteObject.transform.Rotate(0, 0, 5);
+                yield return new WaitForSeconds(0.01f);
             }
-            Vector3 targetVector = target - transform.position;
-            GetComponent<Rigidbody2D>().velocity = targetVector.normalized * speed;
+            
+            Rigidbody2D rb = GetComponent<Rigidbody2D>();
+            rb.velocity = new Vector2(rb.velocity.x/2, -10);
+            Animator anim = destructionAnimationObject.GetComponent<Animator>();
+            while (anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.8) {
+                yield return new WaitForEndOfFrame();
+            }
+            Destroy(gameObject);
+            yield break;
         }
 
-        public void LaunchComet() {LaunchComet(false);}
-
-        public void SetItemType(ItemTypes itemType) {
-            containedItemType = itemType;
-            GameObject Prefab = GameModel.Instance.PrefabForItemType(itemType);
-            if (Prefab == null) {
-                Debug.LogError("RewardComet: No prefab for item type " + itemType);
-                return;
-            }
-            GameObject item = Instantiate(Prefab, itemPlace.transform.position, Quaternion.identity);
-            SpriteRenderer itemRenderer = itemPlace.GetComponent<SpriteRenderer>();
-            itemRenderer.sprite = item.GetComponent<SpriteRenderer>().sprite;
-            itemRenderer.transform.localScale = new Vector3(1, 1, 1);
-            Destroy(item);
-            containedItem = GameModel.Instance.CreateItemComponent(this.gameObject, itemType);
-        }
-
-        public void DropItemAndDestruct() {
-            //beingDestroyed = true;
-            for (int i = 0; i < numItems; i++) {
-                Vector3 position = transform.position + new Vector3(Mathf.Floor((numItems - i)*3 - numItems), 0, 0);
-                GameObject item = Instantiate(GameModel.Instance.PrefabForItemType(containedItemType), position, Quaternion.identity);
-                GameModel.Instance.CreateItemComponent(item, containedItemType);
-            }
-            destructable.Destruct();
-        }
-
-        //this odesn't work becuas the ship is static
-        //fixing it is a bitch.
-        public void OnTriggerEnter2D(Collider2D other) {
-            Debug.Log("Reward Comet hit "+ other.gameObject.name);
-            if (other.gameObject.CompareTag("CometTarget")) {
-                DropItemAndDestruct();
+        void Start() {
+            if (ShatterOnStart) {
+                CometManager cometManager = FindObjectOfType<CometManager>();
+                itemPrefab = cometManager.moneyPrefab;
+                secondaryItemPrefab = cometManager.moneyPrefab;
+                numSecondaryItems = 4;
+                StartCoroutine(UpdateComet());
+                ShatterComet();
             }
         }
-        this does work but it's disgusting.
-        private float destructionYRight = -2.00f;
-        private float destructionYLeft = 5f;
-        private float destructionLeftRightBoundryX = -6f;
-        public void Update() {
-            if (beingDestroyed) return;
-            if ((transform.position.x < destructionLeftRightBoundryX && transform.position.y < destructionYLeft)
-            || (transform.position.x > destructionLeftRightBoundryX && transform.position.y < destructionYRight)) {
-                DropItemAndDestruct();
-            }       
 
     }
-    */
+}
+
+namespace SpaceBoat.Rewards.Extras {
+    public class CometBounceWalkway: MonoBehaviour, Environment.IBouncable
+    {
+        public bool Bounce(Player player) {
+            float playerVelocity = player.gameObject.GetComponent<Rigidbody2D>().velocity.y;
+            
+            if (playerVelocity < 0) {
+                player.ForceJump(false, true, true);
+                Destroy(gameObject.transform.parent.gameObject);
+                return true;
+            }
+            return false;
+        }
+    }
+
 }
