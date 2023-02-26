@@ -111,7 +111,7 @@ namespace SpaceBoat.PlayerSubclasses.Equipment {
         IEnumerator UpdateShieldVisuals() {
             Light2D shieldLight = shieldObject.GetComponent<Light2D>();
             while (true) {
-                shieldLight.intensity = Mathf.Lerp(0f, 5f, shieldStrength/shieldMaxDuration);
+                if (shieldLight != null) shieldLight.intensity = Mathf.Lerp(0f, 5f, shieldStrength/shieldMaxDuration);
                 if (shieldStrength >= shieldMaxDuration*0.95f) {
                     fullStrengthSprite.enabled = true;
                     twoThirdsStrengthSprite.enabled = false;

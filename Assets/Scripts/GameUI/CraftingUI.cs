@@ -86,6 +86,7 @@ namespace SpaceBoat.UI {
                 pendingTotemHarpoon = new PendingTotemHarpoon( material,  element,  primaryColour,  secondaryColour);
                 hasPendingTotemHarpoon = true;
             };
+            TotemManager.OnClickedItem += itemClick;
         }
 
         void ChangePanel(CraftUIState state) {
@@ -342,8 +343,8 @@ namespace SpaceBoat.UI {
             public Color32 secondaryColour;
 
             public PendingTotemHarpoon(string material, string element, Color32 primaryColour, Color32 secondaryColour) {
-                this.material = material;
-                this.element = element;
+                this.material = material.ToLower();
+                this.element = element.ToLower();
                 this.primaryColour = primaryColour;
                 this.secondaryColour = secondaryColour;
             }
@@ -378,10 +379,10 @@ namespace SpaceBoat.UI {
                 GetComponent<TotemApplier>().ApplyTotemCthulk(pendingTotemCthulk.hairStyle, pendingTotemCthulk.primaryColour, pendingTotemCthulk.secondaryColour);
             }
             if (hasPendingTotemHarpoon) {
-                //GameModel.Instance.player.ApplyTotem(pendingTotemHarpoon);
+                GetComponent<TotemApplier>().ApplyTotemHarpoon(pendingTotemHarpoon.material, pendingTotemHarpoon.element, pendingTotemHarpoon.primaryColour, pendingTotemHarpoon.secondaryColour);
             }
         }
-        
+
         public void CloseCraftingUI() {
             if (pendingEquipmentType != GameModel.Instance.player.currentEquipmentType) {
                 GameModel.Instance.player.ChangeEquipment(pendingEquipmentType);

@@ -536,19 +536,21 @@ namespace SpaceBoat {
             yield return new WaitForSeconds(3f);
             int numCometsSpawned = 1;
             float stage3Timer = 0;
-            GameModel.Instance.HarpoonGun.GetComponent<HarpoonGunActivatable>().supressPromptDuringTutorial = false;
+            GameModel.Instance.HarpoonGun.GetComponentInChildren<HarpoonGunActivatable>().supressPromptDuringTutorial = false;
             while (!stage3) {
+                Debug.Log("Stage 3 timer: " + stage3Timer);
+                Debug.Log("Num comets spawned: " + numCometsSpawned);
                 if (stage3Timer > numCometsSpawned*10) {
                     GameObject newComet = cometManager.SpawnComet(4, 100);
                     newComet.GetComponent<RewardComet>().AddCometShatterCallback(() => {
                         stage3 = true;
                     });
                     numCometsSpawned++;
+                    if (numCometsSpawned == 3 || numCometsSpawned > 5) {
+                        helpPrompts.AddPrompt(tutorialHazardStage3);
+                    }
                 }
                 stage3Timer += Time.deltaTime;
-                if (stage3Timer/24 == 1) {
-                    helpPrompts.AddPrompt(tutorialHazardStage3);
-                }
                 yield return null;
             }
 
