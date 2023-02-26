@@ -55,6 +55,7 @@ namespace SpaceBoat.PlayerSubclasses.Equipment {
         }
 
         IEnumerator PulseCooldownIndictator() {
+            if (cooldownLight == null) yield break;
             cooldownLight.intensity = 0f;
             cooldownLight.enabled = true;
             Debug.Log("Pulsing");

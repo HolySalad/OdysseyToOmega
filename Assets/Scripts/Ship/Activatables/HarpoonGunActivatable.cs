@@ -11,6 +11,7 @@ namespace SpaceBoat.Ship.Activatables {
         [SerializeField] private UI.HelpPrompt inUseHelpPrompt;
         public UI.HelpPrompt activatableInUseHelpPrompt {get {return inUseHelpPrompt;}}
         [SerializeField] private GameObject harpoonPrefab;
+        [SerializeField] private GameObject totemHarpoonPrefab;
         [SerializeField] private GameObject harpoonLocation;
         [SerializeField] private GameObject harpoonBarrel;
         [SerializeField] private GameObject AimerParent;
@@ -23,7 +24,7 @@ namespace SpaceBoat.Ship.Activatables {
         [SerializeField] private int maxAimerDistance = 100;
 
 
-
+        public bool useTotemHarpoon = false;
         public bool isLoaded {get; private set;} = true;
         public ActivatablesNames kind {get;} = ActivatablesNames.HarpoonGun;
 
@@ -84,7 +85,7 @@ namespace SpaceBoat.Ship.Activatables {
 
         public void LoadHarpoon() {
             isLoaded = true;
-            harpoonLocation.GetComponent<SpriteRenderer>().enabled = true;
+            harpoonLocation.SetActive(true);
             SoundManager.Instance.Play("HarpoonReloaded");
         }
 
@@ -103,8 +104,8 @@ namespace SpaceBoat.Ship.Activatables {
 
         public void FireHarpoon() {
             isLoaded = false;
-            harpoonLocation.GetComponent<SpriteRenderer>().enabled = false;
-            GameObject harpoon = Instantiate(harpoonPrefab, harpoonLocation.transform.position, harpoonLocation.transform.rotation);
+            harpoonLocation.SetActive(false);
+            GameObject harpoon = Instantiate(useTotemHarpoon ? totemHarpoonPrefab : harpoonPrefab, harpoonLocation.transform.position, harpoonLocation.transform.rotation);
             //Vector3 gunAxis = backBarrel.transform.position - frontBarrel.transform.position;
             Vector3 direction = harpoonLocation.transform.TransformDirection(Vector3.right);
             HarpoonProjectile harpoonProjectile = harpoon.GetComponent<Ship.Activatables.HarpoonProjectile>();

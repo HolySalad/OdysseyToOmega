@@ -39,7 +39,7 @@ namespace SpaceBoat.PlayerSubclasses.Equipment {
             dashTimer = dashDuration;
             readySprite.enabled = false;
             activeSprite.enabled = true;
-            activeLight.enabled = true;
+            if (activeLight != null) activeLight.enabled = true;
             SoundManager.Instance.Play("Dash");
         }
         public void CancelActivation(Player player) {
