@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2675054356114937528}
   - component: {fileID: 328736785}
   - component: {fileID: 7994517}
-  - component: {fileID: 7994518}
+  - component: {fileID: 7994522}
   m_Layer: 13
   m_Name: ChydraParent 1
   m_TagString: Hydra
@@ -75,7 +75,7 @@ MonoBehaviour:
         Heads dead","Instant":true,"AbortTypeabortType":"LowerPriority","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Unity.UnityGameObject.ActiveInHierarchy","NodeData":{"Offset":"(-217.499939,250)"},"ID":13,"Name":"Active
         In Hierarchy","Instant":true,"SharedGameObjecttargetGameObject":{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":"Head1","IsShared":true,"GameObjectmValue":9}},{"Type":"BehaviorDesigner.Runtime.Tasks.SelectorEvaluator","NodeData":{"Offset":"(-28.5727539,307.808655)"},"ID":14,"Name":"Selector
         Evaluator","Instant":true,"AbortTypeabortType":"Self","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-250,120)"},"ID":15,"Name":"Sequence","Instant":true,"AbortTypeabortType":"LowerPriority","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Unity.UnityAnimator.TakeDamage","NodeData":{"Offset":"(-475.4748,145.256363)","ColorIndex":2},"ID":16,"Name":"Take
-        Damage","Instant":true,"Stringtagg":"Harpoons","TriggerEnter2Dtriggered":10,"SharedGameObjectheadObject":{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":"Head1","IsShared":true,"GameObjectmValue":11},"SharedInthealth":{"Type":"BehaviorDesigner.Runtime.SharedInt","Name":"Health1","IsShared":true,"Int32mValue":50},"StringanimationTriggerName":"Hooked","Int32healthLoss":50},{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(-350.565979,187.038635)"},"ID":17,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":0.2},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1}},{"Type":"BehaviorDesigner.Runtime.Tasks.SendEvent","NodeData":{"Offset":"(-242.068115,209.276337)"},"ID":18,"Name":"Send
+        Damage","Instant":true,"Stringtagg":"Harpoons","TriggerEnter2Dtriggered":10,"SharedGameObjectheadObject":{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":"Head1","IsShared":true,"GameObjectmValue":11},"SharedInthealth":{"Type":"BehaviorDesigner.Runtime.SharedInt","Name":"Health1","IsShared":true,"Int32mValue":50},"StringanimationTriggerName":"Hooked","Int32healthLoss":25},{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(-350.565979,187.038635)"},"ID":17,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":0.2},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1}},{"Type":"BehaviorDesigner.Runtime.Tasks.SendEvent","NodeData":{"Offset":"(-242.068115,209.276337)"},"ID":18,"Name":"Send
         Event","Instant":true,"SharedGameObjecttargetGameObject":{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":null},"SharedStringeventName":{"Type":"BehaviorDesigner.Runtime.SharedString","Name":null,"StringmValue":"Hit"},"SharedIntgroup":{"Type":"BehaviorDesigner.Runtime.SharedInt","Name":null,"Int32mValue":0}}]},{"Type":"BehaviorDesigner.Runtime.Tasks.RandomSequence","NodeData":{"Offset":"(320,70)"},"ID":19,"Name":"Random
         Sequence","Instant":true,"Int32seed":0,"BooleanuseSeed":false,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.RandomSelector","NodeData":{"Offset":"(230.4541,176.462646)"},"ID":20,"Name":"Random
         Selector","Instant":true,"Int32seed":0,"BooleanuseSeed":false,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-220,240)"},"ID":21,"Name":"Sequence","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(-208.727081,227.921249)"},"ID":22,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":2},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":true},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":3}},{"Type":"ShootPlayer","NodeData":{"Offset":"(-83.06154,228.4699)","ColorIndex":5},"ID":23,"Name":"Shoot
@@ -257,8 +257,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!58 &7994518
-CircleCollider2D:
+--- !u!60 &7994522
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -270,9 +270,29 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -8.123741, y: 4.8490562}
-  serializedVersion: 2
-  m_Radius: 40.300034
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0, y: 1}
+      - {x: -0.95105654, y: 0.30901697}
+      - {x: -56.80565, y: 35.467346}
+      - {x: -84.700935, y: 3.5022893}
+      - {x: -66.74723, y: -3.7551231}
+      - {x: -47.243492, y: -6.8414507}
+      - {x: -30.724325, y: -13.466364}
+      - {x: -8.094376, y: -11.324976}
+      - {x: 0.58778536, y: -0.80901694}
+      - {x: 0.9510565, y: 0.30901712}
+  m_UseDelaunayMesh: 0
 --- !u!1001 &465174356903255502
 PrefabInstance:
   m_ObjectHideFlags: 0
