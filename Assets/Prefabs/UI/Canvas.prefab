@@ -440,6 +440,7 @@ GameObject:
   - component: {fileID: 1908489675348491443}
   - component: {fileID: 3995697086778934341}
   - component: {fileID: 4068064822785686377}
+  - component: {fileID: 317171718}
   m_Layer: 5
   m_Name: CraftingPanel
   m_TagString: Untagged
@@ -649,6 +650,38 @@ MonoBehaviour:
   description: Place an activatable shield that can protect your ship for a short.
   iconSmall: {fileID: 21300000, guid: 1538b883cf8cd224b97301b3eed3c29d, type: 3}
   iconLarge: {fileID: 21300000, guid: 1538b883cf8cd224b97301b3eed3c29d, type: 3}
+--- !u!114 &317171718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1895798144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70e0833e5e1500d4c8180094aa665bb5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cthulkMaterial: {fileID: 2100000, guid: 0fd29cccea3265a498b1c2ca29c7410e, type: 2}
+  harpoonMaterial: {fileID: 2100000, guid: 63022562bf0ef1549a7d32b0ad46873f, type: 2}
+  elementMaterial: {fileID: 2100000, guid: c4368be1209094a4e8c7c130f4495823, type: 2}
+  harpoon: {fileID: 4792589185087811438, guid: 3568564756fdbb740baba8df915a2e1f, type: 3}
+  harpoonGunSpriteParent: {fileID: 0}
+  cthulkAssymetricalHair: {fileID: 0}
+  cthulkBuzzcutHair: {fileID: 0}
+  cthulkLongHair: {fileID: 0}
+  cthulkShortHair: {fileID: 0}
+  cthulkDreadlocksHair: {fileID: 0}
+  cthulkBraidHair: {fileID: 0}
+  cthulkPonytailHair: {fileID: 0}
+  harpoonMaterialObsidian: {fileID: 21300000, guid: eb158ebf24707404e8c3d431b509ff93, type: 3}
+  harpoonMaterialBone: {fileID: 21300000, guid: cf33f38aee6c98a4288d0eb9f22be086, type: 3}
+  harpoonMaterialWood: {fileID: 21300000, guid: db2b3ba5027a7c246986c5cca935ca81, type: 3}
+  harpoonMaterialFlint: {fileID: 21300000, guid: 67f143581d5fbdb49a542375edbbe66e, type: 3}
+  harpoonElementFire: {fileID: 21300000, guid: 0f434114ae29d7f44a9c6da3e30b2a90, type: 3}
+  harpoonElementWater: {fileID: 21300000, guid: 31704876c24bb394d980c66fe346582c, type: 3}
+  harpoonElementEarth: {fileID: 21300000, guid: 039ff3dfc770a874db03ad6a7ba4618b, type: 3}
+  harpoonElementAir: {fileID: 21300000, guid: 38db563448616e443abcdf74a4010005, type: 3}
 --- !u!1 &2017400693
 GameObject:
   m_ObjectHideFlags: 0
@@ -1168,7 +1201,6 @@ GameObject:
   - component: {fileID: 601514396458854644}
   - component: {fileID: 601514396458854648}
   - component: {fileID: 4470369066855549888}
-  - component: {fileID: 473006301}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1299,36 +1331,6 @@ MonoBehaviour:
   hudParent: {fileID: 7861143304558800203}
   craftMenuParent: {fileID: 1895798144}
   blueprintUnlockParent: {fileID: 573831906261462639}
---- !u!114 &473006301
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 601514396458854645}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70e0833e5e1500d4c8180094aa665bb5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cthulkMaterial: {fileID: 2100000, guid: 0fd29cccea3265a498b1c2ca29c7410e, type: 2}
-  harpoonMaterial: {fileID: 0}
-  harpoon: {fileID: 0}
-  cthulkAssymetricalHair: {fileID: 0}
-  cthulkBuzzcutHair: {fileID: 0}
-  cthulkLongHair: {fileID: 0}
-  cthulkShortHair: {fileID: 0}
-  cthulkDreadlocksHair: {fileID: 0}
-  cthulkBraidHair: {fileID: 0}
-  cthulkPonytailHair: {fileID: 0}
-  harpoonMaterialObsidian: {fileID: 0}
-  harpoonMaterialBone: {fileID: 0}
-  harpoonMaterialWood: {fileID: 0}
-  harpoonMaterialFlint: {fileID: 0}
-  harpoonElementFire: {fileID: 0}
-  harpoonElementWater: {fileID: 0}
-  harpoonElementEarth: {fileID: 0}
-  harpoonElementAir: {fileID: 0}
 --- !u!1 &601514397839699534
 GameObject:
   m_ObjectHideFlags: 0

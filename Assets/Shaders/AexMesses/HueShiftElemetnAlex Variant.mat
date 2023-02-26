@@ -20,9 +20,9 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: HueShiftHelmetAlex Variant
+  m_Name: HueShiftElemetnAlex Variant
   m_Shader: {fileID: -6465566751694194690, guid: 7fcbf486d4b97a44ba3eea3766893276, type: 3}
-  m_Parent: {fileID: -876546973899608171, guid: 7fcbf486d4b97a44ba3eea3766893276, type: 3}
+  m_Parent: {fileID: 2100000, guid: 0fd29cccea3265a498b1c2ca29c7410e, type: 2}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -35,10 +35,14 @@ Material:
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
-    m_TexEnvs: []
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 58f62b7be3fff98418315fe7fbda8f0f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats: []
     m_Colors:
-    - _BaseEyeColour: {r: 0.5803922, g: 0.09803922, b: 0.101960786, a: 1}
-    - _BasePrimaryColour: {r: 0.68235296, g: 0.92156863, b: 0.08627451, a: 1}
+    - _BaseEyeColour: {r: 0.047058824, g: 0.30980393, b: 0.3882353, a: 1}
+    - _BasePrimaryColour: {r: 0.46666667, g: 0.06666667, b: 0.4392157, a: 1}
   m_BuildTextureStacks: []

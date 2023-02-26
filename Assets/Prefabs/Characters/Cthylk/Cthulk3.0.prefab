@@ -2839,6 +2839,22 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8306642429446418868, guid: e61d1eac024ac3844ae7e77a323ba06c, type: 3}
+      propertyPath: m_SortingLayer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8306642429446418868, guid: e61d1eac024ac3844ae7e77a323ba06c, type: 3}
+      propertyPath: m_SortingOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8306642429446418868, guid: e61d1eac024ac3844ae7e77a323ba06c, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 1012417137
+      objectReference: {fileID: 0}
+    - target: {fileID: 8306642429446418868, guid: e61d1eac024ac3844ae7e77a323ba06c, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 0fd29cccea3265a498b1c2ca29c7410e, type: 2}
     - target: {fileID: 8347723296986900380, guid: e61d1eac024ac3844ae7e77a323ba06c, type: 3}
       propertyPath: m_Bounds.m_Center.x
       value: 0.016711295

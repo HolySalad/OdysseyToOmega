@@ -10,6 +10,7 @@ public class TotemApplier : MonoBehaviour
 {
     [SerializeField] Material cthulkMaterial;
     [SerializeField] Material harpoonMaterial;
+    [SerializeField] Material elementMaterial;
     [SerializeField] GameObject harpoon;
     [SerializeField] GameObject harpoonGunSpriteParent;
 
@@ -105,6 +106,8 @@ public class TotemApplier : MonoBehaviour
         harpoonGunElementSpriteRenderer.sprite = harpoonElementDictionary[element];
 
         harpoonMaterial.SetColor("_BasePrimaryColour", primaryColour);
-        harpoonMaterial.SetColor("_BaseEyeColour", secondaryColour);
+        harpoonMaterial.SetColor("_BaseEyeColour", primaryColour);
+        elementMaterial.SetColor("_BasePrimaryColour", secondaryColour);
+        elementMaterial.SetColor("_BasePrimaryColour", secondaryColour);
     }
 }
