@@ -30,7 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7344597221274078523
 MonoBehaviour:
@@ -45,6 +45,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gameId: TotemDemo
+  loginPanel: {fileID: 0}
+  selectionPanel: {fileID: 0}
   loginButton: {fileID: 0}
   googleLoginObject: {fileID: 0}
   profileNameObject: {fileID: 0}
@@ -58,9 +60,15 @@ MonoBehaviour:
   - {fileID: -6517334675425414510, guid: e61d1eac024ac3844ae7e77a323ba06c, type: 3}
   - {fileID: -2589895378372164084, guid: e61d1eac024ac3844ae7e77a323ba06c, type: 3}
   - {fileID: 5188094370727056010, guid: e61d1eac024ac3844ae7e77a323ba06c, type: 3}
-  - {fileID: -2589895378372164084, guid: e61d1eac024ac3844ae7e77a323ba06c, type: 3}
   - {fileID: -8524914798525024847, guid: e61d1eac024ac3844ae7e77a323ba06c, type: 3}
   - {fileID: -2013776555955897638, guid: e61d1eac024ac3844ae7e77a323ba06c, type: 3}
-  - {fileID: 5188094370727056010, guid: e61d1eac024ac3844ae7e77a323ba06c, type: 3}
-  - {fileID: -6517334675425414510, guid: e61d1eac024ac3844ae7e77a323ba06c, type: 3}
-  spriteRenderer: {fileID: 0}
+  - {fileID: 3391737474704777028, guid: e61d1eac024ac3844ae7e77a323ba06c, type: 3}
+  - {fileID: -6464189483833437178, guid: e61d1eac024ac3844ae7e77a323ba06c, type: 3}
+  avatarSpriteRenderer:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}

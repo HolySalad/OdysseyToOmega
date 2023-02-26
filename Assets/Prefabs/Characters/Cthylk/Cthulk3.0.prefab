@@ -2839,6 +2839,22 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8306642429446418868, guid: e61d1eac024ac3844ae7e77a323ba06c, type: 3}
+      propertyPath: m_SortingLayer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8306642429446418868, guid: e61d1eac024ac3844ae7e77a323ba06c, type: 3}
+      propertyPath: m_SortingOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8306642429446418868, guid: e61d1eac024ac3844ae7e77a323ba06c, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 1012417137
+      objectReference: {fileID: 0}
+    - target: {fileID: 8306642429446418868, guid: e61d1eac024ac3844ae7e77a323ba06c, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 0fd29cccea3265a498b1c2ca29c7410e, type: 2}
     - target: {fileID: 8347723296986900380, guid: e61d1eac024ac3844ae7e77a323ba06c, type: 3}
       propertyPath: m_Bounds.m_Center.x
       value: 0.016711295
@@ -3493,7 +3509,7 @@ MonoBehaviour:
   oneThirdStrengthSprite: {fileID: 3992405685253487228}
   brokenSprite: {fileID: 1576501146958950415}
   shieldObject: {fileID: 1347467869}
-  cooldownLight: {fileID: 0}
+  cooldownLight: {fileID: 2030592798}
   shieldMaxDuration: 4
   shieldRecoveryTime: 8
   shieldBreakRecoveryPenalty: 4
@@ -3527,11 +3543,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   activeSprite:
+  - {fileID: 1324512748714856507}
   - {fileID: 3139816147328360622}
   - {fileID: 6389147465513381914}
   - {fileID: 2170651763322390636}
   cooldownSprite: {fileID: 1957817345328340208}
-  cooldownLight: {fileID: 0}
+  cooldownLight: {fileID: 946015790}
   blenderCooldownPulseTime: 0.3
   cablesSprite: {fileID: 4667732949754121727}
   usageTime: 3.3
@@ -3563,7 +3580,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   activeSprite: {fileID: 7148959547558846618}
-  activeLight: {fileID: 0}
+  activeLight: {fileID: 276359540}
   readySprite: {fileID: 4663575126505360841}
   cooldownTwoThirdsSprite: {fileID: 2027952627490720794}
   cooldownOneThirdSprite: {fileID: 7961413154796137122}
