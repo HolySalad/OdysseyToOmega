@@ -21,8 +21,8 @@ namespace SpaceBoat.UI {
             lastDisplayedMoney = GameModel.Instance.player.money;
             text.text = lastDisplayedMoney.ToString();
             if (isMenu) return;
-            text.color = new Color(text.color.r, text.color.g, text.color.b, 0);
-            moneyIcon.color = new Color(moneyIcon.color.r, moneyIcon.color.g, moneyIcon.color.b, 0);
+            //text.color = new Color(text.color.r, text.color.g, text.color.b, 0);
+            //moneyIcon.color = new Color(moneyIcon.color.r, moneyIcon.color.g, moneyIcon.color.b, 0);
         }
 
         IEnumerator TickMoneyUp(int money) {
@@ -63,6 +63,14 @@ namespace SpaceBoat.UI {
         public void OnGUI() {
             Player player = GameModel.Instance.player;
             if (player == null) return;
+
+
+            if (true) {
+                TMPro.TextMeshProUGUI text = GetComponent<TMPro.TextMeshProUGUI>();
+                text.text = player.money.ToString();
+                return;
+            }
+            /*
             int money = player.money;
             if (isMenu) {
                 TMPro.TextMeshProUGUI text = GetComponent<TMPro.TextMeshProUGUI>();
@@ -82,6 +90,7 @@ namespace SpaceBoat.UI {
                 TMPro.TextMeshProUGUI text = GetComponent<TMPro.TextMeshProUGUI>();
                 text.color = new Color(text.color.r, text.color.g, text.color.b, 1);
             }
+                    */
         }
     }
 }
