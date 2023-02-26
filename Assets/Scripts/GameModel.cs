@@ -230,6 +230,7 @@ namespace SpaceBoat {
                 saveGameManager.Reset();
             } else {
                 saveGameManager.Load();
+                saveGameManager.ResetBetweenRuns();
             }
             saveGame = saveGameManager.saveData;
 
