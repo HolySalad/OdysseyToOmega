@@ -20,11 +20,14 @@ public class TriggerEnter2D : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Harpoons"))
         {
+            if(gameObject.GetComponentInParent<Animator>().GetBool("Dead") == false)
+            {
 
             triggered = true;
             StartCoroutine("reloadHarpoon");
             collision.gameObject.tag = "Untagged";
             GameObject.Destroy(collision.gameObject);
+            }
         }
 
         
