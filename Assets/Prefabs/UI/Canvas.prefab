@@ -501,8 +501,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Press F to Activate the Shield Generator
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: d59977a130ea6a540849c98b9da92fed, type: 2}
-  m_sharedMaterial: {fileID: -3097884124353629746, guid: d59977a130ea6a540849c98b9da92fed, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -654,8 +654,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 10000
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: d59977a130ea6a540849c98b9da92fed, type: 2}
-  m_sharedMaterial: {fileID: -3097884124353629746, guid: d59977a130ea6a540849c98b9da92fed, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -733,6 +733,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e5b2fb97d1f78948b4e2fd2db8f61b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isMenu: 0
+  moneyTickTime: 0.4
+  moneyTickFastThreshold: 6
+  moneyTickFastTime: 0.05
+  fadeOutTime: 5
+  fadeOutSpeed: 1.5
+  fadeInSpeed: 0.5
+  moneyIcon: {fileID: 57971425}
 --- !u!1 &1895798144
 GameObject:
   m_ObjectHideFlags: 0
@@ -875,13 +883,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58e46f5e526de5042b6038423f6929a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cost: 12
+  cost: 8
   rewardType: 4
   title: Shield
   subtitle: Equipment
   description: Hold Shift to protect yourself from damage.
-  iconSmall: {fileID: -3316075567813777344, guid: e61d1eac024ac3844ae7e77a323ba06c, type: 3}
-  iconLarge: {fileID: -3316075567813777344, guid: e61d1eac024ac3844ae7e77a323ba06c, type: 3}
+  iconSmall: {fileID: 6963504112057975369, guid: 8f2b0b7b1d468b5458a1a0c8d716fff3, type: 3}
+  iconLarge: {fileID: 6963504112057975369, guid: 8f2b0b7b1d468b5458a1a0c8d716fff3, type: 3}
 --- !u!114 &1988229419991046723
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -894,13 +902,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9869c8f146075d04da9aab78c58ba09b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cost: 10
+  cost: 5
   rewardType: 1
   title: Healthpack
   subtitle: Equipment
   description: Hold Shift to heal yourself without visiting the kitchen.
-  iconSmall: {fileID: 5897700399779285255, guid: e61d1eac024ac3844ae7e77a323ba06c, type: 3}
-  iconLarge: {fileID: 5897700399779285255, guid: e61d1eac024ac3844ae7e77a323ba06c, type: 3}
+  iconSmall: {fileID: -8092637305567445648, guid: 8f2b0b7b1d468b5458a1a0c8d716fff3, type: 3}
+  iconLarge: {fileID: -8092637305567445648, guid: 8f2b0b7b1d468b5458a1a0c8d716fff3, type: 3}
 --- !u!114 &1908489675348491443
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -913,13 +921,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d18d79ea2edb3d43a3ed247be24208f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cost: 15
+  cost: 10
   rewardType: 3
   title: Jetpack
   subtitle: Equipment
   description: Press Shift to gain a quick burst of movement.
-  iconSmall: {fileID: 7850738296360080586, guid: e61d1eac024ac3844ae7e77a323ba06c, type: 3}
-  iconLarge: {fileID: 7850738296360080586, guid: e61d1eac024ac3844ae7e77a323ba06c, type: 3}
+  iconSmall: {fileID: -7670772567931111913, guid: 8f2b0b7b1d468b5458a1a0c8d716fff3, type: 3}
+  iconLarge: {fileID: -7670772567931111913, guid: 8f2b0b7b1d468b5458a1a0c8d716fff3, type: 3}
 --- !u!114 &3995697086778934341
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -933,7 +941,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buildablePrefab: {fileID: 3090278884972058088, guid: 4f9a59f3912a13a44ab1ac40639acfdb, type: 3}
-  cost: 10
+  cost: 5
   rewardType: 5
   title: Jump Pad
   subtitle: Ship Upgrade
@@ -953,7 +961,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buildablePrefab: {fileID: 8539809948509534502, guid: 2979234b9a8ab8a45bfc8c73fff6b892, type: 3}
-  cost: 10
+  cost: 8
   rewardType: 7
   title: Ship Shield
   subtitle: Ship Upgrade
@@ -1201,8 +1209,8 @@ MonoBehaviour:
   m_text: "You haven't found any blueprints. \n\nDestroy Comets with the Harpoon
     Launcher to find new blueprints."
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: d59977a130ea6a540849c98b9da92fed, type: 2}
-  m_sharedMaterial: {fileID: -3097884124353629746, guid: d59977a130ea6a540849c98b9da92fed, type: 2}
+  m_fontAsset: {fileID: 0}
+  m_sharedMaterial: {fileID: 0}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1922,8 +1930,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: d59977a130ea6a540849c98b9da92fed, type: 2}
-  m_sharedMaterial: {fileID: -3097884124353629746, guid: d59977a130ea6a540849c98b9da92fed, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2342,8 +2350,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Accept
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: d59977a130ea6a540849c98b9da92fed, type: 2}
-  m_sharedMaterial: {fileID: -3097884124353629746, guid: d59977a130ea6a540849c98b9da92fed, type: 2}
+  m_fontAsset: {fileID: 0}
+  m_sharedMaterial: {fileID: 0}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2687,8 +2695,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Jetpack
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: d59977a130ea6a540849c98b9da92fed, type: 2}
-  m_sharedMaterial: {fileID: -3097884124353629746, guid: d59977a130ea6a540849c98b9da92fed, type: 2}
+  m_fontAsset: {fileID: 0}
+  m_sharedMaterial: {fileID: 0}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2859,8 +2867,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: You can fucking fly.
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: d59977a130ea6a540849c98b9da92fed, type: 2}
-  m_sharedMaterial: {fileID: -3097884124353629746, guid: d59977a130ea6a540849c98b9da92fed, type: 2}
+  m_fontAsset: {fileID: 0}
+  m_sharedMaterial: {fileID: 0}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3377,8 +3385,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: You can fucking fly.
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: d59977a130ea6a540849c98b9da92fed, type: 2}
-  m_sharedMaterial: {fileID: -3097884124353629746, guid: d59977a130ea6a540849c98b9da92fed, type: 2}
+  m_fontAsset: {fileID: 0}
+  m_sharedMaterial: {fileID: 0}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3512,8 +3520,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Craft Item
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: d59977a130ea6a540849c98b9da92fed, type: 2}
-  m_sharedMaterial: {fileID: -3097884124353629746, guid: d59977a130ea6a540849c98b9da92fed, type: 2}
+  m_fontAsset: {fileID: 0}
+  m_sharedMaterial: {fileID: 0}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3647,8 +3655,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: $$$
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: d59977a130ea6a540849c98b9da92fed, type: 2}
-  m_sharedMaterial: {fileID: -3097884124353629746, guid: d59977a130ea6a540849c98b9da92fed, type: 2}
+  m_fontAsset: {fileID: 0}
+  m_sharedMaterial: {fileID: 0}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3916,8 +3924,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: $$$
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: d59977a130ea6a540849c98b9da92fed, type: 2}
-  m_sharedMaterial: {fileID: -3097884124353629746, guid: d59977a130ea6a540849c98b9da92fed, type: 2}
+  m_fontAsset: {fileID: 0}
+  m_sharedMaterial: {fileID: 0}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4273,8 +4281,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: BluePrint Acquired
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: d59977a130ea6a540849c98b9da92fed, type: 2}
-  m_sharedMaterial: {fileID: -3097884124353629746, guid: d59977a130ea6a540849c98b9da92fed, type: 2}
+  m_fontAsset: {fileID: 0}
+  m_sharedMaterial: {fileID: 0}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4499,8 +4507,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Select an Item to craft
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: d59977a130ea6a540849c98b9da92fed, type: 2}
-  m_sharedMaterial: {fileID: -3097884124353629746, guid: d59977a130ea6a540849c98b9da92fed, type: 2}
+  m_fontAsset: {fileID: 0}
+  m_sharedMaterial: {fileID: 0}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4985,8 +4993,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Equipment
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: d59977a130ea6a540849c98b9da92fed, type: 2}
-  m_sharedMaterial: {fileID: -3097884124353629746, guid: d59977a130ea6a540849c98b9da92fed, type: 2}
+  m_fontAsset: {fileID: 0}
+  m_sharedMaterial: {fileID: 0}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -5582,8 +5590,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: You can fucking fly.
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: d59977a130ea6a540849c98b9da92fed, type: 2}
-  m_sharedMaterial: {fileID: -3097884124353629746, guid: d59977a130ea6a540849c98b9da92fed, type: 2}
+  m_fontAsset: {fileID: 0}
+  m_sharedMaterial: {fileID: 0}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -5793,8 +5801,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Jetpack
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: d59977a130ea6a540849c98b9da92fed, type: 2}
-  m_sharedMaterial: {fileID: -3097884124353629746, guid: d59977a130ea6a540849c98b9da92fed, type: 2}
+  m_fontAsset: {fileID: 0}
+  m_sharedMaterial: {fileID: 0}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -5930,8 +5938,8 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: d59977a130ea6a540849c98b9da92fed, type: 2}
-  m_sharedMaterial: {fileID: -3097884124353629746, guid: d59977a130ea6a540849c98b9da92fed, type: 2}
+  m_fontAsset: {fileID: 0}
+  m_sharedMaterial: {fileID: 0}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -6179,7 +6187,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: Button
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: d59977a130ea6a540849c98b9da92fed, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -6243,7 +6251,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &6986724846836249933
@@ -6566,8 +6574,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 1
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: d59977a130ea6a540849c98b9da92fed, type: 2}
-  m_sharedMaterial: {fileID: -3097884124353629746, guid: d59977a130ea6a540849c98b9da92fed, type: 2}
+  m_fontAsset: {fileID: 0}
+  m_sharedMaterial: {fileID: 0}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -6645,6 +6653,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e5b2fb97d1f78948b4e2fd2db8f61b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isMenu: 1
+  moneyTickTime: 0.2
+  moneyTickFastThreshold: 20
+  moneyTickFastTime: 0.05
+  fadeOutTime: 4
+  fadeOutSpeed: 0.8
+  fadeInSpeed: 0.2
+  moneyIcon: {fileID: 2153697711493864357}
 --- !u!1 &7861143304558800203
 GameObject:
   m_ObjectHideFlags: 0

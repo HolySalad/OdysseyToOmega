@@ -27,7 +27,6 @@ namespace SpaceBoat.HazardManagers.BugSwarmSubclasses {
         [SerializeField] private float maxAttackVectorChangePercent = 0.1f;
         [SerializeField] private float minAttackVectorChangePercent = 0.1f;
         [SerializeField] private float attackVectorMagDifferenceForAbort = 0.1f;
-        [SerializeField] private float explosionRadius = 2f;
         [SerializeField] private float attackTimeoutTime = 2f;
         [SerializeField] private float minAttackWaitTime = 0.2f;
         [SerializeField] private float attackCooldown = 1.5f;
@@ -35,6 +34,8 @@ namespace SpaceBoat.HazardManagers.BugSwarmSubclasses {
         [SerializeField] private float bombDropHeight = 4f;
         [SerializeField] private GameObject bombPrefab;
         [SerializeField] private SpriteRenderer bombSprite;
+        [SerializeField] private GameObject moneyPrefab;
+        [SerializeField] private int moneyDropChance = 10;
 
         
         [SerializeField] private float bugoffTime = 12f;    
@@ -217,7 +218,7 @@ namespace SpaceBoat.HazardManagers.BugSwarmSubclasses {
             if ((int)transform.position.x - (int)currentMovementOffset.x == (int)targetLocation.x) {
                 reachedTargetLocation = true;
                 bombSprite.enabled = false;
-                GameObject bomb = Instantiate(bombPrefab, transform.position, bombSprite.transform.rotation);
+                GameObject bomb = Instantiate(bombPrefab, bombSprite.transform.position, bombSprite.transform.rotation);
                 bomb.GetComponent<BugBomb>().SetTargetSail(bombTarget);
                 isLeaving = true;
                 carriesBomb = false;
@@ -227,8 +228,18 @@ namespace SpaceBoat.HazardManagers.BugSwarmSubclasses {
                 rb.velocity = movementVector.normalized*travellingMovementSpeed;
             }
         }
+        
+        public void Explode(bool silently = false) {
+            explosionAnimationObject.SetActive(true);
+            swarm?.RemoveBugFromSwarm(this);
+            if (!silently) SoundManager.Instance.Play("BugExplosion");
+        }
 
         void BugLeavingMovementBehaviour() {
+            if (exitTarget == null) {
+                explosionAnimationObject.SetActive(true);
+                return;
+            }
             if (transform.position.x < exitTarget.position.x) {
                 swarm?.RemoveBugFromSwarm(this);
                 Destroy(gameObject);
@@ -239,6 +250,10 @@ namespace SpaceBoat.HazardManagers.BugSwarmSubclasses {
                 TurnBug(true);
             }
             rb.velocity = movementVector.normalized*travellingMovementSpeed;
+        }
+
+        public void DropMoney() {
+            Instantiate(moneyPrefab, transform.position, Quaternion.identity);
         }
 
 
@@ -321,18 +336,21 @@ namespace SpaceBoat.HazardManagers.BugSwarmSubclasses {
         void OnCollisionEnter2D(Collision2D collision) {
             if (collision.gameObject.layer == LayerMask.NameToLayer("PhysicalHazards"))
                 return;
+            if (explosionAnimationObject.activeSelf) return;
             spriteRenderer.enabled = false;
             foreach (Light2D light in atttackModeLights) {
                 light.enabled = false;
             }
             rb.constraints = RigidbodyConstraints2D.FreezeAll;
             StopCoroutine(MoveBug());
-            explosionAnimationObject.SetActive(true);
             if (collision.gameObject.layer == LayerMask.NameToLayer("PlayerChar") && collision.gameObject.TryGetComponent(out Player playerChar)) {
                 playerChar.PlayerTakesDamage();
             }
-            swarm?.RemoveBugFromSwarm(this);
-            if (collision.gameObject.layer != LayerMask.NameToLayer("MapBounds")) SoundManager.Instance.Play("BugExplosion");
+            Explode(collision.gameObject.layer == LayerMask.NameToLayer("MapBounds"));
+            if (Random.Range(0, 100) < moneyDropChance) {
+                DropMoney();
+            }
+            
         }
 
         bool CheckLineOfSight(Vector3 target) {

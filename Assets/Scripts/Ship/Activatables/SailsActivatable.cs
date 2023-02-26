@@ -6,7 +6,10 @@ namespace SpaceBoat.Ship.Activatables {
     public class SailsActivatable : MonoBehaviour, IActivatables
     {   
         [SerializeField] private UI.HelpPrompt helpPrompt;
-        public UI.HelpPrompt HelpPrompt {get {return helpPrompt;}}
+        public UI.HelpPrompt activatableHelpPrompt {get {return helpPrompt;}}
+
+        [SerializeField] private UI.HelpPrompt inUseHelpPrompt;
+        public UI.HelpPrompt activatableInUseHelpPrompt {get {return inUseHelpPrompt;}}
         public enum SailGrouping {
             WheelSails,
             MainSails,
@@ -31,8 +34,6 @@ namespace SpaceBoat.Ship.Activatables {
         public PlayerStateName playerState {get;} = PlayerStateName.working;
         public string usageAnimation {get;} = "Repairing";
         public string usageSound {get;} = "Repair";
-
-
         private float timeBeganRepairing = 0;
         public float lastTargettedTime = -99f;
 
@@ -76,6 +77,12 @@ namespace SpaceBoat.Ship.Activatables {
         }
 
         public void Break() {
+            ShipShieldActivatable[] shields = FindObjectsOfType<ShipShieldActivatable>();
+            foreach (ShipShieldActivatable shield in shields) {
+                if (shield.isShieldUp()) {
+                    return;
+                }
+            }
             isBroken = true;
             isTargetted = false;
             spriteRenderer.sprite = brokenSprite;
@@ -109,18 +116,19 @@ namespace SpaceBoat.Ship.Activatables {
         public bool ActivationCondition(Player player) {
             return isBroken;
         }
-
+    /*
         void OnTriggerExit2D(Collider2D other) {
             if (isInUse && other.gameObject.tag == "Player") {
                 Deactivate(player);
                 player.DetatchFromActivatable();
             }
         }
-
+*/
         void Update() {
             if (isInUse && isBroken) {
                 if (Time.time - timeBeganRepairing >= repairTime) {
                     Repair();
+                    SoundManager.Instance.Oneshot("ActivationCompleteDing");
                     Deactivate(player);
                     player.DetatchFromActivatable();
                 }

@@ -247,7 +247,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1379421691}
   m_LocalRotation: {x: 0, y: 0, z: 0.054427348, w: 0.99851775}
-  m_LocalPosition: {x: -0.4, y: -2.15, z: 0}
+  m_LocalPosition: {x: -0.37, y: -1.98, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -295,7 +295,7 @@ SpriteRenderer:
   m_SortingLayerID: -521903187
   m_SortingLayer: 7
   m_SortingOrder: -1
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 20d942fae6a776a49884cf7e848f5d5e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -2286,6 +2286,8 @@ MonoBehaviour:
   bombDropHeight: 10
   bombPrefab: {fileID: 2629459492106674462, guid: cf8ebcb0b4d76e94daf9055b3af7483e, type: 3}
   bombSprite: {fileID: 1379421693}
+  moneyPrefab: {fileID: 3125205484001118526, guid: 857e8fa2db4a3654e8bfc43af8783c63, type: 3}
+  moneyDropChance: 24
   bugoffTime: 13
   explosionAnimationObject: {fileID: 4830556186160139344}
   atttackModeLights:

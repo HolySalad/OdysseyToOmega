@@ -11,7 +11,6 @@ namespace SpaceBoat.PlayerSubclasses.PlayerStates {
         private DashEquipment dashEquipment;
         private Rigidbody2D rb;
         private Vector2 dashDirectionVector = Vector2.zero;
-        private bool reachedSpeed = false;
         private int frameEnteredState = 0;
         private float dashVerticalMomentum = 0f;
 
@@ -38,7 +37,7 @@ namespace SpaceBoat.PlayerSubclasses.PlayerStates {
             dashVerticalMomentum = 0f;
             if (dashHeight == 0f) {
                 float playerVerticalVelocity = rb.velocity.y;
-                dashVerticalMomentum = playerVerticalVelocity / dashEquipment.dashSpeed;
+                dashVerticalMomentum = Mathf.Max(0, playerVerticalVelocity / dashEquipment.dashSpeed);
             } else {
                 dashVerticalMomentum = 0.8f;
             }
@@ -46,7 +45,6 @@ namespace SpaceBoat.PlayerSubclasses.PlayerStates {
             
             dashDirectionVector = new Vector2(dashDirection, dashVerticalMomentum).normalized;
             Debug.Log("Dashing at " + dashDirectionVector.ToString() + " at frame " + Time.frameCount);
-            reachedSpeed = false;
             dashEquipment.hasLandedSinceLastDash = false;
             frameEnteredState = Time.frameCount;
         }

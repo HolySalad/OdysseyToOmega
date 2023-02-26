@@ -61,7 +61,7 @@ namespace SpaceBoat.HazardManagers {
         private List<EscalationLevel> escalationLevels;
         
 
-        public string HazardSoundtrack {get;} = "";
+        public string HazardSoundtrack {get;} = "SwarmGalaxy";
         public float HazardDuration {get; private set;} = 0f;
 
         public bool HasEnded {get; private set;} = false;
@@ -171,6 +171,9 @@ namespace SpaceBoat.HazardManagers {
             else if (HazardTime() > HazardDuration) {
                 SoundManager.Instance.Stop("BugBuzz", true);
                 HasEnded = true;
+                foreach (RoboBug bug in roboBugs) {
+                    bug.Explode();
+                }
             }
             float timeSinceStart = HazardTime();
             

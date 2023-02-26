@@ -9,23 +9,26 @@ using UnityEngine.U2D.IK;
 
     public class ShootHarpoonMachine : SetupChydra
     {
-        public int fireballCount = 1;
-        public float prepareShotTime;
-        public float fireballSpeed = 2f;
-        public float shooting_delay = 2f;
-        public string animationTriggerName;
-        public Transform harpoonMachine;
-        public LimbSolver2D solver;
+    public int headNumber = 0;
+    public int fireballCount = 1;
+    private int fireballCounter;
+    public float prepareShotTime;
+    public float fireballSpeed = 2f;
+    public float shooting_delay = 2f;
+    public string animationTriggerName;
+    public Transform harpoonMachine;
+    public LimbSolver2D solver;
     bool triggered = false;
     public Transform defaultSolver;
     public TriggerEnter2D trigger;
     bool shotFireball = false;
-        GameObject fireballObject;
-        private float stopwatch;
-
+    GameObject fireballObject;
+    private float stopwatch;
+    private float runningFor = 0;
         public override void OnStart()
         {
-
+            harpoonMachine = SpaceBoat.GameModel.Instance.HarpoonGun.transform;
+            fireballCounter = fireballCount;
             //DOVirtual.DelayedCall(prepareShotTime, Shoot);
             animator.SetTrigger(animationTriggerName);
         }
@@ -38,10 +41,21 @@ using UnityEngine.U2D.IK;
 
         fireballObject = GameObject.Instantiate(fireballPrefab, new Vector2(xPos, yPos), Quaternion.identity);
             Fireball fireball = fireballObject.GetComponent<Fireball>();
-            fireball.GetComponent<SpriteRenderer>().color = Color.red;
-            fireball.SetupMeteor(fireballSpeed, fireballObject.transform.position, harpoonMachine.gameObject, 4f);
+        if (headNumber > 0)
+        {
 
-            fireballCount--;
+            if (headNumber == 1)
+            {
+                fireball.GetComponent<SpriteRenderer>().color = Color.green;
+            }
+            else if (headNumber == 2)
+            {
+                fireball.GetComponent<SpriteRenderer>().color = Color.red;
+            }
+        }
+        fireball.SetupMeteor(fireballSpeed, fireballObject.transform.position, harpoonMachine.gameObject, 4f);
+
+            fireballCounter--;
             shotFireball = true;
             stopwatch = 0;
         }
@@ -54,6 +68,7 @@ using UnityEngine.U2D.IK;
             Shoot();
             trigger.Shoot = false;
             triggered = true;
+
         }
 
         if (shotFireball == true)
@@ -61,23 +76,30 @@ using UnityEngine.U2D.IK;
                 stopwatch += Time.deltaTime;
             }
 
-            if (stopwatch > shooting_delay && fireballCount > 0)
+            if (stopwatch > shooting_delay && fireballCounter > 0)
             {
                 Shoot();
                 return TaskStatus.Running;
             }
-            else if (stopwatch > shooting_delay && fireballCount <= 0)
+            else if (stopwatch > shooting_delay && fireballCounter <= 0)
             {
                 return TaskStatus.Success;
             }
-            else return TaskStatus.Running;
+
+            runningFor += Time.deltaTime;
+            if(runningFor>10) {
+                return TaskStatus.Failure;
+            }
+            return TaskStatus.Running;
         }
 
         public override void OnEnd()
         {
             shotFireball = false;
             stopwatch = 0;
-        triggered = false;
-        trigger.Shoot = false;
-    }
+            triggered = false;
+            trigger.Shoot = false;
+            fireballCounter = fireballCount;
+            runningFor = 0;
+        }
     }

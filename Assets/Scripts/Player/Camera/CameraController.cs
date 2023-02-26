@@ -252,7 +252,7 @@ namespace SpaceBoat {
             }
             float verticalLook = CthulkInput.cameraVerticalLook();
             SetHeadlampState(verticalLook);
-            if (verticalLook != 0 && !inShipView) {
+            if (verticalLook != 0 && !inShipView && !GameModel.Instance.isPaused) {
                 if (verticalLook < 0 && currentLookOffsetDown > lookDownCameraYOffset) {
                     float changePerSecond = lookDownCameraYOffset / cameraLookTime;
                     currentLookOffsetDown = Mathf.Max(currentLookOffsetDown + (changePerSecond * Time.unscaledDeltaTime), lookDownCameraYOffset);

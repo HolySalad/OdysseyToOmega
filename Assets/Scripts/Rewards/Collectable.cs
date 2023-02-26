@@ -14,10 +14,12 @@ namespace SpaceBoat.Rewards {
             switch (rewardType) { 
                 case RewardType.Money:
                     player.PlayerGainsMoney(value);
+                    SoundManager.Instance.Play("MoneyPickup");
                     break;
                 default:
                     GameModel.Instance.saveGame.rewardsUnlocked[rewardType] = true;
                     UI.UIManager.Instance.OpenBlueprintUnlockPanel(this);
+                    SoundManager.Instance.Play("BlueprintPickup");
                     break;
             }
             Destroy(gameObject);

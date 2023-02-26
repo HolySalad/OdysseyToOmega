@@ -7,7 +7,10 @@ namespace SpaceBoat.Ship.Activatables {
     public class ShipShieldActivatable : MonoBehaviour, IActivatables
     {   
         [SerializeField] private UI.HelpPrompt helpPrompt;
-        public UI.HelpPrompt HelpPrompt {get {return helpPrompt;}}
+        public UI.HelpPrompt activatableHelpPrompt {get {return helpPrompt;}}
+
+        [SerializeField] private UI.HelpPrompt inUseHelpPrompt;
+        public UI.HelpPrompt activatableInUseHelpPrompt {get {return inUseHelpPrompt;}}
         [Header("Sprites")]
         [SerializeField] private Sprite readySprite;
         [SerializeField] private Color readyColor;
@@ -29,7 +32,7 @@ namespace SpaceBoat.Ship.Activatables {
         public bool canManuallyDeactivate {get;} = true;
         public PlayerStateName playerState {get;} = PlayerStateName.ready;
         public string usageAnimation {get;} = "";
-        public string usageSound {get;} = "";
+        public string usageSound {get;} = "ShipShieldActivate";
         
         private bool isOnCooldown = false;
         private SpriteRenderer spriteRenderer;
@@ -43,7 +46,9 @@ namespace SpaceBoat.Ship.Activatables {
             shield = GameModel.Instance.shipShield;
             shieldCollider = shield.GetComponent<Collider2D>();
         }
-
+        public bool isShieldUp() {
+            return shieldCollider.enabled;
+        }
         IEnumerator EnableShield() {
             spriteRenderer.sprite = inUseSprite;
             generatorLight.color = inUseColor;
@@ -56,6 +61,7 @@ namespace SpaceBoat.Ship.Activatables {
             shieldLight.enabled = true;
             shieldLight.intensity = 0f;
             float timer = 0f;
+            SoundManager.Instance.Play("ShipShieldActiveStatic", 0.5f, true, shieldGrowthTime);
             while (timer < shieldGrowthTime) {
                 if (timer < shieldFlashDuration/2) {
                     shieldLight.intensity = Mathf.Lerp(0f, shieldFlashStrength, timer/(shieldFlashDuration/2));
@@ -69,8 +75,11 @@ namespace SpaceBoat.Ship.Activatables {
                 shield.transform.localScale = Vector3.Lerp(new Vector3(shieldInitialSize, shieldInitialSize, 1f), Vector3.one, timer/shieldGrowthTime);
                 yield return null;
             }
+            shieldCollider.enabled = true;
             shieldLight.intensity = 0f;
             yield return new WaitForSeconds(shieldDuration-1f);
+            SoundManager.Instance.Stop("ShipShieldActiveStatic");
+            SoundManager.Instance.Play("ShipShieldWane");
             timer = 0f;
             bool flashState = false;
             while (timer < 1) {
@@ -114,7 +123,7 @@ namespace SpaceBoat.Ship.Activatables {
         }
 
         public void Activate(Player player) {
-            Debug.Log("Player activated bedroom equipment station");
+            Debug.Log("Player activated ship shield equipment");
             isOnCooldown = true;
             isInUse = true;
             foreach (UsageCallback callback in usageCallbacks) {
@@ -122,6 +131,8 @@ namespace SpaceBoat.Ship.Activatables {
             }
             generatorLight.intensity = 2f;
             StartCoroutine(EnableShield());
+            Deactivate(player);
+            player.DetatchFromActivatable();
         }
 
         public void Deactivate(Player player) {

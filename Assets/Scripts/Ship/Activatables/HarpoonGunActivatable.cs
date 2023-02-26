@@ -6,7 +6,10 @@ namespace SpaceBoat.Ship.Activatables {
     public class HarpoonGunActivatable : MonoBehaviour, IActivatables
     {   
         [SerializeField] private UI.HelpPrompt helpPrompt;
-        public UI.HelpPrompt HelpPrompt {get {return helpPrompt;}}
+        public UI.HelpPrompt activatableHelpPrompt {get {return helpPrompt;}}
+
+        [SerializeField] private UI.HelpPrompt inUseHelpPrompt;
+        public UI.HelpPrompt activatableInUseHelpPrompt {get {return inUseHelpPrompt;}}
         [SerializeField] private GameObject harpoonPrefab;
         [SerializeField] private GameObject harpoonLocation;
         [SerializeField] private GameObject harpoonBarrel;
@@ -81,6 +84,7 @@ namespace SpaceBoat.Ship.Activatables {
         public void LoadHarpoon() {
             isLoaded = true;
             harpoonLocation.GetComponent<SpriteRenderer>().enabled = true;
+            SoundManager.Instance.Play("HarpoonReloaded");
         }
 
         void Start() {

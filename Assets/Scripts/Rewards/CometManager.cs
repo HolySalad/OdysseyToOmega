@@ -75,7 +75,7 @@ namespace SpaceBoat.Rewards {
             }
         }
 
-        RewardType GetRandomRewardType() {
+        RewardType GetRandomRewardType(int chanceOverride = 0) {
             int baseChance = cometBlueprintDropChance;
             List<RewardType> possibleRewards = new List<RewardType>();
             foreach (RewardType rewardType in GameModel.Instance.saveGame.rewardsUnlocked.Keys) {
@@ -86,6 +86,9 @@ namespace SpaceBoat.Rewards {
                 baseChance -= cometChanceReductionPerBlueprint;
             }
             Debug.Log("Possible rewards: " + possibleRewards.Count + " Chance: " + baseChance);
+            if (chanceOverride > baseChance) {
+                baseChance = chanceOverride;
+            }
             if (possibleRewards.Count == 0 || Random.Range(0, 100) < Mathf.Max(baseChance, cometBlueprintDropChanceMin)) {
                 return RewardType.Money;
             } else {
@@ -93,14 +96,18 @@ namespace SpaceBoat.Rewards {
             }
         }
 
-        void SpawnComet() {
+        public GameObject SpawnComet(int guaranteeSecondaryItems = 0, int chanceOverride = 0) {
             GameObject cometPrefab = cometPrefabDefault;
             float yPos = Random.Range(cometEmitterLow.position.y, cometEmitterHigh.position.y);
             GameObject comet = Instantiate(cometPrefab, new Vector3(cometEmitterHigh.position.x, yPos, 0), Quaternion.identity);
-            RewardType rewardType = GetRandomRewardType();
+            RewardType rewardType = GetRandomRewardType(chanceOverride);
             GameObject rewardPrefab = GetRewardPrefab(rewardType);
             int secondaryItems = Random.Range(1, maxMoneyDrop);
+            if (guaranteeSecondaryItems > secondaryItems) {
+                secondaryItems = guaranteeSecondaryItems;
+            }
             comet.GetComponent<RewardComet>().SetupComet(cometSpeed, cometTarget.position, rewardPrefab, moneyPrefab, secondaryItems);
+            return comet;
         }
 
         IEnumerator CometBurst() {

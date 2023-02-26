@@ -19,6 +19,10 @@ namespace SpaceBoat {
 
         [Header("Help Prompts")]
         [SerializeField] private HelpPrompt criticalHealthPrompt;
+        [SerializeField] private HelpPrompt criticalHealthPromptHealthpack;
+        [SerializeField] private HelpPrompt crouchTutorialPrompt;
+        [SerializeField] private HelpPrompt equipmentTutorialPressPrompt;
+        [SerializeField] private HelpPrompt equipmentTutorialHoldPrompt;
 
         [Header("Collision Detection Settings")]
         [SerializeField] private float groundCheckDistance = 0.1f;
@@ -43,6 +47,7 @@ namespace SpaceBoat {
         [SerializeField] public float gravityAcceleration = 30f;
         [SerializeField] private float fastfallMultiplier = 2f;
         [SerializeField] private float slipSpeedVertical = 10f;
+        [SerializeField] private float slipSpeedHorizontal = 5f;
         [SerializeField] public float gravityTerminalVelocity = 45f;
         [SerializeField] private float jumpHorizontalMultiplier = 1.2f;
         [SerializeField] private float jumpHorizontalSpeedWindow = 0.5f;
@@ -69,6 +74,7 @@ namespace SpaceBoat {
         [SerializeField] private float momentumDecayStartTime = 0.5f;
         [SerializeField] private float momentumDecayTime = 2f;
         [SerializeField] private float groundedMomentumDecayDivisor = 2f;
+        [SerializeField] private float crouchedMomentumDecayDivisor = 2f;
 
     /*
         [Header("Attack Settings")]
@@ -116,6 +122,9 @@ namespace SpaceBoat {
 
         public int money {
             get {
+                if (game != null && game.unlockEverything) {
+                    return 9999;
+                }
                 return game.saveGame.money;
             }
             private set {
@@ -366,7 +375,7 @@ namespace SpaceBoat {
             }   
 
             if (headBumped) {
-                currentVerticalForce = slipSpeedVertical*(1-landingHorizontalDrag);
+                currentVerticalForce = 0.01f;
             } else if (currentVerticalForce > 0) {
                 float decay = 0;
                 if ((halfJump && Time.frameCount > jumpStartFrame + halfJumpEarliestFrame) || (Time.frameCount > jumpStartFrame + jumpDecayStartFrame)) {
@@ -515,27 +524,38 @@ namespace SpaceBoat {
                     Debug.Log("Player left ground at " + Time.frameCount);
                     frameLeftGround = Time.frameCount;
                 } else {
-                    RaycastHit2D hitRight = Physics2D.Raycast(rightSlipCollider.position, new Vector3(0, -1, 0), slipCheckDistance, LayerMask.GetMask("Ground"));
-                    RaycastHit2D hitLeft = Physics2D.Raycast(leftSlipCollider.position, new Vector3(0, -1, 0), slipCheckDistance, LayerMask.GetMask("Ground"));
-                    if (hitRight.collider != null && hitLeft.collider != null) {
+                    ContactFilter2D filter = new ContactFilter2D();
+                    filter.SetLayerMask(LayerMask.GetMask("Ground"));
+                    List<RaycastHit2D> hitsRight = new List<RaycastHit2D>();
+                    List<RaycastHit2D> hitsLeft = new List<RaycastHit2D>();
+                    int numHitsRight = bodyCollider.GetComponent<Collider2D>().Cast(Vector2.right, filter, hitsRight, slipCheckDistance, true);
+                    int numHitsLeft = bodyCollider.GetComponent<Collider2D>().Cast(Vector2.left, filter, hitsLeft, slipCheckDistance, true);
+                    if (numHitsRight > 0 && numHitsLeft > 0) {
                         Debug.Log("Player was wedged between two walls");
                         isJumping = false;
                         halfJump = false;
                         currentVerticalForce = 0;
                         isGrounded = true;
-                    } else if (hitRight.collider != null) {
+                    } else if (numHitsRight > 0) {
                         Debug.Log("Player slipped right");
                         isSlipping = true;
                         isSlippingLeft = true;
                        
-                    } else if (hitLeft.collider != null) {
+                    } else if (numHitsLeft > 0) {
                         Debug.Log("Player slipped left");
                         isSlipping = true;
                         isSlippingLeft = false;
-                    } else if (Physics2D.Raycast(headSlipCollider.position, new Vector3(0, -1, 0), slipCheckDistance, LayerMask.GetMask("Ground")).collider != null)
-                    {
-                        isSlipping = true;
-                        isSlippingLeft = isFacingRight;
+                    } else {
+                        List<RaycastHit2D> hitsHead = new List<RaycastHit2D>();
+                        Vector2 dir = isFacingRight ? Vector2.right : Vector2.left;
+                        
+                        int numHitsHead = headCollider.GetComponent<Collider2D>().Cast(dir, filter, hitsHead, slipCheckDistance, true);
+                        if (numHitsHead > 0)
+                        {
+                            isSlipping = true;
+                            isSlippingLeft = isFacingRight;
+                            Debug.Log("Players' head slipped "+ (isSlippingLeft ? "left" : "right"));
+                        }
                     }
                 }
             }
@@ -561,7 +581,8 @@ namespace SpaceBoat {
             List<RaycastHit2D> hits = new List<RaycastHit2D>();
             ContactFilter2D filter = new ContactFilter2D();
             filter.SetLayerMask(LayerMask.GetMask("Ground"));
-            float numHits = bodyCollider.gameObject.GetComponent<Collider2D>().Cast(Vector2.right * castDirection, filter, hits, wallCheckDistance, true);
+            float numHits = Physics2D.Raycast(bodyCollider.transform.position, castDirection>0 ? Vector2.right : Vector2.left, filter, hits, wallCheckDistance);
+            Debug.DrawRay(bodyCollider.transform.position, castDirection>0 ? Vector2.right : Vector2.left, Color.red, Time.deltaTime);
             if (numHits > 0) {
                 Debug.Log("Walking into a wall");
                 return true;
@@ -583,9 +604,19 @@ namespace SpaceBoat {
             return equipmentScripts[currentEquipmentType];
         }
 
+        public EquipmentType lastCraftedEquipmentType {get; private set;} = EquipmentType.None;
+
+
         public void CraftEquipment(EquipmentType type, int cost) {
+            if (HasEquipment(type)) {
+                Debug.LogError("Player already has equipment of type " + type);
+                return;
+            }
+            Debug.Log("Player crafted equipment of type " + type);
             game.saveGame.equipmentBuilt[type] = true;
+            lastCraftedEquipmentType = type;
             PlayerSpendsMoney(cost);
+            game.saveGameManager.Save();
         }
 
         public bool HasEquipment(EquipmentType type) {
@@ -598,7 +629,7 @@ namespace SpaceBoat {
                 return;
             } 
             if (currentEquipment.isActive) {
-                currentEquipment.CancelActivation(this);
+                Debug.LogError("Cannot change equipment while current equipment is active");
             }
             currentEquipment.Unequip(this);
 
@@ -724,6 +755,8 @@ namespace SpaceBoat {
             if (activatable.usageSound != null && activatable.usageSound != "") {
                 game.sound.Play(activatable.usageSound);
             }
+            if (activatable.activatableHelpPrompt.promptLabel != "") game.controlsPrompts.RemovePrompt(activatable.activatableHelpPrompt);
+            if (activatable.activatableInUseHelpPrompt.promptLabel != "") game.controlsPrompts.AddPrompt(activatable.activatableInUseHelpPrompt);
             ChangeState(activatable.playerState);
             return true;
         }
@@ -738,7 +771,7 @@ namespace SpaceBoat {
                     if (activatable.ActivationCondition(this) ) {
                         if (coll.gameObject != activatableInRange) {
                             activatableInRange = coll.gameObject;
-                            if (activatable.HelpPrompt.promptLabel != "") game.controlsPrompts.AddPrompt(activatable.HelpPrompt);
+                            if (activatableInUse == null && activatable.activatableHelpPrompt.promptLabel != "") game.controlsPrompts.AddPrompt(activatable.activatableHelpPrompt);
                         }
                         return true;
                     }
@@ -747,13 +780,19 @@ namespace SpaceBoat {
             if (activatableInRange != null) {
                 Debug.Log("Can no longer activate " + activatableInRange.ToString());
                 IActivatables activatable = game.GetActivatableComponent(activatableInRange);
-                if (activatable.HelpPrompt.promptLabel != "") game.controlsPrompts.RemovePrompt(activatable.HelpPrompt);
+                if (activatable.activatableHelpPrompt.promptLabel != "") game.controlsPrompts.RemovePrompt(activatable.activatableHelpPrompt);
+                if (activatableInRange == activatableInUse?.gameObject) {
+                    Debug.Log("Can no longer activate current activatable: " + activatableInUse.ToString());
+                    activatableInUse.Deactivate(this);
+                    DetatchFromActivatable();
+                }
                 activatableInRange = null;
             }
             return false;
         }
 
         public void DetatchFromActivatable() {
+            if (activatableInUse == null) return;
             Debug.Log("stopped using " + activatableInUse.ToString());
             if (activatableInUse.usageAnimation != "") {
                 animator.SetBool(activatableInUse.usageAnimation, false);
@@ -761,6 +800,7 @@ namespace SpaceBoat {
             if (activatableInUse.usageSound != "" && game.sound.IsPlaying(activatableInUse.usageSound)) {
                 game.sound.Stop(activatableInUse.usageSound);
             }
+            if (activatableInUse.activatableInUseHelpPrompt.promptLabel != "") game.controlsPrompts.RemovePrompt(activatableInUse.activatableInUseHelpPrompt);
             activatableInUse = null;
             ChangeState(PlayerStateName.ready);
         }
@@ -819,14 +859,23 @@ namespace SpaceBoat {
                 DetatchFromActivatable();
             }
             if (health == 1) {
-                game.helpPrompts.AddPrompt(criticalHealthPrompt,
-                () => { return health > 1; });
+                if (currentEquipmentType == EquipmentType.HealthPack && currentEquipment.ActivationCondition(this)) {
+                    game.helpPrompts.AddPrompt(criticalHealthPromptHealthpack,
+                    () => { return health > 1; });
+                } else {
+                    game.helpPrompts.AddPrompt(criticalHealthPrompt,
+                    () => { return health > 1 || (currentEquipmentType == EquipmentType.HealthPack && currentEquipment.ActivationCondition(this)); });
+                }
             }
             
         }
 
         public void PlayerHeals() {
             health = maxHealth;
+        }
+
+        public void PlayerHeals(bool individualHearts) {
+            health = Mathf.Min(health++, maxHealth);
         }
 
         //currency
@@ -863,10 +912,13 @@ namespace SpaceBoat {
             float decayStartTime = momentumDecayStartTime;
             if (isGrounded) {
                 decayStartTime = decayStartTime/groundedMomentumDecayDivisor;
+                if (isCrouched) {
+                    decayStartTime = decayStartTime/crouchedMomentumDecayDivisor;
+                }
             }
             if (Time.time - lastMomentumAppliedTime > momentumDecayStartTime) {
                 
-                float decay = ((Time.time - lastMomentumAppliedTime) - momentumDecayStartTime) / (momentumDecayTime / (isGrounded ? groundedMomentumDecayDivisor : 1));
+                float decay = ((Time.time - lastMomentumAppliedTime) - momentumDecayStartTime) / (momentumDecayTime / ((isGrounded ? groundedMomentumDecayDivisor : 1) * (isCrouched ? crouchedMomentumDecayDivisor : 1)));
                 if (decay > 1) {
                     decay = 1;
                 }
@@ -882,8 +934,11 @@ namespace SpaceBoat {
 
         }
 
-        void MovementUpdate() {
+        void FixedUpdate() {
             UpdateGrounded();
+        }
+
+        void MovementUpdate() {
             MomentumUpdate();
             bool headBump = CheckHeadBump();
             if (headBump) {CallOnPlayerHeadbumpCallbacks();}
@@ -902,6 +957,9 @@ namespace SpaceBoat {
                     totalHorizontalVelocity = totalHorizontalVelocity + (positionalChange.x / Time.deltaTime);
                     totalVerticalVelocity = totalVerticalVelocity + (positionalChange.y /Time.deltaTime);
                 }
+            }
+            if (isSlipping) {
+                totalHorizontalVelocity = isSlippingLeft ? -slipSpeedHorizontal : slipSpeedHorizontal;
             }
             if (CheckWallBump(Mathf.Sign(totalHorizontalVelocity))) {
                 totalHorizontalVelocity = 0;
@@ -961,6 +1019,46 @@ namespace SpaceBoat {
         }
         */
 
+        void UpdateTutorials() {
+            if (game.crouchTutorialPlayed && game.equipmentTutorialPlayed) {
+                return;
+            }
+            if (game.crouchTutorialPlayed == false && isCrouched) {
+                game.crouchTutorialPlayed = true;
+            }
+            if (game.crouchTutorialPlayed == false && isGrounded) {
+                ContactFilter2D filter = new ContactFilter2D();
+                filter.SetLayerMask(LayerMask.GetMask("PhysicalHazards", "MomentumHazards"));
+                filter.useTriggers = true;
+                List<RaycastHit2D> colliders = new List<RaycastHit2D>();
+                int numCollidersHead = Physics2D.Raycast(headCollider.transform.position + new Vector3(0, 0.5f, 0), Vector2.right, filter, colliders, 10f);
+                Debug.DrawRay(headCollider.transform.position, Vector2.right * 10f, Color.cyan, 1f);
+                int numCollidersFeet = bodyCollider.GetComponent<Collider2D>().Cast(Vector2.right, filter, colliders, 10f, true);
+                Debug.DrawRay(bodyCollider.transform.position, Vector2.right * 10f, Color.cyan, 1f);
+                if (numCollidersHead > 0 && numCollidersFeet == 0) {
+                    game.crouchTutorialPlayed = true;
+                    game.helpPrompts.AddPrompt(crouchTutorialPrompt, () => {
+                        return isCrouched;
+                    });
+                }
+            }
+            if (game.equipmentTutorialPlayed == false && currentPlayerStateName == PlayerStateName.dash || currentPlayerStateName == PlayerStateName.staticEquipment) {
+                game.equipmentTutorialPlayed = true;
+            }
+            if (game.equipmentTutorialPlayed == false && currentPlayerStateName == PlayerStateName.ready) {
+                if (currentEquipmentType != EquipmentType.None && currentEquipment.ActivationCondition(this)) {
+                    game.equipmentTutorialPlayed = true;
+                    HelpPrompt promptToAdd = equipmentTutorialPressPrompt;
+                    if (currentEquipment.activationBehaviour == EquipmentActivationBehaviour.Hold) {
+                        promptToAdd = equipmentTutorialHoldPrompt;
+                    }
+                    game.helpPrompts.AddPrompt(equipmentTutorialPressPrompt, () => {
+                        return currentPlayerStateName != PlayerStateName.ready;
+                    });
+                }
+            }
+        }
+
         void Update() {
             if (game.isPaused) {
                 
@@ -970,6 +1068,7 @@ namespace SpaceBoat {
                 landedAtFrame += 1;
                 return;
             }
+            UpdateTutorials();
             //update timers 
             currentJumpStompCooldown -= Time.deltaTime;
 

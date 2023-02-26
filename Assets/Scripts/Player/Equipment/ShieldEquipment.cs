@@ -16,7 +16,6 @@ namespace SpaceBoat.PlayerSubclasses.Equipment {
         [SerializeField] private float shieldBreakRecoveryPenalty = 4f;
         [SerializeField] private float shieldMinStrengthToUse = 0.34f;
         [SerializeField] private float shieldTogglePenalty = 0.1f;
-        [SerializeField] private float shieldDamagePenalty = 0.1f;
         [SerializeField] private float shieldCooldownPulseTime = 0.3f;
 
         public EquipmentType equipmentType {get;} = EquipmentType.Shield;
@@ -24,7 +23,7 @@ namespace SpaceBoat.PlayerSubclasses.Equipment {
         public bool isActive {get; private set;} = false;
         public bool canCancelWorkToUse {get;} = true;
         public EquipmentActivationBehaviour activationBehaviour {get;} = EquipmentActivationBehaviour.Hold;
-        private float shieldStrength;
+        public float shieldStrength;
         private float shieldBrokenTime = -99f;
         private bool onCooldown = false;
         private bool wasBroken = false;

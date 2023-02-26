@@ -65,16 +65,19 @@ namespace SpaceBoat.HazardManagers
 
         void OnCollisionEnter2D(Collision2D collision)
         {
-            Debug.Log("Rock hit " + collision.gameObject.name + " Layer mask " + LayerMask.LayerToName(collision.gameObject.layer));
+            Debug.Log("fireball hit " + collision.gameObject.name + " Layer mask " + LayerMask.LayerToName(collision.gameObject.layer));
             if (collision.gameObject.layer == LayerMask.NameToLayer("MapBounds"))
             {
-                Debug.LogWarning("Meteor Reached the End of the Map. This shouldn't happen, they are supposed to always hit sails.");
                 Destroy(this.gameObject);
             }
             else if (collision.gameObject.layer == LayerMask.NameToLayer("PlayerChar"))
             {
-                Debug.Log("Meteor hit player");
+                Debug.Log("fireball hit player");
                 GameModel.Instance.player.PlayerTakesDamage();
+                Destroy(this.gameObject);
+            }
+            else if(collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+            {
                 Destroy(this.gameObject);
             }
         }

@@ -9,8 +9,9 @@ using UnityEngine.U2D.IK;
 
 public class ShootSails : SetupChydra
 {
-
+    public int headNumber = 0;
     public int fireballCount = 1;
+    private int fireballCounter;
     public float prepareShotTime;
     public float fireballSpeed = 2f;
     public float shooting_delay = 2f;
@@ -22,11 +23,13 @@ public class ShootSails : SetupChydra
     bool shotFireball = false;
     GameObject fireballObject;
     private float stopwatch;
+    private float runningFor = 0;
     public override void OnStart()
     {
        // DOVirtual.DelayedCall(prepareShotTime, Shoot);
         animator.SetTrigger(animationTriggerName);
-    }
+          fireballCounter = fireballCount;
+}
 
     private void Shoot()
     {
@@ -58,10 +61,21 @@ public class ShootSails : SetupChydra
 
         GameObject fireballObject = GameObject.Instantiate(fireballPrefab, new Vector2(xPos, yPos), Quaternion.identity);
         Fireball fireball = fireballObject.GetComponent<Fireball>();
-        fireball.GetComponent<SpriteRenderer>().color = Color.green;
+        if (headNumber > 0)
+        {
+
+            if (headNumber == 1)
+            {
+                fireball.GetComponent<SpriteRenderer>().color = Color.green;
+            }
+            else if (headNumber == 2)
+            {
+                fireball.GetComponent<SpriteRenderer>().color = Color.red;
+            }
+        }
         fireball.SetupMeteor(fireballSpeed, fireballObject.transform.position, randomSail,0);
 
-        fireballCount--;
+        fireballCounter--;
         shotFireball = true;
         stopwatch = 0;
     }
@@ -80,14 +94,19 @@ public class ShootSails : SetupChydra
             stopwatch += Time.deltaTime;
         }
 
-        if (stopwatch > shooting_delay && fireballCount > 0)
+        if (stopwatch > shooting_delay && fireballCounter > 0)
         {
             Shoot();
             return TaskStatus.Running;
         }
-        else if (stopwatch > shooting_delay && fireballCount <= 0)
+        else if (stopwatch > shooting_delay && fireballCounter <= 0)
         {
             return TaskStatus.Success;
+        }
+        runningFor += Time.deltaTime;
+        if (runningFor > 10)
+        {
+            return TaskStatus.Failure;
         }
         else return TaskStatus.Running;
     }
@@ -96,8 +115,9 @@ public class ShootSails : SetupChydra
     {
         shotFireball = false;
         stopwatch = 0;
-        fireballCount = 3;
+        fireballCounter = fireballCount;
         triggered = false;
         trigger.Shoot = false;
+        runningFor = 0;
     }
 }

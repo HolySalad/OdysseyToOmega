@@ -40,8 +40,8 @@ namespace SpaceBoat.HazardManagers {
     {
         [Header("General Hazard Settings")]        
         [SerializeField] private bool testMode = false; 
+        [SerializeField] private bool isTutorial = false;
         [SerializeField] private float baseDuration = 120f; //how many seconds into the game does the last meteor spawn.
-        [SerializeField] private List<UI.HelpPrompt> meteorPrompts;
 
         [Header("Escalation Settings")]
         [SerializeField] private EscalationSettings escalationSettings;
@@ -95,11 +95,13 @@ namespace SpaceBoat.HazardManagers {
         private bool meteorsStarted = false; 
         private bool startupSequence = false;
         private bool fullyRepairedIncreaseApplied = true;
-        private int meteorsOut = 0;
+        public int meteorsOut = 0;
 
         private List<EscalationLevel> escalationLevels;
         private EscalationLevel currentEscalationLevel;
         private int nextEscalationIndex = 0;
+
+        public int tutorialStage = 0;
 
         public void meteorHit() {
             meteorsOut--;
@@ -113,10 +115,12 @@ namespace SpaceBoat.HazardManagers {
         IEnumerator StartupSequence(float delay) {
             yield return new WaitForSeconds(delay-2f);
             GameModel.Instance.cameraController.AddShipViewOverride("HazardStartup", 1);   
+            /*
             meteorPrompts.Sort((a, b) => a.priority.CompareTo(b.priority));
             foreach (UI.HelpPrompt meteorPrompt in meteorPrompts) {
                 GameModel.Instance.helpPrompts.AddPrompt(meteorPrompt);
             }
+            */
             while (meteorsOut > 0) {
                 yield return null;
             }
@@ -131,6 +135,10 @@ namespace SpaceBoat.HazardManagers {
                 float timeSinceGameBegan = HazardTime();
                 if (timeSinceGameBegan > nextMeteorSpawn) {
                     meteorsOut = calcNextNumMeteors();
+                    if (meteorsOut == 0) {
+                        yield return new WaitForSeconds(1f);
+                        continue;
+                    }
                     Debug.Log("Emitting " + meteorsOut + " meteors.");
                     List<GameObject> targetSails = GameModel.Instance.SelectSailsForTargetting(meteorsOut);
                     bool playSound = true;
@@ -160,7 +168,7 @@ namespace SpaceBoat.HazardManagers {
             GameObject meteorObject = Instantiate(meteorPrefab, new Vector2(xPos, yPos), Quaternion.identity);
             Meteorite meteor = meteorObject.GetComponent<Meteorite>();
             float delay = meteor.SetupMeteor(this, meteorSpeed, meteorObject.transform.position, targetSail, meteorSoundDuration, !playSound);   
-            if (!startupSequence) {
+            if (!startupSequence && !isTutorial) {
                 StartCoroutine(StartupSequence(delay));
                 startupSequence = true;
             }
@@ -189,6 +197,11 @@ namespace SpaceBoat.HazardManagers {
             float nextRockSpawn = HazardTime() + firstRockSpawnTimer + Random.Range(0, rockVolleyBaseInterval);
             while (!HasEnded) {
                 if (Time.time >= nextRockSpawn) {
+                    if (GetCurrentRockRate(HazardTime()) <= 0) {
+                        nextRockSpawn = Time.time + 1f;
+                        yield return null;
+                        continue;
+                    }
                     float height = emiter.transform.position.y + Random.Range(-rockSpawnHeightVariance, rockSpawnHeightVariance);
                     GameObject rockObject = Instantiate(rockPrefab, new Vector2(emiter.transform.position.x, height), Quaternion.identity);
                     SpaceRock rock = rockObject.GetComponent<SpaceRock>();
@@ -216,22 +229,25 @@ namespace SpaceBoat.HazardManagers {
             }
             float deltaTime = Time.fixedDeltaTime;
             float timeSinceStart = HazardTime();
-
-            if (nextEscalationIndex < escalationLevels.Count && timeSinceStart > escalationLevels[nextEscalationIndex].timeIntoHazard) {
-                Debug.Log("Escalating hazard " + this.gameObject.name + " to level " + nextEscalationIndex);
-                currentEscalationLevel = escalationLevels[nextEscalationIndex];
-                nextEscalationIndex++;
-            }
-
-            if (timeSinceStart > HazardDuration) {
-                Debug.Log("Hazard " + this.gameObject.name + " has ended");
-                hazardBeganTime = -1;
-                HasEnded = true;
-                WasCompleted = true;
-                if (SoundManager.Instance.IsPlaying("RockWhoosh_0")) {
-                    SoundManager.Instance.Stop("RockWhoosh_0");
+            if (isTutorial) {
+                currentEscalationLevel = escalationLevels[Mathf.Min(tutorialStage, 2)];
+            } else {
+                if (nextEscalationIndex < escalationLevels.Count && timeSinceStart > escalationLevels[nextEscalationIndex].timeIntoHazard) {
+                    Debug.Log("Escalating hazard " + this.gameObject.name + " to level " + nextEscalationIndex);
+                    currentEscalationLevel = escalationLevels[nextEscalationIndex];
+                    nextEscalationIndex++;
                 }
-                return;
+
+                if (timeSinceStart > HazardDuration) {
+                    Debug.Log("Hazard " + this.gameObject.name + " has ended");
+                    hazardBeganTime = -1;
+                    HasEnded = true;
+                    WasCompleted = true;
+                    if (SoundManager.Instance.IsPlaying("RockWhoosh_0")) {
+                        SoundManager.Instance.Stop("RockWhoosh_0");
+                    }
+                    return;
+                } 
             }
 
             if (!meteorsStarted) {
