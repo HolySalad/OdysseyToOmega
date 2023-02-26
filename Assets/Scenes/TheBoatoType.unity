@@ -1904,6 +1904,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &276359538 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 276359540, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+  m_PrefabInstance: {fileID: 1840913048}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &312070737
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6595,6 +6606,17 @@ MonoBehaviour:
   shipCap: {fileID: 747022575}
   hideCap: 0
   otherToggler: {fileID: 2090148408}
+--- !u!114 &946015791 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 946015790, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+  m_PrefabInstance: {fileID: 1840913048}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &975712314
 GameObject:
   m_ObjectHideFlags: 0
@@ -13394,6 +13416,18 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1877163396, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: cooldownLight
+      value: 
+      objectReference: {fileID: 2030592799}
+    - target: {fileID: 1877163398, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: cooldownLight
+      value: 
+      objectReference: {fileID: 946015791}
+    - target: {fileID: 1877163400, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+      propertyPath: activeLight
+      value: 
+      objectReference: {fileID: 276359538}
     - target: {fileID: 7691977599830055013, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
       propertyPath: m_Name
       value: Cthulk3.0
@@ -14877,6 +14911,17 @@ Transform:
   m_Father: {fileID: 1137045896}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2030592799 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2030592798, guid: 7782e3b0672fb4b419a2ec18755d8f7c, type: 3}
+  m_PrefabInstance: {fileID: 1840913048}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2032482963
 GameObject:
   m_ObjectHideFlags: 0
