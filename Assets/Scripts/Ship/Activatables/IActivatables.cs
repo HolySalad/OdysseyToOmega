@@ -15,6 +15,7 @@ namespace SpaceBoat.Ship.Activatables {
         public string usageSound {get;}
         public UI.HelpPrompt activatableHelpPrompt {get;}
         public UI.HelpPrompt activatableInUseHelpPrompt {get;}
+        public bool supressPromptDuringTutorial {get;}
 
         public void Activate(Player player);
         public void Deactivate(Player player);

@@ -462,11 +462,14 @@ namespace SpaceBoat {
             bool stage1 = false;
             bool stage2 = false;
             bool stage3 = false;
+            int numMeteorsHit = 0;
+            int numMeteorsLastPrompt = 0;
             foreach (GameObject sail in shipSails) {
                 SailsActivatable sailActivatable = sail.GetComponent<SailsActivatable>();
                 sailActivatable.AddOnSailRepairCallback(() => {
                     if (shower != null) {
                         tutorialSailsRepaired++;
+                        numMeteorsLastPrompt = numMeteorsHit;
                     }
                 });
             }
@@ -482,9 +485,20 @@ namespace SpaceBoat {
             helpPrompts.AddPrompt(tutorialHazardStage1);
             yield return new WaitForSeconds(1f);
             cameraController.RemoveShipViewOverride("HazardStartup");   
+
             while (!stage1) {
                 if (tutorialSailsRepaired >= 1) {
                     stage1 = true;
+                }
+                if (numMeteorsHit - numMeteorsLastPrompt >= 2) {
+                    numMeteorsLastPrompt = numMeteorsHit;
+                    helpPrompts.AddPrompt(tutorialHazardStage1);
+                }
+                if (shower.meteorsOut > 0) {
+                    while (shower.meteorsOut > 0) {
+                        yield return null;
+                    }
+                    numMeteorsHit++;
                 }
                 yield return null;
             }
@@ -505,6 +519,10 @@ namespace SpaceBoat {
                 } else if (tutorialSailsRepaired >= 2) {
                     helpPrompts.AddPrompt(tutorialHazardCamera);
                 }
+                if (numMeteorsHit - numMeteorsLastPrompt >= 2) {
+                    numMeteorsLastPrompt = numMeteorsHit;
+                    helpPrompts.AddPrompt(tutorialHazardStage1);
+                }
                 yield return null;
             }
             shower.tutorialStage = 2;            
@@ -516,9 +534,9 @@ namespace SpaceBoat {
             helpPrompts.AddPrompt(tutorialHazardStage3);        
             cameraController.AddShipViewOverride("HazardStartup", 1); 
             yield return new WaitForSeconds(3f);
-            cameraController.RemoveShipViewOverride("HazardStartup");  
             int numCometsSpawned = 1;
             float stage3Timer = 0;
+            GameModel.Instance.HarpoonGun.GetComponent<HarpoonGunActivatable>().supressPromptDuringTutorial = false;
             while (!stage3) {
                 if (stage3Timer > numCometsSpawned*10) {
                     GameObject newComet = cometManager.SpawnComet(4, 100);
@@ -534,6 +552,7 @@ namespace SpaceBoat {
                 yield return null;
             }
 
+            cameraController.RemoveShipViewOverride("HazardStartup");  
             Destroy(shower.gameObject);
             tutorialHazardPlayed = true;
             yield return new WaitForSeconds(3f);

@@ -32,7 +32,8 @@ namespace SpaceBoat.Ship.Activatables {
         public bool canManuallyDeactivate {get;} = true;
         public PlayerStateName playerState {get;} = PlayerStateName.ready;
         public string usageAnimation {get;} = "";
-        public string usageSound {get;} = "ShipShieldActivate";
+        public string usageSound {get;} = "ShipShieldActivate";    
+        public bool supressPromptDuringTutorial {get;} = false;
         
         private bool isOnCooldown = false;
         private SpriteRenderer spriteRenderer;

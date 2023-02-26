@@ -9,7 +9,8 @@ namespace SpaceBoat.Ship.Activatables {
         public UI.HelpPrompt activatableHelpPrompt {get {return helpPrompt;}}
 
         [SerializeField] private UI.HelpPrompt inUseHelpPrompt;
-        public UI.HelpPrompt activatableInUseHelpPrompt {get {return inUseHelpPrompt;}}
+        public UI.HelpPrompt activatableInUseHelpPrompt {get {return inUseHelpPrompt;}}    
+        public bool supressPromptDuringTutorial {get;} = false;
         [SerializeField] private float healTime = 3;
 
         public ActivatablesNames kind {get;} = ActivatablesNames.Kitchen;
@@ -26,7 +27,7 @@ namespace SpaceBoat.Ship.Activatables {
         private Player player;
 
 
-            private List<UsageCallback> usageCallbacks = new List<UsageCallback>();
+        private List<UsageCallback> usageCallbacks = new List<UsageCallback>();
         private List<UsageCallback> deactivationCallbacks = new List<UsageCallback>();
         public void AddActivationCallback(UsageCallback callback) {
             usageCallbacks.Add(callback);
