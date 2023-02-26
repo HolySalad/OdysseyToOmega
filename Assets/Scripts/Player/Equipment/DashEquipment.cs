@@ -49,6 +49,7 @@ namespace SpaceBoat.PlayerSubclasses.Equipment {
             activeLight.enabled = false;
         }
         public void Equip(Player player) {
+            this.player = player;
             StartCoroutine(UpdateBackpackVisuals());
         }
         public void Unequip(Player player) {
