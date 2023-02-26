@@ -10,11 +10,13 @@ public class SetupChydra : Action
     protected Rigidbody2D rigidbody;
     public Animator animator;
     // protected Destructable destructable;
-    protected GameObject playerController;
+    public GameObject playerController;
     public Transform mouthPosition;
     public GameObject fireballPrefab;
     public override void OnAwake()
     {
-        playerController = GameObject.FindGameObjectWithTag("Player");
+        playerController = GameObject.FindGameObjectWithTag("playerTransform");
+      
+        
 }
 }

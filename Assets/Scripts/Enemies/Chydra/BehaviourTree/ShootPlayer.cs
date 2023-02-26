@@ -51,7 +51,7 @@ public class ShootPlayer : SetupChydra
                 fireball.GetComponent<SpriteRenderer>().color = Color.red;
             }
         }
-        fireball.SetupMeteor(fireballSpeed, fireballObject.transform.position, playerController.gameObject, 4f);
+        fireball.SetupMeteor(fireballSpeed, fireballObject.transform.position, playerController.gameObject, 0f);
 
         fireballCounter--;
         shotFireball = true;
