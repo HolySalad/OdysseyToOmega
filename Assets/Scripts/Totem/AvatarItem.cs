@@ -21,7 +21,6 @@ public class AvatarItem : MonoBehaviour
         TotemManager.OnClickedAvatar += deleteSelection;
 
         if(hairstyle[0] != null){
-                Debug.Log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" + asset.hair_styles);
             switch(asset.hair_styles){
                 case "asymmetrical":
                     GetComponent<Image>().sprite = hairstyle[0];
