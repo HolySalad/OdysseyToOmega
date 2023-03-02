@@ -13,6 +13,7 @@ public class SoundManager : MonoBehaviour
     [Range(0f,1f)]
     [SerializeField] private float sfxVolume = 1f;
     public Sound[] sounds;
+    public Dictionary<string, Sound> soundsDict = new Dictionary<string, Sound>();
 
     public static SoundManager Instance;
 
@@ -49,6 +50,7 @@ public class SoundManager : MonoBehaviour
             SetTrueVolume(sound, sound.volume);
             sound.source.pitch = 1;
             sound.source.loop = sound.loop; 
+            soundsDict.Add(sound.name, sound);
         }
 
         //SceneManager.activeSceneChanged += ClearSoundsOnSceneChange;
@@ -77,7 +79,7 @@ public class SoundManager : MonoBehaviour
 
     // Update is called once per frame
     public void Play(string name, afterSoundCallback callback){
-        Sound s = Array.Find(sounds, sound => sound.name == name);
+        Sound s = soundsDict[name];
         Debug.Log("Playing Sound " + name + " with callback");
         if(s == null){
             Debug.LogWarning("Sound "+ name + " not found.");
@@ -107,7 +109,7 @@ public class SoundManager : MonoBehaviour
     }
 
     public void Play(string name, float volume = 1f, bool fadeIn = false, float fadeTime = 1f, float delayBeforeFade = 0f) {
-        Sound s = Array.Find(sounds, sound => sound.name == name);
+        Sound s = soundsDict[name];
         Debug.Log("Playing Sound " + name);
         if(s == null){
             Debug.LogWarning("Sound "+ name + " not found.");
@@ -124,7 +126,7 @@ public class SoundManager : MonoBehaviour
     }
 
     public void Oneshot(string name, float volume = 1f){
-        Sound s = Array.Find(sounds, sound => sound.name == name);
+        Sound s = soundsDict[name];
         Debug.Log("Playing Sound " + name);
         if(s == null){
             Debug.LogWarning("Sound "+ name + " not found.");
@@ -149,7 +151,7 @@ public class SoundManager : MonoBehaviour
     }
 
     public void Stop(string name, bool fadeOut = false, float fadeTime = 1f){
-        Sound s = Array.Find(sounds, sound => sound.name == name);
+        Sound s = soundsDict[name];
         Debug.Log("No longer playing Sound " + name);
         if(s == null){
             Debug.LogWarning("Sound "+ name + " not found.");
@@ -164,7 +166,7 @@ public class SoundManager : MonoBehaviour
     }
 
     public float Length(string name){
-        Sound s = Array.Find(sounds, sound => sound.name == name);
+        Sound s = soundsDict[name];
         Debug.Log("Getting length of " + name);
         if(s == null){
             Debug.LogWarning("Sound "+ name + " not found.");
@@ -174,7 +176,7 @@ public class SoundManager : MonoBehaviour
     }
 
     public bool IsPlaying(string name){
-        Sound s = Array.Find(sounds, sound => sound.name == name);
+        Sound s = soundsDict[name];
         if(s == null){
             Debug.LogWarning("Sound "+ name + " not found.");
             return false;
