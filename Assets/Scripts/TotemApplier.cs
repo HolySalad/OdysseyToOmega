@@ -32,6 +32,9 @@ public class TotemApplier : MonoBehaviour
     [SerializeField] Sprite harpoonElementEarth;
     [SerializeField] Sprite harpoonElementAir;
 
+    [SerializeField] Color cthulkColorDefault;
+    [SerializeField] Color cthulkEyeColorDefault;
+
     private Dictionary<string, SpriteRenderer> avatarssDictionary = new Dictionary<string, SpriteRenderer>();
     private Dictionary<string, Sprite> harpoonMaterialDictionary = new Dictionary<string, Sprite>();
     private Dictionary<string, Sprite> harpoonElementDictionary = new Dictionary<string, Sprite>();
@@ -71,6 +74,9 @@ public class TotemApplier : MonoBehaviour
         harpoonGunSpriteParent.GetComponent<SpriteRenderer>().enabled = true;
         harpoonGunMaterialSpriteRenderer.enabled = false;
         harpoonGunElementSpriteRenderer.enabled = false;
+
+        cthulkMaterial.SetColor("_BasePrimaryColour", cthulkColorDefault);
+        cthulkMaterial.SetColor("_BaseEyeColour", cthulkEyeColorDefault);
     }
 
     public void ApplyTotemCthulk(string hairStyle, Color32 primaryColour, Color32 secondaryColour) {
