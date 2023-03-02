@@ -5,11 +5,9 @@ using UnityEngine.Rendering.Universal;
 
 namespace SpaceBoat.PlayerSubclasses.Equipment {
     public class HealthPackEquipment : MonoBehaviour, IPlayerEquipment {
-        [SerializeField] private SpriteRenderer[] activeSprite;
-        [SerializeField] private SpriteRenderer cooldownSprite;
+        [SerializeField] private string[] activeSprites;
         [SerializeField] private Light2D cooldownLight;
         [SerializeField] private float blenderCooldownPulseTime = 0.3f;
-        [SerializeField] private SpriteRenderer cablesSprite;
         public EquipmentType equipmentType {get;} = EquipmentType.HealthPack;
         public PlayerStateName usageState {get;} = PlayerStateName.staticEquipment;
         public bool isActive {get; private set;} = false;
@@ -25,32 +23,43 @@ namespace SpaceBoat.PlayerSubclasses.Equipment {
         private bool isCooldown = false;
         private int currentSprite = 0;
 
+        private EquipmentSpriteManager spriteManager;
+        void Awake() {
+            spriteManager = GetComponent<EquipmentSpriteManager>();
+        }
+
+        void nextSprite() {
+            currentSprite = (currentSprite + 1);
+            if (currentSprite >= 2) {
+                currentSprite = 0;
+            }
+            spriteManager.SetDisplayedSprite(activeSprites[currentSprite]);
+        }
+
         public bool ActivationCondition(Player player) {
             return currentCooldownTime <= 0f && player.health < player.maxHealth;
         }
         public void Activate(Player player) {
             isActive = true;
             currentUsageTime = usageTime;
-            activeSprite[currentSprite].enabled = false;
+            nextSprite();
             SoundManager.Instance.Play("Blender", 0.5f);
         }
         public void CancelActivation(Player player) {
             isActive = false;
             if (isCooldown) {
-                cooldownSprite.enabled = true;
-                activeSprite[currentSprite].enabled = false;
+                spriteManager.SetDisplayedSprite("BlenderEmpty");
             } 
             if (SoundManager.Instance.IsPlaying("Blender")) {
                 SoundManager.Instance.Stop("Blender");
             }
         }
         public void Equip(Player player) {
-            activeSprite[currentSprite].enabled = true;
+            currentSprite = 0;
+            spriteManager.SetDisplayedSprite(activeSprites[currentSprite]);
             //cablesSprite.enabled = false;
         }
         public void Unequip(Player player) {
-            activeSprite[currentSprite].enabled = false;
-            cooldownSprite.enabled = false;
             //cablesSprite.enabled = true;
         }
 
@@ -84,20 +93,13 @@ namespace SpaceBoat.PlayerSubclasses.Equipment {
                 if (isCooldown && currentCooldownTime <= 0) {
                     isCooldown = false;
                     StartCoroutine(PulseCooldownIndictator());
-                    cooldownSprite.enabled = false;
-                    activeSprite[0].enabled = true;
                     currentSprite = 0;
+                    spriteManager.SetDisplayedSprite(activeSprites[currentSprite]);
                 }
             } else {
                 currentUsageTime = Mathf.Max(currentUsageTime - Time.deltaTime, 0f);
                 if (swapSpriteNextFrame) {                    
-                    int nextSprite = (currentSprite + 1);
-                    if (nextSprite >= activeSprite.Length) {
-                        nextSprite = 0;
-                    }
-                    activeSprite[nextSprite].enabled = true;
-                    activeSprite[currentSprite].enabled = false;
-                    currentSprite = nextSprite;
+                    nextSprite();
                     swapSpriteNextFrame = false;
                 } else {
                     swapSpriteNextFrame = true;
@@ -106,8 +108,7 @@ namespace SpaceBoat.PlayerSubclasses.Equipment {
                 if (currentUsageTime <= 0f) {
                     player.PlayerHeals();
                     SoundManager.Instance.Oneshot("ActivationCompleteDing");
-                    activeSprite[currentSprite].enabled = false;
-                    cooldownSprite.enabled = true;
+                    spriteManager.SetDisplayedSprite("BlenderEmpty");
                     currentCooldownTime = cooldownTime;
                     isCooldown = true;
                     player.DeactivateEquipment();
