@@ -31,6 +31,16 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    Sound GetSound(string name) {
+        if (!soundsDict.ContainsKey(name)) {
+            Debug.LogWarning("Sound " + name + " not found.");
+            return null;
+        }
+        else {
+            return soundsDict[name];
+        }
+    }
+
     void Awake()
     {
         if (Instance != null){
@@ -79,10 +89,9 @@ public class SoundManager : MonoBehaviour
 
     // Update is called once per frame
     public void Play(string name, afterSoundCallback callback){
-        Sound s = soundsDict[name];
+        Sound s = GetSound(name);
         Debug.Log("Playing Sound " + name + " with callback");
         if(s == null){
-            Debug.LogWarning("Sound "+ name + " not found.");
             return;
         }
         if (s.source == null) RefreshSources();
@@ -109,10 +118,9 @@ public class SoundManager : MonoBehaviour
     }
 
     public void Play(string name, float volume = 1f, bool fadeIn = false, float fadeTime = 1f, float delayBeforeFade = 0f) {
-        Sound s = soundsDict[name];
+        Sound s = GetSound(name);
         Debug.Log("Playing Sound " + name);
         if(s == null){
-            Debug.LogWarning("Sound "+ name + " not found.");
             return;
         }
         if (fadeIn) {
@@ -126,10 +134,9 @@ public class SoundManager : MonoBehaviour
     }
 
     public void Oneshot(string name, float volume = 1f){
-        Sound s = soundsDict[name];
+        Sound s = GetSound(name);
         Debug.Log("Playing Sound " + name);
         if(s == null){
-            Debug.LogWarning("Sound "+ name + " not found.");
             return;
         }
         float trueVolume = volume * masterVolume;
@@ -151,10 +158,9 @@ public class SoundManager : MonoBehaviour
     }
 
     public void Stop(string name, bool fadeOut = false, float fadeTime = 1f){
-        Sound s = soundsDict[name];
+        Sound s = GetSound(name);
         Debug.Log("No longer playing Sound " + name);
         if(s == null){
-            Debug.LogWarning("Sound "+ name + " not found.");
             return;
         }
         if (s.source == null) return;
@@ -166,19 +172,17 @@ public class SoundManager : MonoBehaviour
     }
 
     public float Length(string name){
-        Sound s = soundsDict[name];
+        Sound s = GetSound(name);
         Debug.Log("Getting length of " + name);
         if(s == null){
-            Debug.LogWarning("Sound "+ name + " not found.");
             return 0f;
         }
         return s.clip.length;
     }
 
     public bool IsPlaying(string name){
-        Sound s = soundsDict[name];
+        Sound s = GetSound(name);
         if(s == null){
-            Debug.LogWarning("Sound "+ name + " not found.");
             return false;
         }
         if (s.source == null) RefreshSources();
