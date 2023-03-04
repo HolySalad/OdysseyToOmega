@@ -19,6 +19,7 @@ namespace SpaceBoat {
     public class GameModel : MonoBehaviour
     {
         public static GameModel Instance;
+        public static EventSystem Events;
 
         [Header("Game Settings")]
         [SerializeField] private bool DoNotUpdate = false;
@@ -118,7 +119,6 @@ namespace SpaceBoat {
 
         private bool hasRebuiltBuildablesAfterLoad = false;
 
-
         public bool isPaused {get; private set;}
         public delegate void PauseEvent();
         private List<PauseEvent> pauseEvents = new List<PauseEvent>();
@@ -202,6 +202,9 @@ namespace SpaceBoat {
                 Destroy(gameObject);
             }
             Instance = this;
+            if (Events == null) {
+                Events = new EventSystem(this);
+            }
 
             QualitySettings.vSyncCount = 0;  // VSync must be disabled
             Application.targetFrameRate = 24;
@@ -712,15 +715,19 @@ namespace SpaceBoat {
         }
     }
 
-    
-
-    public class EventSystem {
-        public enum EventName {
+    public enum EventName {
+            OnGameStart,
+            OnGamePause,
+            OnGameUnpause,
+            OnGameOver,
+            OnGameWin,
+            OnGameSave,
             OnPlayerDamage,
             OnPlayerDeath,
             OnPlayerHeal,
             OnPlayerJumps,
             OnPlayerLands,
+            OnPlayerHeadbump,
             OnPlayerStateChange,
             OnActivatableActivate,
             OnActivatableDeactivate,
@@ -739,6 +746,9 @@ namespace SpaceBoat {
             OnHazardBegin,
             OnHazardEnd,
         }
+
+    public class EventSystem {
+        
         public delegate bool EventCondition(EventContext context);
         public delegate void EventCallback(EventContext context);
 
@@ -752,6 +762,8 @@ namespace SpaceBoat {
 
         private Dictionary<string, List<EventListener>> eventListenersByKey = new Dictionary<string, List<EventListener>>();
         private Dictionary<EventName, List<string>> listenerKeysByEvent = new Dictionary<EventName, List<string>>();
+
+        private GameModel model;
 
         public void AddListener(string name, EventName eventName, EventCondition condition, EventCallback callback, bool persistListener = false) {
             EventListener listener = new EventListener();
@@ -800,45 +812,54 @@ namespace SpaceBoat {
         }
 
         public void TriggerEvent(EventName eventName, params object[] args) {
-            EventContext context = new EventContext(args);
+            EventContext context = new EventContext(model, args);
             TriggerEvent(eventName, context);
         }
 
-        EventSystem() {
+        public EventSystem(GameModel model) {
+            this.model = model;
+            listenerKeysByEvent.Clear();
+            eventListenersByKey.Clear();
             foreach (EventName eventName in System.Enum.GetValues(typeof(EventName))) {
                 listenerKeysByEvent.Add(eventName, new List<string>());
             }
         }
 
-        public class EventContext {
-            private Player player;
-            public Player Player {get {return player;}}
-            private PlayerStateName playerState;
-            public PlayerStateName PlayerState {get {return playerState;}}
-            private IActivatables activatable;
-            public IActivatables Activatable {get {return activatable;}}
-            private Rewards.ICraftBlueprint craftBlueprint;
-            public Rewards.ICraftBlueprint CraftBlueprint {get {return craftBlueprint;}}
-            private IPlayerEquipment equipment;
-            public IPlayerEquipment Equipment {get {return equipment;}}
-            private Ship.Buildables.IBuildable buildable;
-            public Ship.Buildables.IBuildable Buildable {get {return buildable;}}
+        
+    }
 
-            public EventContext(params object[] args) {
-                foreach (object arg in args) {
-                    if (arg is Player) {
-                        player = (Player)arg;
-                    } else if (arg is PlayerStateName) {
-                        playerState = (PlayerStateName)arg;
-                    } else if (arg is IActivatables) {
-                        activatable = (IActivatables)arg;
-                    } else if (arg is Rewards.ICraftBlueprint) {
-                        craftBlueprint = (Rewards.ICraftBlueprint)arg;
-                    } else if (arg is IPlayerEquipment) {
-                        equipment = (IPlayerEquipment)arg;
-                    } else if (arg is Ship.Buildables.IBuildable) {
-                        buildable = (Ship.Buildables.IBuildable)arg;
-                    }
+    public class EventContext {
+        private GameModel model;
+        public GameModel Model {get {return model;}}
+        private Player player;
+        public Player Player {get {return player;}}
+        public Player.PlayerMovementInfo PlayerMovementInfo {get {return player.GetPlayerMovementInfo();}}
+        private PlayerStateName playerState;
+        public PlayerStateName PlayerState {get {return playerState;}}
+        private IActivatables activatable;
+        public IActivatables Activatable {get {return activatable;}}
+        private Rewards.ICraftBlueprint craftBlueprint;
+        public Rewards.ICraftBlueprint CraftBlueprint {get {return craftBlueprint;}}
+        private IPlayerEquipment equipment;
+        public IPlayerEquipment Equipment {get {return equipment;}}
+        private Ship.Buildables.IBuildable buildable;
+        public Ship.Buildables.IBuildable Buildable {get {return buildable;}}
+
+        public EventContext(GameModel model, params object[] args) {
+            this.model = model;
+            foreach (object arg in args) {
+                if (arg is Player) {
+                    player = (Player)arg;
+                } else if (arg is PlayerStateName) {
+                    playerState = (PlayerStateName)arg;
+                } else if (arg is IActivatables) {
+                    activatable = (IActivatables)arg;
+                } else if (arg is Rewards.ICraftBlueprint) {
+                    craftBlueprint = (Rewards.ICraftBlueprint)arg;
+                } else if (arg is IPlayerEquipment) {
+                    equipment = (IPlayerEquipment)arg;
+                } else if (arg is Ship.Buildables.IBuildable) {
+                    buildable = (Ship.Buildables.IBuildable)arg;
                 }
             }
         }

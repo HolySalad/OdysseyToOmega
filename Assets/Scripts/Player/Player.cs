@@ -159,6 +159,31 @@ namespace SpaceBoat {
             return (isJumping, fastFall, halfJump, hitApex);
         }
 
+        public struct PlayerMovementInfo {
+            public bool isGrounded;
+            public bool isCrouched;
+            public bool isJumping;
+            public bool isFastFalling;
+            public bool isHalfJumping;
+            public bool hasHitApex;
+            public bool isSlipping;
+            public bool hasJumpGrace;
+            public bool isFacingRight;
+        }
+        public PlayerMovementInfo GetPlayerMovementInfo() {
+            return new PlayerMovementInfo {
+                isGrounded = isGrounded,
+                isCrouched = isCrouched,
+                isJumping = isJumping,
+                isFastFalling = fastFall,
+                isHalfJumping = halfJump,
+                hasHitApex = hitApex,
+                isSlipping = isSlipping,
+                hasJumpGrace = jumpGrace > 0 && !isGrounded,
+                isFacingRight = isFacingRight
+            };
+        }
+
         private float currentJumpStompCooldown = 0;
         private int jumpStompCooldown = 18;
 
@@ -192,24 +217,11 @@ namespace SpaceBoat {
         public float playerCameraXFocusOffset;
 
         // Callbacks
-        public delegate void PlayerCallback(Player player);
-        private List<PlayerCallback> onPlayerLandedCallbacks = new List<PlayerCallback>();
-        public void AddOnPlayerLandedCallback(PlayerCallback callback) {
-            onPlayerLandedCallbacks.Add(callback);
-        }
         private void CallOnPlayerLandedCallbacks() {
-            foreach (PlayerCallback callback in onPlayerLandedCallbacks) {
-                callback(this);
-            }
-        }
-        private List<PlayerCallback> onPlayerHeadbumpCallbacks = new List<PlayerCallback>();
-        public void AddOnPlayerHeadbumpCallback(PlayerCallback callback) {
-            onPlayerHeadbumpCallbacks.Add(callback);
+            GameModel.Events.TriggerEvent(EventName.OnPlayerLands, this);
         }
         private void CallOnPlayerHeadbumpCallbacks() {
-            foreach (PlayerCallback callback in onPlayerHeadbumpCallbacks) {
-                callback(this);
-            }
+            GameModel.Events.TriggerEvent(EventName.OnPlayerHeadbump, this);
         }
 
         void Awake() {
