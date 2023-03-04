@@ -711,4 +711,136 @@ namespace SpaceBoat {
             }
         }
     }
+
+    
+
+    public class EventSystem {
+        public enum EventName {
+            OnPlayerDamage,
+            OnPlayerDeath,
+            OnPlayerHeal,
+            OnPlayerJumps,
+            OnPlayerLands,
+            OnPlayerStateChange,
+            OnActivatableActivate,
+            OnActivatableDeactivate,
+            OnActivatableZoneEnter,
+            OnActivatableZoneExit,
+            OnSaiActivatableBroken,
+            OnSailActivatableRepaired,
+            OnCraftBlueprintFound,
+            OnCraftBlueprintCrafted,
+            OnEquipmentUnlock,
+            OnEquipmentEquip,
+            OnEquipmentUnequip,
+            OnBuildableStart,
+            OnBuildableConfirm,
+            OnBuildableCancel,
+            OnHazardBegin,
+            OnHazardEnd,
+        }
+        public delegate bool EventCondition(EventContext context);
+        public delegate void EventCallback(EventContext context);
+
+        private struct EventListener {
+            public string name;
+            public EventName eventName;
+            public EventCondition condition;
+            public EventCallback callback;
+            public bool persistListener;
+        }
+
+        private Dictionary<string, List<EventListener>> eventListenersByKey = new Dictionary<string, List<EventListener>>();
+        private Dictionary<EventName, List<string>> listenerKeysByEvent = new Dictionary<EventName, List<string>>();
+
+        public void AddListener(string name, EventName eventName, EventCondition condition, EventCallback callback, bool persistListener = false) {
+            EventListener listener = new EventListener();
+            listener.name = name;
+            listener.eventName = eventName;
+            listener.condition = condition;
+            listener.callback = callback;
+            listener.persistListener = persistListener;
+            if (!eventListenersByKey.ContainsKey(name)) {
+                eventListenersByKey.Add(name, new List<EventListener>());
+            }
+            eventListenersByKey[name].Add(listener);
+            if (!listenerKeysByEvent[eventName].Contains(name)) {
+                listenerKeysByEvent[eventName].Add(name);
+            }
+        }
+
+        public void AddListener(string name, EventName eventName, bool conditionReturn, EventCallback callback, bool persistListener = false) {
+            if (conditionReturn == false) return;
+            AddListener(name, eventName, (context) => { return conditionReturn; }, callback, persistListener);
+        }
+
+        public void RemoveListener(string name) {
+            List<EventListener> listeners = eventListenersByKey[name];
+            List<EventName> eventNames = new List<EventName>();
+            foreach (EventListener listener in listeners) {
+                eventNames.Add(listener.eventName);
+            }
+            foreach (EventName eventName in eventNames) {
+                listenerKeysByEvent[eventName].Remove(name);
+            }
+            eventListenersByKey[name].Clear();
+        }
+
+        void TriggerEvent(EventName eventName, EventContext context) {
+            List<string> listenerKeys = listenerKeysByEvent[eventName];
+            Debug.Log("Triggering event: " + eventName + " with " + listenerKeys.Count + " listeners");
+            foreach (string listenerKey in listenerKeys) {
+                List<EventListener> listeners = eventListenersByKey[listenerKey];
+                foreach (EventListener listener in listeners) {
+                    if (listener.eventName == eventName && listener.condition(context)) {
+                        listener.callback(context);
+                    }
+                }
+            }
+        }
+
+        public void TriggerEvent(EventName eventName, params object[] args) {
+            EventContext context = new EventContext(args);
+            TriggerEvent(eventName, context);
+        }
+
+        EventSystem() {
+            foreach (EventName eventName in System.Enum.GetValues(typeof(EventName))) {
+                listenerKeysByEvent.Add(eventName, new List<string>());
+            }
+        }
+
+        public class EventContext {
+            private Player player;
+            public Player Player {get {return player;}}
+            private PlayerStateName playerState;
+            public PlayerStateName PlayerState {get {return playerState;}}
+            private IActivatables activatable;
+            public IActivatables Activatable {get {return activatable;}}
+            private Rewards.ICraftBlueprint craftBlueprint;
+            public Rewards.ICraftBlueprint CraftBlueprint {get {return craftBlueprint;}}
+            private IPlayerEquipment equipment;
+            public IPlayerEquipment Equipment {get {return equipment;}}
+            private Ship.Buildables.IBuildable buildable;
+            public Ship.Buildables.IBuildable Buildable {get {return buildable;}}
+
+            public EventContext(params object[] args) {
+                foreach (object arg in args) {
+                    if (arg is Player) {
+                        player = (Player)arg;
+                    } else if (arg is PlayerStateName) {
+                        playerState = (PlayerStateName)arg;
+                    } else if (arg is IActivatables) {
+                        activatable = (IActivatables)arg;
+                    } else if (arg is Rewards.ICraftBlueprint) {
+                        craftBlueprint = (Rewards.ICraftBlueprint)arg;
+                    } else if (arg is IPlayerEquipment) {
+                        equipment = (IPlayerEquipment)arg;
+                    } else if (arg is Ship.Buildables.IBuildable) {
+                        buildable = (Ship.Buildables.IBuildable)arg;
+                    }
+                }
+            }
+        }
+    }
 }
