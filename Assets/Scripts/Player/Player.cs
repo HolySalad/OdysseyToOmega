@@ -160,6 +160,7 @@ namespace SpaceBoat {
         }
 
         public struct PlayerMovementInfo {
+            public float currentWalkingSpeed;
             public bool isGrounded;
             public bool isCrouched;
             public bool isJumping;
@@ -169,9 +170,12 @@ namespace SpaceBoat {
             public bool isSlipping;
             public bool hasJumpGrace;
             public bool isFacingRight;
+            public bool hasJumpPowerOverride;
+            public float jumpPowerOverride;
         }
-        public PlayerMovementInfo GetPlayerMovementInfo() {
+        public PlayerMovementInfo CachePlayerMovementInfo() {
             return new PlayerMovementInfo {
+                currentWalkingSpeed = currentWalkingSpeed,
                 isGrounded = isGrounded,
                 isCrouched = isCrouched,
                 isJumping = isJumping,
@@ -180,7 +184,9 @@ namespace SpaceBoat {
                 hasHitApex = hitApex,
                 isSlipping = isSlipping,
                 hasJumpGrace = jumpGrace > 0 && !isGrounded,
-                isFacingRight = isFacingRight
+                isFacingRight = isFacingRight,
+                hasJumpPowerOverride = hasJumpPowerOverride,
+                jumpPowerOverride = jumpPowerOverride
             };
         }
 
@@ -218,10 +224,10 @@ namespace SpaceBoat {
 
         // Callbacks
         private void CallOnPlayerLandedCallbacks() {
-            GameModel.Events.TriggerEvent(EventName.OnPlayerLands, this);
+            GameModel.Events.TriggerEvent(EventName.OnPlayerLands, this, CachePlayerMovementInfo());
         }
         private void CallOnPlayerHeadbumpCallbacks() {
-            GameModel.Events.TriggerEvent(EventName.OnPlayerHeadbump, this);
+            GameModel.Events.TriggerEvent(EventName.OnPlayerHeadbump, this, CachePlayerMovementInfo());
         }
 
         void Awake() {
@@ -279,6 +285,7 @@ namespace SpaceBoat {
                 //if the exit state function redirected to another state
                 if (currentPlayerStateName != newStateName) return;
                 currentPlayerState.EnterState(oldStateName);
+                GameModel.Events.TriggerEvent(EventName.OnPlayerStateChange, this, currentPlayerState);
             }
         }
 
@@ -378,11 +385,12 @@ namespace SpaceBoat {
                 currentVerticalForce = jumpPower;
                 if (hasJumpPowerOverride) {
                     currentVerticalForce = jumpPowerOverride;
-                    hasJumpPowerOverride = false;
                 }
                 if (currentWalkingSpeed > maxWalkSpeed * jumpHorizontalSpeedWindow) {
                     currentWalkingSpeed = currentWalkingSpeed * jumpHorizontalMultiplier;
                 }
+                GameModel.Events.TriggerEvent(EventName.OnPlayerJumps, this, CachePlayerMovementInfo());
+                hasJumpPowerOverride = false;
                 return;
             }   
 
@@ -628,6 +636,7 @@ namespace SpaceBoat {
             game.saveGame.equipmentBuilt[type] = true;
             lastCraftedEquipmentType = type;
             SpendMoney(cost);
+            GameModel.Events.TriggerEvent(EventName.OnEquipmentUnlock, this, equipmentScripts[type]);
             game.saveGameManager.Save();
         }
 
@@ -643,11 +652,13 @@ namespace SpaceBoat {
             if (currentEquipment.isActive) {
                 Debug.LogError("Cannot change equipment while current equipment is active");
             }
-            currentEquipment.Unequip(this);
-
+            IPlayerEquipment oldEquipment = currentEquipment;
+            oldEquipment.Unequip(this);
             currentEquipment = equipmentScripts[type];
             currentEquipmentType = type;
             currentEquipment.Equip(this);
+            GameModel.Events.TriggerEvent(EventName.OnEquipmentUnequip, this, oldEquipment);
+            GameModel.Events.TriggerEvent(EventName.OnEquipmentEquip, this, currentEquipment);
         }
 
         bool CheckEquipmentActivation() {
@@ -841,6 +852,7 @@ namespace SpaceBoat {
                 game.sound.Play("Death");
             } 
             animator.SetTrigger("Dead");
+            GameModel.Events.TriggerEvent(EventName.OnPlayerDeath, this);
             GameModel.Instance.TriggerGameOver();
         }
 
@@ -871,6 +883,8 @@ namespace SpaceBoat {
                 activatableInUse.Deactivate(this);
                 DetatchFromActivatable();
             }
+            GameModel.Events.TriggerEvent(EventName.OnPlayerDamage, this);
+            //TODO refactor this to hook into the event.
             if (health == 1) {
                 if (currentEquipmentType == EquipmentType.HealthPack && currentEquipment.ActivationCondition(this)) {
                     game.helpPrompts.AddPrompt(criticalHealthPromptHealthpack,
@@ -885,11 +899,9 @@ namespace SpaceBoat {
 
         public void Heal() {
             health = maxHealth;
+            GameModel.Events.TriggerEvent(EventName.OnPlayerHeal, this);
         }
 
-        public void Heal(bool individualHearts) {
-            health = Mathf.Min(health++, maxHealth);
-        }
 
         //currency
         public void GainMoney(int amount) {
