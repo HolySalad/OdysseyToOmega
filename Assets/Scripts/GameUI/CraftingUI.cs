@@ -128,7 +128,7 @@ namespace SpaceBoat.UI {
                 StoreDetailsCost.text = UIManager.Instance.FixedUIText(selectedBlueprint.Cost.ToString());
                 StoreDetailsImage.sprite = selectedBlueprint.IconLarge;
 
-                StoreCraftButton.interactable = !selectedBlueprint.AlreadyOwns(GameModel.Instance.player) && GameModel.Instance.player.PlayerHasMoney(selectedBlueprint.Cost);
+                StoreCraftButton.interactable = !selectedBlueprint.AlreadyOwns(GameModel.Instance.player) && GameModel.Instance.player.CheckHasMoney(selectedBlueprint.Cost);
                 StoreDetailsPanel.SetActive(true);
             }
         }

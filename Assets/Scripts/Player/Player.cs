@@ -627,7 +627,7 @@ namespace SpaceBoat {
             Debug.Log("Player crafted equipment of type " + type);
             game.saveGame.equipmentBuilt[type] = true;
             lastCraftedEquipmentType = type;
-            PlayerSpendsMoney(cost);
+            SpendMoney(cost);
             game.saveGameManager.Save();
         }
 
@@ -850,7 +850,7 @@ namespace SpaceBoat {
             return Time.frameCount < invincibilityFrames + hitOnframe;
         }
 
-        public void PlayerTakesDamage() {
+        public void TakeDamage() {
             if (IsPlayerInvulnerable()) {
                 return;
             }
@@ -883,24 +883,24 @@ namespace SpaceBoat {
             
         }
 
-        public void PlayerHeals() {
+        public void Heal() {
             health = maxHealth;
         }
 
-        public void PlayerHeals(bool individualHearts) {
+        public void Heal(bool individualHearts) {
             health = Mathf.Min(health++, maxHealth);
         }
 
         //currency
-        public void PlayerGainsMoney(int amount) {
+        public void GainMoney(int amount) {
             money += amount;
         }
 
-        public void PlayerSpendsMoney(int amount) {
+        public void SpendMoney(int amount) {
             money -= amount;
         }
 
-        public bool PlayerHasMoney(int amount) {
+        public bool CheckHasMoney(int amount) {
             return money >= amount;
         }
 

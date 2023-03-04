@@ -77,7 +77,7 @@ namespace SpaceBoat.HazardManagers.MeteorShowerSubclasses {
                 Destruct(false);
             } else if (collision.gameObject.layer == LayerMask.NameToLayer("PlayerChar")) {
                 Debug.Log("Meteor hit player");
-                GameModel.Instance.player.PlayerTakesDamage();
+                GameModel.Instance.player.TakeDamage();
                 Destruct(true);
             } else if (collision.gameObject.layer == LayerMask.NameToLayer("Ground") && !collision.gameObject.tag.Equals("Platforms")
                 && !collision.gameObject.tag.Equals("SpaceRocks")) {
