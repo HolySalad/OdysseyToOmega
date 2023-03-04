@@ -8,6 +8,11 @@ using TotemEntities.DNA;
 using TotemServices.DNA;
 using TMPro;
 
+//TODO add default skin option in the avatars
+//TODO confirm button that passes the selected skin and spear into a don't destroy on load object
+//TODO update the avatar on the main menu when confirmed
+//TODO main menu avatar (and frame) changing color when unsigned in
+//TODO counter under avatar that shows the skin number
 
 public class TotemManager : MonoBehaviour
 {

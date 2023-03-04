@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class ButtonManager : MonoBehaviour
 {
+    //TODO reset button functionality
     private Animator animator;
     [SerializeField] GameObject OptionsPanel;
     [SerializeField] GameObject SoundPanel;
