@@ -81,7 +81,7 @@ public class TotemManager : MonoBehaviour
             assetsPanel.SetActive(true);
             loginPanel.SetActive(false);
 
-            avatarList.ClearList();
+            //avatarList.ClearList();
 
             //We get the avatars from the user
             _userAvatars = avatars;

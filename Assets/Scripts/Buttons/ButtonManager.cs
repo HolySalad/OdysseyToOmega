@@ -64,9 +64,6 @@ public class ButtonManager : MonoBehaviour
     #endregion
 
     #region Totem toggling
-    public GameObject avatarContent;
-    public GameObject[] sprites;
-
     private bool totemActive = false;
     public void TotemButton(){
         if(totemActive){
@@ -75,23 +72,6 @@ public class ButtonManager : MonoBehaviour
         }else{
             animator.SetTrigger("GetTotemIn");
             totemActive = true;
-        }
-    }
-
-    //They don't work for now
-    public void RightButton(){
-        if(avatarContent.GetComponent<RectTransform>().anchoredPosition.x < -450f * (sprites.Length - 1)){
-            avatarContent.GetComponent<RectTransform>().anchoredPosition = new Vector2(avatarContent.GetComponent<RectTransform>().anchoredPosition.x -450f, avatarContent.GetComponent<RectTransform>().anchoredPosition.y);
-        }
-        if(avatarContent.GetComponent<RectTransform>().anchoredPosition.x == -450f * (sprites.Length - 1)){
-            //DesactivarFlecha
-        }
-    }
-    public void LeftButton(){
-        if(avatarContent.GetComponent<RectTransform>().anchoredPosition.x > 0)
-            avatarContent.GetComponent<RectTransform>().anchoredPosition = new Vector2(avatarContent.GetComponent<RectTransform>().anchoredPosition.y + 450f, avatarContent.GetComponent<RectTransform>().anchoredPosition.y);
-        if(avatarContent.GetComponent<RectTransform>().anchoredPosition.x == 0){
-            //DesactivarFlecha
         }
     }
     #endregion
