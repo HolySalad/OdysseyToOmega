@@ -21,6 +21,9 @@ public class AvatarList : MonoBehaviour
     [SerializeField] private GameObject avatarPH;
     [SerializeField] private TextMeshProUGUI avatarCount;
     private int currentAvatarID;
+    [Header("Default colors")]
+    [SerializeField] private Color defaultPrimaryColor = new Color(138, 83, 11, 1);
+    [SerializeField] private Color defaultSecondaryColor = new Color(34, 93, 100, 1);
 
     public void BuildList(List<TotemDNADefaultAvatar> assets)
     {
@@ -49,6 +52,8 @@ public class AvatarList : MonoBehaviour
         //Set the default avatar
         ChangeAvatar(0);
     }
+
+    //Build and add a default avatar to choose (rn the color is wrong but whatever)
     private void BuildDefaultAvatar(){
         //Creating the game object
         GameObject defaultAvatar = new GameObject("Avatar");
@@ -60,8 +65,8 @@ public class AvatarList : MonoBehaviour
         //Defining default avatar asset variables
         TotemDNADefaultAvatar defaultAsset = new TotemDNADefaultAvatar();
             defaultAsset.hair_styles = "Short";
-            defaultAsset.primary_color = new Color(138, 83, 11, 1);
-            defaultAsset.secondary_color = new Color(34, 93, 100, 1);
+            defaultAsset.primary_color = defaultPrimaryColor;
+            defaultAsset.secondary_color = defaultSecondaryColor;
             //Unused for now, defined just in case
             defaultAsset.sex_bio = false;
             defaultAsset.body_strength = false;
@@ -82,6 +87,7 @@ public class AvatarList : MonoBehaviour
         userAvatars.Add(defaultAvatar);
     }
 
+    //Set the sprite preview for the avatar
     private Sprite SetHair(TotemDNADefaultAvatar asset){
         if(hairstyle[0] != null){
             switch(asset.hair_styles){
@@ -109,6 +115,7 @@ public class AvatarList : MonoBehaviour
         }
     }
 
+    //Set sprite and material for the next avatar
     private void ChangeAvatar(int avatarID){
         if(avatarID >= 0)
             currentAvatarID = avatarID % userAvatars.Count;
@@ -118,6 +125,7 @@ public class AvatarList : MonoBehaviour
         avatarPH.GetComponent<Image>().material = userAvatars[currentAvatarID].GetComponent<Image>().material;
         changeNumber(currentAvatarID);
     }
+
     private void changeNumber(int number){
         if(number != 0 ){
             Debug.Log(number);
@@ -128,17 +136,21 @@ public class AvatarList : MonoBehaviour
             avatarCount.text = "Default";
         }
     }
+
+    #region functions for arrow buttons
     public void NextAvatar(){
         ChangeAvatar(currentAvatarID + 1);
     }
     public void PreviousAvatar(){
         ChangeAvatar(currentAvatarID - 1);
     }
+    #endregion
 
-
+    //To pass the current asset avatar to the variable manager
     public TotemDNADefaultAvatar getCurrentAvatar(){
         return userAvatarsDNA[currentAvatarID];
     }
+    //To set the icon in the main menu aswell
     public Image getAvatarIcon(){
         return userAvatars[currentAvatarID].GetComponent<Image>();
     }

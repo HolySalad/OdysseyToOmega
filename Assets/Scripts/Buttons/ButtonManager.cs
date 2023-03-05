@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class ButtonManager : MonoBehaviour
 {
-    //TODO reset button functionality
     private Animator animator;
     [SerializeField] GameObject OptionsPanel;
     [SerializeField] GameObject SoundPanel;
@@ -83,10 +82,14 @@ public class ButtonManager : MonoBehaviour
     }
 
     public void SetMusicVolume(float newVolume){
-
+        VariableManager.Instance.musicVolume = newVolume;
     }public void SetSFXVolume(float newVolume){
-        
+        VariableManager.Instance.effectsVolume = newVolume;
     }public void SetVolume(float newVolume){
-        
+        VariableManager.Instance.generalVolume = newVolume;
+    }
+
+    public void ResetGameButton(){
+        VariableManager.Instance.resetGame = true;
     }
 }

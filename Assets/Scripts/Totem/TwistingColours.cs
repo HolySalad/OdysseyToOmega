@@ -17,12 +17,12 @@ public class TwistingColours : MonoBehaviour
     void Update()
     {
         Color.RGBToHSV(currentColor, out H, out S, out V);
-        H += 0.001f % 1;
+        H += 0.005f % 1;
         currentColor = Color.HSVToRGB(H, 0.99f, 0.99f);
         GetComponent<Image>().material.SetColor("_BasePrimaryColour", currentColor);
 
         Color.RGBToHSV(currentSecondaryColor, out H, out S, out V);
-        H += 0.001f % 1;
+        H += 0.005f % 1;
         currentSecondaryColor = Color.HSVToRGB(H, 0.99f, 0.99f);
         GetComponent<Image>().material.SetColor("_BaseEyeColour", currentSecondaryColor);
     }

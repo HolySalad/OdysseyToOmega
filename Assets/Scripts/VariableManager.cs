@@ -5,9 +5,9 @@ using TotemEntities.DNA;
 
 public class VariableManager : MonoBehaviour
 {
-    public int generalVolume = 1;
-    public int musicVolume = 1;
-    public int effectsVolume = 1;
+    public float generalVolume = 1;
+    public float musicVolume = 1;
+    public float effectsVolume = 1;
 
     public bool resetGame = false;
 

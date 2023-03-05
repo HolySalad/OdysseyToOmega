@@ -9,10 +9,6 @@ using TotemServices.DNA;
 using TMPro;
 using UnityEngine.UI;
 
-//TODO main menu avatar (and frame) changing color when unsigned in
-
-//TODO implement items into the confirm function
-
 public class TotemManager : MonoBehaviour
 {
     //Objcts from scene
@@ -115,6 +111,7 @@ public class TotemManager : MonoBehaviour
         itemList.BuildList(_userItems);
     }
 
+/*  This two are no longer necessary with the variable manager
     public void callAvatarClicked(string hairstyle, Color32 primaryColor, Color32 secondaryColor){
         if(OnClickedAvatar != null)
             OnClickedAvatar(hairstyle,primaryColor,secondaryColor);
@@ -123,6 +120,7 @@ public class TotemManager : MonoBehaviour
         if(OnClickedItem != null)
             OnClickedItem(material, element,primaryColor,secondaryColor);
     }
+*/
 
     public void confirmButton(){
         VariableManager.Instance.avatar = avatarList.getCurrentAvatar();
@@ -131,5 +129,6 @@ public class TotemManager : MonoBehaviour
         if(characterIcon.GetComponent<TwistingColours>()){
             Destroy(characterIcon.GetComponent<TwistingColours>());
         }
+        VariableManager.Instance.harpoon = itemList.GetCurrentItem();
     }
 }
