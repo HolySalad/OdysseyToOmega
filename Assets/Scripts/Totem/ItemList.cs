@@ -37,8 +37,7 @@ public class ItemList : MonoBehaviour
     }
 
     public void SetCurrentItemIndex(int index) {
-        index = index % assets.Count;
-        currentItemIndex = index;
+        currentItemIndex = index < 0 ? assets.Count-1 : index % assets.Count;
         int previousItemIndex = currentItemIndex == 0 ? assets.Count - 1 : currentItemIndex - 1;
         int nextItemIndex = currentItemIndex == assets.Count - 1 ? 0 : currentItemIndex + 1;
         ItemItem currentItem = itemObjects[1];
