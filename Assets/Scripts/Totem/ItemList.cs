@@ -37,9 +37,7 @@ public class ItemList : MonoBehaviour
     }
 
     public void SetCurrentItemIndex(int index) {
-        if (index >= assets.Count) {
-            index = 0;
-        }
+        index = index % assets.Count;
         currentItemIndex = index;
         int previousItemIndex = currentItemIndex == 0 ? assets.Count - 1 : currentItemIndex - 1;
         int nextItemIndex = currentItemIndex == assets.Count - 1 ? 0 : currentItemIndex + 1;
