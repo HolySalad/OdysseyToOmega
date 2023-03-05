@@ -73,8 +73,18 @@ public class ItemItem : MonoBehaviour
         this.asset = asset;
     }
     void Start(){
-        transform.localScale = new Vector3(1,1,1);
+        //transform.localScale = new Vector3(1,1,1);
     }
+
+
+    public void Hide() {
+        material = transform.Find("Material").gameObject;
+        elememt = transform.Find("Element").gameObject;
+
+        material.GetComponent<Image>().enabled = false;
+        elememt.GetComponent<Image>().enabled = false;
+    }
+    
 
     private void deleteSelection(string a, string a2, Color32 b, Color32 c){
         if(thisClicked)
