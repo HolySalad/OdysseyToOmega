@@ -13,7 +13,7 @@ public class ButtonManager : MonoBehaviour
     private bool soundActive = false;
     private bool creditsActive = false;
 
-    //Add to awake FindObjectOfType<SoundManager>() and then call it and ad .("WhatheverSoundName")
+    //Add to awake FindObjectOfType<SoundManager>() and then call it and add .("WhatheverSoundName")
     private void Start(){
         animator = GetComponent<Animator>();
         SoundPanel.SetActive(false);
