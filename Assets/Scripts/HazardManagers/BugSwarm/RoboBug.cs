@@ -347,7 +347,7 @@ namespace SpaceBoat.HazardManagers.BugSwarmSubclasses {
             rb.constraints = RigidbodyConstraints2D.FreezeAll;
             StopCoroutine(MoveBug());
             if (collision.gameObject.layer == LayerMask.NameToLayer("PlayerChar") && collision.gameObject.TryGetComponent(out Player playerChar)) {
-                playerChar.PlayerTakesDamage();
+                playerChar.TakeDamage();
             }
             Explode(collision.gameObject.layer == LayerMask.NameToLayer("MapBounds"));
             if (Random.Range(0, 100) < moneyDropChance) {

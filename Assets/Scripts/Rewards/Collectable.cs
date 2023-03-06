@@ -13,7 +13,7 @@ namespace SpaceBoat.Rewards {
             if (player == null) return;
             switch (rewardType) { 
                 case RewardType.Money:
-                    player.PlayerGainsMoney(value);
+                    player.GainMoney(value);
                     SoundManager.Instance.Play("MoneyPickup");
                     break;
                 default:

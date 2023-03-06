@@ -18,14 +18,20 @@ namespace SpaceBoat.PlayerSubclasses.PlayerStates {
             player = GetComponent<Player>();
             dashEquipment = player.GetComponent<DashEquipment>();
             rb = player.GetComponent<Rigidbody2D>();
-            player.AddOnPlayerLandedCallback((Player player) => dashEquipment.hasLandedSinceLastDash = true);
-            player.AddOnPlayerHeadbumpCallback(
-                (Player player) => {
-                    if (player.currentPlayerStateName == PlayerStateName.dash) {
-                        player.DeactivateEquipment();
-                    }
-                }
-            );
+            GameModel.Events.AddListener(
+                "DashPlayerLanding", 
+                EventName.OnPlayerLands, 
+                (EventContext context) => {return context.Player.currentPlayerStateName == PlayerStateName.dash;},
+                (EventContext context) => {dashEquipment.hasLandedSinceLastDash = true;},
+                true);
+
+            GameModel.Events.AddListener(
+                "DashPlayerHeadbump",
+                EventName.OnPlayerHeadbump, 
+                (EventContext context) => {return context.Player.currentPlayerStateName == PlayerStateName.dash;},
+                (EventContext context) => {context.Player.DeactivateEquipment();},
+                true);
+        
         }
 
         public void EnterState(PlayerStateName previousState) {
