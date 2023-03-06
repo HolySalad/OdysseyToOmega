@@ -19,6 +19,7 @@ namespace SpaceBoat {
     public class GameModel : MonoBehaviour
     {
         public static GameModel Instance;
+        public static EventSystem Events;
 
         [Header("Game Settings")]
         [SerializeField] private bool DoNotUpdate = false;
@@ -118,7 +119,6 @@ namespace SpaceBoat {
 
         private bool hasRebuiltBuildablesAfterLoad = false;
 
-
         public bool isPaused {get; private set;}
         public delegate void PauseEvent();
         private List<PauseEvent> pauseEvents = new List<PauseEvent>();
@@ -202,6 +202,9 @@ namespace SpaceBoat {
                 Destroy(gameObject);
             }
             Instance = this;
+            if (Events == null) {
+                Events = new EventSystem(this);
+            }
 
             QualitySettings.vSyncCount = 0;  // VSync must be disabled
             Application.targetFrameRate = 24;
@@ -711,4 +714,119 @@ namespace SpaceBoat {
             }
         }
     }
+
+    public enum EventName {
+            OnGameStart,
+            OnGamePause,
+            OnGameUnpause,
+            OnGameOver,
+            OnGameWin,
+            OnGameSave,
+            OnPlayerDamage,
+            OnPlayerDeath,
+            OnPlayerHeal,
+            OnPlayerJumps,
+            OnPlayerLands,
+            OnPlayerHeadbump,
+            OnPlayerStateChange,
+            OnActivatableActivate,
+            OnActivatableDeactivate,
+            OnActivatableZoneEnter,
+            OnActivatableZoneExit,
+            OnSaiActivatableBroken,
+            OnSailActivatableRepaired,
+            OnCraftBlueprintFound,
+            OnCraftBlueprintCrafted,
+            OnEquipmentUnlock,
+            OnEquipmentEquip,
+            OnEquipmentUnequip,
+            OnBuildableStart,
+            OnBuildableConfirm,
+            OnBuildableCancel,
+            OnHazardBegin,
+            OnHazardEnd,
+        }
+
+    public class EventSystem {
+        
+        public delegate bool EventCondition(EventContext context);
+        public delegate void EventCallback(EventContext context);
+
+        private struct EventListener {
+            public string name;
+            public EventName eventName;
+            public EventCondition condition;
+            public EventCallback callback;
+            public bool persistListener;
+        }
+
+        private Dictionary<string, List<EventListener>> eventListenersByKey = new Dictionary<string, List<EventListener>>();
+        private Dictionary<EventName, List<string>> listenerKeysByEvent = new Dictionary<EventName, List<string>>();
+
+        private GameModel model;
+
+        public void AddListener(string name, EventName eventName, EventCondition condition, EventCallback callback, bool persistListener = false) {
+            EventListener listener = new EventListener();
+            listener.name = name;
+            listener.eventName = eventName;
+            listener.condition = condition;
+            listener.callback = callback;
+            listener.persistListener = persistListener;
+            if (!eventListenersByKey.ContainsKey(name)) {
+                eventListenersByKey.Add(name, new List<EventListener>());
+            }
+            eventListenersByKey[name].Add(listener);
+            if (!listenerKeysByEvent[eventName].Contains(name)) {
+                listenerKeysByEvent[eventName].Add(name);
+            }
+        }
+
+        public void AddListener(string name, EventName eventName, bool conditionReturn, EventCallback callback, bool persistListener = false) {
+            if (conditionReturn == false) return;
+            AddListener(name, eventName, (context) => { return conditionReturn; }, callback, persistListener);
+        }
+
+        public void RemoveListener(string name) {
+            List<EventListener> listeners = eventListenersByKey[name];
+            List<EventName> eventNames = new List<EventName>();
+            foreach (EventListener listener in listeners) {
+                eventNames.Add(listener.eventName);
+            }
+            foreach (EventName eventName in eventNames) {
+                listenerKeysByEvent[eventName].Remove(name);
+            }
+            eventListenersByKey[name].Clear();
+        }
+
+        void TriggerEvent(EventName eventName, EventContext context) {
+            List<string> listenerKeys = listenerKeysByEvent[eventName];
+            Debug.Log("Triggering event: " + eventName + " with " + listenerKeys.Count + " listeners");
+            foreach (string listenerKey in listenerKeys) {
+                List<EventListener> listeners = eventListenersByKey[listenerKey];
+                foreach (EventListener listener in listeners) {
+                    if (listener.eventName == eventName && listener.condition(context)) {
+                        listener.callback(context);
+                    }
+                }
+            }
+        }
+
+        public void TriggerEvent(EventName eventName, params object[] args) {
+            EventContext context = new EventContext(model, args);
+            TriggerEvent(eventName, context);
+        }
+
+        public EventSystem(GameModel model) {
+            this.model = model;
+            listenerKeysByEvent.Clear();
+            eventListenersByKey.Clear();
+            foreach (EventName eventName in System.Enum.GetValues(typeof(EventName))) {
+                listenerKeysByEvent.Add(eventName, new List<string>());
+            }
+        }
+
+        
+    }
+
+    
 }

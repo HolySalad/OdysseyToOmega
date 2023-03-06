@@ -14,7 +14,6 @@ public class BackToMenu : MonoBehaviour
     IEnumerator BackToMenuCoroutine(){
         yield return new WaitForSeconds(2f);
         SoundManager sm = SoundManager.Instance;
-        if (sm.IsPlaying("GameplaySoundtrack")) sm.Stop("GameplaySoundtrack");
         SceneManager.LoadScene("MainMenu");
     }
 }

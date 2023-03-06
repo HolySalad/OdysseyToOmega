@@ -39,7 +39,7 @@ namespace SpaceBoat.HazardManagers.MeteorShowerSubclasses {
                 StopAllCoroutines();
                 Destroy(this.gameObject);
             } else if (collision.gameObject.layer == LayerMask.NameToLayer("PlayerChar")) {
-                GameModel.Instance.player.PlayerTakesDamage();
+                GameModel.Instance.player.TakeDamage();
                 //GameModel.Instance.player.AddMomentum(new Vector2(velocity.x, 0));
                 GetComponent<Collider2D>().enabled = false;
                 destructable.Destruct(this.gameObject);

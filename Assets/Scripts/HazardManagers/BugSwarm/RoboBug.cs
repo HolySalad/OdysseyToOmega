@@ -48,10 +48,11 @@ namespace SpaceBoat.HazardManagers.BugSwarmSubclasses {
         private BugSwarm swarm;
 
         public Vector3 targetLocation {get; private set;} = Vector3.zero;
-        private Transform exitTarget;
+        private Vector3 exitTarget;
         public bool isAttacking = false;
         private bool hasStartedMoving = false;
         public bool isLeaving = false;
+        public bool isForcedToLeave = false;
         private bool carriesBomb = false;
         private GameObject bombTarget = null;
         
@@ -86,7 +87,7 @@ namespace SpaceBoat.HazardManagers.BugSwarmSubclasses {
             targetLocation = new Vector3(targetSail.transform.position.x, targetSail.GetComponent<Ship.Activatables.SailsActivatable>().hazardTarget.position.y + bombDropHeight, 0f);
         }
 
-        public void SetupRobobug(BugSwarm swarm, Vector3 targetLocation, Transform exitLocation) {
+        public void SetupRobobug(BugSwarm swarm, Vector3 targetLocation, Vector3 exitLocation) {
             this.swarm = swarm;
             this.targetLocation = targetLocation;
             this.exitTarget = exitLocation;
@@ -240,12 +241,12 @@ namespace SpaceBoat.HazardManagers.BugSwarmSubclasses {
                 explosionAnimationObject.SetActive(true);
                 return;
             }
-            if (transform.position.x < exitTarget.position.x) {
+            if (transform.position.x < exitTarget.x) {
                 swarm?.RemoveBugFromSwarm(this);
                 Destroy(gameObject);
                 return;
             }
-            Vector3 movementVector = exitTarget.position - transform.position;
+            Vector3 movementVector = exitTarget - transform.position;
             if (!lookingLeft) {
                 TurnBug(true);
             }
@@ -262,8 +263,10 @@ namespace SpaceBoat.HazardManagers.BugSwarmSubclasses {
                 rb.velocity = Vector2.zero;
                 yield break;
             }
-            while (true) {
-                if (isAttacking) {
+            while (true) { 
+                if (isForcedToLeave) {
+                    BugLeavingMovementBehaviour();
+                } else if (isAttacking) {
                     BugAttackingMovementBehaviour();
                 } else if (carriesBomb) {
                     UpdateBugAngle();
@@ -344,7 +347,7 @@ namespace SpaceBoat.HazardManagers.BugSwarmSubclasses {
             rb.constraints = RigidbodyConstraints2D.FreezeAll;
             StopCoroutine(MoveBug());
             if (collision.gameObject.layer == LayerMask.NameToLayer("PlayerChar") && collision.gameObject.TryGetComponent(out Player playerChar)) {
-                playerChar.PlayerTakesDamage();
+                playerChar.TakeDamage();
             }
             Explode(collision.gameObject.layer == LayerMask.NameToLayer("MapBounds"));
             if (Random.Range(0, 100) < moneyDropChance) {
