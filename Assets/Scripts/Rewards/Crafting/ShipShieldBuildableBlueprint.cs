@@ -13,6 +13,7 @@ namespace SpaceBoat.Rewards {
         [SerializeField] private string title = "Ship Shield";
         [SerializeField] private string subtitle = "Ship Upgrade";
         [SerializeField] private string description = "Place an activatable shield that can protect your ship for a short.";
+        [SerializeField] private string furtherDescription = "Press F to activate";
         [SerializeField] private Sprite iconSmall;
         [SerializeField] private Sprite iconLarge;
         
@@ -24,6 +25,7 @@ namespace SpaceBoat.Rewards {
         public string Title { get { return title; } }
         public string Subtitle { get { return subtitle; } }
         public string Description { get { return description; } }
+        public string FurtherDescription { get { return furtherDescription; } }
         public Sprite IconSmall { get { return iconSmall; } }
         public Sprite IconLarge { get { return iconLarge; } }
         public bool isUnlocked { get; set; } = false;
