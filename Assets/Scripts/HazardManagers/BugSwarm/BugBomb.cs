@@ -46,7 +46,7 @@ namespace SpaceBoat.HazardManagers.BugSwarmSubclasses {
                 SoundManager.Instance.Play("BugExplosion");
             }
             if (isExploding && other.gameObject.layer == LayerMask.NameToLayer("PlayerChar") && other.gameObject.TryGetComponent(out Player playerHealth)) {
-                playerHealth.TakeDamage();
+                playerHealth.PlayerTakesDamage();
             }
         }
     }

@@ -57,7 +57,7 @@ namespace SpaceBoat.Enemies.Siren {
         // if colliding with the siren's shield, destroy shield and break.
         void OnCollisionEnter2D(Collision2D collision) {
             if (collision.gameObject.tag == "Player") {
-                player.TakeDamage();
+                player.PlayerTakesDamage();
                 Destroy(gameObject);
             } else if (collision.gameObject.tag == "SirenShield") {
                 Destroy(collision.gameObject);

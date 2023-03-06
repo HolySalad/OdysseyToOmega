@@ -159,37 +159,6 @@ namespace SpaceBoat {
             return (isJumping, fastFall, halfJump, hitApex);
         }
 
-        public struct PlayerMovementInfo {
-            public float currentWalkingSpeed;
-            public bool isGrounded;
-            public bool isCrouched;
-            public bool isJumping;
-            public bool isFastFalling;
-            public bool isHalfJumping;
-            public bool hasHitApex;
-            public bool isSlipping;
-            public bool hasJumpGrace;
-            public bool isFacingRight;
-            public bool hasJumpPowerOverride;
-            public float jumpPowerOverride;
-        }
-        public PlayerMovementInfo CachePlayerMovementInfo() {
-            return new PlayerMovementInfo {
-                currentWalkingSpeed = currentWalkingSpeed,
-                isGrounded = isGrounded,
-                isCrouched = isCrouched,
-                isJumping = isJumping,
-                isFastFalling = fastFall,
-                isHalfJumping = halfJump,
-                hasHitApex = hitApex,
-                isSlipping = isSlipping,
-                hasJumpGrace = jumpGrace > 0 && !isGrounded,
-                isFacingRight = isFacingRight,
-                hasJumpPowerOverride = hasJumpPowerOverride,
-                jumpPowerOverride = jumpPowerOverride
-            };
-        }
-
         private float currentJumpStompCooldown = 0;
         private int jumpStompCooldown = 18;
 
@@ -223,11 +192,24 @@ namespace SpaceBoat {
         public float playerCameraXFocusOffset;
 
         // Callbacks
+        public delegate void PlayerCallback(Player player);
+        private List<PlayerCallback> onPlayerLandedCallbacks = new List<PlayerCallback>();
+        public void AddOnPlayerLandedCallback(PlayerCallback callback) {
+            onPlayerLandedCallbacks.Add(callback);
+        }
         private void CallOnPlayerLandedCallbacks() {
-            GameModel.Events.TriggerEvent(EventName.OnPlayerLands, this, CachePlayerMovementInfo());
+            foreach (PlayerCallback callback in onPlayerLandedCallbacks) {
+                callback(this);
+            }
+        }
+        private List<PlayerCallback> onPlayerHeadbumpCallbacks = new List<PlayerCallback>();
+        public void AddOnPlayerHeadbumpCallback(PlayerCallback callback) {
+            onPlayerHeadbumpCallbacks.Add(callback);
         }
         private void CallOnPlayerHeadbumpCallbacks() {
-            GameModel.Events.TriggerEvent(EventName.OnPlayerHeadbump, this, CachePlayerMovementInfo());
+            foreach (PlayerCallback callback in onPlayerHeadbumpCallbacks) {
+                callback(this);
+            }
         }
 
         void Awake() {
@@ -285,7 +267,6 @@ namespace SpaceBoat {
                 //if the exit state function redirected to another state
                 if (currentPlayerStateName != newStateName) return;
                 currentPlayerState.EnterState(oldStateName);
-                GameModel.Events.TriggerEvent(EventName.OnPlayerStateChange, this, currentPlayerState);
             }
         }
 
@@ -385,12 +366,11 @@ namespace SpaceBoat {
                 currentVerticalForce = jumpPower;
                 if (hasJumpPowerOverride) {
                     currentVerticalForce = jumpPowerOverride;
+                    hasJumpPowerOverride = false;
                 }
                 if (currentWalkingSpeed > maxWalkSpeed * jumpHorizontalSpeedWindow) {
                     currentWalkingSpeed = currentWalkingSpeed * jumpHorizontalMultiplier;
                 }
-                GameModel.Events.TriggerEvent(EventName.OnPlayerJumps, this, CachePlayerMovementInfo());
-                hasJumpPowerOverride = false;
                 return;
             }   
 
@@ -635,8 +615,7 @@ namespace SpaceBoat {
             Debug.Log("Player crafted equipment of type " + type);
             game.saveGame.equipmentBuilt[type] = true;
             lastCraftedEquipmentType = type;
-            SpendMoney(cost);
-            GameModel.Events.TriggerEvent(EventName.OnEquipmentUnlock, this, equipmentScripts[type]);
+            PlayerSpendsMoney(cost);
             game.saveGameManager.Save();
         }
 
@@ -652,13 +631,11 @@ namespace SpaceBoat {
             if (currentEquipment.isActive) {
                 Debug.LogError("Cannot change equipment while current equipment is active");
             }
-            IPlayerEquipment oldEquipment = currentEquipment;
-            oldEquipment.Unequip(this);
+            currentEquipment.Unequip(this);
+
             currentEquipment = equipmentScripts[type];
             currentEquipmentType = type;
             currentEquipment.Equip(this);
-            GameModel.Events.TriggerEvent(EventName.OnEquipmentUnequip, this, oldEquipment);
-            GameModel.Events.TriggerEvent(EventName.OnEquipmentEquip, this, currentEquipment);
         }
 
         bool CheckEquipmentActivation() {
@@ -852,7 +829,6 @@ namespace SpaceBoat {
                 game.sound.Play("Death");
             } 
             animator.SetTrigger("Dead");
-            GameModel.Events.TriggerEvent(EventName.OnPlayerDeath, this);
             GameModel.Instance.TriggerGameOver();
         }
 
@@ -862,7 +838,7 @@ namespace SpaceBoat {
             return Time.frameCount < invincibilityFrames + hitOnframe;
         }
 
-        public void TakeDamage() {
+        public void PlayerTakesDamage() {
             if (IsPlayerInvulnerable()) {
                 return;
             }
@@ -883,8 +859,6 @@ namespace SpaceBoat {
                 activatableInUse.Deactivate(this);
                 DetatchFromActivatable();
             }
-            GameModel.Events.TriggerEvent(EventName.OnPlayerDamage, this);
-            //TODO refactor this to hook into the event.
             if (health == 1) {
                 if (currentEquipmentType == EquipmentType.HealthPack && currentEquipment.ActivationCondition(this)) {
                     game.helpPrompts.AddPrompt(criticalHealthPromptHealthpack,
@@ -897,22 +871,24 @@ namespace SpaceBoat {
             
         }
 
-        public void Heal() {
+        public void PlayerHeals() {
             health = maxHealth;
-            GameModel.Events.TriggerEvent(EventName.OnPlayerHeal, this);
         }
 
+        public void PlayerHeals(bool individualHearts) {
+            health = Mathf.Min(health++, maxHealth);
+        }
 
         //currency
-        public void GainMoney(int amount) {
+        public void PlayerGainsMoney(int amount) {
             money += amount;
         }
 
-        public void SpendMoney(int amount) {
+        public void PlayerSpendsMoney(int amount) {
             money -= amount;
         }
 
-        public bool CheckHasMoney(int amount) {
+        public bool PlayerHasMoney(int amount) {
             return money >= amount;
         }
 

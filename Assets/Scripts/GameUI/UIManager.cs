@@ -96,7 +96,7 @@ namespace SpaceBoat.UI {
             buildmodeObject = null;
             craftMenuParent.SetActive(true);
             GameModel.Instance.cameraController.RemoveShipViewOverride("UIManager");
-            if (!isCancelled) GameModel.Instance.player.SpendMoney(pendingBuildCost);
+            if (!isCancelled) GameModel.Instance.player.PlayerSpendsMoney(pendingBuildCost);
             Debug.Log("UIManager.ExitBuildMode: isCancelled = " + isCancelled);
             Debug.Log("UIManager.ExitBuildMode: onNextBuildModeExitCallbacks.Count = " + onNextBuildModeExitCallbacks.Count);
             foreach (OnNextBuildModeExit callback in onNextBuildModeExitCallbacks) {

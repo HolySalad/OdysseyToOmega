@@ -41,7 +41,7 @@ public class GroundFire : MonoBehaviour
         if(collision.CompareTag("Player") && GetComponent<Light2D>().enabled)
         {
             Debug.Log("player set on fire");
-            GameModel.Instance.player.TakeDamage();
+            GameModel.Instance.player.PlayerTakesDamage();
             //do fire stuff
         }
         if (collision.CompareTag("Fireball"))

@@ -38,7 +38,7 @@ namespace SpaceBoat.HazardManagers.CosmicStormSubclasses {
 
         void OnTriggerEnter2D(Collider2D other) {
             if (other.gameObject.tag == "Player" && isCharging && other.gameObject.GetComponent<Player>() != null) {
-                other.gameObject.GetComponent<Player>().TakeDamage();
+                other.gameObject.GetComponent<Player>().PlayerTakesDamage();
             }
         }
 

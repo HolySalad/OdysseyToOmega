@@ -106,7 +106,7 @@ namespace SpaceBoat.PlayerSubclasses.Equipment {
                 }
 
                 if (currentUsageTime <= 0f) {
-                    player.Heal();
+                    player.PlayerHeals();
                     SoundManager.Instance.Oneshot("ActivationCompleteDing");
                     spriteManager.SetDisplayedSprite("BlenderEmpty");
                     currentCooldownTime = cooldownTime;
