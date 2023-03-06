@@ -39,9 +39,10 @@ namespace SpaceBoat.Rewards {
         [SerializeField] private GameObject harpoonGunActivatableBlueprintPrefab;
         [SerializeField] private GameObject shipShieldActivatableBlueprintPrefab;
 
-        [SerializeField] private int cometBlueprintDropChance = 50;
-        [SerializeField] private int cometChanceReductionPerBlueprint = 10;
+        [SerializeField] private int cometBlueprintDropChance = 20;
+        [SerializeField] private int cometChanceBonusPerBlueprint = 10;
         [SerializeField] private int cometBlueprintDropChanceMin = 10;
+        [SerializeField] private int cometBlueprintDropChanceMax = 80;
         [SerializeField] private int maxMoneyDrop = 4;
 
 
@@ -88,13 +89,13 @@ namespace SpaceBoat.Rewards {
                     continue;
                 }
                 possibleRewards.Add(rewardType);
-                baseChance -= cometChanceReductionPerBlueprint;
+                baseChance += cometChanceBonusPerBlueprint;
             }
             Debug.Log("Possible rewards: " + possibleRewards.Count + " Chance: " + baseChance);
             if (chanceOverride > baseChance) {
                 baseChance = chanceOverride;
             }
-            if (possibleRewards.Count > 0 && Random.Range(0, 100) < Mathf.Max(baseChance, cometBlueprintDropChanceMin)) {
+            if (possibleRewards.Count > 0 && Random.Range(0, 100) < Mathf.Clamp(baseChance, cometBlueprintDropChanceMin, cometBlueprintDropChanceMax)) {
                 return possibleRewards[Random.Range(0, possibleRewards.Count)];
             } else {
                 return RewardType.Money;

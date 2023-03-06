@@ -75,6 +75,10 @@ public class SoundManager : MonoBehaviour
     }
 
     Sound GetSound(string name) {
+        if (name == null) {
+            Debug.LogWarning("Sound name is null");
+            return null;
+        }
         if (!soundsDict.ContainsKey(name)) {
             Debug.LogWarning("Sound " + name + " not found.");
             return null;

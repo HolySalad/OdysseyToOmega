@@ -11496,9 +11496,10 @@ MonoBehaviour:
   trampolineActivatableBlueprintPrefab: {fileID: 4854255098246344767, guid: d691983cccdcaa14189726940dcbf2c2, type: 3}
   harpoonGunActivatableBlueprintPrefab: {fileID: 0}
   shipShieldActivatableBlueprintPrefab: {fileID: 1814367963574203448, guid: fa01eb869226cf14198ba3c7923cb99c, type: 3}
-  cometBlueprintDropChance: 50
-  cometChanceReductionPerBlueprint: 15
+  cometBlueprintDropChance: 20
+  cometChanceBonusPerBlueprint: 10
   cometBlueprintDropChanceMin: 5
+  cometBlueprintDropChanceMax: 80
   maxMoneyDrop: 6
 --- !u!1 &1642008840
 GameObject:
@@ -13213,6 +13214,10 @@ PrefabInstance:
       propertyPath: cameraController
       value: 
       objectReference: {fileID: 702206720}
+    - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
+      propertyPath: unlockEverything
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
       propertyPath: heads.Array.data[0]
       value: 
