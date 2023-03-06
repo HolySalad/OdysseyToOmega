@@ -1283,6 +1283,38 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 888023779178718250, guid: f407c37706de0664395733a9d993c4b7, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1215865638920639701, guid: f407c37706de0664395733a9d993c4b7, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1918645118569169201, guid: f407c37706de0664395733a9d993c4b7, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1918645118569169201, guid: f407c37706de0664395733a9d993c4b7, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5666491911307733207, guid: f407c37706de0664395733a9d993c4b7, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5666491911307733207, guid: f407c37706de0664395733a9d993c4b7, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5666491911307733207, guid: f407c37706de0664395733a9d993c4b7, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5666491911307733207, guid: f407c37706de0664395733a9d993c4b7, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: f407c37706de0664395733a9d993c4b7, type: 3}
@@ -1593,6 +1625,17 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 26.695347, y: 24.008495}
   m_EdgeRadius: 0
+--- !u!114 &239500736 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 312070741, guid: f407c37706de0664395733a9d993c4b7, type: 3}
+  m_PrefabInstance: {fileID: 115424979}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18972ed60f8ad0a4797e43f6a6eb6425, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &248030591
 GameObject:
   m_ObjectHideFlags: 0
@@ -12813,7 +12856,7 @@ PrefabInstance:
     - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
       propertyPath: helpPrompts
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 239500736}
     - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
       propertyPath: cometManager
       value: 
@@ -12825,7 +12868,7 @@ PrefabInstance:
     - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
       propertyPath: controlsPrompts
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 239500736}
     - target: {fileID: 6332493757859967071, guid: 3d5e7d61ee00ecd49b23d0cb397d38db, type: 3}
       propertyPath: cameraController
       value: 
