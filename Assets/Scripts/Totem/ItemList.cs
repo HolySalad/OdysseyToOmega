@@ -64,6 +64,7 @@ public class ItemList : MonoBehaviour
 
         previousItem.Setup(assets[previousItemIndex]);
         currentItem.Setup(assets[currentItemIndex]);
+        changeNumber(currentItemIndex);
         //currentItem.ClickItem();
         nextItem.Setup(assets[nextItemIndex]);
     }
@@ -78,11 +79,9 @@ public class ItemList : MonoBehaviour
     }
         
     public void NextItem(){
-        changeNumber(currentItemIndex + 1);
         SetCurrentItemIndex(currentItemIndex + 1);
     }
     public void PreviousItem(){
-        changeNumber(currentItemIndex - 1);
         SetCurrentItemIndex(currentItemIndex - 1);
     }
 
