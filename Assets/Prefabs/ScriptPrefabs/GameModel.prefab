@@ -48,9 +48,10 @@ MonoBehaviour:
   playSoundtrack: 1
   musicFadeTime: 1
   slowMo: 0
-  utilityCheats: 0
+  utilityCheats: 1
   resetSaveFileOnStart: 0
   unlockEverything: 0
+  skipTutorial: 0
   forceHazard: 4
   player: {fileID: 0}
   sound: {fileID: 0}
@@ -60,6 +61,11 @@ MonoBehaviour:
   theBoat: {fileID: 0}
   cometManager: {fileID: 0}
   shipShield: {fileID: 0}
+  bossParent: {fileID: 0}
+  heads:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   shipSails:
   - {fileID: 0}
   - {fileID: 0}
@@ -74,6 +80,7 @@ MonoBehaviour:
   - {fileID: 0}
   cometFlightTarget: {fileID: 0}
   cometDeckTarget: {fileID: 0}
+  HarpoonGun: {fileID: 0}
   clothPrefab: {fileID: 8273169938340841911, guid: 29dda14d70372bf4e8cd5a00e0f352c5, type: 3}
   harpoonPrefab: {fileID: 8273169938340841911, guid: f873f9b434d22334ab22d1e353b73f5e, type: 3}
   foodPrefab: {fileID: 8273169938340841911, guid: a8b181ba638d05b47a6fd7f95355f2e7, type: 3}
@@ -85,7 +92,7 @@ MonoBehaviour:
   - hazardType: 2
     hazardManagerPrefab: {fileID: 4024047624258082750, guid: a9c7e8b2d61ce7143bd7ce4cc3e73fc4, type: 3}
   - hazardType: 3
-    hazardManagerPrefab: {fileID: 3819972910884401993, guid: 19d1b8fc8a639ad4485351aa38842945, type: 3}
+    hazardManagerPrefab: {fileID: 4766283491394696801, guid: 102a715f36051da418869bbb4de149a0, type: 3}
   hazardPlanner:
     hazardPlan:
     - difficulty: 0
@@ -94,6 +101,8 @@ MonoBehaviour:
       hazardOptions: 000000000100000002000000
     - difficulty: 0
       hazardOptions: 000000000100000002000000
+    - difficulty: 0
+      hazardOptions: 03000000
   hazardWindDownTime: 15
   movementTutorialTrigger:
   - {fileID: 0}
@@ -150,4 +159,4 @@ MonoBehaviour:
     craftingTutorialPlayed: 0
     equipmentTutorialPlayed: 0
     crouchTutorialPlayed: 0
-    tutorialHazardPlayed: 0
+    tutorialHazardPlayed: 1
