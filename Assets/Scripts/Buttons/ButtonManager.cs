@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class ButtonManager : MonoBehaviour
 {
@@ -9,6 +10,11 @@ public class ButtonManager : MonoBehaviour
     [SerializeField] GameObject OptionsPanel;
     [SerializeField] GameObject SoundPanel;
     [SerializeField] GameObject CreditsPanel;
+
+    [SerializeField] Slider generalVolumeSlider;
+    [SerializeField] Slider musicVolumeSlider;
+    [SerializeField] Slider effectsVolumeSlider;
+
     private bool soundActive = false;
     private bool creditsActive = false;
 
@@ -16,6 +22,9 @@ public class ButtonManager : MonoBehaviour
     private void Start(){
         animator = GetComponent<Animator>();
         SoundPanel.SetActive(false);
+        if (VariableManager.Instance != null) {
+            SetSliderDefaults();
+        }
     }
 
     #region Buttons
@@ -54,6 +63,7 @@ public class ButtonManager : MonoBehaviour
             soundActive = false;
             animator.SetTrigger("GetSoundOut");
             StartCoroutine("DisableSound");
+            VariableManager.Instance.SaveSettings();
         }else{
             SoundPanel.SetActive(true);
             soundActive = true;
@@ -82,11 +92,17 @@ public class ButtonManager : MonoBehaviour
     }
 
     public void SetMusicVolume(float newVolume){
-        VariableManager.Instance.musicVolume = newVolume;
+        VariableManager.Instance.MusicVolume = newVolume;
     }public void SetSFXVolume(float newVolume){
-        VariableManager.Instance.effectsVolume = newVolume;
+        VariableManager.Instance.EffectsVolume = newVolume;
     }public void SetVolume(float newVolume){
-        VariableManager.Instance.generalVolume = newVolume;
+        VariableManager.Instance.GeneralVolume = newVolume;
+    }
+
+    public void SetSliderDefaults(){
+        generalVolumeSlider.value = VariableManager.Instance.GeneralVolume;
+        musicVolumeSlider.value = VariableManager.Instance.MusicVolume;
+        effectsVolumeSlider.value = VariableManager.Instance.EffectsVolume;
     }
 
     public void ResetGameButton(){

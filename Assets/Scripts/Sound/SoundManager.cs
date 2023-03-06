@@ -12,6 +12,13 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private float musicVolume = 1f;
     [Range(0f,1f)]
     [SerializeField] private float sfxVolume = 1f;
+    [SerializeField] private string[] sfxVolumeTestSounds;
+    [SerializeField] private float sfxVolumeTestIncrement = 0.1f;
+    [SerializeField] private float sfxVolumeTestCooldown = 0.5f;
+
+    private float lastVolumeTestLevel = 0f;
+    private float lastVolumeTestTime = 0f;
+
     public Sound[] sounds;
     public Dictionary<string, Sound> soundsDict = new Dictionary<string, Sound>();
 
@@ -22,6 +29,42 @@ public class SoundManager : MonoBehaviour
     private List<Coroutine> coroutines = new List<Coroutine>();
 
     //TODO Add to awake FindObjectOfType<SoundManager>() and then call it and ad .("WhatheverSoundName")
+
+    public void SetMasterVolume(float volume) {
+        masterVolume = volume;
+        foreach (Sound sound in sounds) {
+            SetTrueVolume(sound, sound.volume);
+        }
+    }
+
+    public void SetMusicVolume(float volume) {
+        musicVolume = volume;
+        foreach (Sound sound in sounds) {
+            if (sound.isMusic) {
+                SetTrueVolume(sound, sound.volume);
+            }
+        }
+    }
+
+    void CheckVolumeTest(float volume) {
+        if (Mathf.Abs(volume - lastVolumeTestLevel) > sfxVolumeTestIncrement) {
+            if (Time.time - lastVolumeTestTime > sfxVolumeTestCooldown) {
+                lastVolumeTestLevel = volume;
+                lastVolumeTestTime = Time.time;
+                Play(sfxVolumeTestSounds[UnityEngine.Random.Range(0, sfxVolumeTestSounds.Length)]);
+            }
+        }
+    }
+    
+    public void SetSFXVolume(float volume) {
+        sfxVolume = volume;
+        foreach (Sound sound in sounds) {
+            if (!sound.isMusic) {
+                SetTrueVolume(sound, sound.volume);
+            }
+        }
+        CheckVolumeTest(volume);
+    }
 
     void SetTrueVolume (Sound s, float volume) {
         if (s.isMusic) {
@@ -51,6 +94,15 @@ public class SoundManager : MonoBehaviour
         else{
             Instance = this;
         }
+        lastVolumeTestLevel = sfxVolume;
+        lastVolumeTestTime = Time.time;
+
+            if (VariableManager.Instance != null) {
+                masterVolume = VariableManager.Instance.GeneralVolume;
+                musicVolume = VariableManager.Instance.MusicVolume;
+                sfxVolume = VariableManager.Instance.EffectsVolume;
+                Debug.Log("SoundManager: Loaded volumes from VariableManager");
+            }
 
 
         foreach (Sound sound in sounds){

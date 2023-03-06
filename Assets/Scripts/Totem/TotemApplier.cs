@@ -62,7 +62,21 @@ public class TotemApplier : MonoBehaviour
             harpoonElementDictionary.Add("air", harpoonElementAir);
     }
 
-    void Start() {
+    void Start() { 
+        if (VariableManager.Instance != null) {
+            ApplyTotemCthulk(
+                VariableManager.Instance.avatar.hair_styles.ToLower(),
+                VariableManager.Instance.avatar.primary_color,
+                VariableManager.Instance.avatar.secondary_color
+            );
+            ApplyTotemHarpoon(
+                VariableManager.Instance.harpoon.weapon_material.ToLower(),
+                VariableManager.Instance.harpoon.classical_element.ToLower(),
+                VariableManager.Instance.harpoon.primary_color,
+                VariableManager.Instance.harpoon.secondary_color
+            );
+        }
+        /*
         SpriteRenderer harpoonMaterialSpriteRenderer = harpoon.transform.Find("SpriteParent").Find("Bone").GetComponent<SpriteRenderer>();
         SpriteRenderer harpoonElementSpriteRenderer = harpoon.transform.Find("SpriteParent").Find("Earth").GetComponent<SpriteRenderer>();
         harpoon.GetComponent<SpriteRenderer>().enabled = true;
@@ -77,6 +91,7 @@ public class TotemApplier : MonoBehaviour
 
         cthulkMaterial.SetColor("_BasePrimaryColour", cthulkColorDefault);
         cthulkMaterial.SetColor("_BaseEyeColour", cthulkEyeColorDefault);
+        */
     }
 
     public void ApplyTotemCthulk(string hairStyle, Color32 primaryColour, Color32 secondaryColour) {
@@ -84,6 +99,10 @@ public class TotemApplier : MonoBehaviour
             "Applying Totem Cthulk: " + hairStyle + " " + primaryColour + " " + secondaryColour
         );
         currentHair.enabled = false;
+        if (!avatarssDictionary.ContainsKey(hairStyle)) {
+            Debug.Log("Hair style not found: " + hairStyle);
+            return;
+        }
         currentHair = avatarssDictionary[hairStyle];
         currentHair.enabled = true;
         cthulkMaterial.SetColor("_BasePrimaryColour", primaryColour);
@@ -104,6 +123,17 @@ public class TotemApplier : MonoBehaviour
         harpoonGunSpriteParent.GetComponent<SpriteRenderer>().enabled = false;
         harpoonGunMaterialSpriteRenderer.enabled = true;
         harpoonGunElementSpriteRenderer.enabled = true;
+        if (!harpoonMaterialDictionary.ContainsKey(material)) {
+            Debug.Log("Harpoon material not found: " + material);
+            if (!harpoonElementDictionary.ContainsKey(element)) {
+                Debug.Log("Harpoon element not found: " + element);
+            }
+            return;
+        }
+        if (!harpoonElementDictionary.ContainsKey(element)) {
+            Debug.Log("Harpoon element not found: " + element);
+            return;
+        }
 
 
         harpoonMaterialSpriteRenderer.sprite = harpoonMaterialDictionary[material];

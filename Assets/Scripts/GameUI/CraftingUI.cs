@@ -365,10 +365,10 @@ namespace SpaceBoat.UI {
         void ApplyTotem() {
             if (hasPendingTotemCthulk) {
                 Debug.Log("Applying Totem Cthulk");
-                GetComponent<TotemApplier>().ApplyTotemCthulk(pendingTotemCthulk.hairStyle, pendingTotemCthulk.primaryColour, pendingTotemCthulk.secondaryColour);
+                //GetComponent<TotemApplier>().ApplyTotemCthulk(pendingTotemCthulk.hairStyle, pendingTotemCthulk.primaryColour, pendingTotemCthulk.secondaryColour);
             }
             if (hasPendingTotemHarpoon) {
-                GetComponent<TotemApplier>().ApplyTotemHarpoon(pendingTotemHarpoon.material, pendingTotemHarpoon.element, pendingTotemHarpoon.primaryColour, pendingTotemHarpoon.secondaryColour);
+                //GetComponent<TotemApplier>().ApplyTotemHarpoon(pendingTotemHarpoon.material, pendingTotemHarpoon.element, pendingTotemHarpoon.primaryColour, pendingTotemHarpoon.secondaryColour);
             }
         }
 

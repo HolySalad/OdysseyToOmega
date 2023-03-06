@@ -6374,6 +6374,9 @@ MonoBehaviour:
   OptionsPanel: {fileID: 1817762320}
   SoundPanel: {fileID: 649043830}
   CreditsPanel: {fileID: 192797908}
+  generalVolumeSlider: {fileID: 1896861790}
+  musicVolumeSlider: {fileID: 603104371}
+  effectsVolumeSlider: {fileID: 518453477}
 --- !u!95 &1331174792
 Animator:
   serializedVersion: 4
@@ -7979,9 +7982,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58381d0796aa9534c8f3c837599287d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  generalVolume: 1
-  musicVolume: 1
-  effectsVolume: 1
   resetGame: 0
 --- !u!1 &1609935607
 GameObject:
