@@ -8,6 +8,7 @@ public class TwistingColours : MonoBehaviour
     Color currentColor;
     Color currentSecondaryColor;
     float H, S, V;
+    [SerializeField] float colorSpeed = 0.005f;
     void Start(){
         currentColor = new Color(71, 251, 1);
         currentSecondaryColor = new Color(248,80,0);
@@ -17,12 +18,12 @@ public class TwistingColours : MonoBehaviour
     void Update()
     {
         Color.RGBToHSV(currentColor, out H, out S, out V);
-        H += 0.005f % 1;
+        H += colorSpeed % 1;
         currentColor = Color.HSVToRGB(H, 0.99f, 0.99f);
         GetComponent<Image>().material.SetColor("_BasePrimaryColour", currentColor);
 
         Color.RGBToHSV(currentSecondaryColor, out H, out S, out V);
-        H += 0.005f % 1;
+        H += colorSpeed % 1;
         currentSecondaryColor = Color.HSVToRGB(H, 0.99f, 0.99f);
         GetComponent<Image>().material.SetColor("_BaseEyeColour", currentSecondaryColor);
     }
