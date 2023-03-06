@@ -18,15 +18,15 @@ public class ItemItem : MonoBehaviour
 
     [SerializeField] private Shader shader;
 
-    private TotemDNADefaultItem thisAsset;
+    public TotemDNADefaultItem thisAsset;
 
-    private bool thisClicked = false;
+    // bool thisClicked = false;
 
     public void Setup(TotemDNADefaultItem asset)
     {
         thisAsset = asset;
 
-        TotemManager.OnClickedItem += deleteSelection;
+        //TotemManager.OnClickedItem += deleteSelection;
 
         material = transform.Find("Material").gameObject;
         elememt = transform.Find("Element").gameObject;
@@ -62,20 +62,23 @@ public class ItemItem : MonoBehaviour
         Material eleMat = elememt.GetComponent<Image>().material = new Material(shader);
         eleMat.SetColor("_BasePrimaryColour", asset.secondary_color);
 
-        //Operations to initialize the prefab
-        //Asset gives info about the caracteristics
-        Debug.Log("Element: " + asset.classical_element);
-        Debug.Log("Material: " + asset.weapon_material);
-        Debug.Log("PrimaryColor: " + asset.primary_color);
-        Debug.Log("SecondaryColor: " + asset.secondary_color);
-
         //I have no idea what would you use this for
-        this.asset = asset;
+        //this.asset = asset;
     }
     void Start(){
-        transform.localScale = new Vector3(1,1,1);
+        //transform.localScale = new Vector3(1,1,1);
     }
 
+
+    public void Hide() {
+        material = transform.Find("Material").gameObject;
+        elememt = transform.Find("Element").gameObject;
+
+        material.GetComponent<Image>().enabled = false;
+        elememt.GetComponent<Image>().enabled = false;
+    }
+    
+/*
     private void deleteSelection(string a, string a2, Color32 b, Color32 c){
         if(thisClicked)
             thisClicked = false;
@@ -91,4 +94,5 @@ public class ItemItem : MonoBehaviour
             Instantiate(TotemManager.instance.frame, transform.position, transform.rotation, material.GetComponent<Transform>());
         TotemManager.instance.callItemClicked(thisAsset.weapon_material, thisAsset.classical_element, thisAsset.primary_color, thisAsset.secondary_color);
     }
+*/
 }

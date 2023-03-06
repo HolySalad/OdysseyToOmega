@@ -5,10 +5,28 @@ using UnityEngine.SceneManagement;
 
 public class ButtonManager : MonoBehaviour
 {
+    private Animator animator;
+    [SerializeField] GameObject OptionsPanel;
+    [SerializeField] GameObject SoundPanel;
+    [SerializeField] GameObject CreditsPanel;
+    private bool soundActive = false;
+    private bool creditsActive = false;
 
-    //Add to awake FindObjectOfType<SoundManager>() and then call it and ad .("WhatheverSoundName")
+    //Add to awake FindObjectOfType<SoundManager>() and then call it and add .("WhatheverSoundName")
+    private void Start(){
+        animator = GetComponent<Animator>();
+        SoundPanel.SetActive(false);
+    }
+
+    #region Buttons
     public void CreditsButton(){
-        SceneManager.LoadScene("Credits");
+        if(creditsActive){
+            animator.SetTrigger("GetCreditsOut");
+            creditsActive = false;
+        }else{
+            animator.SetTrigger("GetCreditsIn");
+            creditsActive = true;
+        }
     }
 
     public void MainMenuButton(){
@@ -22,5 +40,56 @@ public class ButtonManager : MonoBehaviour
     public void ExitButton(){
         Application.Quit();
         Debug.Log("You quit");
+    }
+
+    public void OptionsButton(){
+        animator.SetTrigger("GetOptionsIn");
+    }
+    public void CloseOptionsButton(){
+        animator.SetTrigger("GetOptionsOut");
+    }
+
+    public void SoundButton(){
+        if(soundActive){
+            soundActive = false;
+            animator.SetTrigger("GetSoundOut");
+            StartCoroutine("DisableSound");
+        }else{
+            SoundPanel.SetActive(true);
+            soundActive = true;
+            StopCoroutine("DisableSound");
+            animator.SetTrigger("GetSoundIn");
+        }
+    }
+    #endregion
+
+    #region Totem toggling
+    private bool totemActive = false;
+    public void TotemButton(){
+        if(totemActive){
+            animator.SetTrigger("GetTotemOut");
+            totemActive = false;
+        }else{
+            animator.SetTrigger("GetTotemIn");
+            totemActive = true;
+        }
+    }
+    #endregion
+
+    private IEnumerator DisableSound(){
+        yield return new WaitForSeconds(0.4f);
+        SoundPanel.SetActive(false);
+    }
+
+    public void SetMusicVolume(float newVolume){
+        VariableManager.Instance.musicVolume = newVolume;
+    }public void SetSFXVolume(float newVolume){
+        VariableManager.Instance.effectsVolume = newVolume;
+    }public void SetVolume(float newVolume){
+        VariableManager.Instance.generalVolume = newVolume;
+    }
+
+    public void ResetGameButton(){
+        VariableManager.Instance.resetGame = true;
     }
 }

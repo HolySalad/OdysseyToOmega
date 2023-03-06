@@ -7,7 +7,7 @@ using TotemEntities;
 using TotemEntities.DNA;
 using TotemServices.DNA;
 using TMPro;
-
+using UnityEngine.UI;
 
 public class TotemManager : MonoBehaviour
 {
@@ -40,7 +40,8 @@ public class TotemManager : MonoBehaviour
     public delegate void ClickItem(string material, string elememt, Color32 primaryColor, Color32 secondaryColor);
     public static event ClickItem OnClickedItem;
 
-    [SerializeField] public GameObject frame;
+    public GameObject frame;
+    [SerializeField] private GameObject characterIcon;
 
     void Awake(){
         if (instance == null)
@@ -73,24 +74,16 @@ public class TotemManager : MonoBehaviour
 
     private void OnUserLoggedIn(TotemUser user)
     {
+        accountNameText.SetText(user.Name);
+        assetsPanel.SetActive(true);
+        loginPanel.SetActive(false);
         totemCore.GetUserAvatars<TotemDNADefaultAvatar>(user, TotemDNAFilter.DefaultAvatarFilter, (avatars) =>
         {
-            Debug.Log("Avatars:");
-            //Aqui hay que quitar el botón y meter el nombre de usuario
-            accountNameText.SetText(user.Name);
-            assetsPanel.SetActive(true);
-            loginPanel.SetActive(false);
-
-            avatarList.ClearList();
-
             //We get the avatars from the user
             _userAvatars = avatars;
             firstAvatar = avatars.Count > 0 ? avatars[0] : null;
 
-            //Example to implement
             BuildAvatarList();
-            //Idk what is this, probably no necesary??
-            //ShowAvatarRecords();
 
             //This was originally o nshowavatarrecords()
             loadingScreen.SetActive(false);
@@ -98,17 +91,11 @@ public class TotemManager : MonoBehaviour
 
         totemCore.GetUserItems<TotemDNADefaultItem>(user, TotemDNAFilter.DefaultItemFilter, (items) =>
             {
-                Debug.Log("Items:");
-                itemList.ClearList();
-
-                //We get the avatars from the user
+                //We get the items from the user
                 _userItems = items;
                 firstItem = items.Count > 0 ? items[0] : null;
 
-                //Example to implement
                 BuildItemList();
-                //Idk what is this, probably no necesary??
-                //ShowAvatarRecords();
 
                 //This was originally o nshowavatarrecords()
                 loadingScreen.SetActive(false);
@@ -124,6 +111,7 @@ public class TotemManager : MonoBehaviour
         itemList.BuildList(_userItems);
     }
 
+/*  This two are no longer necessary with the variable manager
     public void callAvatarClicked(string hairstyle, Color32 primaryColor, Color32 secondaryColor){
         if(OnClickedAvatar != null)
             OnClickedAvatar(hairstyle,primaryColor,secondaryColor);
@@ -131,5 +119,16 @@ public class TotemManager : MonoBehaviour
     public void callItemClicked(string material, string element, Color32 primaryColor, Color32 secondaryColor){
         if(OnClickedItem != null)
             OnClickedItem(material, element,primaryColor,secondaryColor);
+    }
+*/
+
+    public void confirmButton(){
+        VariableManager.Instance.avatar = avatarList.getCurrentAvatar();
+        characterIcon.GetComponent<Image>().sprite = avatarList.getAvatarIcon().sprite;
+        characterIcon.GetComponent<Image>().material = avatarList.getAvatarIcon().material;
+        if(characterIcon.GetComponent<TwistingColours>()){
+            Destroy(characterIcon.GetComponent<TwistingColours>());
+        }
+        VariableManager.Instance.harpoon = itemList.GetCurrentItem();
     }
 }
