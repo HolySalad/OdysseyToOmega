@@ -9,8 +9,7 @@ using TMPro;
 namespace SpaceBoat.UI {
     public enum CraftUIState {
         EquipmentPanel,
-        StorePanel,
-        //TotemPanel 
+        StorePanel
     }
     public class CraftingUI : MonoBehaviour
     {
@@ -50,9 +49,6 @@ namespace SpaceBoat.UI {
         [SerializeField] private Image shieldEquipmentButtonBackground;
 
         public CraftUIState CurrentState { get; private set; }
-
-        private int currentPanelIndex = 1;
-        private CraftUIState[] panels = new CraftUIState[] { CraftUIState.EquipmentPanel, CraftUIState.StorePanel/*, CraftUIState.TotemPanel */};
 
         private Dictionary<RewardType, ICraftBlueprint> blueprints = new Dictionary<RewardType, ICraftBlueprint>();
         private Dictionary<EquipmentType, ICraftBlueprint> equipmentBlueprints = new Dictionary<EquipmentType, ICraftBlueprint>();
@@ -107,13 +103,6 @@ namespace SpaceBoat.UI {
                     ClearStorePanelDetails();
                     CreateCraftingOptions();
                     break;
-                    /*
-                case CraftUIState.TotemPanel:
-                    equipmentPanel.SetActive(false);
-                    storePanel.SetActive(false);
-                    totemPanel.SetActive(true);
-                    break;
-                    */
                 default:
                     Debug.LogWarning("CraftingUI.cs: ChangePanel() switch statement reached default case.");
                     break;
@@ -133,7 +122,7 @@ namespace SpaceBoat.UI {
                 StoreDetailsCost.text = UIManager.Instance.FixedUIText(selectedBlueprint.Cost.ToString());
                 StoreDetailsImage.sprite = selectedBlueprint.IconLarge;
 
-                StoreCraftButton.interactable = !selectedBlueprint.AlreadyOwns(GameModel.Instance.player) && GameModel.Instance.player.PlayerHasMoney(selectedBlueprint.Cost);
+                StoreCraftButton.interactable = !selectedBlueprint.AlreadyOwns(GameModel.Instance.player) && GameModel.Instance.player.CheckHasMoney(selectedBlueprint.Cost);
                 StoreDetailsPanel.SetActive(true);
             }
         }
@@ -163,8 +152,7 @@ namespace SpaceBoat.UI {
                             pendingEquipmentType = GameModel.Instance.player.lastCraftedEquipmentType;
                             UIManager.Instance.CloseCraftingMenu();
                         } else {
-                            currentPanelIndex = (int)CraftUIState.EquipmentPanel;
-                            ChangePanel(panels[currentPanelIndex]);
+                            ChangePanel(CraftUIState.EquipmentPanel);
                         }
                         break;
                     case BlueprintType.Buildable:
@@ -366,8 +354,7 @@ namespace SpaceBoat.UI {
         
 
         public void OpenCraftingUI() {
-            currentPanelIndex = 1;
-            ChangePanel(panels[currentPanelIndex]);
+            ChangePanel(CraftUIState.StorePanel);
             //refresh which blueprints are unlocked.
             foreach (ICraftBlueprint blueprint in blueprints.Values) {
                 blueprint.isUnlocked = GameModel.Instance.saveGame.rewardsUnlocked[blueprint.RewardType];
@@ -399,15 +386,11 @@ namespace SpaceBoat.UI {
         }
 
         public void TabButtonLeft() {
-            currentPanelIndex--;
-            if (currentPanelIndex < 0) currentPanelIndex = panels.Length - 1;
-            ChangePanel(panels[currentPanelIndex]);
+            ChangePanel(CraftUIState.StorePanel);
         }
 
         public void TabButtonRight() {
-            currentPanelIndex++;
-            if (currentPanelIndex >= panels.Length) currentPanelIndex = 0;
-            ChangePanel(panels[currentPanelIndex]);
+            ChangePanel(CraftUIState.EquipmentPanel);
         }
 
         void Update() {
