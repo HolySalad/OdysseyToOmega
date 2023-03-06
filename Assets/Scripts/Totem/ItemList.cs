@@ -27,9 +27,7 @@ public class ItemList : MonoBehaviour
         foreach(TotemDNADefaultItem asset in assets){
             this.assets.Add(asset);
         }
-        if (assets.Count == 0) {
-            //TODO what happens if no assets?
-        } else if (assets.Count == 1) {
+        if (this.assets.Count == 1) {
             itemObjects[0].Hide();
             itemObjects[2].Hide();
             foreach (GameObject button in leftRightButtons) {

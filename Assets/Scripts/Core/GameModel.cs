@@ -1,16 +1,13 @@
 using System.Collections;
-using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
 using SpaceBoat.HazardManagers;
 using SpaceBoat.Ship.Activatables;
 using SpaceBoat.UI;
 using SpaceBoat.Rewards;
-using SpaceBoat.PlayerSubclasses.Equipment;
 using UnityEngine.SceneManagement;
 using UnityEngine.Playables;
 using TotemEntities.DNA;
-using Newtonsoft.Json;
 
 
 namespace SpaceBoat {
@@ -19,6 +16,7 @@ namespace SpaceBoat {
     public class GameModel : MonoBehaviour
     {
         public static GameModel Instance;
+        public static EventSystem Events;
 
         [Header("Game Settings")]
         [SerializeField] private bool DoNotUpdate = false;
@@ -118,7 +116,6 @@ namespace SpaceBoat {
 
         private bool hasRebuiltBuildablesAfterLoad = false;
 
-
         public bool isPaused {get; private set;}
         public delegate void PauseEvent();
         private List<PauseEvent> pauseEvents = new List<PauseEvent>();
@@ -202,6 +199,18 @@ namespace SpaceBoat {
                 Destroy(gameObject);
             }
             Instance = this;
+            if (Events == null) {
+                Events = new EventSystem(this);
+            }
+            if (VariableManager.Instance != null) {
+                if (VariableManager.Instance.resetGame) {
+                    Debug.Log("Variable manager requested resetting game");
+                    resetSaveFileOnStart = true;
+                    VariableManager.Instance.resetGame = false;
+                }
+            } else {
+                Debug.Log("No variable manager - game is being launched from editor through the main scene");
+            }
 
             QualitySettings.vSyncCount = 0;  // VSync must be disabled
             Application.targetFrameRate = 24;
@@ -225,7 +234,7 @@ namespace SpaceBoat {
             if (cameraController == null) {
                 Debug.LogError("CameraController not set in GameModel!");
             }
-            saveGameManager = new SaveDataManager();
+            saveGameManager = new SaveDataManager("/SpaceBoatSave.json");
             if (resetSaveFileOnStart) {
                 saveGameManager.Reset();
             } else {
@@ -634,81 +643,5 @@ namespace SpaceBoat {
 
         }
 
-
-        // subclasses for saving and loading
-        [System.Serializable] public class SaveData {
-            public int money = 0;
-            public Dictionary<RewardType, bool> rewardsUnlocked = new Dictionary<Rewards.RewardType, bool>() {
-                {RewardType.DashEquipmentBlueprint, false},
-                {RewardType.HarpoonGunBuildableBlueprint, false},
-                {RewardType.HarpoonLauncherEquipmentBlueprint, false},
-                {RewardType.ShieldEquipmentBlueprint, false},
-                {RewardType.HealthPackEquipmentBlueprint, false},
-                {RewardType.JumpPadBuildableBlueprint, false},
-                {RewardType.ShipShieldBuildableBlueprint, false}
-            };
-
-            public Dictionary<EquipmentType, bool> equipmentBuilt = new Dictionary<EquipmentType, bool>() {
-                {EquipmentType.Dash, false},
-                {EquipmentType.HarpoonLauncher, false},
-                {EquipmentType.Shield, false},
-                {EquipmentType.HealthPack, false}
-            };
-
-            public List<Ship.Buildables.buildableSaveData> buildables = new List<Ship.Buildables.buildableSaveData>();
-
-            public Dictionary<HazardTypes, bool> hazardsCompleted = new Dictionary<HazardTypes, bool>();
-
-            public bool movementTutorialPlayed;
-            public bool cometTutorialPlayed;
-            public bool craftingTutorialPlayed;
-            public bool equipmentTutorialPlayed;
-            public bool crouchTutorialPlayed;
-            public bool tutorialHazardPlayed;
-        }
-
-        public class SaveDataManager {
-
-            public SaveData saveData { get; private set; }
-            private static string saveDataPath = Application.persistentDataPath + "/SpaceBoatSave.json";
-            
-            public SaveDataManager() {
-                saveData = new SaveData();
-            }
-
-            public void Reset() {
-                saveData = new SaveData();
-                Debug.Log("Reset save data - " + saveDataPath);
-                Save();
-            }
-
-            public void ResetBetweenRuns() {
-                saveData.equipmentBuilt = new Dictionary<EquipmentType, bool> {
-                    {EquipmentType.Dash, false},
-                    {EquipmentType.HarpoonLauncher, false},
-                    {EquipmentType.Shield, false},
-                    {EquipmentType.HealthPack, false}
-                };
-                saveData.hazardsCompleted.Clear();
-                saveData.money = 0;
-                Save();
-            }
-
-            public void Save() {
-                using (StreamWriter writer = new StreamWriter(saveDataPath)) {
-                    string data = JsonConvert.SerializeObject(saveData);
-                    writer.Write(data);
-                }
-            }
-
-            public void Load() {
-                if (File.Exists(saveDataPath)) {
-                    using (StreamReader reader = new StreamReader(saveDataPath)) {
-                        string data = reader.ReadToEnd();
-                        saveData = JsonConvert.DeserializeObject<SaveData>(data);
-                    }
-                }
-            }
-        }
     }
 }

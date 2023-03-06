@@ -47,6 +47,13 @@ MonoBehaviour:
   masterVolume: 0.96
   musicVolume: 1
   sfxVolume: 0.795
+  sfxVolumeTestSounds:
+  - Hit
+  - DeathFall
+  - ActivationCompleteDing
+  - JumpPadBounce
+  sfxVolumeTestIncrement: 0.1
+  sfxVolumeTestCooldown: 0.5
   sounds:
   - name: MenuSoundtrack
     clip: {fileID: 8300000, guid: a9f62b1e0a7d3be43b5d1222c791046c, type: 3}
