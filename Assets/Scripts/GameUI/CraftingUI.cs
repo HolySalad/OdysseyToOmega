@@ -15,7 +15,7 @@ namespace SpaceBoat.UI {
     {
         [SerializeField] private GameObject equipmentPanel;
         [SerializeField] private GameObject storePanel;
-        [SerializeField] private GameObject totemPanel;
+        //[SerializeField] private GameObject totemPanel;
 
         [Header("Store Panel")]
         [SerializeField] private GameObject MakeASelectionText;
@@ -29,6 +29,7 @@ namespace SpaceBoat.UI {
         [SerializeField] private TextMeshProUGUI StoreDetailsTitle;
         [SerializeField] private TextMeshProUGUI StoreDetailsSubtitle;
         [SerializeField] private TextMeshProUGUI StoreDetailsDescription;
+        [SerializeField] private TextMeshProUGUI StoreDetailsFurtherDescription;
         [SerializeField] private TextMeshProUGUI StoreDetailsCost;
         [SerializeField] private Image StoreDetailsImage;
         [SerializeField] private Button StoreCraftButton;
@@ -38,6 +39,7 @@ namespace SpaceBoat.UI {
         [Header("Equipment Panel")]
         [SerializeField] private TextMeshProUGUI equipmentTitleText;
         [SerializeField] private TextMeshProUGUI equipmentDescriptionText;
+        [SerializeField] private TextMeshProUGUI equipmentFurtherDescriptionText;
         [SerializeField] private string NoEquipmentText = "No Equipment";
         [SerializeField] private GameObject dashEquipmentButtonObject;
         [SerializeField] private Image dashEquipmentButtonBackground;
@@ -91,13 +93,13 @@ namespace SpaceBoat.UI {
                 case CraftUIState.EquipmentPanel:
                     equipmentPanel.SetActive(true);
                     storePanel.SetActive(false);
-                    totemPanel.SetActive(false);
+                    //totemPanel.SetActive(false);
                     OpenEquipmentPanel();
                     break;
                 case CraftUIState.StorePanel:
                     equipmentPanel.SetActive(false);
                     storePanel.SetActive(true);
-                    totemPanel.SetActive(false);
+                    //totemPanel.SetActive(false);
                     ClearStorePanelDetails();
                     CreateCraftingOptions();
                     break;
@@ -116,6 +118,7 @@ namespace SpaceBoat.UI {
                 StoreDetailsTitle.text = UIManager.Instance.FixedUIText(selectedBlueprint.Title);
                 StoreDetailsSubtitle.text = UIManager.Instance.FixedUIText(selectedBlueprint.Subtitle);
                 StoreDetailsDescription.text = UIManager.Instance.FixedUIText(selectedBlueprint.Description);
+                StoreDetailsFurtherDescription.text = UIManager.Instance.FixedUIText(selectedBlueprint.FurtherDescription);
                 StoreDetailsCost.text = UIManager.Instance.FixedUIText(selectedBlueprint.Cost.ToString());
                 StoreDetailsImage.sprite = selectedBlueprint.IconLarge;
 
@@ -130,6 +133,7 @@ namespace SpaceBoat.UI {
             StoreDetailsTitle.text = UIManager.Instance.FixedUIText("");
             StoreDetailsSubtitle.text = UIManager.Instance.FixedUIText("");
             StoreDetailsDescription.text = UIManager.Instance.FixedUIText("");
+            StoreDetailsFurtherDescription.text = UIManager.Instance.FixedUIText("");
             StoreDetailsCost.text = UIManager.Instance.FixedUIText("");
             StoreDetailsImage.sprite = null;
             StoreCraftButton.interactable = false;
@@ -181,7 +185,7 @@ namespace SpaceBoat.UI {
                     numBlueprintsOwned++;
                     GameObject storeItem = Instantiate(TemplateStoreItem, StoreContentBox.transform);
                     RectTransform rect = storeItem.GetComponent<RectTransform>();
-                    rect.anchoredPosition = new Vector2(rect.anchoredPosition.x, rect.anchoredPosition.y - (numButtons * 120));
+//                    rect.anchoredPosition = new Vector2(rect.anchoredPosition.x, rect.anchoredPosition.y - (numButtons * 120));
                     numButtons++;
                     storeItem.GetComponent<Button>().onClick.AddListener(() => SetStorePanelDetails(blueprint.RewardType));
                     storeItem.transform.Find("Image").gameObject.GetComponent<Image>().sprite = blueprint.IconSmall;
@@ -214,11 +218,13 @@ namespace SpaceBoat.UI {
         void SetEquipmentPanelDetails(EquipmentType type) {
             if (type == EquipmentType.None) {
                 equipmentDescriptionText.text = UIManager.Instance.FixedUIText(NoEquipmentText);
+                equipmentFurtherDescriptionText.text = UIManager.Instance.FixedUIText("");
                 equipmentTitleText.text = "";
                 return;
             }
             equipmentTitleText.text = UIManager.Instance.FixedUIText(equipmentBlueprints[type].Title);
             equipmentDescriptionText.text = UIManager.Instance.FixedUIText(equipmentBlueprints[type].Description);
+            equipmentFurtherDescriptionText.text = UIManager.Instance.FixedUIText(equipmentBlueprints[type].FurtherDescription);
         }
         public void SelectDash() {
             SetEquipmentPanelDetails(EquipmentType.Dash);

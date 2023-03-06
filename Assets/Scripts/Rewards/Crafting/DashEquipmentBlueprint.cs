@@ -11,6 +11,7 @@ namespace SpaceBoat.Rewards {
         [SerializeField] private string title = "Dash";
         [SerializeField] private string subtitle = "Dash";
         [SerializeField] private string description = "Dash";
+        [SerializeField] private string furtherDescription = "Press shift to use";
         [SerializeField] private Sprite iconSmall;
         [SerializeField] private Sprite iconLarge;
 
@@ -22,6 +23,7 @@ namespace SpaceBoat.Rewards {
         public string Title { get { return title; } }
         public string Subtitle { get { return subtitle; } }
         public string Description { get { return description; } }
+        public string FurtherDescription { get { return furtherDescription; } }
         public Sprite IconSmall { get { return iconSmall; } }
         public Sprite IconLarge { get { return iconLarge; } }
 
