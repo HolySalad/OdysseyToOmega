@@ -56,6 +56,8 @@ public class ButtonManager : MonoBehaviour
     }
     public void CloseOptionsButton(){
         animator.SetTrigger("GetOptionsOut");
+        
+        VariableManager.Instance.SaveSettings();
     }
 
     public void SoundButton(){
@@ -63,7 +65,6 @@ public class ButtonManager : MonoBehaviour
             soundActive = false;
             animator.SetTrigger("GetSoundOut");
             StartCoroutine("DisableSound");
-            VariableManager.Instance.SaveSettings();
         }else{
             SoundPanel.SetActive(true);
             soundActive = true;
