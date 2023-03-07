@@ -9,6 +9,7 @@ using System.IO;
 
 namespace SpaceBoat {
     // subclasses for saving and loading
+
     [System.Serializable] public class SaveData {
         public int money = 0;
         public Dictionary<RewardType, bool> rewardsUnlocked = new Dictionary<Rewards.RewardType, bool>() {
@@ -42,6 +43,9 @@ namespace SpaceBoat {
         public float generalVolume = 1;
         public float musicVolume = 1;
         public float effectsVolume = 1;
+        public string totemLoginPublicKey = "Dear Sir, I am writing to complain about that sketch about people failing out of a high building.";
+        public string avatarSelection = " I have worked all my life in such a building and have never once";
+        public string harpoonSelection = ".... arrgghhh (splat)";
     }
 
     public class SaveDataManager {
