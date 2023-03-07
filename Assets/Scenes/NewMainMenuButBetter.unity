@@ -182,9 +182,13 @@ MonoBehaviour:
   avatarList: {fileID: 1046364440}
   itemList: {fileID: 1417624836}
   accountNameText: {fileID: 89739161}
+  promoText: {fileID: 1638459267}
+  LoginPromo: Log into Totem to recieve a free Avatar and Item.
+  LoginErrorApology: Failed to log into Totem.
+  LoginByDefault: 1
   _gameId: OdisseyToO
   frame: {fileID: 253507056174418698, guid: 69bf1c7c405ac4546b9b9a174a1b150c, type: 3}
-  characterIcon: {fileID: 0}
+  characterIcon: {fileID: 1950795480}
 --- !u!1 &43299018
 GameObject:
   m_ObjectHideFlags: 0
