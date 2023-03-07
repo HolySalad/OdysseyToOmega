@@ -18,6 +18,10 @@ public class TotemManager : MonoBehaviour
     [SerializeField] private AvatarList avatarList;
     [SerializeField] private ItemList itemList;
     [SerializeField] private TextMeshProUGUI accountNameText;
+    [SerializeField] private TextMeshProUGUI promoText;
+    [SerializeField] private string LoginPromo = "";
+    [SerializeField] private string LoginErrorApology = "";
+    [SerializeField] private bool LoginByDefault = true;
 
     //Classes for totem
     public static TotemManager instance;
@@ -56,9 +60,10 @@ public class TotemManager : MonoBehaviour
 
     void Start(){
         totemCore = new TotemCore(_gameId);
-
+        VariableManager.Instance.Avatar = avatarList.GetDefaultAsset();
+        promoText.text = LoginPromo;
         //Try to log in with the last user
-        totemCore.AuthenticateLastUser(OnUserLoggedIn, (error) =>
+        if (LoginByDefault) totemCore.AuthenticateLastUser(OnUserLoggedIn, (error) =>
         {
             loadingScreen.SetActive(false);
         });
@@ -67,13 +72,24 @@ public class TotemManager : MonoBehaviour
     public void OnLoginButtonClick()
     {
         loadingScreen.SetActive(true);
+        loginPanel.SetActive(false);
 
         //Login user
-        totemCore.AuthenticateCurrentUser(OnUserLoggedIn);
+        totemCore.AuthenticateCurrentUser(OnUserLoggedIn, (error) =>
+        {
+            loadingScreen.SetActive(false);
+            loginPanel.SetActive(true);
+            promoText.text = LoginErrorApology;
+        });
     }
 
     private void OnUserLoggedIn(TotemUser user)
     {
+        Debug.Log("Totem user logged in: " + user.Name + " - " + user.Email + " - " + user.PublicKey);
+        if(characterIcon.GetComponent<TwistingColours>()){
+            characterIcon.GetComponent<TwistingColours>().StopTwist(new Color(0.86f, 0.69f, 0.32f));
+        }
+        VariableManager.Instance.SetTotemUser(user.PublicKey);
         accountNameText.SetText(user.Name);
         assetsPanel.SetActive(true);
         loginPanel.SetActive(false);
@@ -87,6 +103,8 @@ public class TotemManager : MonoBehaviour
 
             //This was originally o nshowavatarrecords()
             loadingScreen.SetActive(false);
+            VariableManager.Instance.Avatar = avatarList.getCurrentAvatar();
+            VariableManager.Instance.DefaultAvatar = avatarList.isDefault;
         });
 
         totemCore.GetUserItems<TotemDNADefaultItem>(user, TotemDNAFilter.DefaultItemFilter, (items) =>
@@ -99,6 +117,8 @@ public class TotemManager : MonoBehaviour
 
                 //This was originally o nshowavatarrecords()
                 loadingScreen.SetActive(false);
+                VariableManager.Instance.Harpoon = itemList.GetCurrentItem();
+                VariableManager.Instance.DefaultHarpoon = itemList.isDefault;
             });
     }
 
@@ -123,12 +143,10 @@ public class TotemManager : MonoBehaviour
 */
 
     public void confirmButton(){
-        VariableManager.Instance.avatar = avatarList.getCurrentAvatar();
-        characterIcon.GetComponent<Image>().sprite = avatarList.getAvatarIcon().sprite;
-        characterIcon.GetComponent<Image>().material = avatarList.getAvatarIcon().material;
-        if(characterIcon.GetComponent<TwistingColours>()){
-            Destroy(characterIcon.GetComponent<TwistingColours>());
-        }
-        VariableManager.Instance.harpoon = itemList.GetCurrentItem();
+        VariableManager.Instance.Avatar = avatarList.getCurrentAvatar();
+        VariableManager.Instance.DefaultAvatar = avatarList.isDefault;
+        VariableManager.Instance.Harpoon = itemList.GetCurrentItem();
+        VariableManager.Instance.DefaultHarpoon = itemList.isDefault;
+        VariableManager.Instance.SaveAvatars();
     }
 }

@@ -39,11 +39,72 @@ public class VariableManager : MonoBehaviour
 
     public bool resetGame = false;
 
-    public TotemDNADefaultAvatar avatar = null;
-    public TotemDNADefaultItem harpoon = null;
+    private TotemDNADefaultAvatar avatar;
+
+    public TotemDNADefaultAvatar Avatar {
+        get {
+            return avatar;
+        }
+        set {
+            avatar = value;
+        }
+    }
+    private bool defaultHarpoon = true;
+    public bool DefaultHarpoon {
+        get {
+            return defaultHarpoon;
+        }
+        set {
+            if (value) {
+                settingsSavedData.saveData.harpoonSelection = "Javier";
+            }
+            defaultHarpoon = value;
+        }
+    }
+
+    private bool defaultAvatar = true;
+    public bool DefaultAvatar {
+        get {
+            return defaultAvatar;
+        }
+        set {
+            if (value) {
+                settingsSavedData.saveData.avatarSelection = "Javier";
+            }
+            defaultAvatar = value;
+        }
+    }
+
+
+    private TotemDNADefaultItem harpoon;
+    public TotemDNADefaultItem Harpoon {
+        get {
+            return harpoon;
+        }
+        set {
+            harpoon = value;
+        }
+    }
+
+    public void SetTotemUser(string publicKey) {
+        totemLoginLast = publicKey;
+        if (settingsSavedData.saveData.totemLoginPublicKey == publicKey) {
+
+        } else {
+            settingsSavedData.saveData.avatarSelection = "fuckoff";
+            settingsSavedData.saveData.harpoonSelection = "fuckoff";
+            settingsSavedData.saveData.totemLoginPublicKey = publicKey;
+            settingsSavedData.Save();
+        }
+    }
+
+    private string totemLoginLast;
+    public bool IsLoggedInWithTotem() {
+        return totemLoginLast != null;
+    }
 
     public static VariableManager Instance { get; private set; }
-    private SpaceBoat.SaveDataManager settingsSavedData;
+    public SpaceBoat.SaveDataManager settingsSavedData;
     void Awake(){
     if (Instance != null && Instance != this) 
     { 
@@ -68,5 +129,12 @@ public class VariableManager : MonoBehaviour
         settingsSavedData.saveData.effectsVolume = effectsVolume;
         settingsSavedData.Save();
         Debug.Log("Saved Settings to: " + settingsSavedData.saveData.generalVolume + " " + settingsSavedData.saveData.musicVolume + " " + settingsSavedData.saveData.effectsVolume);
+    }
+
+    public void SaveAvatars() {
+        settingsSavedData.saveData.avatarSelection = avatar.ToString();
+        if (!defaultHarpoon) settingsSavedData.saveData.harpoonSelection = harpoon.ToString();
+        settingsSavedData.Save();
+        Debug.Log("Saved Avatar to: " + settingsSavedData.saveData.avatarSelection + " " + settingsSavedData.saveData.harpoonSelection);
     }
 }

@@ -25,10 +25,43 @@ public class AvatarList : MonoBehaviour
     [SerializeField] private Color defaultPrimaryColor = new Color(138, 83, 11, 1);
     [SerializeField] private Color defaultSecondaryColor = new Color(34, 93, 100, 1);
 
+    public bool isDefault {get; private set;} = true;
+
     public void BuildList(List<TotemDNADefaultAvatar> assets)
     {
         BuildDefaultAvatar();
+        int avatarToDefaultTo = 0;
+        string avatarCode = VariableManager.Instance.settingsSavedData.saveData.avatarSelection;
+        //Debug.Log("Saved avatar: " + avatarCode);
+        //Debug.Log("AvatarList: " + assets.Count);
+        for (int i = 0; i < assets.Count; i++)
+        {
+            TotemDNADefaultAvatar asset = assets[i];
+            GameObject currentAvatar = new GameObject("Avatar");
+            RectTransform rectTransform = currentAvatar.AddComponent<RectTransform>();
+            currentAvatar.transform.SetParent(avatarsParent.transform);
+            currentAvatar.AddComponent<Image>();
+            rectTransform = avatarPH.GetComponent<RectTransform>();
+            
+            //Set variables so it's shown correctly
+            currentAvatar.GetComponent<Image>().sprite = SetHair(asset);
+            Material mat = currentAvatar.GetComponent<Image>().material = new Material(shader);
+            mat.SetColor("_BasePrimaryColour", asset.primary_color);
+            mat.SetColor("_BaseEyeColour", asset.secondary_color);
+            currentAvatar.SetActive(false);
+            
+            //add the go and the asset to the lists
+            userAvatars.Add(currentAvatar);
+            userAvatarsDNA.Add(asset);
+            //Debug.Log("Added avatar " + asset.ToString());
+            if (asset.ToString() == avatarCode)
+            {
+                Debug.Log("Found saved avatar " +avatarCode);
+                avatarToDefaultTo = i + 1;
+            }
+        }
 
+        /*
         foreach (var asset in assets)
         {
             //Create one game object for each avatar
@@ -48,9 +81,24 @@ public class AvatarList : MonoBehaviour
             //add the go and the asset to the lists
             userAvatars.Add(currentAvatar);
             userAvatarsDNA.Add(asset);
-        }
+        } */
         //Set the default avatar
-        ChangeAvatar(0);
+        ChangeAvatar(avatarToDefaultTo);
+    }
+
+    public TotemDNADefaultAvatar GetDefaultAsset() {
+            TotemDNADefaultAvatar defaultAsset = new TotemDNADefaultAvatar();
+            defaultAsset.hair_styles = "Short";
+            defaultAsset.primary_color = defaultPrimaryColor;
+            defaultAsset.secondary_color = defaultSecondaryColor;
+            //Unused for now, defined just in case
+            defaultAsset.sex_bio = false;
+            defaultAsset.body_strength = false;
+            defaultAsset.body_type = false; 
+            defaultAsset.human_eye_color = Color.white.ToString();
+            defaultAsset.human_hair_color = Color.white.ToString();
+            defaultAsset.human_skin_color = Color.white.ToString();
+            return defaultAsset;
     }
 
     //Build and add a default avatar to choose (rn the color is wrong but whatever)
@@ -63,18 +111,7 @@ public class AvatarList : MonoBehaviour
             defaultTransform = avatarPH.GetComponent<RectTransform>();
 
         //Defining default avatar asset variables
-        TotemDNADefaultAvatar defaultAsset = new TotemDNADefaultAvatar();
-            defaultAsset.hair_styles = "Short";
-            defaultAsset.primary_color = defaultPrimaryColor;
-            defaultAsset.secondary_color = defaultSecondaryColor;
-            //Unused for now, defined just in case
-            defaultAsset.sex_bio = false;
-            defaultAsset.body_strength = false;
-            defaultAsset.body_type = false;
-            defaultAsset.human_eye_color = Color.white.ToString();
-            defaultAsset.human_hair_color = Color.white.ToString();
-            defaultAsset.human_skin_color = Color.white.ToString();
-            
+        TotemDNADefaultAvatar defaultAsset = GetDefaultAsset();
         //Tweaking the visible sprite
         defaultAvatar.GetComponent<Image>().sprite = SetHair(defaultAsset);
             Material defaultMaterial = defaultAvatar.GetComponent<Image>().material = new Material(shader);
@@ -128,12 +165,14 @@ public class AvatarList : MonoBehaviour
 
     private void changeNumber(int number){
         if(number != 0 ){
-            Debug.Log(number);
+            //Debug.Log(number);
             avatarCount.text = number.ToString();
+            isDefault = false;
         }
         else{
-            Debug.Log("fuck you " + number);
+            //Debug.Log("fuck you " + number);
             avatarCount.text = "Default";
+            isDefault = true;
         }
     }
 

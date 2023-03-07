@@ -65,16 +65,15 @@ public class TotemApplier : MonoBehaviour
     void Start() { 
         if (VariableManager.Instance != null) {
             ApplyTotemCthulk(
-                VariableManager.Instance.avatar.hair_styles.ToLower(),
-                VariableManager.Instance.avatar.primary_color,
-                VariableManager.Instance.avatar.secondary_color
+                VariableManager.Instance.Avatar.hair_styles.ToLower(),
+                VariableManager.Instance.Avatar.primary_color,
+                VariableManager.Instance.Avatar.secondary_color
             );
-            ApplyTotemHarpoon(
-                VariableManager.Instance.harpoon.weapon_material.ToLower(),
-                VariableManager.Instance.harpoon.classical_element.ToLower(),
-                VariableManager.Instance.harpoon.primary_color,
-                VariableManager.Instance.harpoon.secondary_color
-            );
+            if (!VariableManager.Instance.DefaultHarpoon) ApplyTotemHarpoon(
+                VariableManager.Instance.Harpoon.weapon_material.ToLower(),
+                VariableManager.Instance.Harpoon.classical_element.ToLower(),
+                VariableManager.Instance.Harpoon.primary_color,
+                VariableManager.Instance.Harpoon.secondary_color);
         }
         /*
         SpriteRenderer harpoonMaterialSpriteRenderer = harpoon.transform.Find("SpriteParent").Find("Bone").GetComponent<SpriteRenderer>();

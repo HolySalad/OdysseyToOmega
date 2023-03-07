@@ -14,9 +14,18 @@ public class TwistingColours : MonoBehaviour
         currentSecondaryColor = new Color(248,80,0);
     }
 
+    private bool twist = true;
+    public void StopTwist(Color color) {
+        twist = false;
+        GetComponent<Image>().material.SetColor("_BasePrimaryColour", color);
+        GetComponent<Image>().material.SetColor("_BaseEyeColour", color);
+    }
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
+        if (!twist) {
+            return;
+        }
         Color.RGBToHSV(currentColor, out H, out S, out V);
         H += colorSpeed % 1;
         currentColor = Color.HSVToRGB(H, 0.99f, 0.99f);

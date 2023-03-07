@@ -20,12 +20,20 @@ public class ItemList : MonoBehaviour
     [SerializeField] private Color defaultSecondaryColor = new Color(59, 252, 4, 1);
     private List<TotemDNADefaultItem> assets = new List<TotemDNADefaultItem>();
     private int currentItemIndex = 0;
-
+    public bool isDefault {get; private set;} = true;
     public void BuildList(List<TotemDNADefaultItem> assets)
     {
-        this.assets.Add(BuildDefaultItem());
-        foreach(TotemDNADefaultItem asset in assets){
-            this.assets.Add(asset);
+        this.assets.Add(BuildDefaultItem());        
+        string itemCode = VariableManager.Instance.settingsSavedData.saveData.harpoonSelection;
+        int itemToDefaultTo = 0;
+        for (int i = 0; i < assets.Count; i++)
+        {
+            this.assets.Add(assets[i]);
+            if (assets[i].ToString() == itemCode)
+            {
+                Debug.Log("Found saved item " +itemCode);
+                itemToDefaultTo = i + 1;
+            }
         }
         if (this.assets.Count == 1) {
             itemObjects[0].Hide();
@@ -35,9 +43,8 @@ public class ItemList : MonoBehaviour
             }
         }
 
-        Debug.Log("ItemList: " + assets.Count);
-        SetCurrentItemIndex(1);
-        PreviousItem();
+        //Debug.Log("ItemList: " + assets.Count);
+        SetCurrentItemIndex(itemToDefaultTo);
     }
 
     public TotemDNADefaultItem BuildDefaultItem() {
@@ -70,8 +77,10 @@ public class ItemList : MonoBehaviour
     private void changeNumber(int number){
         if(number != 0 ){
             itemCount.text = number.ToString();
+            isDefault = false;
         }
         else{
+            isDefault = true;
             itemCount.text = "Default";
         }
     }
