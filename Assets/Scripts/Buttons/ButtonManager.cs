@@ -21,7 +21,7 @@ public class ButtonManager : MonoBehaviour
     //Add to awake FindObjectOfType<SoundManager>() and then call it and add .("WhatheverSoundName")
     private void Start(){
         animator = GetComponent<Animator>();
-        SoundPanel.SetActive(false);
+        //SoundPanel.SetActive(false);
         if (VariableManager.Instance != null) {
             SetSliderDefaults();
         }
@@ -88,7 +88,7 @@ public class ButtonManager : MonoBehaviour
 
     private IEnumerator DisableSound(){
         yield return new WaitForSeconds(0.4f);
-        SoundPanel.SetActive(false);
+       // SoundPanel.SetActive(false);
     }
 
     public void SetMusicVolume(float newVolume){
