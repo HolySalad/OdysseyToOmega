@@ -14,6 +14,6 @@ public class BackToMenu : MonoBehaviour
     IEnumerator BackToMenuCoroutine(){
         yield return new WaitForSeconds(2f);
         SoundManager sm = SoundManager.Instance;
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene("OdysseyMainMenu");
     }
 }
