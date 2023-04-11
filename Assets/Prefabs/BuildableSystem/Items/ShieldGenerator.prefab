@@ -184,8 +184,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1739897103
-  m_SortingLayer: 7
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 07687aaecaca7d3449a14fa117376a78, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -243,13 +243,6 @@ MonoBehaviour:
     text: Press F to Activate the Shield Generator
     color: {r: 1, g: 1, b: 1, a: 0}
     TriggerOnlyOnce: 0
-  inUseHelpPrompt:
-    promptLabel: 
-    priority: 0
-    duration: 0
-    text: 
-    color: {r: 0, g: 0, b: 0, a: 0}
-    TriggerOnlyOnce: 0
   readySprite: {fileID: 21300000, guid: 07687aaecaca7d3449a14fa117376a78, type: 3}
   readyColor: {r: 0.16078432, g: 0.6509804, b: 0.73333335, a: 0}
   inUseSprite: {fileID: 21300000, guid: 1538b883cf8cd224b97301b3eed3c29d, type: 3}
@@ -260,5 +253,5 @@ MonoBehaviour:
   shieldFlashDuration: 1
   shieldInitialSize: 0.01
   shieldGrowthTime: 1
-  shieldDuration: 11
-  shieldCooldown: 50
+  shieldDuration: 12
+  shieldCooldown: 45

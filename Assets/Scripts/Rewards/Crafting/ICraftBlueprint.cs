@@ -17,6 +17,7 @@ namespace SpaceBoat.Rewards {
         public string Title { get; }
         public string Subtitle { get; }
         public string Description { get; }
+        public string FurtherDescription { get; }
         public Sprite IconSmall { get; }
         public Sprite IconLarge { get; }
     }

@@ -2839,6 +2839,22 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8306642429446418868, guid: e61d1eac024ac3844ae7e77a323ba06c, type: 3}
+      propertyPath: m_SortingLayer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8306642429446418868, guid: e61d1eac024ac3844ae7e77a323ba06c, type: 3}
+      propertyPath: m_SortingOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8306642429446418868, guid: e61d1eac024ac3844ae7e77a323ba06c, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 1012417137
+      objectReference: {fileID: 0}
+    - target: {fileID: 8306642429446418868, guid: e61d1eac024ac3844ae7e77a323ba06c, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 0fd29cccea3265a498b1c2ca29c7410e, type: 2}
     - target: {fileID: 8347723296986900380, guid: e61d1eac024ac3844ae7e77a323ba06c, type: 3}
       propertyPath: m_Bounds.m_Center.x
       value: 0.016711295
@@ -3363,11 +3379,6 @@ SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: -5917461774783974383, guid: e61d1eac024ac3844ae7e77a323ba06c, type: 3}
   m_PrefabInstance: {fileID: 7879235565659322840}
   m_PrefabAsset: {fileID: 0}
---- !u!212 &4667732949754121727 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 3287545691299410983, guid: e61d1eac024ac3844ae7e77a323ba06c, type: 3}
-  m_PrefabInstance: {fileID: 7879235565659322840}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4905094828935526169 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2975417838412615361, guid: e61d1eac024ac3844ae7e77a323ba06c, type: 3}
@@ -3399,11 +3410,6 @@ MonoBehaviour:
   m_labelHash: 0
   m_SpriteKey: 0
   m_SpriteHash: 0
---- !u!212 &6389147465513381914 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 3887280223686511042, guid: e61d1eac024ac3844ae7e77a323ba06c, type: 3}
-  m_PrefabInstance: {fileID: 7879235565659322840}
-  m_PrefabAsset: {fileID: 0}
 --- !u!212 &7148959547558846618 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 1039944299692595522, guid: e61d1eac024ac3844ae7e77a323ba06c, type: 3}
@@ -3488,10 +3494,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1e558a698f886c4e816ba60e2123fab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fullStrengthSprite: {fileID: 3034065061508379319}
-  twoThirdsStrengthSprite: {fileID: 4576686106919458519}
-  oneThirdStrengthSprite: {fileID: 3992405685253487228}
-  brokenSprite: {fileID: 1576501146958950415}
   shieldObject: {fileID: 1347467869}
   cooldownLight: {fileID: 0}
   shieldMaxDuration: 4
@@ -3526,14 +3528,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3c897f5d5ab48a498bce197ed716e52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activeSprite:
-  - {fileID: 3139816147328360622}
-  - {fileID: 6389147465513381914}
-  - {fileID: 2170651763322390636}
-  cooldownSprite: {fileID: 1957817345328340208}
+  activeSprites:
+  - BlenderActiveA
+  - BlenderActiveB
+  - BlenderActiveC
   cooldownLight: {fileID: 0}
   blenderCooldownPulseTime: 0.3
-  cablesSprite: {fileID: 4667732949754121727}
   usageTime: 3.3
   cooldownTime: 15
 --- !u!114 &1877163399
@@ -3562,12 +3562,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2a6321d232b6094089e356a9d8b804b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activeSprite: {fileID: 7148959547558846618}
   activeLight: {fileID: 0}
-  readySprite: {fileID: 4663575126505360841}
-  cooldownTwoThirdsSprite: {fileID: 2027952627490720794}
-  cooldownOneThirdSprite: {fileID: 7961413154796137122}
-  cooldownZeroSprite: {fileID: 1324512748714856507}
   dashCooldown: 1
   dashDuration: 0.3
   dashSpeed: 30
@@ -3667,6 +3662,45 @@ MonoBehaviour:
   currentPlayerStateName: 0
   currentEquipmentType: 0
   playerCameraXFocusOffset: 0
+--- !u!114 &5877999818907725468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7691977599830055013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65c62341fbb2c9547933e52e55029098, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  equipmentSprites:
+  - name: DashActive
+    spriteRenderer: {fileID: 7148959547558846618}
+  - name: DashReady
+    spriteRenderer: {fileID: 4663575126505360841}
+  - name: DashTwoThirds
+    spriteRenderer: {fileID: 2027952627490720794}
+  - name: DashOneThird
+    spriteRenderer: {fileID: 7961413154796137122}
+  - name: DashEmpty
+    spriteRenderer: {fileID: 1324512748714856507}
+  - name: ShieldFull
+    spriteRenderer: {fileID: 3034065061508379319}
+  - name: ShieldTwoThirds
+    spriteRenderer: {fileID: 4576686106919458519}
+  - name: ShieldOneThird
+    spriteRenderer: {fileID: 3992405685253487228}
+  - name: ShieldBroken
+    spriteRenderer: {fileID: 1576501146958950415}
+  - name: BlenderActiveA
+    spriteRenderer: {fileID: 3139816147328360622}
+  - name: BlenderActiveB
+    spriteRenderer: {fileID: 2170651763322390636}
+  - name: BlenderActiveC
+    spriteRenderer: {fileID: 2027952627490720794}
+  - name: BlenderEmpty
+    spriteRenderer: {fileID: 1957817345328340208}
 --- !u!114 &6906417850265877207
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3702,27 +3736,6 @@ MonoBehaviour:
     showGizmo: 1
   - color: {r: 0, g: 1, b: 0, a: 1}
     showGizmo: 1
---- !u!114 &8034070911063481805
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7691977599830055013}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13859dd9112ce14429a97f5eb8fb803c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  totemAvatarHeads:
-  - head: {fileID: 0}
-  - head: {fileID: 0}
-  - head: {fileID: 0}
-  - head: {fileID: 0}
-  - head: {fileID: 0}
-  - head: {fileID: 0}
-  - head: {fileID: 0}
-  defaultHead: {fileID: 0}
 --- !u!212 &7961413154796137122 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 226363148104471418, guid: e61d1eac024ac3844ae7e77a323ba06c, type: 3}

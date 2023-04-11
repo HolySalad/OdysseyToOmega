@@ -7,7 +7,7 @@ using TotemEntities;
 using TotemEntities.DNA;
 using TotemServices.DNA;
 using TMPro;
-
+using UnityEngine.UI;
 
 public class TotemManager : MonoBehaviour
 {
@@ -18,6 +18,10 @@ public class TotemManager : MonoBehaviour
     [SerializeField] private AvatarList avatarList;
     [SerializeField] private ItemList itemList;
     [SerializeField] private TextMeshProUGUI accountNameText;
+    [SerializeField] private TextMeshProUGUI promoText;
+    [SerializeField] private string LoginPromo = "";
+    [SerializeField] private string LoginErrorApology = "";
+    [SerializeField] private bool LoginByDefault = true;
 
     //Classes for totem
     public static TotemManager instance;
@@ -40,7 +44,8 @@ public class TotemManager : MonoBehaviour
     public delegate void ClickItem(string material, string elememt, Color32 primaryColor, Color32 secondaryColor);
     public static event ClickItem OnClickedItem;
 
-    [SerializeField] public GameObject frame;
+    public GameObject frame;
+    [SerializeField] private GameObject characterIcon;
 
     void Awake(){
         if (instance == null)
@@ -55,9 +60,10 @@ public class TotemManager : MonoBehaviour
 
     void Start(){
         totemCore = new TotemCore(_gameId);
-
+        VariableManager.Instance.Avatar = avatarList.GetDefaultAsset();
+        promoText.text = LoginPromo;
         //Try to log in with the last user
-        totemCore.AuthenticateLastUser(OnUserLoggedIn, (error) =>
+        if (LoginByDefault) totemCore.AuthenticateLastUser(OnUserLoggedIn, (error) =>
         {
             loadingScreen.SetActive(false);
         });
@@ -66,52 +72,53 @@ public class TotemManager : MonoBehaviour
     public void OnLoginButtonClick()
     {
         loadingScreen.SetActive(true);
+        loginPanel.SetActive(false);
 
         //Login user
-        totemCore.AuthenticateCurrentUser(OnUserLoggedIn);
+        totemCore.AuthenticateCurrentUser(OnUserLoggedIn, (error) =>
+        {
+            loadingScreen.SetActive(false);
+            loginPanel.SetActive(true);
+            promoText.text = LoginErrorApology;
+        });
     }
 
     private void OnUserLoggedIn(TotemUser user)
     {
+        Debug.Log("Totem user logged in: " + user.Name + " - " + user.Email + " - " + user.PublicKey);
+        if(characterIcon.GetComponent<TwistingColours>()){
+            characterIcon.GetComponent<TwistingColours>().StopTwist(new Color(0.86f, 0.69f, 0.32f));
+        }
+        VariableManager.Instance.SetTotemUser(user.PublicKey);
+        accountNameText.SetText(user.Name);
+        assetsPanel.SetActive(true);
+        loginPanel.SetActive(false);
         totemCore.GetUserAvatars<TotemDNADefaultAvatar>(user, TotemDNAFilter.DefaultAvatarFilter, (avatars) =>
         {
-            Debug.Log("Avatars:");
-            //Aqui hay que quitar el botón y meter el nombre de usuario
-            accountNameText.SetText(user.Name);
-            assetsPanel.SetActive(true);
-            loginPanel.SetActive(false);
-
-            avatarList.ClearList();
-
             //We get the avatars from the user
             _userAvatars = avatars;
             firstAvatar = avatars.Count > 0 ? avatars[0] : null;
 
-            //Example to implement
             BuildAvatarList();
-            //Idk what is this, probably no necesary??
-            //ShowAvatarRecords();
 
             //This was originally o nshowavatarrecords()
             loadingScreen.SetActive(false);
+            VariableManager.Instance.Avatar = avatarList.getCurrentAvatar();
+            VariableManager.Instance.DefaultAvatar = avatarList.isDefault;
         });
 
         totemCore.GetUserItems<TotemDNADefaultItem>(user, TotemDNAFilter.DefaultItemFilter, (items) =>
             {
-                Debug.Log("Items:");
-                itemList.ClearList();
-
-                //We get the avatars from the user
+                //We get the items from the user
                 _userItems = items;
                 firstItem = items.Count > 0 ? items[0] : null;
 
-                //Example to implement
                 BuildItemList();
-                //Idk what is this, probably no necesary??
-                //ShowAvatarRecords();
 
                 //This was originally o nshowavatarrecords()
                 loadingScreen.SetActive(false);
+                VariableManager.Instance.Harpoon = itemList.GetCurrentItem();
+                VariableManager.Instance.DefaultHarpoon = itemList.isDefault;
             });
     }
 
@@ -124,6 +131,7 @@ public class TotemManager : MonoBehaviour
         itemList.BuildList(_userItems);
     }
 
+/*  This two are no longer necessary with the variable manager
     public void callAvatarClicked(string hairstyle, Color32 primaryColor, Color32 secondaryColor){
         if(OnClickedAvatar != null)
             OnClickedAvatar(hairstyle,primaryColor,secondaryColor);
@@ -131,5 +139,14 @@ public class TotemManager : MonoBehaviour
     public void callItemClicked(string material, string element, Color32 primaryColor, Color32 secondaryColor){
         if(OnClickedItem != null)
             OnClickedItem(material, element,primaryColor,secondaryColor);
+    }
+*/
+
+    public void confirmButton(){
+        VariableManager.Instance.Avatar = avatarList.getCurrentAvatar();
+        VariableManager.Instance.DefaultAvatar = avatarList.isDefault;
+        VariableManager.Instance.Harpoon = itemList.GetCurrentItem();
+        VariableManager.Instance.DefaultHarpoon = itemList.isDefault;
+        VariableManager.Instance.SaveAvatars();
     }
 }

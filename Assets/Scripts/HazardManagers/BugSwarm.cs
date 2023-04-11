@@ -115,7 +115,7 @@ namespace SpaceBoat.HazardManagers {
             Transform targetLocationToAssign = availableTargetLocations[Random.Range(0, availableTargetLocations.Count)];
             bugTargetLocationsOccupied[targetLocationToAssign] = true;
             bugTargetLocationsAssigned.Add(roboBug, targetLocationToAssign);
-            roboBug.SetupRobobug(this, targetLocationToAssign.position, bugExitPoint);
+            roboBug.SetupRobobug(this, targetLocationToAssign.position, bugExitPoint.position);
             roboBugs.Add(roboBug);
             lastBugSpawnTime = HazardTime();
             if (isBomber) {
@@ -171,6 +171,7 @@ namespace SpaceBoat.HazardManagers {
             else if (HazardTime() > HazardDuration) {
                 SoundManager.Instance.Stop("BugBuzz", true);
                 HasEnded = true;
+                /*
                 List<RoboBug>robobugTemp = new List<RoboBug> (); 
                  
                 foreach (RoboBug bug in roboBugs) {
@@ -181,6 +182,7 @@ namespace SpaceBoat.HazardManagers {
                 {
                     bug.Explode();
                 }
+                */
             }
             float timeSinceStart = HazardTime();
             

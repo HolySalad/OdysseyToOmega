@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 657962362334965942, guid: 1c2635d3503cd88469fefba9cb828392, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 657962362334965942, guid: 1c2635d3503cd88469fefba9cb828392, type: 3}
       propertyPath: m_LocalPosition.x
@@ -52,9 +52,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1037870460538174442, guid: 1c2635d3503cd88469fefba9cb828392, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 07687aaecaca7d3449a14fa117376a78, type: 3}
     - target: {fileID: 2123636064320800213, guid: 1c2635d3503cd88469fefba9cb828392, type: 3}
       propertyPath: m_Name
-      value: ShipShield
+      value: ShipShield Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 3522637725680421638, guid: 1c2635d3503cd88469fefba9cb828392, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3915916409634548150, guid: 1c2635d3503cd88469fefba9cb828392, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []

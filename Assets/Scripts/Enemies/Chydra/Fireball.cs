@@ -73,7 +73,7 @@ namespace SpaceBoat.HazardManagers
             else if (collision.gameObject.layer == LayerMask.NameToLayer("PlayerChar"))
             {
                 Debug.Log("fireball hit player");
-                GameModel.Instance.player.PlayerTakesDamage();
+                GameModel.Instance.player.TakeDamage();
                 Destroy(this.gameObject);
             }
             else if(collision.gameObject.layer == LayerMask.NameToLayer("Ground"))

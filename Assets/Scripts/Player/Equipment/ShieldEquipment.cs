@@ -5,10 +5,6 @@ using UnityEngine.Rendering.Universal;
 
 namespace SpaceBoat.PlayerSubclasses.Equipment {
     public class ShieldEquipment : MonoBehaviour, IPlayerEquipment {
-        [SerializeField] private SpriteRenderer fullStrengthSprite;
-        [SerializeField] private SpriteRenderer twoThirdsStrengthSprite;
-        [SerializeField] private SpriteRenderer oneThirdStrengthSprite;
-        [SerializeField] private SpriteRenderer brokenSprite;
         [SerializeField] public GameObject shieldObject;
         [SerializeField] public Light2D cooldownLight;
         [SerializeField] private float shieldMaxDuration = 3f;
@@ -27,6 +23,12 @@ namespace SpaceBoat.PlayerSubclasses.Equipment {
         private float shieldBrokenTime = -99f;
         private bool onCooldown = false;
         private bool wasBroken = false;
+
+        private EquipmentSpriteManager spriteManager;
+
+        void Awake() {
+            spriteManager = GetComponent<EquipmentSpriteManager>();
+        }
 
         public bool ActivationCondition(Player player) {
             return  shieldStrength > shieldMinStrengthToUse;
@@ -47,22 +49,13 @@ namespace SpaceBoat.PlayerSubclasses.Equipment {
             }
         }
         public void Equip(Player player) {
-            fullStrengthSprite.enabled = true;
+            spriteManager.SetDisplayedSprite("ShieldFull");
             cooldownLight.enabled = true;
             cooldownLight.intensity = 0f;
-            twoThirdsStrengthSprite.enabled = false;
-            oneThirdStrengthSprite.enabled = false;
-            brokenSprite.enabled = false;
             shieldStrength = shieldMaxDuration;
-            StartCoroutine(UpdateShieldVisuals());
         }
         public void Unequip(Player player) {
-            fullStrengthSprite.enabled = false;
             cooldownLight.enabled = false;
-            twoThirdsStrengthSprite.enabled = false;
-            oneThirdStrengthSprite.enabled = false;
-            brokenSprite.enabled = false;
-            StopCoroutine(UpdateShieldVisuals());
         }
 
         public void TakeDamage(Player player) {
@@ -108,43 +101,6 @@ namespace SpaceBoat.PlayerSubclasses.Equipment {
             shieldRenderer.enabled = true;
         }
 
-        IEnumerator UpdateShieldVisuals() {
-            Light2D shieldLight = shieldObject.GetComponent<Light2D>();
-            while (true) {
-                if (shieldLight != null) shieldLight.intensity = Mathf.Lerp(0f, 5f, shieldStrength/shieldMaxDuration);
-                if (shieldStrength >= shieldMaxDuration*0.95f) {
-                    fullStrengthSprite.enabled = true;
-                    twoThirdsStrengthSprite.enabled = false;
-                    oneThirdStrengthSprite.enabled = false;
-                    brokenSprite.enabled = false;
-                    if (!isActive && onCooldown) {
-                        onCooldown = false;
-                        Debug.Log("Shield Cooldown Complete, Pulsing");
-                        StartCoroutine(PulseCooldownIndictator());
-                    }
-                } else if (shieldStrength > (shieldMaxDuration/3)*2) {
-                    fullStrengthSprite.enabled = false;
-                    twoThirdsStrengthSprite.enabled = true;
-                    oneThirdStrengthSprite.enabled = false;
-                    brokenSprite.enabled = false;
-                    onCooldown = true;
-                } else if (shieldStrength > shieldMaxDuration/3) {
-                    fullStrengthSprite.enabled = false;
-                    twoThirdsStrengthSprite.enabled = false;
-                    oneThirdStrengthSprite.enabled = true;
-                    brokenSprite.enabled = false;
-                    onCooldown = true;
-                } else {
-                    fullStrengthSprite.enabled = false;
-                    twoThirdsStrengthSprite.enabled = false;
-                    oneThirdStrengthSprite.enabled = false;
-                    brokenSprite.enabled = true;
-                    onCooldown = true;
-                }
-                yield return new WaitForSeconds(0.1f);
-            }
-        }
-
         public void UpdateEquipment(Player player) {
             if (!isActive) {
                 float sheildRecoveryPerSecond = shieldMaxDuration / shieldRecoveryTime;
@@ -165,6 +121,26 @@ namespace SpaceBoat.PlayerSubclasses.Equipment {
                     StartCoroutine(FlashShield());
                 }
              }
+            Light2D shieldLight = shieldObject.GetComponent<Light2D>();
+            if (shieldLight != null) 
+                shieldLight.intensity = Mathf.Lerp(0f, 5f, shieldStrength/shieldMaxDuration);
+            if (shieldStrength >= shieldMaxDuration*0.95f) {
+                spriteManager.SetDisplayedSprite("ShieldFull");
+                if (!isActive && onCooldown) {
+                    onCooldown = false;
+                    Debug.Log("Shield Cooldown Complete, Pulsing");
+                    StartCoroutine(PulseCooldownIndictator());
+                }
+            } else if (shieldStrength > (shieldMaxDuration/3)*2) {
+                spriteManager.SetDisplayedSprite("ShieldTwoThirds");
+                onCooldown = true;
+            } else if (shieldStrength > shieldMaxDuration/3) {
+                spriteManager.SetDisplayedSprite("ShieldOneThird");
+                onCooldown = true;
+            } else {
+                spriteManager.SetDisplayedSprite("ShieldBroken");
+                onCooldown = true;
+            }
         }
     }
 }

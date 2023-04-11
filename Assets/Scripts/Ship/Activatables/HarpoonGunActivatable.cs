@@ -32,7 +32,7 @@ namespace SpaceBoat.Ship.Activatables {
         public bool canManuallyDeactivate {get;} = true;
         public PlayerStateName playerState {get;} = PlayerStateName.turret;
         public string usageAnimation {get;} = "Repairing";
-        public string usageSound {get;}
+        public string usageSound {get;} = "";
         public bool supressPromptDuringTutorial {get; set;} = true;
 
         private List<UsageCallback> usageCallbacks = new List<UsageCallback>();

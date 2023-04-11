@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class AvatarItem : MonoBehaviour
 {
     //This goes on the avatar item prefab to initialize it
+    //Currently unused and overriden by the avatar list in mm
     private TotemDNADefaultAvatar asset;
     [SerializeField] private List<Sprite> hairstyle = new List<Sprite>();
     [SerializeField] private Shader shader;
@@ -18,7 +19,7 @@ public class AvatarItem : MonoBehaviour
     {
         thisAsset = asset;
 
-        TotemManager.OnClickedAvatar += deleteSelection;
+        //TotemManager.OnClickedAvatar += deleteSelection;
 
         if(hairstyle[0] != null){
             switch(asset.hair_styles){
@@ -62,6 +63,7 @@ public class AvatarItem : MonoBehaviour
         this.asset = asset;
     }
 
+/*
     private void deleteSelection(string a, Color32 b, Color32 c){
         if(thisClicked)
             thisClicked = false;
@@ -70,11 +72,12 @@ public class AvatarItem : MonoBehaviour
                 Destroy(transform.Find("Frame(Clone)").gameObject);
         }
     }
-
+/*
     public void ClickAvatar(){
         thisClicked = true;
         if(transform.Find("Frame(Clone)") == null)
             Instantiate(TotemManager.instance.frame, transform.position, transform.rotation, transform);
         TotemManager.instance.callAvatarClicked(thisAsset.hair_styles, thisAsset.primary_color, thisAsset.secondary_color);
     }
+*/
 }

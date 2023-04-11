@@ -39,17 +39,23 @@ namespace SpaceBoat.Rewards {
         [SerializeField] private GameObject harpoonGunActivatableBlueprintPrefab;
         [SerializeField] private GameObject shipShieldActivatableBlueprintPrefab;
 
-        [SerializeField] private int cometBlueprintDropChance = 50;
-        [SerializeField] private int cometChanceReductionPerBlueprint = 10;
+        [SerializeField] private int cometBlueprintDropChance = 20;
+        [SerializeField] private int cometChanceBonusPerBlueprint = 10;
         [SerializeField] private int cometBlueprintDropChanceMin = 10;
+        [SerializeField] private int cometBlueprintDropChanceMax = 80;
         [SerializeField] private int maxMoneyDrop = 4;
 
 
         private GameModel gameModel;
         private bool hasStarted = false;
 
+        private Dictionary<RewardType, bool> blueprintsCurrentlyOut = new Dictionary<RewardType, bool>();
+
         void Awake() {
             gameModel = FindObjectOfType<GameModel>();
+            foreach (RewardType rewardType in System.Enum.GetValues(typeof(RewardType))) {
+                blueprintsCurrentlyOut.Add(rewardType, false);
+            }
         }
 
         GameObject GetRewardPrefab(RewardType rewardType) {
@@ -79,28 +85,37 @@ namespace SpaceBoat.Rewards {
             int baseChance = cometBlueprintDropChance;
             List<RewardType> possibleRewards = new List<RewardType>();
             foreach (RewardType rewardType in GameModel.Instance.saveGame.rewardsUnlocked.Keys) {
-                if (rewardType == RewardType.Money || GameModel.Instance.saveGame.rewardsUnlocked[rewardType] == true || GetRewardPrefab(rewardType) == null) {
+                if (rewardType == RewardType.Money || blueprintsCurrentlyOut[rewardType] == true || GameModel.Instance.saveGame.rewardsUnlocked[rewardType] == true || GetRewardPrefab(rewardType) == null) {
                     continue;
                 }
                 possibleRewards.Add(rewardType);
-                baseChance -= cometChanceReductionPerBlueprint;
+                baseChance += cometChanceBonusPerBlueprint;
             }
             Debug.Log("Possible rewards: " + possibleRewards.Count + " Chance: " + baseChance);
             if (chanceOverride > baseChance) {
                 baseChance = chanceOverride;
             }
-            if (possibleRewards.Count == 0 || Random.Range(0, 100) < Mathf.Max(baseChance, cometBlueprintDropChanceMin)) {
-                return RewardType.Money;
-            } else {
+            if (possibleRewards.Count > 0 && Random.Range(0, 100) < Mathf.Clamp(baseChance, cometBlueprintDropChanceMin, cometBlueprintDropChanceMax)) {
                 return possibleRewards[Random.Range(0, possibleRewards.Count)];
+            } else {
+                return RewardType.Money;
             }
+        }
+
+        IEnumerator ResetRewardOut(RewardType rewardType) {
+            yield return new WaitForSeconds(15f);
+            blueprintsCurrentlyOut[rewardType] = false;
         }
 
         public GameObject SpawnComet(int guaranteeSecondaryItems = 0, int chanceOverride = 0) {
             GameObject cometPrefab = cometPrefabDefault;
             float yPos = Random.Range(cometEmitterLow.position.y, cometEmitterHigh.position.y);
             GameObject comet = Instantiate(cometPrefab, new Vector3(cometEmitterHigh.position.x, yPos, 0), Quaternion.identity);
-            RewardType rewardType = GetRandomRewardType(chanceOverride);
+            RewardType rewardType = GetRandomRewardType(chanceOverride);            
+            if (rewardType != RewardType.Money) {
+                blueprintsCurrentlyOut[rewardType] = true;
+                StartCoroutine(ResetRewardOut(rewardType));
+            }
             GameObject rewardPrefab = GetRewardPrefab(rewardType);
             int secondaryItems = Random.Range(1, maxMoneyDrop);
             if (guaranteeSecondaryItems > secondaryItems) {

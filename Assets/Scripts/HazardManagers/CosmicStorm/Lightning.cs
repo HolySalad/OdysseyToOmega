@@ -7,7 +7,7 @@ namespace SpaceBoat.HazardManagers.CosmicStormSubclasses {
     {
         void OnTriggerEnter2D(Collider2D other) {
             if (other.gameObject.tag == "Player") {
-                GameModel.Instance.player.PlayerTakesDamage();
+                GameModel.Instance.player.TakeDamage();
             }
         }
     }
