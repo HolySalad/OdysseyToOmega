@@ -93,6 +93,8 @@ namespace SpaceBoat.HazardManagers {
         public float HazardDuration { get; private set; }
         public string HazardSoundtrack { get; private set; } = "StormGalaxy";
 
+        private EventSystem localEventSystem;
+
         private float lastCloudSpawnedTime = 0f;
         private float lastLightningPendedTime = 0f;
         private int activeCloudCounter = 0;
@@ -158,6 +160,7 @@ namespace SpaceBoat.HazardManagers {
             escalationLevels = escalationSettings.GetEscalationLevels(difficulty);
             HasEnded = false;
             hazardBeganTime = Time.time;
+           
         }
 
         void AddStrikes() {
@@ -181,6 +184,11 @@ namespace SpaceBoat.HazardManagers {
                     lastLightningPendedTime = HazardTime();
                 }
                 Dictionary<GameObject, bool> alreadyTargettedSails = new Dictionary<GameObject, bool>();
+                localEventSystem.AddListener("CosmicStormSailRepaired", EventName.OnSailActivatableRepaired, (EventContext context) => {
+                    return alreadyTargettedSails.ContainsKey(context.Activatable.gameObject);
+                }, (EventContext context) => {
+                    alreadyTargettedSails.Remove(context.Activatable.gameObject);
+                });
                 if (LightningStrikesPending > 0) {
                     List<GameObject> cloudsToRemove = new List<GameObject>();
                     foreach (GameObject cloud in clouds) {
@@ -216,11 +224,6 @@ namespace SpaceBoat.HazardManagers {
                             LightningStrikesPending--;
                             targetSailsDict.Remove(hitSail);
                             alreadyTargettedSails.Add(hitSail, true);
-                            hitSail.GetComponent<Ship.Activatables.SailsActivatable>().AddOnSailRepairCallback(
-                                () => {
-                                    alreadyTargettedSails.Remove(hitSail);
-                                }
-                            );
                             yield return new WaitForSeconds(lightningBetweenStrikesBufferTime);
                         }
                     }
@@ -231,6 +234,7 @@ namespace SpaceBoat.HazardManagers {
         }
 
         void Start() {
+            localEventSystem = new EventSystem(this.gameObject);
             HazardDuration = baseHazardDuration;
             if (escalationSettings.escalationLevelsEasy.Count == 0) {
                 Debug.LogError("No escalation levels set for hazard " + this.gameObject.name);

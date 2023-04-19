@@ -49,9 +49,6 @@ namespace SpaceBoat.Ship.Activatables {
         public void AddDeactivationCallback(UsageCallback callback) {
             deactivationCallbacks.Add(callback);
         }
-        public void AddOnSailRepairCallback(UsageCallback callback) {
-            onNextSailRepairCallbacks.Add(callback);
-        }
 
         void Awake() {
             spriteRenderer = GetComponent<SpriteRenderer>();
@@ -72,9 +69,7 @@ namespace SpaceBoat.Ship.Activatables {
         public void Repair() {
             isBroken = false;
             spriteRenderer.sprite = repairedSprite;
-            foreach (UsageCallback callback in onNextSailRepairCallbacks) {
-                callback();
-            }
+            EventSystem.Instance.TriggerEvent(EventName.OnSailActivatableRepaired, this);
         }
 
         public void Break() {

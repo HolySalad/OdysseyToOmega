@@ -37,11 +37,17 @@ namespace SpaceBoat {
             OnHazardEnd,
         }
 
+    // a master event system is created under the GameModel which recieves all possible events. 
+
+
     public class EventSystem {
-        
+        public static EventSystem Instance;
+        private static Dictionary<EventSystem, GameObject> gameObjectByEventSystem = new Dictionary<EventSystem, GameObject>();
+        private static Dictionary<EventName, List<EventSystem>> eventSystemsByEvent = new Dictionary<EventName, List<EventSystem>>();
+        private static Dictionary<EventSystem, List<EventName>> eventsByEventSystem = new Dictionary<EventSystem, List<EventName>>();
         public delegate bool EventCondition(EventContext context);
         public delegate void EventCallback(EventContext context);
-
+        private int uuid = 0;
         private struct EventListener {
             public string name;
             public EventName eventName;
@@ -54,8 +60,10 @@ namespace SpaceBoat {
         private Dictionary<EventName, List<string>> listenerKeysByEvent = new Dictionary<EventName, List<string>>();
 
         private GameModel model;
+        private GameObject gameObject;
+        private bool isMaster = false;
 
-        public void AddListener(string name, EventName eventName, EventCondition condition, EventCallback callback, bool persistListener = false) {
+        public void AddListener(string name, EventName eventName, EventCondition condition, EventCallback callback, bool persistListener = true) {
             EventListener listener = new EventListener();
             listener.name = name;
             listener.eventName = eventName;
@@ -69,12 +77,29 @@ namespace SpaceBoat {
             if (!listenerKeysByEvent[eventName].Contains(name)) {
                 listenerKeysByEvent[eventName].Add(name);
             }
+            if (!isMaster && !eventsByEventSystem[this].Contains(eventName)) {
+                WhiteListEvent(eventName);
+            }
         }
 
-        public void AddListener(string name, EventName eventName, bool conditionReturn, EventCallback callback, bool persistListener = false) {
+        public void AddListener(string name, EventName eventName, bool conditionReturn, EventCallback callback, bool persistListener = true) {
             if (conditionReturn == false) return;
             AddListener(name, eventName, (context) => { return conditionReturn; }, callback, persistListener);
         }
+
+        public int AddListener(EventName eventName, bool conditionReturn, EventCallback callback, bool persistListener = true) {
+            if (conditionReturn == false) return -1;
+            uuid++;
+            AddListener("Unlabeled:"+eventName.ToString()+":"+uuid.ToString(), eventName, (context) => { return conditionReturn; }, callback, persistListener);
+            return uuid;
+        }
+
+        public int AddListener(EventName eventName, EventCondition condition, EventCallback callback, bool persistListener = true) {
+            uuid++;
+            AddListener("Unlabeled:"+eventName.ToString()+":"+uuid.ToString(), eventName, condition, callback, persistListener);
+            return uuid;
+        }
+
 
         public void RemoveListener(string name) {
             List<EventListener> listeners = eventListenersByKey[name];
@@ -88,26 +113,64 @@ namespace SpaceBoat {
             eventListenersByKey[name].Clear();
         }
 
-        void TriggerEvent(EventName eventName, EventContext context) {
+        public void RemoveListener(int uuid, EventName eventName) {
+            RemoveListener("Unlabeled:"+eventName.ToString()+":"+uuid.ToString());
+        }
+
+
+        void TriggerEvent(EventName eventName, EventContext context, bool triggerIfNotMaster) {
+            if (!(isMaster||triggerIfNotMaster)) {
+                Debug.LogError("EventSystem.TriggerEvent() should only be called on the master EventSystem");
+                return;
+            }
             List<string> listenerKeys = listenerKeysByEvent[eventName];
-            Debug.Log("Triggering event: " + eventName + " with " + listenerKeys.Count + " listeners");
+            Debug.Log("Triggering event: " + eventName + " with " + listenerKeys.Count + " listeners in the master event system");
+            List<EventListener> listenersToRemove = new List<EventListener>();
             foreach (string listenerKey in listenerKeys) {
                 List<EventListener> listeners = eventListenersByKey[listenerKey];
                 foreach (EventListener listener in listeners) {
                     if (listener.eventName == eventName && listener.condition(context)) {
                         listener.callback(context);
+                        if (listener.persistListener == false) {
+                            listenersToRemove.Add(listener);
+                        }
                     }
+                }
+            }
+            foreach (EventListener listener in listenersToRemove) {
+                RemoveListener(listener.name);
+            }
+            if (!isMaster) {
+                return;
+            }
+            if (eventSystemsByEvent.ContainsKey(eventName)) {
+                List<EventSystem> eventSystemsToRemove = new List<EventSystem>();
+                foreach (EventSystem eventSystem in eventSystemsByEvent[eventName]) {
+                    //check if the associated gameobject is still active
+                    if (gameObjectByEventSystem[eventSystem] == null) {
+                        eventSystemsToRemove.Add(eventSystem);
+                    } else {
+                        if (gameObjectByEventSystem[eventSystem].activeInHierarchy) {
+                            eventSystem.TriggerEvent(eventName, context, true);
+                        }
+                        //ignore inactive ones.
+                    }
+                }
+                foreach (EventSystem eventSystem in eventSystemsToRemove) {
+                    DestroyChildEventSystem(eventSystem);
                 }
             }
         }
 
         public void TriggerEvent(EventName eventName, params object[] args) {
             EventContext context = new EventContext(model, args);
-            TriggerEvent(eventName, context);
+            TriggerEvent(eventName, context, false);
         }
-
         public EventSystem(GameModel model) {
             this.model = model;
+            this.gameObject = model.gameObject;
+            Instance = this;
+            isMaster = true;
             listenerKeysByEvent.Clear();
             eventListenersByKey.Clear();
             foreach (EventName eventName in System.Enum.GetValues(typeof(EventName))) {
@@ -115,7 +178,56 @@ namespace SpaceBoat {
             }
         }
 
-        
+        public EventSystem(GameObject obj) {
+            gameObject = obj;
+            gameObjectByEventSystem.Add(this, obj);
+            eventsByEventSystem.Add(this, new List<EventName>());
+            listenerKeysByEvent.Clear();
+            eventListenersByKey.Clear();
+            model = Instance.model;
+            foreach (EventName eventName in System.Enum.GetValues(typeof(EventName))) {
+                listenerKeysByEvent.Add(eventName, new List<string>());
+            }
+            
+        }
+
+        public void WhiteListEvent(EventName eventName) {
+            if (isMaster) {
+                Debug.LogError("Master event system should not be whitelisting events");
+                return;
+            }
+            if (!eventSystemsByEvent.ContainsKey(eventName)) {
+                eventSystemsByEvent.Add(eventName, new List<EventSystem>());
+            }
+            eventSystemsByEvent[eventName].Add(this);
+            eventsByEventSystem[this].Add(eventName);
+        }
+
+        public void WhiteListEvent(EventName[] eventNames) {
+            if (isMaster) {
+                Debug.LogError("Master event system should not be whitelisting events");
+                return;
+            }
+            foreach (EventName eventName in eventNames) {
+                if (!eventSystemsByEvent.ContainsKey(eventName)) {
+                    eventSystemsByEvent.Add(eventName, new List<EventSystem>());
+                }
+                eventSystemsByEvent[eventName].Add(this);
+                eventsByEventSystem[this].Add(eventName);
+            }
+        }
+
+        public static void DestroyChildEventSystem(EventSystem system) {
+            if (system.isMaster) {
+                Debug.LogError("Master event system should not be destroyed");
+                return;
+            }
+            foreach (EventName eventName in eventsByEventSystem[system]) {
+                eventSystemsByEvent[eventName].Remove(system);
+            }
+            eventsByEventSystem.Remove(system);
+            gameObjectByEventSystem.Remove(system);
+        }
     }
     public class EventContext {
         private GameModel model;

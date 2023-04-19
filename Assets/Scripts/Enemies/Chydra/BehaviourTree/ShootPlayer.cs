@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using BehaviorDesigner.Runtime.Tasks;
-using SpaceBoat.HazardManagers;
+using SpaceBoat.OldHydra;
 using UnityEngine.U2D.IK;
 using DG.Tweening;
 public class ShootPlayer : SetupChydra

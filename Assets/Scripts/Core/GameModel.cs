@@ -466,6 +466,7 @@ namespace SpaceBoat {
 
         IEnumerator TutorialHazard() {
             GameObject newHazard = Instantiate(tutorialHazard, new Vector3(0, 0, 0), Quaternion.identity);
+            EventSystem tutorialEventSystem = new EventSystem(newHazard);
             MeteorShower shower = newHazard.GetComponent<MeteorShower>();
             shower.StartHazard(HazardDifficulty.Easy);
             int tutorialSailsRepaired = 0;
@@ -474,15 +475,10 @@ namespace SpaceBoat {
             bool stage3 = false;
             int numMeteorsHit = 0;
             int numMeteorsLastPrompt = 0;
-            foreach (GameObject sail in shipSails) {
-                SailsActivatable sailActivatable = sail.GetComponent<SailsActivatable>();
-                sailActivatable.AddOnSailRepairCallback(() => {
-                    if (shower != null) {
-                        tutorialSailsRepaired++;
-                        numMeteorsLastPrompt = numMeteorsHit;
-                    }
-                });
-            }
+            tutorialEventSystem.AddListener(EventName.OnSailActivatableRepaired, true, (EventContext context) => {
+                tutorialSailsRepaired++;
+                numMeteorsLastPrompt = numMeteorsHit;
+            });
             while (shower.meteorsOut == 0) {
                 yield return null;
             }

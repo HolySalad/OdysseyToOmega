@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SpaceBoat.HazardManagers
+namespace SpaceBoat.OldHydra
 {
     public class Fireball : MonoBehaviour
     {
