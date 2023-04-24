@@ -7,11 +7,11 @@ using UnityEngine.SceneManagement;
 public class SoundManager : MonoBehaviour
 {
     [Range(0f,1f)]
-    [SerializeField] private float masterVolume = 1f;
+    [SerializeField] public float masterVolume = 1f;
     [Range(0f,1f)]
-    [SerializeField] private float musicVolume = 1f;
+    [SerializeField] public float musicVolume = 1f;
     [Range(0f,1f)]
-    [SerializeField] private float sfxVolume = 1f;
+    [SerializeField] public float sfxVolume = 1f;
     [SerializeField] private string[] sfxVolumeTestSounds;
     [SerializeField] private float sfxVolumeTestIncrement = 0.1f;
     [SerializeField] private float sfxVolumeTestCooldown = 0.5f;

@@ -9,7 +9,8 @@ namespace SpaceBoat.UI {
     public enum UIState {
         HUD,
         CraftMenu,
-        BlueprintUnlock
+        BlueprintUnlock,
+        PauseMenu
     }
 
     public class UIManager : MonoBehaviour
@@ -17,6 +18,7 @@ namespace SpaceBoat.UI {
         [SerializeField] private GameObject hudParent;
         [SerializeField] private GameObject craftMenuParent;
         [SerializeField] private GameObject blueprintUnlockParent;
+        [SerializeField] private GameObject pauseMenuParent;
 
         public static UIManager Instance { get; private set; }
 
@@ -46,6 +48,13 @@ namespace SpaceBoat.UI {
             hudParent.SetActive(true);
             craftMenuParent.SetActive(false);
             blueprintUnlockParent.SetActive(false);
+            pauseMenuParent.SetActive(false);
+        }
+
+        void Update(){
+            if (Input.GetKeyDown(KeyCode.Escape) && CurrentState == UIState.HUD) {
+                OpenPauseMenu();
+            }
         }
 
         public string FixedUIText(string text) {
@@ -110,21 +119,38 @@ namespace SpaceBoat.UI {
         public void OpenBlueprintUnlockPanel(Rewards.Collectable collectable) {
             CurrentState = UIState.BlueprintUnlock;
             hudParent.SetActive(false);
+            blueprintUnlockParent.SetActive(true);
+            blueprintUnlockParent.GetComponent<BlueprintUnlockUI>().CreateBlueprintUnlockUI(collectable);
             GameModel.Instance.PauseGame();
             ToggleControlHints(false);
             ToggleHelpText(false);
-            blueprintUnlockParent.SetActive(true);
-            blueprintUnlockParent.GetComponent<BlueprintUnlockUI>().CreateBlueprintUnlockUI(collectable);
         }
 
         public void CloseBlueprintUnlockPanel() {
             GameModel.Instance.saveGameManager.Save();
             CurrentState = UIState.HUD;
             hudParent.SetActive(true);
+            blueprintUnlockParent.SetActive(false);
             GameModel.Instance.UnpauseGame();
             ToggleControlHints(true);
             ToggleHelpText(true);
-            blueprintUnlockParent.SetActive(false);
+        }
+        public void OpenPauseMenu() {
+            CurrentState = UIState.PauseMenu;
+            hudParent.SetActive(false);
+            pauseMenuParent.SetActive(true);
+            GameModel.Instance.PauseGame();
+            ToggleControlHints(false);
+            ToggleHelpText(false);
+        }
+
+        public void ClosePauseMenu() {
+            CurrentState = UIState.HUD;
+            hudParent.SetActive(true);
+            pauseMenuParent.SetActive(false);
+            GameModel.Instance.UnpauseGame();
+            ToggleControlHints(true);
+            ToggleHelpText(true);
         }
     }
 }
